@@ -1,0 +1,7 @@
+[package]
+name="qasset-binius-wasm-compile-probe"
+version="0.1.0"
+edition="2024"
+[workspace]
+[dependencies]
+binius-verifier={git="https://github.com/IrreducibleOSS/binius64.git",rev="115108d5a661d95c0b474b6ab02558bfe6c6bec7",default-features=false}

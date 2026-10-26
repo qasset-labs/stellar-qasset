@@ -1,0 +1,22 @@
+{
+  "scope": "First-party AI-assisted API/source review only; no fresh successful SDK verification or external security certification.",
+  "source_sha256": {
+    "tools/binius-soroban-research/compact/src/lib.rs": "4c1405eb4953a10c46510ec95318b5095968518e56d1caa214da0301ffe5fdc0",
+    "tools/binius-soroban-research/compact/src/frozen.rs": "78f96a171553c89e7c51a4ba0043031d412480fb9e0efeb27ec5ad7072326f32",
+    "tools/recovery-key-binding/src/lib.rs": "bcf122ec1f818246a8f5e2c4c6a597bb81e7bdf34718e39ba28c6c3489f029eb",
+    "tools/recovery-key-binding/README.md": "c094c4724549845ecdf9495e8a566ce7d0ddff2ff31f755d692e8427502d3384"
+  },
+  "findings": [],
+  "verified_invariants": [
+    "SDK load_from_host hashes the same immutable host Bytes against compiled exact SHA256 after exact length check and before its guest Vec copy or nested decoding.",
+    "Private decode has no exported request-selected hash or bypass; exact original native source identity and complete bounded/canonical loader checks retained.",
+    "Actual SDK contract remains fixed public fixture, no account/asset mutation, backend_available false; generic binding component is separate mathematical validation.",
+    "CanonicalEd25519PublicKey certifies only canonical nonidentity prime-subgroup point encoding; expected identity must come from trusted account state. Scalar clamping guard precedes trusted group multiplication and exact canonical-byte equality.",
+    "No seed preimage, full recovery request, current-policy or one-time transition is established by generic point binding."
+  ],
+  "limits": [
+    "400M/12B CPU exhaustion is failed execution, never valid proof rejection.",
+    "Raw module size fit is not SDK contract ABI, actual SDK code-size fit, whole host+guest memory or instruction feasibility.",
+    "No approval of quantum knowledge/ZK composition or complete backend security."
+  ]
+}

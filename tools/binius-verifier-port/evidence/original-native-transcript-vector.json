@@ -1,0 +1,10 @@
+{
+  "upstream_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "challenger_modified": false,
+  "vector": [
+    394127921,
+    1463445479,
+    3541783
+  ],
+  "method": "separate direct rustc program linked with original native64 upstream challenger rlibs; same two sampler-to-observer transition inputs as guest regression"
+}

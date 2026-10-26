@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/qasset-binius-verifier-next/scripts/run_next.py", line 160, in <module>
+    if __name__ == "__main__":
+  File "/tmp/qasset-binius-verifier-next/scripts/run_next.py", line 99, in main
+    "--", "--check"], "fmt-" + package)
+  File "/tmp/qasset-binius-verifier-next/scripts/run_next.py", line 65, in run
+    if source_manifest() != record["source_sha256"]:
+RuntimeError: source changed during reproduction

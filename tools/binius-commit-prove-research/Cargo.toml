@@ -1,0 +1,26 @@
+[package]
+name = "qasset-binius-commit-prove-research"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+binius-frontend = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-core = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-prover = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-verifier = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-transcript = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-hash = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+binius-circuits = { git = "https://github.com/IrreducibleOSS/binius64.git", rev = "115108d5a661d95c0b474b6ab02558bfe6c6bec7" }
+rand = "0.9"
+sha2 = "0.10"
+hex = "0.4"
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

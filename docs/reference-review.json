@@ -1,0 +1,229 @@
+{
+  "review_date": "2026-10-20",
+  "scope": "Technical reference review; relevant files at pinned repository revisions inspected. Publication omits award-program references.",
+  "original_embedded_links": [
+    "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+    "https://eprint.iacr.org/2026/1508",
+    "https://github.com/zkboo/zkboo-bip32",
+    "https://bitcoinops.org/en/newsletters/2026/05/01/",
+    "https://groups.google.com/g/bitcoindev/c/Q06piCEJhkI/m/6BN8qE3gAQAJ",
+    "https://www.coindesk.com/tech/2026/07/19/bitcoin-s-quantum-problem-gets-a-recovery-tool-but-not-for-satoshi-s-1-1-million-coin"
+  ],
+  "sources": [
+    {
+      "id": "R1",
+      "url": "https://stellar.org/blog/foundation-news/introducing-the-quantum-preparedness-plan",
+      "inspection": "Primary roadmap; includes dormant accounts and pairing-proof quantum risk."
+    },
+    {
+      "id": "R2",
+      "url": "https://eprint.iacr.org/2026/1508",
+      "inspection": "Preprint, revision 2026-10-16. Metadata and abstract reviewed; full PDF unavailable. Detailed theorem and timings not independently verified."
+    },
+    {
+      "id": "R3",
+      "url": "https://github.com/zkboo/zkboo-bip32",
+      "inspection": "Relevant derivation source reviewed at ad5b92d5ea2009a95f442f2926d434d3e4df34aa; unaudited, large proof sizes, no Soroban cost demonstration."
+    },
+    {
+      "id": "R4",
+      "url": "https://bitcoinops.org/en/newsletters/2026/05/01/",
+      "inspection": "Corroborating summary of the Bitcoin recovery prototype, not Stellar feasibility evidence."
+    },
+    {
+      "id": "R5",
+      "url": "https://groups.google.com/g/bitcoindev/c/Q06piCEJhkI/m/6BN8qE3gAQAJ",
+      "inspection": "Primary discussion, including later changes of proof statement and benchmark configuration."
+    },
+    {
+      "id": "R6",
+      "url": "https://www.coindesk.com/tech/2026/07/19/bitcoin-s-quantum-problem-gets-a-recovery-tool-but-not-for-satoshi-s-1-1-million-coin",
+      "inspection": "Secondary background; not a cryptographic proof or runtime benchmark."
+    },
+    {
+      "id": "R7",
+      "url": "https://github.com/SoundnessLabs/stellar-pq/blob/0744bbd65ad34b36594c1176ec5803a5d5f2ee80/README.md",
+      "inspection": "Implements a Falcon smart account; planned seed-proof authorization directly overlaps with proposed recovery."
+    },
+    {
+      "id": "R8",
+      "url": "https://github.com/latticework-dev/soroban-ml-dsa/blob/b454dc2923da77dadc244f478b5026449ae077bb/contracts/pq-account/src/lib.rs",
+      "inspection": "Actual verifier integration; reviewed account initialization needs hardening before reuse."
+    },
+    {
+      "id": "R9",
+      "url": "https://github.com/elon00/qstellar/blob/b453eba9cfed3fd1a4a15869fbde7a415751b192/contracts/pqc-verifier/src/lib.rs",
+      "inspection": "Reviewed function validates format, not a signature over the message; not a cryptographic dependency."
+    },
+    {
+      "id": "R10",
+      "url": "https://github.com/devnWisdom/stellar-rwa-contracts/blob/0c6e28a9cc848d0e31c32fa0880f2ac127c0eefa/contracts/asset-token/src/lib.rs",
+      "inspection": "Scheme-agnostic authority, compliance and guardian paths; potential integration substrate."
+    },
+    {
+      "id": "R11",
+      "url": "https://github.com/Roasbeef/bip32-pq-zkp/tree/5d42f5bb169cb4c49d7082ec3e3e48b194e06059",
+      "inspection": "Bitcoin STARK prototype; current proof statement lacks spending-transaction binding."
+    },
+    {
+      "id": "R17",
+      "url": "https://docs.openzeppelin.com/stellar-contracts/accounts/policies",
+      "inspection": "Existing account-policy substrate; documentation reviewed, not a complete upstream security audit."
+    },
+    {
+      "id": "R18",
+      "url": "https://quorum.cx/news/why-multisigs-are-not-quantum-safe",
+      "inspection": "Published PQ-threshold prior art; linked implementation was unavailable, so implementation not verified."
+    },
+    {
+      "id": "R19",
+      "url": "https://www.dtcc.com/press-releases/2026/dtcc-turns-tokenization-into-reality",
+      "inspection": "July conversions occurred on Besu and Canton, not Stellar."
+    },
+    {
+      "id": "R20",
+      "url": "https://www.dtcc.com/press-releases/2026/tokenization-service-to-connect-with-stellar-public-blockchain-as-dtc-advances-multi-chain-strategy",
+      "inspection": "Announced expected Stellar availability in the first half of 2027."
+    },
+    {
+      "id": "R21",
+      "url": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+      "inspection": "Exact supported HD derivation must be maintained; not replaceable by QBIP32."
+    },
+    {
+      "id": "R22",
+      "url": "https://github.com/satoshilabs/slips/blob/master/slip-0010.md",
+      "inspection": "Hardened Ed25519 derivation standard and test vectors."
+    },
+    {
+      "id": "R23",
+      "url": "https://developers.stellar.org/docs/networks/resource-limits-fees",
+      "inspection": "Live limits must be measured for the complete integrated operation."
+    },
+    {
+      "id": "R24",
+      "url": "https://hackmd.io/@vba/post-quantum-hd-wallet-proofs-mobile",
+      "inspection": "Primary author-reported timings and RISC Zero candidate details; not reproduced here and not a Soroban benchmark."
+    },
+    {
+      "id": "R25",
+      "url": "https://hackmd.io/@vba/plonky3-zero-knowledge-deadlock",
+      "inspection": "Primary implementation discussion of hiding FRI/MMCS; not evidence of a deployed Stellar recovery verifier."
+    },
+    {
+      "id": "R26",
+      "url": "https://eprint.iacr.org/2025/1368",
+      "inspection": "Identifies the previously unnamed EdDSA seed-witness work; abstract reviewed, conference listing corroborates publication. No Soroban benchmark verified."
+    },
+    {
+      "id": "R27",
+      "url": "https://www.newswire.ca/news-releases/project-eleven-launches-strongpoint-for-post-quantum-custody-with-zcash-foundation-as-initial-development-partner-818596517.html",
+      "inspection": "Issuer announcement on 2026-10-06: institutional crypto-agile custody, planned production; no confirmed Stellar integration or funding inference."
+    },
+    {
+      "id": "R31",
+      "url": "https://github.com/LimeChain/ShorStop/tree/e7692712c601814d03acc5b638e0a15962f50452/libs/mopro/plonky3-adapter",
+      "inspection": "Pinned SHA512 AIR, masking configuration, public-value transcript observation and executable attributed native prototype; complete proof security remains unestablished."
+    }
+  ],
+  "code_revisions": [
+    {
+      "project": "SoundnessLabs/stellar-pq",
+      "commit": "0744bbd65ad34b36594c1176ec5803a5d5f2ee80",
+      "files_read": [
+        "README.md",
+        "contracts/soroban-falcon-smart-account/src/lib.rs"
+      ],
+      "code_url": "https://github.com/SoundnessLabs/stellar-pq/blob/0744bbd65ad34b36594c1176ec5803a5d5f2ee80/contracts/soroban-falcon-smart-account/src/lib.rs"
+    },
+    {
+      "project": "latticework-dev/soroban-ml-dsa",
+      "commit": "b454dc2923da77dadc244f478b5026449ae077bb",
+      "files_read": [
+        "contracts/pq-account/src/lib.rs",
+        "contracts/pq-verifier/src/lib.rs"
+      ],
+      "code_url": "https://github.com/latticework-dev/soroban-ml-dsa/blob/b454dc2923da77dadc244f478b5026449ae077bb/contracts/pq-account/src/lib.rs"
+    },
+    {
+      "project": "elon00/qstellar",
+      "commit": "b453eba9cfed3fd1a4a15869fbde7a415751b192",
+      "files_read": [
+        "contracts/pqc-verifier/src/lib.rs",
+        "packages/policy-guard/index.js"
+      ],
+      "code_url": "https://github.com/elon00/qstellar/blob/b453eba9cfed3fd1a4a15869fbde7a415751b192/contracts/pqc-verifier/src/lib.rs"
+    },
+    {
+      "project": "devnWisdom/stellar-rwa-contracts",
+      "commit": "0c6e28a9cc848d0e31c32fa0880f2ac127c0eefa",
+      "files_read": [
+        "contracts/asset-token/src/lib.rs"
+      ],
+      "code_url": "https://github.com/devnWisdom/stellar-rwa-contracts/blob/0c6e28a9cc848d0e31c32fa0880f2ac127c0eefa/contracts/asset-token/src/lib.rs"
+    },
+    {
+      "project": "zkboo/zkboo-bip32",
+      "commit": "ad5b92d5ea2009a95f442f2926d434d3e4df34aa",
+      "files_read": [
+        "README.md",
+        "src/ed25519.rs"
+      ],
+      "code_url": "https://github.com/zkboo/zkboo-bip32/blob/ad5b92d5ea2009a95f442f2926d434d3e4df34aa/src/ed25519.rs"
+    },
+    {
+      "project": "Roasbeef/bip32-pq-zkp",
+      "commit": "5d42f5bb169cb4c49d7082ec3e3e48b194e06059",
+      "files_read": [
+        "README.md",
+        "guest/main.go"
+      ],
+      "code_url": "https://github.com/Roasbeef/bip32-pq-zkp/blob/5d42f5bb169cb4c49d7082ec3e3e48b194e06059/guest/main.go"
+    },
+    {
+      "project": "LimeChain/ShorStop",
+      "commit": "e7692712c601814d03acc5b638e0a15962f50452",
+      "files_read": [
+        "libs/mopro/plonky3-adapter/src/lib.rs",
+        "libs/mopro/plonky3-adapter/src/sha512_air/air.rs",
+        "libs/mopro/plonky3-adapter/src/sha512_air/columns.rs",
+        "libs/mopro/plonky3-adapter/src/sha512_air/generation.rs"
+      ],
+      "code_url": "https://github.com/LimeChain/ShorStop/tree/e7692712c601814d03acc5b638e0a15962f50452/libs/mopro/plonky3-adapter"
+    }
+  ],
+  "limitations": [
+    "ZKPoSP full PDF inaccessible; metadata/abstract and separate author technical notes reviewed. Timings are author-reported, not reproduced; detailed paper theorem not independently checked.",
+    "Quorum linked public implementation unavailable; published design only.",
+    "Upstream audit scope is not assurance of this integration.",
+    "SCF rules retrieved for review date; eligibility, funding and audit scheduling unconfirmed."
+  ],
+  "additional_named_references": [
+    "Baldimtsi et al. identified as ePrint 2025/1368; abstract reviewed; FC 2026 conference program corroborates publication.",
+    "Strongpoint identified through issuer October 6 announcement; no production/funding/Stellar-support assumption."
+  ],
+  "recovery_deep_review": {
+    "review_date": "2026-10-19",
+    "sources": [
+      {
+        "id": "R28",
+        "title": "Stellar discussion: PQ verification and proof-of-seed migration",
+        "url": "https://github.com/orgs/stellar/discussions/1915",
+        "review_note": "Primary Soundness May 11 proposal directly overlaps public-key seed lifting, WHIR verification and classical retirement; not evidence that a complete recovery implementation shipped."
+      },
+      {
+        "id": "R29",
+        "title": "Soundness PQChain pinned private-seed circuit",
+        "url": "https://github.com/SoundnessLabs/pqchain/blob/598cdff516c3086487a173d7d9f9af2830e04a32/sdk/cpp/examples/PQChain/pqchain.cpp",
+        "review_note": "Actual code contains SHA512 seed expansion, Ed25519 public-key constraints and message-bound hx; public-key-only relation is prior art. No Soroban performance reproduced."
+      },
+      {
+        "id": "R30",
+        "title": "RustCrypto ml-dsa 0.1.1",
+        "url": "https://docs.rs/ml-dsa/0.1.1/ml_dsa/",
+        "review_note": "Pinned no_std FIPS204 implementation used by separate pre-enrolled recovery baseline. Dependency and account remain unaudited; not a ZK proof backend or system certification."
+      }
+    ],
+    "scope": "Fresh primary-source study of recovery prior art, Stellar utility and separate ML-DSA comparator; see docs/ECOSYSTEM_FIT.md and docs/RECOVERY_POC.md."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "public_fixtures_only": true,
+  "not_secret_key_material": true,
+  "fixtures": [
+    {
+      "mode": "leaf",
+      "source": "https://www.rfc-editor.org/rfc/rfc8032#section-7.1",
+      "public_leaf_seed_hex": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "independent_python_hashlib_clamped_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    },
+    {
+      "mode": "sep5-root",
+      "source": "https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md",
+      "public_leaf_seed_hex": "4d691bc19b44a1383b1a0a130aaca3e05c3c1a371dbe45930ef9b761f7a74691",
+      "independent_python_hashlib_clamped_scalar_hex": "406f5c48cb41e1cec23aa006aea9eda7a1aa7536c821087fa762c470fa3cd946",
+      "public_key_hex": "e3726830a0b60cb5f52c844cffcd4eed65eba5c155e89b26411562724e71e544"
+    }
+  ]
+}

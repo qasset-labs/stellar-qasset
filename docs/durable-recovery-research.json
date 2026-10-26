@@ -1,0 +1,121 @@
+{
+  "schema": "qasset-durable-recovery-research-v1",
+  "status": "passed_durable_local_research_only",
+  "recorded_at_utc": "2026-10-19T21:18:10.622374+00:00",
+  "checks": [
+    {
+      "label": "two_real_proof_processes_exactly_one_atomic_commit",
+      "passed": true,
+      "details": [
+        {
+          "result": "committed",
+          "epoch": 8,
+          "consumed": true
+        },
+        {
+          "result": "rejected",
+          "error_type": "RecoveryConflict",
+          "error": "Policy, ledger or consumption changed during verification"
+        }
+      ]
+    },
+    {
+      "label": "new_process_replay_rejected_after_reopen",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "ResearchRejection",
+        "error": "Recovery permission already consumed"
+      }
+    },
+    {
+      "label": "initialization_cannot_reset_consumed_database",
+      "passed": true,
+      "details": "exclusive creation rejected"
+    },
+    {
+      "label": "revoke_during_real_verification_blocks_commit",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "RecoveryConflict",
+        "error": "Policy, ledger or consumption changed during verification"
+      }
+    },
+    {
+      "label": "retirement_during_real_verification_blocks_commit",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "RecoveryConflict",
+        "error": "Policy, ledger or consumption changed during verification"
+      }
+    },
+    {
+      "label": "expiry_during_real_verification_blocks_commit",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "RecoveryConflict",
+        "error": "Policy, ledger or consumption changed during verification"
+      }
+    },
+    {
+      "label": "aba_during_real_verification_blocks_commit",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "RecoveryConflict",
+        "error": "Policy, ledger or consumption changed during verification"
+      }
+    },
+    {
+      "label": "receipt_failure_rolls_back_rotation_and_consumption",
+      "passed": true,
+      "details": {
+        "result": "rejected",
+        "error_type": "IntegrityError",
+        "error": "fixture receipt failure"
+      }
+    },
+    {
+      "label": "fresh_real_verification_commits_after_rolled_back_attempt",
+      "passed": true,
+      "details": {
+        "result": "committed",
+        "epoch": 8,
+        "consumed": true
+      }
+    }
+  ],
+  "proof_security": "INSECURE_EIGHT_ROUNDS_UNAUDITED_RESEARCH_ONLY",
+  "network_requests": 0,
+  "submitted_transactions": 0,
+  "retirement_eligibility_and_ledger_are_local_fixture_inputs": true,
+  "source_sha256": {
+    "scripts/run_durable_recovery_research.py": "557f1fc485f040fdabb2507205886327f0bfd91beee31bb8d0b89b95534782c8",
+    "scripts/durable_recovery_research.py": "6653694b9b5fbac8939b61383da4bbbf9c45d300b07492e91c53b012505e4cf0",
+    "scripts/verify_recovery_research.py": "7f042375d073fd913fc1e4999052d7492b55cbf06305b45d7d6bb45d5f6b9e09",
+    "scripts/recovery_statement.py": "54e865f5f63b70bd580a3b8c1714dfbc27ce794807f3cccace219cd3a4024106",
+    "scripts/check_seed_recovery_evidence.py": "4e6741bdbf0684e7a5075081885ff188401ee05d54fe3bce31c21b5d56b8d861",
+    "docs/seed-proof-research.json": "5ae53158c23f7fc56eab24c772727d2a25231753c08cb5868c168eb7f57967ac",
+    "tools/pq-demo/src/main.rs": "8f73620f025744f660432e56cc5f498f9dfb86cc112584a2b3e7ec7250f9676d",
+    "tools/pq-demo/Cargo.toml": "233784e71dc1dd344fbb16fffe3f1dbf85b9736f392b7dfec366f073e2d0c58f",
+    "tools/pq-demo/Cargo.lock": "00ecf6217fff574e84dd16f362281ba9836f3b67009b638335c10f1943d4622d"
+  },
+  "proof_sha256": "a92f6a5c58d4966088f34b5e2cd2d7d60ce5cae53100743a4c3550675931fb9a",
+  "proof_verifier_binary_sha256": "57873e59a4ee3871925fb14f23e8360f09f86c2ed4c25115b51ad6b5f0774c39",
+  "fixture_helper_binary_sha256": "5f642ef1c7b42d4c21ec59c527ebae1fb545a6795730937dbb7530da5809c42e",
+  "statement_sha512": "88a4056dc62d7df52fa557e6161a3b6e328577a48fd5207910eff460a02bc3948d07ff857cabaa10b9a2da34d3c437679fbeeebc641aeed40a8954f3b2187764",
+  "initial_epoch": 7,
+  "real_proof_successes_before_commit": 8,
+  "sqlite_version": "3.37.2",
+  "limits": [
+    "Local trusted SQLite model only; not a Stellar contract or transaction.",
+    "Proof uses insecure eight-round research parameters; no cryptographic security certification.",
+    "Retirement, eligibility and ledger are operator-controlled fixture assumptions.",
+    "All writers must use the adapter; malicious operator, disk rollback, compromised binaries and untrusted proof-file mutation are outside this model.",
+    "Concurrency and rollback tests are controlled processes and SQL aborts; power-loss durability is not experimentally tested.",
+    "Receipts bind requests and model states, not independent proof certificates or network observations."
+  ]
+}

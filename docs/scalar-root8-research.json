@@ -1,0 +1,179 @@
+{
+  "schema": "qasset-public-scalar-seed-proof-research-v1",
+  "status": "passed_scalar_exposed_functional_experiment_only",
+  "recorded_at_utc": "2026-10-19T20:55:52.643896+00:00",
+  "security": "UNAUDITED_RESEARCH_NOT_QUANTUM_KNOWLEDGE_PROVEN",
+  "stellar_rpc_requests": 0,
+  "submitted_transactions": 0,
+  "cargo_dependency_network_access_disabled": true,
+  "source_sha256": {
+    "tools/scalar-seed-research/Cargo.toml": "08353b789fa5e39736041459c0e081c569b653f7d0e7570e49ddf818a93a389e",
+    "tools/scalar-seed-research/Cargo.lock": "26e3bdf4705f97b10aee7bdcab7efad5fdd4fa3c250178b5d5a48fe64a8e529e",
+    "tools/scalar-seed-research/src/main.rs": "1d392a6506d5fb3458d31dbc9010fda60c8f14b1d486db082070dfe58c87e695",
+    "tools/scalar-seed-research/upstream-pins.json": "edc81541ad313adcc6a33bcc208c2872d1858ef6db19a1ee8b660d810ca168f8",
+    "tools/scalar-seed-research/fixtures.json": "344dacf87262e3f04b0486adc5ed475e2e8ef3711c1cef19f041212fdd8b9670",
+    "scripts/run_scalar_seed_research.py": "0f698bf93fc56a141fed01528b7e4916412a64fdc7279e325fee8233ef0d02a3",
+    "scripts/recovery_statement.py": "54e865f5f63b70bd580a3b8c1714dfbc27ce794807f3cccace219cd3a4024106",
+    "scripts/check_seed_recovery_evidence.py": "4e6741bdbf0684e7a5075081885ff188401ee05d54fe3bce31c21b5d56b8d861",
+    "scripts/check_recovery_relation.py": "2f5a614b4810b02adc23db5c688b1a2d2b909b8b6ac000746d153b0ba1382687",
+    "docs/recovery-relation-vectors.json": "1f58676e134b5dee5dba39e48e340fdb0dee1d4afed4b2e4dbf03cf49db6215f"
+  },
+  "upstream_pins": {
+    "zkboo": {
+      "url": "https://github.com/zkboo/zkboo",
+      "rev": "b37bfeef9875a9f85721d9ac6e39abde6b2c256d",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-bip32": {
+      "url": "https://github.com/zkboo/zkboo-bip32",
+      "rev": "ad5b92d5ea2009a95f442f2926d434d3e4df34aa",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-modular": {
+      "url": "https://github.com/zkboo/zkboo-modular",
+      "rev": "d86e6810cf520b4a6773dbce056ea7533c646b21",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-ecc": {
+      "url": "https://github.com/zkboo/zkboo-ecc",
+      "rev": "ba89fbcceb34d4c048bd8247011f40f0bca30166",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-ripemd160": {
+      "url": "https://github.com/zkboo/zkboo-ripemd160",
+      "rev": "c9595b17ddaab986876154aef21d4a05175920f2",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-hmac": {
+      "url": "https://github.com/zkboo/zkboo-hmac",
+      "rev": "e61413f9e82a70d1fcc9275158febd9a2dfc495b",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-keccak": {
+      "url": "https://github.com/zkboo/zkboo-keccak",
+      "rev": "6eed9348320d7c306add9a87be4ce37905076909",
+      "license": "LGPL-3.0-or-later"
+    },
+    "zkboo-sha2": {
+      "url": "https://github.com/zkboo/zkboo-sha2",
+      "rev": "f52d78d6c3755992166afb3e1e03b93fa820b95f",
+      "license": "LGPL-3.0-or-later"
+    }
+  },
+  "statement": {
+    "canonical_xdr_hex": "00000010000000010000000e0000000e000000217161737365742d736565642d7265636f766572792d73746174656d656e742d76310000000000000d00000020cee0302d59844d32bdca915c8203dd44b33fbb7edc19051ea37abedf28ecd472000000120000000151515151515151515151515151515151515151515151515151515151515151510000000d00000020e3726830a0b60cb5f52c844cffcd4eed65eba5c155e89b26411562724e71e5440000000e00000011736570352d726f6f742d736565642d763100000000000003000000000000000500000000000000070000000d0000002015b4446f17aca828ab6ab19eec9127ccf45f82de2b66c951d42f0bb68a4b05520000000e00000010726f746174652d617574686f726974790000000e000000094d4c2d4453412d36350000000000000d000007a0a66d5375c5ec30a04af20dffb53f653f5f19eda2385ded1190ffb89cfc42c497f6400d1c22d169e9c4a168d6204c96c759f762a280e7b797d2a0c08ad71db3a00bed19410b7d1388b46da0ad205e62ed8998b614a39f2a08fa72237d1f569abd8a4542ca8cf87470eac8902a084ed7b5ea08bb165bbb679bf6550aa53781ec490fc3b5824efa0f4c3d119c723d84a67971b39170b25bf965cba5f106c7b1df8a3b5ab7d31a645f462ee3449552840e941bed18da00018b59c912f36600b95baa79f20562724438a8620fd2f17f18926a339d99e99fc89d7c4257cb4d768c6ca453aa9107e8c068344a01e8b4296472db1014b0d608d256d5c98cbcc7e495b74cd66088674db52295f0cfe8b6c660492943b4ac2ddb2f9fc4baf3ffd70c92b4d5f0abbcc5cac630e250f60026d405192073acfeb15958560afe0f39b87eb75b3cca6c0fee23856bfb457efbfe3e11d35b999d2ba78c3961a5d8a8de2ef831aef87b1ea52a9e8eb76f45612e131f431bf5eb47edd520281550018f4c8c612a34d49aa938f24ba868c6fbcf2941788345086977c746ac30ba8e79cb8ae5afe4b486b7f3602dc93553c586093807f035ca7b3f2338a1a46adabfd3f7447b1dc7abd669b76abe99f7089c1d0a621132ac0e3b969e1f4e45c57fd4762fe251d578c4d97044d308f70c7698074b697dbc7fb47ae0c4546284f82781171dbfc1fd5a14d580a058a24aaa43af346a6d318e3029fd0598622afc118536c5cc3d49a48b9456e01064377f1c3bc250cda5446409cc639e76ca0f6b8f7a9f9ec3cb4896a19eab30ac817c4d74b3905215b71a40d61a47f5981cb5200764f7dcee4ffa27019bd13968ed0c5d14a34eefa35c7ad68585c3d01c7ef8c7a57e9ab09f9a470d50c5fb5eebdc10a6eef983213fcad474aed6271d5cd6981b55ca09488f1884e5f0ad3a1b8ae79c94a68d03e7161b6d9407e82a1aa525a79deff774e17d572bb6ec2ea68c37242c2ef9ffa0218492d4bf861135d3739de83b815eb356acd1f756c9ad83f5a3653dbb397d066346fea2c38359d9961413fc64651b28d390a718c7075745bef1df37bdde4da2a1d111116df5c471e9a5a04664258024cc314949c3c3136c1f370ed981410978ceb1c0383eb47c2623a03edacee123331bb67b6dc179f79fb304d03fbc0108ca7f00983776c2517c6f10df5dcaf568d5bddd39ebbafb81762fb8c468c43dbd785971661d67bad7eaa9700fd2a9375c68d283080672dd21f9577b1629ce938edea72dcd98540053e3e82da14395e9cef4f4f54df277f253c7b119a07106019f874f0c7982ba32c6fa8422dd1672136fdc90b8fc609c85bb77411529aab86139d5ca8d7ee9db4cd95112021d1ac6498c6eda7f8c3a170444abd1c2e801e7c91d88514cf9a0d4ad2b72808bdbc0784b9efba3dfb9ae3573406049a77951b216ef632165618e8179a1e3e65686080b630876dee8f2225f6a73c38d53dacc78cc45bb873eb02092cf51cb0d649ec61f4a56e41346f85d4174f0a4425c8cf2326ce03a3253930ced6f42a04553c512ee269d02995a11826c40c2b5cd2bfa3b1ae36f0298e83c9ee6af25a5cbdbcf83ebb7164cb885a220f3480a78622370e7aaa0d7b3dfb88c15f2f1f77ab338a067090671e8ba340032ab7365a9348230781fff71e97a07317e688efffe5f070093f78bd7d857aebf681ad737cbb9649d2d51e7c06cfa9cb8529aca52d2ff654561b48756feceab169b31a2c4d48936290b04b4256110904cdcf000f89ac50476f7d345280aca6e739abecb1321cbd22e6cdd9cb327c7999ada6687634fae562af4b1ca0e3dd2f962db340ff6c78f0bbe18a1bc005e92060b5558a9468f3e735c3c35f7e00429ce94d0198368a7a9cab64fb3da0939c4107ae5c1082aae9ad46cb22c5631e592374ab119e598c72677ec89c41d1e199e5b50fa588269b25e578e7b69f0da2e2458cf9e10b07f414fa346b9cd57836e82ddefb0e615bbe6e5dcf1077a363ce750b026cd69741a34ed61a32f3abf71e035596e35459e97fe6cd0353929e09797bc6719fc14ad02e2c469ce7c04b141c0d58fc9d54cab34a882ae4c8cb1de3873c2fbbdb6582314b63d8d04266e16e7ef076d4620b46cb311d88d321080d85e728b8a6993396fe6324e27c9763be3d5df4b9bd758b371592d68a584db5537a91fb5e80187bbaf9a4e1ad7ad1c7e300e1931525566c314a6bddab00e8d997f5793e9d830a47ceebea5a7a3143464b35443c79b9174451c90eac7e0167eeaa3882e7376a06a0e336d67acdc5f6613c37b6e5529d4609892a90eb0be3b07dd73277a2e65779fb83dd652ecdf1d99a4a88ac3eb99cdf374a0109ffe7080f4549dfaa557ca3bb71821e4a7d8c6e0d200923250b80bb3e566a9a624ab60f43a15e6a3dd7583dc97d9f2de7e3df7343c05c8e550cbf8b86f366ab66c47417a52aa80942b50ef10f64f3d56e6726815168be654aa37dd7b118090a53d5c9fda61b136430b2f4dfdcd8088055eecc6649154c83c8db79c9ccb7232c145f63dbb8b13c237281739e916245a345e693b355fe88e1bccdc823bccb5db643bd531521f01422c228c0fb1800f08b498acb3564ac5f68a20526ccd91dbb63bbb87eb36fc45b0c1eeaa3c09149350ceb5ec58e4518910c636a2a2f31a8b85a1f97fa6c1c4f0c835f208073592892e8a9bd0e9bf370b25cc3dc75fd38d4541ae26196f1959e8916663b7453a6ae6cbdb0500000003000004b00000000d00000020b0321c06d63f39b0476d2374d395d08d773b3d4c95e47f18a0285d5b76a9e46e0000000d000000208f60974b882532bccee35b6bfe5425a9551f076a01ee8c3b3d911c4457f69894",
+    "digest_sha512_hex": "1ca002ba1f83df12e5cb9b292c27dbc41f70cf397cd3ab058d845f0a78e632479715b91272eab0e82e5b08380eebfe05cf3c17d01b93d1ef2029caef58f2eb3d",
+    "public_key_hex": "e3726830a0b60cb5f52c844cffcd4eed65eba5c155e89b26411562724e71e544",
+    "relation": "sep5-root-seed-v1",
+    "account_index": 0,
+    "verifier_id_hex": "b0321c06d63f39b0476d2374d395d08d773b3d4c95e47f18a0285d5b76a9e46e",
+    "parameters_id_hex": "8f60974b882532bccee35b6bfe5425a9551f076a01ee8c3b3d911c4457f69894",
+    "parameters": {
+      "rounds": 8,
+      "hash": "BLAKE3-256",
+      "proof_format": "postcard-1.1.3",
+      "research_mode": "sep5-root",
+      "approved": false,
+      "scalar_is_public": true,
+      "classical_retirement_is_a_fixture_assumption": true,
+      "public_clamped_scalar_hex": "406f5c48cb41e1cec23aa006aea9eda7a1aa7536c821087fa762c470fa3cd946"
+    },
+    "backend_approved": false,
+    "replacement_key_possession_established_by_this_experiment": false
+  },
+  "python_version": "3.10.12",
+  "artifact_directory": "/tmp/qasset-canonical-scalar-root8",
+  "binary_sha256": "74ad0229f93d1330b9268d07a91921291797de713c890e788f704bc9055cd564",
+  "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.94.1\nLLVM version: 21.1.8",
+  "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+  "build_environment": {
+    "RUSTFLAGS": {
+      "set": false,
+      "value_sha256": null
+    },
+    "CARGO_ENCODED_RUSTFLAGS": {
+      "set": false,
+      "value_sha256": null
+    },
+    "RUSTC_BOOTSTRAP": {
+      "set": false,
+      "value_sha256": null
+    },
+    "RUSTC_WRAPPER": {
+      "set": false,
+      "value_sha256": null
+    }
+  },
+  "proof": {
+    "checks": {
+      "changed_action_digest_rejected": true,
+      "changed_mode_binding_rejected": true,
+      "changed_public_key_rejected_by_native_anchor": true,
+      "changed_scalar_rejected_by_native_anchor": true,
+      "correct_scalar_matches_independent_key": true,
+      "empty_proof_rejected": true,
+      "increased_required_rounds_rejected": true,
+      "nonclamped_output_rejected": true,
+      "tampered_commitment_rejected": true,
+      "truncated_response_rejected": true,
+      "valid_exact_statement": true,
+      "wrong_public_scalar_rejected": true
+    },
+    "classical_signing_authority_must_be_retired": true,
+    "fresh_os_prover_randomness": true,
+    "message_digest_hex": "1ca002ba1f83df12e5cb9b292c27dbc41f70cf397cd3ab058d845f0a78e632479715b91272eab0e82e5b08380eebfe05cf3c17d01b93d1ef2029caef58f2eb3d",
+    "onchain_verified": false,
+    "point_anchor_checked_outside_circuit": true,
+    "proof_blake3": "1857cf3689e0086def81e30629e87386a79784605672d4494ac33e011b12bfb7",
+    "proof_bytes_postcard": 2067691,
+    "proof_bytes_upstream_raw": 1741930,
+    "prove_ms": 523,
+    "public_fixture": "SEP5 test1 account0",
+    "public_scalar_disclosed": true,
+    "public_seed_fixture_only": true,
+    "relation": "private64byteSEP5root -> SLIP10Ed25519m/44h/148h/0h -> SHA512 -> PUBLIC clamped scalar; native point anchor",
+    "relation_mode": "sep5-root",
+    "root_path": "m/44'/148'/0'",
+    "rounds": 8,
+    "security": "REDUCED_ROUNDS_UNSAFE_UNAUDITED_BACKEND",
+    "soroban_feasibility_established": false,
+    "status": "passed_functional_checks_only",
+    "upstream_claimed_128bit_pq_rounds": 438,
+    "verifier_uses_seed": false,
+    "verify_ms": 160
+  },
+  "prove_and_adversarial_checks_elapsed_seconds": 1.675,
+  "proof_sha256": "7cb493885af08ac587c9a27f32c6e8f74b0f8331f8ea8ec6a78169c49264075c",
+  "separate_verifier": {
+    "message_digest_hex": "1ca002ba1f83df12e5cb9b292c27dbc41f70cf397cd3ab058d845f0a78e632479715b91272eab0e82e5b08380eebfe05cf3c17d01b93d1ef2029caef58f2eb3d",
+    "proof_blake3": "1857cf3689e0086def81e30629e87386a79784605672d4494ac33e011b12bfb7",
+    "relation_mode": "sep5-root",
+    "rounds": 8,
+    "status": "experimental_unaudited_not_security_certified",
+    "valid": true,
+    "verifier_uses_seed": false,
+    "verify_ms": 153
+  },
+  "changed_epoch_separate_verifier": {
+    "exit_code": 1,
+    "message_digest_hex": "700b6d61776c7ede1ad2fbcc9f94e270a83191fc95b92ff645084f2d744218cf36028a9fae993ce9f656c7021048ede161dd681a18694a55aa6a2306c718a3b1",
+    "proof_blake3": "1857cf3689e0086def81e30629e87386a79784605672d4494ac33e011b12bfb7",
+    "relation_mode": "sep5-root",
+    "rounds": 8,
+    "status": "experimental_unaudited_not_security_certified",
+    "valid": false,
+    "verifier_uses_seed": false,
+    "verify_ms": 197
+  },
+  "limits": [
+    "Eight rounds are insecure; 438 is only the upstream parameter count, not a validated quantum knowledge claim.",
+    "The public scalar permits classical signature forgery. Finalized retirement is required BEFORE disclosure, including every reused-key system.",
+    "Upstream's 438-round quantum-security claim is not independently established by this experiment.",
+    "Public fixture witnesses do not demonstrate privacy for a real user's secret.",
+    "The raw root witness is not a proof of mnemonic entropy, checksum, or wallet provenance.",
+    "No Soroban verifier, authority transition, original-seed recovery transaction, or current ownership check is implemented.",
+    "Successful message mutations do not constitute a proof of chosen-message or quantum extraction security.",
+    "The verifier accepts an explicit public digest; a production adapter must derive it from authoritative current state.",
+    "All fixtures are public and the backend is unaudited; do not use with real secrets or assets."
+  ]
+}

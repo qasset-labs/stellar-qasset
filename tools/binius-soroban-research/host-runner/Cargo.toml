@@ -1,0 +1,13 @@
+[package]
+name="qasset-soroban-verifier-host-diagnostic"
+version="0.1.0"
+edition="2024"
+publish=false
+license="MIT"
+[workspace]
+[dependencies]
+soroban-sdk={version="=25.3.2",features=["testutils"]}
+serde_json="=1.0.151"
+sha2="=0.10.9"
+hex="=0.4.3"
+soroban-env-host="=25.2.2"

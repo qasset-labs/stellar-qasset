@@ -1,0 +1,115 @@
+{
+  "schema": "qasset-poc-local-validation-v1",
+  "recorded_date": "2026-10-25",
+  "commands": [
+    {
+      "command": "cargo test --workspace --offline",
+      "exit_code": 0,
+      "tests_passed": 88,
+      "log_sha256": "aa580efd5de28fff341cb3e6d069ac04347e32579a04d21d7e16fb10e17941ce",
+      "output_tail": ". ok\ntest test::commitment_from_one_session_cannot_seal_another ... ok\ntest test::header_size_expiry_and_reinitialization_are_bounded ... ok\ntest test::independent_python_xdr_and_chain_vector_matches_rust ... ok\ntest test::read_range_checks_reject_overflow_and_oversized_return_values ... ok\ntest test::sealed_transport_is_never_a_verified_recovery ... ok\ntest test::temporary_entries_survive_until_logical_expiry_across_upload_ledgers ... ok\ntest test::uploader_authentication_is_required ... ok\ntest test::unauthorized_append_and_rejected_chunks_leave_state_unchanged ... ok\ntest test::wrong_bytes_cannot_match_the_committed_chain ... ok\ntest test::chunks_are_exact_sequential_and_immutable_after_sealing ... ok\ntest test::exact_maximum_length_and_full_final_chunk_remain_bounded ... ok\n\ntest result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.46s\n\n     Running unittests src/lib.rs (target/debug/deps/seed_recovery_verifier-036747ba6db51246)\n\nrunning 6 tests\ntest test::constructor_without_owner_authorization_is_rejected - should panic ... ok\ntest test::constructor_rejects_an_already_hardened_account_index - should panic ... ok\ntest test::constructor_sets_immutable_configuration_and_disabled_status ... ok\ntest test::forged_credentials_fail_through_real_require_auth_without_auth_mocks ... ok\ntest test::matching_or_modified_bindings_never_authorize_placeholder_proofs ... ok\ntest test::public_initializer_and_constructor_cannot_rebind_deployed_instance ... ok\n\ntest result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s\n\n"
+    },
+    {
+      "command": "cargo test --manifest-path tools/qasset-sac-signer/Cargo.toml --offline",
+      "exit_code": 0,
+      "tests_passed": 4,
+      "log_sha256": "b69c1357140fe2e7762cf7c29fc8df2efff04204d5de67d1a72d923f99bcb92f",
+      "output_tail": "   Compiling qasset-sac-signer v0.1.0 (/home/mohamed/stellar-qasset/tools/qasset-sac-signer)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.10s\n     Running unittests src/main.rs (tools/qasset-sac-signer/target/debug/deps/qasset_sac_signer-29e8b6574cc771d0)\n\nrunning 4 tests\ntest tests::payload_parser_is_strict ... ok\ntest tests::rejects_repository_paths_and_parent_symlinks ... ok\ntest tests::rejects_key_symlinks_hardlinks_and_open_permissions ... ok\ntest tests::generated_key_signs_for_the_exact_contract_verifier_and_context ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s\n\n"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p 'test_*.py'",
+      "exit_code": 0,
+      "tests_passed": 100,
+      "log_sha256": "b6be98321452ceb9002af6271979f1702dac46b4ea61e7ddaaea63afca8ed254",
+      "output_tail": "...................../home/mohamed/.local/lib/python3.10/site-packages/stellar_sdk/operation/set_options.py:100: DeprecationWarning: `set_flags` is a int, we recommend using AuthorizationFlag.\n  warnings.warn(\n...............................................................................\n----------------------------------------------------------------------\nRan 100 tests in 5.349s\n\nOK\n"
+    },
+    {
+      "command": "cargo clippy -p qasset-sac-admin --offline --all-targets -- -D warnings",
+      "exit_code": 0,
+      "tests_passed": null,
+      "log_sha256": "293323e0292ef3f6bb58bc4d5060b0f6c4ffc02743c6231a604f2d3dace9c292",
+      "output_tail": "    Checking qasset-sac-admin v0.1.0 (/home/mohamed/stellar-qasset/contracts/qasset-sac-admin)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.73s\n"
+    },
+    {
+      "command": "cargo clippy --manifest-path tools/qasset-sac-signer/Cargo.toml --offline --all-targets -- -D warnings",
+      "exit_code": 0,
+      "tests_passed": null,
+      "log_sha256": "92d3c422095c62f7d53273e2a420b5f5bee2cd4a4b77b0a2ede8c1c8cc803091",
+      "output_tail": "    Checking qasset-sac-signer v0.1.0 (/home/mohamed/stellar-qasset/tools/qasset-sac-signer)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.27s\n"
+    },
+    {
+      "command": "cargo build -p qasset-sac-admin --release --target wasm32v1-none --offline",
+      "exit_code": 0,
+      "tests_passed": null,
+      "log_sha256": "16dcb05f0696b02aa9e2685e916264d04bc755ab397f699d7536abe0e4879680",
+      "output_tail": "   Compiling qasset-sac-admin v0.1.0 (/home/mohamed/stellar-qasset/contracts/qasset-sac-admin)\n    Finished `release` profile [optimized] target(s) in 5.30s\n"
+    },
+    {
+      "command": "cargo build --manifest-path tools/qasset-sac-signer/Cargo.toml --release --offline",
+      "exit_code": 0,
+      "tests_passed": null,
+      "log_sha256": "f363a6a61fe4b6ef23d638d7f64ddf9e882f7cbcfea210c378d2f41781a8923a",
+      "output_tail": "   Compiling qasset-sac-signer v0.1.0 (/home/mohamed/stellar-qasset/tools/qasset-sac-signer)\n    Finished `release` profile [optimized] target(s) in 6.52s\n"
+    }
+  ],
+  "backlog_check": [
+    {
+      "path": ".gitignore",
+      "unchanged": true
+    },
+    {
+      "path": "Cargo.lock",
+      "unchanged": true
+    },
+    {
+      "path": "README.md",
+      "unchanged": true
+    },
+    {
+      "path": "contracts/qasset-registry/Makefile",
+      "unchanged": true
+    },
+    {
+      "path": "contracts/qasset-registry/src/lib.rs",
+      "unchanged": true
+    },
+    {
+      "path": "contracts/qasset-registry/src/test.rs",
+      "unchanged": true
+    },
+    {
+      "path": "contracts/seed-recovery-verifier/src/lib.rs",
+      "unchanged": true
+    },
+    {
+      "path": "contracts/seed-recovery-verifier/src/test.rs",
+      "unchanged": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "unchanged": true
+    }
+  ],
+  "focused_files_scanned": 29,
+  "wasm": {
+    "path": "target/wasm32v1-none/release/qasset_sac_admin.wasm",
+    "sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6",
+    "bytes": 59167
+  },
+  "live_verification": {
+    "consistent": true,
+    "fresh": true,
+    "paths_checked": 30,
+    "stale_paths": [],
+    "scope": "live Testnet verification",
+    "transactions_rechecked": 25,
+    "current_policy_revisions": {
+      "QEXP": 3,
+      "QCTL": 3
+    },
+    "verified_at_utc": "2026-10-25T10:17:14.334171+00:00",
+    "latest_ledger": 5379969
+  },
+  "lock_branch": "PENDING; environment gate absent; no issuer lock attempted",
+  "live_revision_bump": "not run; offline revision fixtures only"
+}

@@ -1,0 +1,1241 @@
+{
+  "database_revision": "999ec89d5d3f10f20be14750ec8c2d8b44e0ac9b 2026-10-17T17:23:59+02:00",
+  "scope": "Known RustSec advisories in 22 locked dependency trees; fixed database revision, no fetch, yanked checks disabled. Local fork correctness and cryptographic security are outside this check.",
+  "results": [
+    {
+      "lockfile": "Cargo.lock",
+      "lockfile_sha256": "9f8cf315de19f7157f207801f0c2863cb2eb2648c79807ac92b81e2285bb7840",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 222
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "derivative",
+                "version": "2.2.0",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b",
+                "dependencies": [
+                  {
+                    "name": "proc-macro2",
+                    "version": "1.0.107",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "quote",
+                    "version": "1.0.47",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "syn",
+                    "version": "1.0.109",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0388",
+                "package": "derivative",
+                "title": "`derivative` is unmaintained; consider using an alternative",
+                "description": "The [`derivative`](https://crates.io/crates/derivative) crate is no longer maintained.\nConsider using any alternative, for instance:\n- [derive_more](https://crates.io/crates/derive_more)\n- [derive-where](https://crates.io/crates/derive-where)\n- [educe](https://crates.io/crates/educe)",
+                "date": "2024-06-26",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/mcarton/rust-derivative/issues/117",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            },
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "paste",
+                "version": "1.0.15",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0436",
+                "package": "paste",
+                "title": "paste - no longer maintained",
+                "description": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+                "date": "2024-10-07",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/dtolnay/paste",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/pq-demo/Cargo.lock",
+      "lockfile_sha256": "00ecf6217fff574e84dd16f362281ba9836f3b67009b638335c10f1943d4622d",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 28
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/seed-recovery-research/Cargo.lock",
+      "lockfile_sha256": "fc42d04516fe0bcc4ae0657dd3a7aca9fd3b6b2613d9432978e42b28295eff3c",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 50
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "atomic-polyfill",
+                "version": "1.0.3",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4",
+                "dependencies": [
+                  {
+                    "name": "critical-section",
+                    "version": "1.2.0",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2023-0089",
+                "package": "atomic-polyfill",
+                "title": "atomic-polyfill is unmaintained",
+                "description": "The author has archived the GitHub repository and mentions deprecation in\nproject's\n[README](https://github.com/embassy-rs/atomic-polyfill/blob/48e55c166684f37af0b00fbee5a0809b1a2bae8e/README.md).\n\n## Possible alternatives\n\n * [portable-atomic](https://crates.io/crates/portable-atomic)",
+                "date": "2023-07-11",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/embassy-rs/atomic-polyfill/commit/48e55c166684f37af0b00fbee5a0809b1a2bae8e",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/scalar-seed-research/Cargo.lock",
+      "lockfile_sha256": "26e3bdf4705f97b10aee7bdcab7efad5fdd4fa3c250178b5d5a48fe64a8e529e",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 54
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "atomic-polyfill",
+                "version": "1.0.3",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4",
+                "dependencies": [
+                  {
+                    "name": "critical-section",
+                    "version": "1.2.0",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2023-0089",
+                "package": "atomic-polyfill",
+                "title": "atomic-polyfill is unmaintained",
+                "description": "The author has archived the GitHub repository and mentions deprecation in\nproject's\n[README](https://github.com/embassy-rs/atomic-polyfill/blob/48e55c166684f37af0b00fbee5a0809b1a2bae8e/README.md).\n\n## Possible alternatives\n\n * [portable-atomic](https://crates.io/crates/portable-atomic)",
+                "date": "2023-07-11",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/embassy-rs/atomic-polyfill/commit/48e55c166684f37af0b00fbee5a0809b1a2bae8e",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/compact-seed-research/Cargo.lock",
+      "lockfile_sha256": "0b15159d6198db5003154dac97276b04bc79cbf3b95db00625b52e86660d1322",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 103
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "atomic-polyfill",
+                "version": "1.0.3",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4",
+                "dependencies": [
+                  {
+                    "name": "critical-section",
+                    "version": "1.2.0",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2023-0089",
+                "package": "atomic-polyfill",
+                "title": "atomic-polyfill is unmaintained",
+                "description": "The author has archived the GitHub repository and mentions deprecation in\nproject's\n[README](https://github.com/embassy-rs/atomic-polyfill/blob/48e55c166684f37af0b00fbee5a0809b1a2bae8e/README.md).\n\n## Possible alternatives\n\n * [portable-atomic](https://crates.io/crates/portable-atomic)",
+                "date": "2023-07-11",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/embassy-rs/atomic-polyfill/commit/48e55c166684f37af0b00fbee5a0809b1a2bae8e",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            },
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "paste",
+                "version": "1.0.15",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0436",
+                "package": "paste",
+                "title": "paste - no longer maintained",
+                "description": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+                "date": "2024-10-07",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/dtolnay/paste",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/binius-seed-research/Cargo.lock",
+      "lockfile_sha256": "e052a67bb1fae2615b16cbcc8862151fe52dd7fea779aa49cd264292e4bd355e",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 110
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-seed-research/wasm-probe/Cargo.lock",
+      "lockfile_sha256": "7c0576e560f56ab8df828173c4711c850d23bff1f870cadfba6e296feccea618",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 62
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-seed-research/rate-study/Cargo.lock",
+      "lockfile_sha256": "8ab7a506834985aeeabea7f17b24ce7b1420e394ff6aed805872663b2f42103c",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 110
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-port/guest/Cargo.lock",
+      "lockfile_sha256": "0d56985215ee27deacb8b74234dadb097a62851a7f12b6a50ffb668f84b62e5d",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 54
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-port/host-runner/Cargo.lock",
+      "lockfile_sha256": "477e93e4bf662b037b9339a75039ebc89c0bceca987b9f6b31463d3ebc2799a5",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 70
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-port/wasm-fixture/Cargo.lock",
+      "lockfile_sha256": "0d6eb28737358433e431941922a1fe259bcf512e68040b4a99dc6a31432a50c9",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 63
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-port/inspect/Cargo.lock",
+      "lockfile_sha256": "78ac05cee676ede1f3d1de830cfe433a5b49d621ea21570338a1c734f2213a6e",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 17
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-preprocessing-reference/Cargo.lock",
+      "lockfile_sha256": "707e941166301a40fd3cb82737b12ba6afc8de9a5652ab6563f454589c08fabd",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 101
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-next/inspect/Cargo.lock",
+      "lockfile_sha256": "78ac05cee676ede1f3d1de830cfe433a5b49d621ea21570338a1c734f2213a6e",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 17
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-next/guest/Cargo.lock",
+      "lockfile_sha256": "0d56985215ee27deacb8b74234dadb097a62851a7f12b6a50ffb668f84b62e5d",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 54
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-next/host-runner/Cargo.lock",
+      "lockfile_sha256": "c1f0301792221ad13253852d4cb9012e4f275fa1b07846922d4fe0e20ec6cbd1",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 63
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-next/arithmetic-check/Cargo.lock",
+      "lockfile_sha256": "d6a319c978a0653dec7e765bc225e567c8cfbb0ce6441e6ca7c97442a21fdd70",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 31
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-verifier-next/external-input/Cargo.lock",
+      "lockfile_sha256": "b44c3b30f60b5b5b4123e3408ffe278117f7507cff24893c0cb7ff4c21e7921d",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 56
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/recovery-key-binding/Cargo.lock",
+      "lockfile_sha256": "82e7cf1d219f8fa1154578f02b0fff7439b6916f24e583774be66fb6f2c0d97e",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 22
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {}
+      }
+    },
+    {
+      "lockfile": "tools/binius-soroban-research/Cargo.lock",
+      "lockfile_sha256": "8d93399bdc3df7359a19112f86457ad0895b7d3f1b2f6ff193f3d3a0e8997ad1",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 237
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "derivative",
+                "version": "2.2.0",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b",
+                "dependencies": [
+                  {
+                    "name": "proc-macro2",
+                    "version": "1.0.107",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "quote",
+                    "version": "1.0.47",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "syn",
+                    "version": "1.0.109",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0388",
+                "package": "derivative",
+                "title": "`derivative` is unmaintained; consider using an alternative",
+                "description": "The [`derivative`](https://crates.io/crates/derivative) crate is no longer maintained.\nConsider using any alternative, for instance:\n- [derive_more](https://crates.io/crates/derive_more)\n- [derive-where](https://crates.io/crates/derive-where)\n- [educe](https://crates.io/crates/educe)",
+                "date": "2024-06-26",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/mcarton/rust-derivative/issues/117",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            },
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "paste",
+                "version": "1.0.15",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0436",
+                "package": "paste",
+                "title": "paste - no longer maintained",
+                "description": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+                "date": "2024-10-07",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/dtolnay/paste",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/binius-soroban-research/host-runner/Cargo.lock",
+      "lockfile_sha256": "26f2d70e340f94e5fa31d0f161ddabe6d9601552fccc7346ea70b4cc492fc609",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 211
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "derivative",
+                "version": "2.2.0",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b",
+                "dependencies": [
+                  {
+                    "name": "proc-macro2",
+                    "version": "1.0.107",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "quote",
+                    "version": "1.0.47",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "syn",
+                    "version": "1.0.109",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0388",
+                "package": "derivative",
+                "title": "`derivative` is unmaintained; consider using an alternative",
+                "description": "The [`derivative`](https://crates.io/crates/derivative) crate is no longer maintained.\nConsider using any alternative, for instance:\n- [derive_more](https://crates.io/crates/derive_more)\n- [derive-where](https://crates.io/crates/derive-where)\n- [educe](https://crates.io/crates/educe)",
+                "date": "2024-06-26",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/mcarton/rust-derivative/issues/117",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            },
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "paste",
+                "version": "1.0.15",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0436",
+                "package": "paste",
+                "title": "paste - no longer maintained",
+                "description": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+                "date": "2024-10-07",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/dtolnay/paste",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "lockfile": "tools/binius-soroban-research/compact/Cargo.lock",
+      "lockfile_sha256": "57375fcd51623176797e1acc8600688df8a984cbcfae0ccf43507340e8e79c29",
+      "exit_code": 0,
+      "report": {
+        "database": {
+          "advisory-count": 1338,
+          "last-commit": null,
+          "last-updated": null
+        },
+        "lockfile": {
+          "dependency-count": 237
+        },
+        "settings": {
+          "target_arch": [],
+          "target_os": [],
+          "severity": null,
+          "ignore": [],
+          "informational_warnings": [
+            "unmaintained",
+            "unsound",
+            "notice"
+          ]
+        },
+        "vulnerabilities": {
+          "found": false,
+          "count": 0,
+          "list": []
+        },
+        "warnings": {
+          "unmaintained": [
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "derivative",
+                "version": "2.2.0",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b",
+                "dependencies": [
+                  {
+                    "name": "proc-macro2",
+                    "version": "1.0.107",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "quote",
+                    "version": "1.0.47",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  },
+                  {
+                    "name": "syn",
+                    "version": "1.0.109",
+                    "source": "registry+https://github.com/rust-lang/crates.io-index"
+                  }
+                ],
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0388",
+                "package": "derivative",
+                "title": "`derivative` is unmaintained; consider using an alternative",
+                "description": "The [`derivative`](https://crates.io/crates/derivative) crate is no longer maintained.\nConsider using any alternative, for instance:\n- [derive_more](https://crates.io/crates/derive_more)\n- [derive-where](https://crates.io/crates/derive-where)\n- [educe](https://crates.io/crates/educe)",
+                "date": "2024-06-26",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/mcarton/rust-derivative/issues/117",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            },
+            {
+              "kind": "unmaintained",
+              "package": {
+                "name": "paste",
+                "version": "1.0.15",
+                "source": "registry+https://github.com/rust-lang/crates.io-index",
+                "checksum": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+                "replace": null
+              },
+              "advisory": {
+                "id": "RUSTSEC-2024-0436",
+                "package": "paste",
+                "title": "paste - no longer maintained",
+                "description": "The creator of the crate `paste` has stated in the [`README.md`](https://github.com/dtolnay/paste/blob/master/README.md) \nthat this project is not longer maintained as well as archived the repository\n\n## Possible Alternative(s)\n\n- [`pastey`]: a fork of paste and is aimed to be a drop-in replacement with additional features for paste crate\n- [`with_builtin_macros`]: crate providing a [superset of `paste`'s functionality including general `macro_rules!` eager expansions](https://docs.rs/with_builtin_macros/0.1.0/with_builtin_macros/macro.with_eager_expansions.html)  and `concat!`/`concat_idents!` macros\n\n[`pastey`]: https://crates.io/crates/pastey\n[`with_builtin_macros`]: https://crates.io/crates/with_builtin_macros",
+                "date": "2024-10-07",
+                "aliases": [],
+                "related": [],
+                "collection": "crates",
+                "categories": [],
+                "keywords": [],
+                "cvss": null,
+                "informational": "unmaintained",
+                "references": [],
+                "source": null,
+                "url": "https://github.com/dtolnay/paste",
+                "withdrawn": null,
+                "license": "CC0-1.0",
+                "expect-deleted": false
+              },
+              "affected": null,
+              "versions": {
+                "patched": [],
+                "unaffected": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "last_additional_scan_utc": "2026-10-19T22:34:51.688822+00:00"
+}

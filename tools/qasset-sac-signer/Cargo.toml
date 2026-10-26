@@ -1,0 +1,11 @@
+[package]
+name = "qasset-sac-signer"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+ml-dsa = { version = "=0.1.1", default-features = false }
+libc = "=0.2.189"

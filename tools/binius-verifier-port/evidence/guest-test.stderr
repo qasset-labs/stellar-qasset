@@ -1,0 +1,3 @@
+   Compiling qasset-binius-nostd-verifier v0.1.0 (/tmp/qasset-binius-port-package/guest)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.37s
+     Running unittests src/lib.rs (/tmp/qasset-binius-nostd-port/guest/target/debug/deps/qasset_binius_nostd_verifier-2e461daf0cf8fd2c)

@@ -1,0 +1,42 @@
+{
+  "zkboo": {
+    "url": "https://github.com/zkboo/zkboo",
+    "rev": "b37bfeef9875a9f85721d9ac6e39abde6b2c256d",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-bip32": {
+    "url": "https://github.com/zkboo/zkboo-bip32",
+    "rev": "ad5b92d5ea2009a95f442f2926d434d3e4df34aa",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-modular": {
+    "url": "https://github.com/zkboo/zkboo-modular",
+    "rev": "d86e6810cf520b4a6773dbce056ea7533c646b21",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-ecc": {
+    "url": "https://github.com/zkboo/zkboo-ecc",
+    "rev": "ba89fbcceb34d4c048bd8247011f40f0bca30166",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-ripemd160": {
+    "url": "https://github.com/zkboo/zkboo-ripemd160",
+    "rev": "c9595b17ddaab986876154aef21d4a05175920f2",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-hmac": {
+    "url": "https://github.com/zkboo/zkboo-hmac",
+    "rev": "e61413f9e82a70d1fcc9275158febd9a2dfc495b",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-keccak": {
+    "url": "https://github.com/zkboo/zkboo-keccak",
+    "rev": "6eed9348320d7c306add9a87be4ce37905076909",
+    "license": "LGPL-3.0-or-later"
+  },
+  "zkboo-sha2": {
+    "url": "https://github.com/zkboo/zkboo-sha2",
+    "rev": "f52d78d6c3755992166afb3e1e03b93fa820b95f",
+    "license": "LGPL-3.0-or-later"
+  }
+}

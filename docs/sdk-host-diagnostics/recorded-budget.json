@@ -1,0 +1,29 @@
+{
+  "accepted": null,
+  "cpu_instructions": 402043711,
+  "cpu_limit": 400000000,
+  "diagnostic_expanded_budget": false,
+  "elapsed_seconds": 2.935025068,
+  "execution_error": "Err(Any { .. })",
+  "limits": [
+    "Contract registration and already-created host input objects are outside measured calls.",
+    "A host/VM budget failure is never classified as rejection of a cryptographic proof.",
+    "No account state, recovery authority, eligibility, replacement or asset integration is implemented.",
+    "Expanded diagnostic budgets are not admissible network settings."
+  ],
+  "memory_limit": 41943040,
+  "metered_memory_bytes": 18908931,
+  "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+  "registration_limits_overridden": true,
+  "registration_succeeded": true,
+  "schema": "qasset-binius-soroban-host-diagnostic-v1",
+  "scope": "Actual Soroban ABI execution, oversized argument transport bypasses real transaction caps; default SDK cost model, no network admission or storage costs.",
+  "security_approved": false,
+  "setup_format": "compact_v2",
+  "setup_sha256": "0d1a3b775ce006e07df6af3aa1491d2d7c29202e11985fd6045ef398cb3be424",
+  "status": "measured_execution_failure_not_proof_rejection",
+  "stellar_rpc_requests": 0,
+  "submitted_transactions": 0,
+  "wasm_bytes": 183090,
+  "wasm_sha256": "04666c636be4d0470108266a6ae566f31e1ca71e902b099fff970e2e8987a884"
+}

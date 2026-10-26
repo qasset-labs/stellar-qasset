@@ -1,0 +1,113 @@
+{
+  "scope": "Public ML-DSA-65 verification data only. Bounded regressions, not FIPS certification. No upstream code executed. Fixtures contain no secret keys.",
+  "format": "Four newline-separated hexadecimal fields: public key, external pure message, context (possibly empty), signature. Expected result and original IDs in cases.",
+  "sources": {
+    "wycheproof": {
+      "repository": "https://github.com/C2SP/wycheproof",
+      "revision": "7a325932231bd7a724c791c8b0d65ea4d6d2f435",
+      "url": "https://raw.githubusercontent.com/C2SP/wycheproof/7a325932231bd7a724c791c8b0d65ea4d6d2f435/testvectors_v1/mldsa_65_verify_test.json",
+      "sha256": "1ca235f61928421a173a171780beb00264ae9155dc33c52a11e1766cc7979034",
+      "license": "Apache-2.0; original LICENSE.wycheproof preserved alongside fixtures."
+    },
+    "nist-acvp": {
+      "repository": "https://github.com/usnistgov/ACVP-Server",
+      "revision": "975de31eb83d87039ec88934fdc47d8c312b892d",
+      "url": "https://raw.githubusercontent.com/usnistgov/ACVP-Server/975de31eb83d87039ec88934fdc47d8c312b892d/gen-val/json-files/ML-DSA-sigVer-FIPS204/internalProjection.json",
+      "sha256": "47cdd6314c7f746d02421ffcba89d4dbc7bb875ac49e07a029fdfc26fba55437",
+      "group": 3,
+      "signatureInterface": "external",
+      "preHash": "pure",
+      "externalMu": false
+    }
+  },
+  "cases": [
+    {
+      "file": "wycheproof-tc3.txt",
+      "source": "wycheproof",
+      "tcId": 3,
+      "valid": true,
+      "description": "non-empty context",
+      "message_bytes": 11,
+      "context_bytes": 7,
+      "fixture_sha256": "bca139079f20e7398e9dd2b23fd7cdd6c30c21bbae922308ef3ce574c55704e6",
+      "test_scope": "underlying public pure verification API; not contract authorization"
+    },
+    {
+      "file": "wycheproof-tc16.txt",
+      "source": "wycheproof",
+      "tcId": 16,
+      "valid": false,
+      "description": "signature with hints in reverse order",
+      "message_bytes": 32,
+      "context_bytes": 0,
+      "fixture_sha256": "67afc006ddff44ba816d786a745216a1b13814d6bad5b9b8b52770141463ecb0",
+      "test_scope": "actual 32-byte wrapper"
+    },
+    {
+      "file": "wycheproof-tc18.txt",
+      "source": "wycheproof",
+      "tcId": 18,
+      "valid": false,
+      "description": "signature with non-zero padding in hints",
+      "message_bytes": 32,
+      "context_bytes": 0,
+      "fixture_sha256": "85687fa67b8349b7067589c6bea78785673b2906ff310532f6f8d4326cbe9d29",
+      "test_scope": "actual 32-byte wrapper"
+    },
+    {
+      "file": "wycheproof-tc19.txt",
+      "source": "wycheproof",
+      "tcId": 19,
+      "valid": false,
+      "description": "signature with a repeated hint",
+      "message_bytes": 32,
+      "context_bytes": 0,
+      "fixture_sha256": "bf86629d2bb243773a2bfed20d63d2a08783d89317f6976badd6af309a80d56b",
+      "test_scope": "actual 32-byte wrapper"
+    },
+    {
+      "file": "wycheproof-tc21.txt",
+      "source": "wycheproof",
+      "tcId": 21,
+      "valid": true,
+      "description": "signature that takes 1 iteration(s)",
+      "message_bytes": 32,
+      "context_bytes": 0,
+      "fixture_sha256": "944c264e39300d36b292d4d82788f037fb934687f60c9c0369a739b13abc5a36",
+      "test_scope": "actual 32-byte wrapper"
+    },
+    {
+      "file": "wycheproof-tc138.txt",
+      "source": "wycheproof",
+      "tcId": 138,
+      "valid": false,
+      "description": "index 0 is exactly gamma1 - tau*eta",
+      "message_bytes": 47,
+      "context_bytes": 0,
+      "fixture_sha256": "0b7d6940aaa8f6676013c304e6a12a576bbd78bc8becd457500435d75a944459",
+      "test_scope": "underlying public pure verification API; not contract authorization"
+    },
+    {
+      "file": "nist-acvp-tc38.txt",
+      "source": "nist-acvp",
+      "tcId": 38,
+      "valid": false,
+      "description": "modified signature - hint",
+      "message_bytes": 1,
+      "context_bytes": 163,
+      "fixture_sha256": "e06afc5a6994e5cb0b36b9c3a8769cb4431581655cc9f98094820261cd0a03c9",
+      "test_scope": "underlying public pure verification API; not contract authorization"
+    },
+    {
+      "file": "nist-acvp-tc43.txt",
+      "source": "nist-acvp",
+      "tcId": 43,
+      "valid": true,
+      "description": "valid signature and message - signature should verify successfully",
+      "message_bytes": 166,
+      "context_bytes": 149,
+      "fixture_sha256": "c8b6d21ae0baa47288b86ae4f0d309cefabb8afba6c37558920b6aa5d01d8629",
+      "test_scope": "underlying public pure verification API; not contract authorization"
+    }
+  ]
+}

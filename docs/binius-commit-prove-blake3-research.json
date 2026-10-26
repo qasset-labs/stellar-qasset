@@ -1,0 +1,81 @@
+{
+  "scope": "Follow-up to docs/binius-commit-prove-research.json. That experiment found proving SHA256(seed)=commitment instead of the full SHA-512/clamp/scalar-mult relation barely shrank the Binius64 Iron Spartan proof, because both relations' AND-constraint counts padded to the identical 2048-word trace bucket. A probe over already-vetted 32-byte hash gadgets in binius-circuits found BLAKE3 needs only 626 AND constraints versus SHA-256's 912, landing in a 1024-word bucket -- half of SHA-256's. This experiment measures what that actually does to proof size/time, proving BLAKE3(seed)=commitment against the identical pinned Binius64 commit, Iron Spartan configuration and action-binding discipline. BLAKE3 is an already-implemented, independently specified hash, chosen only because it is the smallest already-vetted gadget available, not proposed as a production commitment function. Public fixture only; not a production relation, not a security approval.",
+  "upstream_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "upstream_repository": "https://github.com/IrreducibleOSS/binius64.git",
+  "program_source_sha256": "045ea1ef78d964c7c202b640d2a25736fb970c1892c03e10265a20d23115be6b",
+  "program_source_path": "tools/binius-commit-prove-blake3-research/src/main.rs",
+  "log_inv_rate": 1,
+  "upstream_configured_security_bits": 96,
+  "circuit": {
+    "relation": "exists_private_seed_32_bytes: BLAKE3(seed) = public_commitment",
+    "and_constraints": 626,
+    "mul_constraints": 0,
+    "committed_total_len": 1024,
+    "fixture_seed_hex": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"
+  },
+  "comparators": [
+    {
+      "tool": "tools/binius-seed-research",
+      "relation": "clamp(SHA512(seed))[0:32] = scalar AND [scalar]B = point",
+      "and_constraints": 1155,
+      "committed_total_len": 2048,
+      "proof_bytes": 539888,
+      "prove_seconds": 1.086270004,
+      "setup_seconds": 0.752268242,
+      "verification_seconds_including_setup": 0.600781192,
+      "source_record": "docs/binius-seed-research.json#native_measurement"
+    },
+    {
+      "tool": "tools/binius-commit-prove-research",
+      "relation": "SHA256(seed) = commitment",
+      "and_constraints": 912,
+      "committed_total_len": 2048,
+      "proof_bytes": 539856,
+      "prove_seconds": 0.747940588,
+      "setup_seconds": 0.851382486,
+      "verification_seconds_including_setup": 0.350663295,
+      "source_record": "docs/binius-commit-prove-research.json#native_measurement"
+    }
+  ],
+  "native_measurement": {
+    "status": "research_experiment_only",
+    "wrong_private_witness": false,
+    "action_digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "public_commitment_hex": "484db6d7bb588815142f665a8944b3b882062b90b72d84554ade123d96b9b065",
+    "proof_bytes": 515984,
+    "setup_seconds": 0.408378311,
+    "prove_seconds": 0.533380637,
+    "verification_seconds_including_setup": 0.274515176,
+    "total_seconds": 1.220878529,
+    "verifier_accepted": true,
+    "witness_assertions_rejected": false,
+    "proof_sha256": "331df78985ccd9fd942c0468b9a09aecbb3b888cd6b6eec77b0a5cd9394d82c2",
+    "report_sha256": "3775d6367951fd12bc82d87f9702765b67f70d36289812bb0256e7266d217b46"
+  },
+  "separate_verifier": {
+    "valid": true,
+    "proof_bytes": 515984,
+    "backend": "binius64-115108-zk-96-log-inv-rate1",
+    "relation": "blake3-preimage-commitment-v1"
+  },
+  "wrong_witness_measurement": {
+    "wrong_private_witness": true,
+    "proof_generated": false,
+    "rejection_phase": "upstream_prover_outer_witness_generation",
+    "native_exit_code": 101,
+    "stderr_sha256": "2605fefdcddd78511b621a26edb3b727ba08b21d9a59a48b992e5ea3710b4cf1",
+    "process_peak_rss_kib": 91800,
+    "process_elapsed_seconds": 0.52,
+    "scope": "Actual unsatisfied-witness prover abort; NOT verifier rejection of an adversarially generated proof. Identical failure phase/exit code to both other comparators' own wrong-witness measurements."
+  },
+  "proof_size_vs_trace_size": {
+    "scope": "Three measured points at log_inv_rate=1, SECURITY_BITS=96 on the identical pinned backend, ordered by committed_total_len.",
+    "points": [
+      {"committed_total_len": 1024, "log2_committed_total_len": 10, "proof_bytes": 515984, "setup_seconds": 0.408378311},
+      {"committed_total_len": 2048, "log2_committed_total_len": 11, "proof_bytes": 539856, "setup_seconds": 0.851382486},
+      {"committed_total_len": 2048, "log2_committed_total_len": 11, "proof_bytes": 539888, "setup_seconds": 0.752268242}
+    ],
+    "observation": "Halving committed_total_len (2048 to 1024, i.e. removing exactly one bit from log2(committed_total_len)) halved setup time (~0.80s average of the two 2048-word points to 0.41s) but only shrank proof bytes by about 4.4% (539,872-byte average to 515,984). This is the expected shape for a FRI/BaseFold-style argument: setup/preprocessing cost scales with the trace size itself (O(n)), while proof bytes scale with the number of FRI queries times the Merkle-authentication-path length, i.e. O(queries * log(n) * hash_size) -- one fewer Merkle-tree level per query (log2(n) dropping from 11 to 10) removes a small, roughly constant amount per query across a FIXED query count (232 per pins.json), not a share proportional to n itself."
+  },
+  "conclusion": "Crossing into a smaller power-of-two trace bucket via a smaller already-vetted hash gadget (BLAKE3 instead of SHA-256) IS measurably effective for CPU time (prove -29%, verify -22%, setup -52% relative to the SHA-256 comparator) but only modestly effective for proof SIZE (-4.4%), because this backend's proof size is dominated by a term that scales with log(trace size), not trace size itself. This means relation-size reduction alone, even successfully crossing a padding bucket boundary, cannot deliver the order-of-magnitude proof-size reduction F-01 needs under this backend's FRI/BaseFold construction -- confirming (with a direct measurement on this exact pinned dependency, not an assumption) that closing F-01's size side needs a backend whose proof size does not scale this way, such as a lattice-based construction (LaBinius+LaBRADOR, Cyclo, RoKoko; see docs/COMPACT_BACKEND_LATTICE_GATE.md section 3), rather than further relation shrinking on the current backend."
+}

@@ -1,0 +1,70 @@
+rand_core v0.9.5
+└── rand v0.9.5
+    ├── rand feature "alloc"
+    │   └── rand feature "std"
+    │       ├── binius-field v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │   └── binius-math v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │       └── binius-math feature "default"
+    │       │           ├── binius-hash v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │           │   ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │           │   │   └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │           │   │       └── qasset-binius-wasm-compile-probe v0.1.0 (/tmp/qasset-binius-wasm-wrapper)
+    │       │           │   │           └── qasset-binius-wasm-compile-probe feature "default" (command-line)
+    │       │           │   └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           │   └── binius-hash feature "default"
+    │       │           │       └── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │           │           └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           │           └── binius-iop feature "default"
+    │       │           │               └── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           ├── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           ├── binius-ip v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │           │   └── binius-ip feature "default"
+    │       │           │       ├── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           │       ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           │       └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │           └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │   └── binius-field feature "default"
+    │       │       ├── binius-hash v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       ├── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       ├── binius-ip v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       ├── binius-spartan-frontend v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │       │   └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       │   └── binius-spartan-frontend feature "default"
+    │       │       │       └── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       ├── binius-transcript v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │       │       │   └── binius-transcript feature "default"
+    │       │       │       ├── binius-hash v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       │       ├── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       │       ├── binius-ip v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       │       ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       │       └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       │       └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       ├── binius-math v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │       └── binius-utils v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │           ├── binius-field v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │           └── binius-math v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │           └── binius-utils feature "default"
+    │               ├── binius-core v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5)
+    │               │   └── binius-core feature "default"
+    │               │       └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               ├── binius-hash v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               ├── binius-iop v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               ├── binius-spartan-frontend v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               ├── binius-spartan-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               ├── binius-transcript v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    │               └── binius-verifier v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+    ├── rand feature "std" (*)
+    └── rand feature "std_rng"
+        ├── binius-field v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+        ├── binius-math v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+        └── binius-utils v0.1.0 (https://github.com/IrreducibleOSS/binius64.git?rev=115108d5a661d95c0b474b6ab02558bfe6c6bec7#115108d5) (*)
+├── rand_core feature "default"
+│   └── rand_chacha v0.9.0
+│       └── rand v0.9.5 (*)
+│       └── rand_chacha feature "std"
+│           └── rand feature "std" (*)
+└── rand_core feature "std"
+    ├── rand feature "std" (*)
+    └── rand_chacha feature "std" (*)

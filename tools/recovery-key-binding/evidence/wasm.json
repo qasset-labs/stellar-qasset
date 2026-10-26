@@ -1,0 +1,237 @@
+{
+  "status": "passed_raw_wasm_key_binding_only",
+  "security_approved": false,
+  "scope": "Mathematical scalar-to-key relation only; no seed proof or recovery authorization; not Soroban host metering",
+  "wasm_bytes": 25886,
+  "wasm_sha256": "b78c3089e432d78fb8bded64377fefbdfa98c033a3b880f3d65607683ed71538",
+  "imports": [],
+  "exports": [
+    {
+      "name": "memory",
+      "kind": "memory"
+    },
+    {
+      "name": "qasset_check_binding",
+      "kind": "function"
+    },
+    {
+      "name": "__data_end",
+      "kind": "global"
+    },
+    {
+      "name": "__heap_base",
+      "kind": "global"
+    }
+  ],
+  "linear_memory_bytes": 1114112,
+  "checks": [
+    {
+      "id": 0,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 15.544303000000014,
+      "passed": true
+    },
+    {
+      "id": 1,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.552799999999934,
+      "passed": true
+    },
+    {
+      "id": 2,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.090800999999942,
+      "passed": true
+    },
+    {
+      "id": 3,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.6211009999999533,
+      "passed": true
+    },
+    {
+      "id": 4,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.360500000000002,
+      "passed": true
+    },
+    {
+      "id": 5,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.654401000000007,
+      "passed": true
+    },
+    {
+      "id": 6,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.13250000000005,
+      "passed": true
+    },
+    {
+      "id": 7,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.4001010000000633,
+      "passed": true
+    },
+    {
+      "id": 8,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.416400000000067,
+      "passed": true
+    },
+    {
+      "id": 9,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 5.755000999999993,
+      "passed": true
+    },
+    {
+      "id": 10,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 4.154101000000082,
+      "passed": true
+    },
+    {
+      "id": 11,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.291201000000001,
+      "passed": true
+    },
+    {
+      "id": 12,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.0167000000000144,
+      "passed": true
+    },
+    {
+      "id": 13,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.9497010000000046,
+      "passed": true
+    },
+    {
+      "id": 14,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 2.97620100000006,
+      "passed": true
+    },
+    {
+      "id": 15,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.224299999999971,
+      "passed": true
+    },
+    {
+      "id": 16,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.1745010000000775,
+      "passed": true
+    },
+    {
+      "id": 17,
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "elapsed_ms": 3.8294009999999616,
+      "passed": true
+    },
+    {
+      "id": 18,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 3.4651000000000067,
+      "passed": true
+    },
+    {
+      "id": 19,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 4.343101000000047,
+      "passed": true
+    },
+    {
+      "id": 20,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 4.9474010000000135,
+      "passed": true
+    },
+    {
+      "id": 21,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 0.12040000000001783,
+      "passed": true
+    },
+    {
+      "id": 22,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 0.7138009999999895,
+      "passed": true
+    },
+    {
+      "id": 23,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 0.06760000000008404,
+      "passed": true
+    },
+    {
+      "id": 24,
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "elapsed_ms": 0.05150000000003274,
+      "passed": true
+    },
+    {
+      "id": 25,
+      "expected": -1,
+      "result": -1,
+      "error": null,
+      "elapsed_ms": 0.0049999999999954525,
+      "passed": true
+    }
+  ]
+}

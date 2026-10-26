@@ -1,0 +1,68 @@
+[package]
+name = "rokoko"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["unsafe-sumcheck"]
+
+unsafe-sumcheck = []
+debug-hardness = []
+# Measure the norm schedule instead of enforcing it; prints a paste-ready NB_* table.
+calibration = ["soft-norms"]
+# Report a norm over its bound instead of rejecting the proof.
+soft-norms = []
+debug-decomp = []
+debug-fs = []
+events = []
+parallel = ["dep:rayon"]
+profile = ["dep:sysinfo", "dep:time"]
+snark = []
+
+[dependencies]
+num = "0.4.3"
+rand = "0.9.2"
+blake3 = "1.5.1"
+aes = "0.8"
+ctr = "0.9"
+incomplete-rexl = { path = "incomplete-rexl" }
+libm = "0.2"
+time = { version = "0.3", default-features = false, features = ["std", "formatting", "macros"], optional = true }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = [
+    "std",
+    "registry",
+] }
+sysinfo = { version = "0.32", default-features = false, features = [
+    "system",
+], optional = true }
+mimalloc = "0.1"
+rayon = { version = "1.10", optional = true }
+
+[dev-dependencies]
+criterion = "0.7.0"
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = "fat"           # Full link-time optimization
+codegen-units = 1     # Better optimization at cost of compile time
+panic = "abort"       # Smaller binaries, slightly faster
+
+[profile.dev]
+opt-level = 3
+
+[profile.bench]
+opt-level = 3
+debug = false
+overflow-checks = false
+lto = "fat"
+codegen-units = 1
+
+[[bench]]
+name = "bench"
+harness = false
+
+[[bench]]
+name = "eltwise_bench"
+harness = false

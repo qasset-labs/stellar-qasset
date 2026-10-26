@@ -1,0 +1,136 @@
+{
+  "scope": "Published fixture derivation, not proof knowledge or recovery authorization",
+  "public_test_vectors_only": true,
+  "independent_implementations": [
+    "Python hashlib/HMAC",
+    "PyNaCl/libsodium seed-to-key and scalar-to-key"
+  ],
+  "vectors": [
+    {
+      "id": "rfc8032-1",
+      "public_test_seed_hex": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "source": "https://www.rfc-editor.org/rfc/rfc8032#section-7.1"
+    },
+    {
+      "id": "rfc8032-2",
+      "public_test_seed_hex": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "scalar_hex": "68bd9ed75882d52815a97585caf4790a7f6c6b3b7f821c5e259a24b02e502e51",
+      "public_key_hex": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+      "source": "https://www.rfc-editor.org/rfc/rfc8032#section-7.1"
+    },
+    {
+      "id": "rfc8032-3",
+      "public_test_seed_hex": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
+      "scalar_hex": "909a8b755ed902849023a55b15c23d11ba4d7f4ec5c2f51b1325a181991ea95c",
+      "public_key_hex": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025",
+      "source": "https://www.rfc-editor.org/rfc/rfc8032#section-7.1"
+    },
+    {
+      "id": "sep5-test-1-account-0",
+      "public_test_seed_hex": "4d691bc19b44a1383b1a0a130aaca3e05c3c1a371dbe45930ef9b761f7a74691",
+      "scalar_hex": "406f5c48cb41e1cec23aa006aea9eda7a1aa7536c821087fa762c470fa3cd946",
+      "public_key_hex": "e3726830a0b60cb5f52c844cffcd4eed65eba5c155e89b26411562724e71e544",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-1-account-1",
+      "public_test_seed_hex": "88f296c601bafd56fd19d1856ee46670b9e2c87db0455ca792b5d8d588a353f1",
+      "scalar_hex": "484654af29f67d555ddb1b8f390c1dca0543a507bb29b7b482615a2123c8ca41",
+      "public_key_hex": "416edcd6746d5293579a7039ac67bcf1a8698efecf81183bbb0ac877da86ada3",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-1-account-9",
+      "public_test_seed_hex": "926ab13ef58143c0ed5b2c329b1a27f505491bb9a41c57c103465a149fae3976",
+      "scalar_hex": "d0b62a0eefcab21550047786f8a2de0d964db8d2393e826fe3b5280098aa4c66",
+      "public_key_hex": "675c6068c58d48526abfb2c59a593326492709526c004cd932260d7721f4fb12",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-2-account-0",
+      "public_test_seed_hex": "152fa34f68c24ec932a4a9abad3f576e9dd76ae506501d920c30f7289ae7ea70",
+      "scalar_hex": "600d402ca98c5cd6013fe69d0fbb9cfeebae01a68b33f870ba3fcf4c5e384d7c",
+      "public_key_hex": "2b7adbac12bf0f7a280db395648384e37b0b347f068416e2111a6b69feb71c0d",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-2-account-1",
+      "public_test_seed_hex": "33a3f4cb056c2a59af8303e46dc78a3db9e802a501691fed01b187dcc873d6fb",
+      "scalar_hex": "90a4f230927727673e66e9708b65a62d4fdaa8e5c606ae8a3bba17b7de8a6e7a",
+      "public_key_hex": "ca2c544810277ee1e9a0e5ad299a35bb0a694a93def9e902e8208a7a6fd87325",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-2-account-9",
+      "public_test_seed_hex": "cf13693be30c3060ec7555548bcbbea1960a68545dd47130f0530df9555fa149",
+      "scalar_hex": "c04c6361ccb161847de0e3385726d2696908dab987a4a14937af2f30c0e6c35f",
+      "public_key_hex": "762f46300eebf23c7720d2264e5ceaea35cb30e79f341959a637f1dee4701494",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-3-account-0",
+      "public_test_seed_hex": "0964555baada44eec44c73781860975b536838960658c8fc32ab3976376d483e",
+      "scalar_hex": "f0405a81e7c4813ce080d72dc7e6cee2f4cdd9a000cc8bd7f182e3addac21566",
+      "public_key_hex": "b6c64ae1b1d7e13dc0a92324a277f84fff629aeeac65d1cce8937d93f4163219",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-3-account-1",
+      "public_test_seed_hex": "5520044f1dae32cb28902a9edd55412d5e33aeda8318ae4fc6c4e823f97f35b2",
+      "scalar_hex": "a8aaa9537be3f9ed8ef3f7626ae3be265c55f4a53a6d577a34e005c4e695cc6f",
+      "public_key_hex": "76c9e0b778721a21b537f578fc10f3f48de85895ecd8a93a7d7a7e8be4033b8c",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-3-account-9",
+      "public_test_seed_hex": "9e0ebafc2610d73c142404fc7a6966102a4bacfceb7c2ad78ecddcc409be362d",
+      "scalar_hex": "48e8cb9c3c554fc4f1e554271ef092cf0a31820f4cfb0bc61c94129adcef7447",
+      "public_key_hex": "eeec78f77a073d407bee847fd6d7d77ef3d4b1fe84eb43fc813732578f569425",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-4-account-0",
+      "public_test_seed_hex": "0b699af597c8b6345722cb61172e7b0f4cf577684d4ac458d94eb2beeae41f7c",
+      "scalar_hex": "0068043f3801be592819313dd7d1bcef4cd296f53b701b7516c8d9b211b55b5f",
+      "public_key_hex": "c077e74d961083e6ecefb1bf48359d7b0515193618c09dd4eec93a4ad37fb41f",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-4-account-1",
+      "public_test_seed_hex": "60f196865b2c9c13172c59d9c2fb05f418f3f6523851cbe44c29225295c7f4cc",
+      "scalar_hex": "086110a5cf09eff60b5131b5daa86477e85c3508b450dcdb01db4d2fe10a3e62",
+      "public_key_hex": "f1cf89208c4e75fbc93ee29a4478b81888746cbe56fdcc60a27c86e8d4716fc7",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-4-account-9",
+      "public_test_seed_hex": "ee3c3c6d8b0ce2eba0b630a79ca01ed9de227f58966fc6d33477396f40e1e74b",
+      "scalar_hex": "8878d32f9dc365f2fc9a6439b3c9c3bd66081ce07a003d5a6e75f6e24d90d04e",
+      "public_key_hex": "5d261618558a33a6c260b3261a8cb0b2e6714565ef2f710d19ea24e81a480011",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-5-account-0",
+      "public_test_seed_hex": "695db2365365e06159f13cc752a5d3b0c7376c45012b2f695e3a4da2434948bc",
+      "scalar_hex": "b84770b698d6a8fdd38329fbf5eb608661159b07431bf61c8c943e089d575c7e",
+      "public_key_hex": "7691d85048acc4ed085d9061ce0948bbdf7de6a92b790aaf241d31b7dcaa4238",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-5-account-1",
+      "public_test_seed_hex": "8e315456301464326e8d7cae8f18aec38e58db8838cf304132567a0ad4d305e1",
+      "scalar_hex": "5015ac9733c360abb3f9645033b12e929de7ed9e2fc38ae7c99a92367baf0775",
+      "public_key_hex": "eb2c62740276011e6f8365380470e2c678098dc70a2240fd9a68c9497684a66e",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    },
+    {
+      "id": "sep5-test-5-account-9",
+      "public_test_seed_hex": "169eade19dc4562f4287dd17fec96a5d9954358c00070d953b285e3f97b9721f",
+      "scalar_hex": "10a92c884e9665943c7eb4297ee25c600eb6874dd12f7e58280ed5ae0c21b64a",
+      "public_key_hex": "145047127a37b55124f9f0b9f3e315f4f2d93ffdb6bcb2217c8cf361ec90c24f",
+      "source": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md"
+    }
+  ]
+}

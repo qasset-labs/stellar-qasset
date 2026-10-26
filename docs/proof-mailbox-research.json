@@ -1,0 +1,883 @@
+{
+  "schema": "qasset-proof-mailbox-research-v1",
+  "status": "passed_staged_transport_only_not_recovery",
+  "recorded_at_utc": "2026-10-20T07:24:47.249833+00:00",
+  "network_requests": 0,
+  "submitted_transactions": 0,
+  "cryptographic_recovery_verified_by_mailbox": false,
+  "source_sha256": {
+    "scripts/run_proof_mailbox_research.py": "e24839f5f294c733b6ce34bed0ce4697570edd705ce1d5f59778987e9c9224ee",
+    "scripts/verify_recovery_research.py": "7f042375d073fd913fc1e4999052d7492b55cbf06305b45d7d6bb45d5f6b9e09",
+    "scripts/recovery_statement.py": "54e865f5f63b70bd580a3b8c1714dfbc27ce794807f3cccace219cd3a4024106",
+    "docs/binius-seed-research.json": "6b8707d8ecd6a0b56ef795d15ee67be931a33adfceabda1f71298a6a258381c6",
+    "docs/seed-proof-network-limits.json": "4f475a4f6091caecca659e43416ad51ecbbe92e20db1b1cd73e3f542082ac7ab",
+    "contracts/recovery-proof-mailbox/Cargo.toml": "ba5f9ee008af9377cb7e346368b3170a727e869ac34718c6d14d0236ea95bc3a",
+    "contracts/recovery-proof-mailbox/src/lib.rs": "d706bd084ff50ee957caffacdde38b1d0d400afb3607a52451842aa1d6d833fb",
+    "contracts/recovery-proof-mailbox/src/test.rs": "9b78b3e5904599fc4ed798d82f9d4185cfa5ffab82ba58573d04158051951e83",
+    "contracts/recovery-proof-mailbox/examples/mailbox_wasm_probe.rs": "d7cf15c3b2675d8fb643b948957f4d886529ed982ae56f98a4134bb3539718b0",
+    "Cargo.toml": "d28e2e78dd139b3cd196e3696ea7b8204f259af247f9f6ed3e0c861eeaaef2cc",
+    "Cargo.lock": "9f8cf315de19f7157f207801f0c2863cb2eb2648c79807ac92b81e2285bb7840"
+  },
+  "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+  "wasm_sha256": "86453cb9bc79826889787a56a6bda5c5f493316148bee11e6b7a2b03c9b275bc",
+  "wasm_bytes": 11940,
+  "config": {
+    "network_id_hex": "cee0302d59844d32bdca915c8203dd44b33fbb7edc19051ea37abedf28ecd472",
+    "parent": "CBKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVKVLO6Q",
+    "uploader": "GDLVVGABQKYQVN6VJP7NHSLEA45A5YLS6PNKMIZFV4BBU2HXA5IRVHUR",
+    "nonce_hex": "4b2cdf11a804a0c6b92d4d499a4ae750a291dcba5b3317a19f524e39360442c4",
+    "statement_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "verifier_hex": "a842b4c3f71c3c7b81624ca90c8893bb6d08984556feb522048b1ba11e01dc70",
+    "parameters_hex": "54383b263bc24abe24351a74e3851bab8e3c19cd9ca0dec7516ac3f2be71ab6e",
+    "length": 539888,
+    "expires": 1200,
+    "current_ledger": 1000,
+    "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+    "session_id_hex": "52350d94a78f0b237445213947415e4c597ee6767721798ea5c564599d88ac0a",
+    "expected_chain_hex": "c7a958bd9f4f3f0c3249db6652a786e3a6beea95a1eb2fbf719e5ea8e2ecfbea"
+  },
+  "upload_envelopes": [
+    {
+      "method": "open",
+      "chunk_index": null,
+      "envelope_bytes": 1360
+    },
+    {
+      "method": "append",
+      "chunk_index": 0,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 1,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 2,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 3,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 4,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 5,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 6,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 7,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 8,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 9,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 10,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 11,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 12,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 13,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 14,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 15,
+      "envelope_bytes": 66288
+    },
+    {
+      "method": "append",
+      "chunk_index": 16,
+      "envelope_bytes": 31952
+    },
+    {
+      "method": "seal",
+      "chunk_index": null,
+      "envelope_bytes": 492
+    }
+  ],
+  "max_envelope_bytes": 66288,
+  "recorded_transaction_cap_bytes": 132096,
+  "serialization_scope": "Explicit code/instance/session/chunk footprint plus source-account authorization and one zero outer signature placeholder. Resource/fee values are not simulated. No transaction signed, valid fee/sequence attested, or submitted.",
+  "chunk_bytes": 32768,
+  "input_sha256": "c7c02cfe33693286c845806bdda63c3871daf6107968724fa04653b02404f2d1",
+  "artifact_directory": "/tmp/qasset-mailbox-proof",
+  "wasm_host": {
+    "actual_wasm_contract": true,
+    "authentication": "mock_all_auths_transport_only_no_cryptographic_authentication",
+    "backend_available": false,
+    "chunk_bytes": 32768,
+    "chunk_count": 17,
+    "expected_chain_hex": "c7a958bd9f4f3f0c3249db6652a786e3a6beea95a1eb2fbf719e5ea8e2ecfbea",
+    "independent_session_id_matches": true,
+    "input_sha256": "c7c02cfe33693286c845806bdda63c3871daf6107968724fa04653b02404f2d1",
+    "limits": [
+      "Local SDK host and its default cost model; not a live network simulation, transaction, fee or RPC measurement.",
+      "Budget resets before each contract call. Ledger/file parsing, contract registration and checksum preparation are outside measured calls.",
+      "Authentication is mocked for transport. No signature security, seed proof, recovery eligibility, retirement, authority mutation or atomic recovery is established.",
+      "SDK host calls omit signed transaction envelope, footprint validation and whole transaction/event/meta XDR limits. Read results are bounded to 8192 bytes; network feasibility still requires complete transaction simulation.",
+      "The proof is transported unchanged and remains unverified by this mailbox."
+    ],
+    "local_ledger_protocol": 25,
+    "maximum_call_cpu_instructions": 4318575,
+    "maximum_call_memory_bytes": 1638802,
+    "measurements": [
+      {
+        "call": "open",
+        "cpu_instructions": 680249,
+        "error": null,
+        "memory_bytes": 1337742,
+        "passed": true,
+        "wall_seconds": 0.0029765
+      },
+      {
+        "call": "append_0",
+        "cpu_instructions": 4275824,
+        "error": null,
+        "memory_bytes": 1624522,
+        "passed": true,
+        "wall_seconds": 0.0092804
+      },
+      {
+        "call": "append_1",
+        "cpu_instructions": 4282114,
+        "error": null,
+        "memory_bytes": 1625474,
+        "passed": true,
+        "wall_seconds": 0.0098757
+      },
+      {
+        "call": "append_2",
+        "cpu_instructions": 4284546,
+        "error": null,
+        "memory_bytes": 1626426,
+        "passed": true,
+        "wall_seconds": 0.014924801
+      },
+      {
+        "call": "append_3",
+        "cpu_instructions": 4287566,
+        "error": null,
+        "memory_bytes": 1627378,
+        "passed": true,
+        "wall_seconds": 0.0147338
+      },
+      {
+        "call": "append_4",
+        "cpu_instructions": 4290034,
+        "error": null,
+        "memory_bytes": 1628330,
+        "passed": true,
+        "wall_seconds": 0.014072501
+      },
+      {
+        "call": "append_5",
+        "cpu_instructions": 4292994,
+        "error": null,
+        "memory_bytes": 1629282,
+        "passed": true,
+        "wall_seconds": 0.0092349
+      },
+      {
+        "call": "append_6",
+        "cpu_instructions": 4298001,
+        "error": null,
+        "memory_bytes": 1630234,
+        "passed": true,
+        "wall_seconds": 0.0090546
+      },
+      {
+        "call": "append_7",
+        "cpu_instructions": 4300907,
+        "error": null,
+        "memory_bytes": 1631186,
+        "passed": true,
+        "wall_seconds": 0.009991301
+      },
+      {
+        "call": "append_8",
+        "cpu_instructions": 4302537,
+        "error": null,
+        "memory_bytes": 1632138,
+        "passed": true,
+        "wall_seconds": 0.012141
+      },
+      {
+        "call": "append_9",
+        "cpu_instructions": 4303795,
+        "error": null,
+        "memory_bytes": 1633090,
+        "passed": true,
+        "wall_seconds": 0.0114174
+      },
+      {
+        "call": "append_10",
+        "cpu_instructions": 4306719,
+        "error": null,
+        "memory_bytes": 1634042,
+        "passed": true,
+        "wall_seconds": 0.011755601
+      },
+      {
+        "call": "append_11",
+        "cpu_instructions": 4310311,
+        "error": null,
+        "memory_bytes": 1634994,
+        "passed": true,
+        "wall_seconds": 0.0136841
+      },
+      {
+        "call": "append_12",
+        "cpu_instructions": 4311427,
+        "error": null,
+        "memory_bytes": 1635946,
+        "passed": true,
+        "wall_seconds": 0.019256501
+      },
+      {
+        "call": "append_13",
+        "cpu_instructions": 4314351,
+        "error": null,
+        "memory_bytes": 1636898,
+        "passed": true,
+        "wall_seconds": 0.0179553
+      },
+      {
+        "call": "append_14",
+        "cpu_instructions": 4317021,
+        "error": null,
+        "memory_bytes": 1637850,
+        "passed": true,
+        "wall_seconds": 0.020120401
+      },
+      {
+        "call": "append_15",
+        "cpu_instructions": 4318575,
+        "error": null,
+        "memory_bytes": 1638802,
+        "passed": true,
+        "wall_seconds": 0.0151639
+      },
+      {
+        "call": "append_16",
+        "cpu_instructions": 2423273,
+        "error": null,
+        "memory_bytes": 1485242,
+        "passed": true,
+        "wall_seconds": 0.0108945
+      },
+      {
+        "call": "seal",
+        "cpu_instructions": 571237,
+        "error": null,
+        "memory_bytes": 1307168,
+        "passed": true,
+        "wall_seconds": 0.0058253
+      },
+      {
+        "call": "read_slice_0_0",
+        "cpu_instructions": 522431,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033992
+      },
+      {
+        "call": "read_slice_0_8192",
+        "cpu_instructions": 522431,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.002985
+      },
+      {
+        "call": "read_slice_0_16384",
+        "cpu_instructions": 522431,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0028332
+      },
+      {
+        "call": "read_slice_0_24576",
+        "cpu_instructions": 522431,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.002659801
+      },
+      {
+        "call": "read_slice_1_0",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0027352
+      },
+      {
+        "call": "read_slice_1_8192",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0027308
+      },
+      {
+        "call": "read_slice_1_16384",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0029832
+      },
+      {
+        "call": "read_slice_1_24576",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033987
+      },
+      {
+        "call": "read_slice_2_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033679
+      },
+      {
+        "call": "read_slice_2_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0028715
+      },
+      {
+        "call": "read_slice_2_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0030596
+      },
+      {
+        "call": "read_slice_2_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.002746401
+      },
+      {
+        "call": "read_slice_3_0",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0025679
+      },
+      {
+        "call": "read_slice_3_8192",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0029488
+      },
+      {
+        "call": "read_slice_3_16384",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0027405
+      },
+      {
+        "call": "read_slice_3_24576",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0026042
+      },
+      {
+        "call": "read_slice_4_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0026378
+      },
+      {
+        "call": "read_slice_4_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033494
+      },
+      {
+        "call": "read_slice_4_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0031004
+      },
+      {
+        "call": "read_slice_4_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003121501
+      },
+      {
+        "call": "read_slice_5_0",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003048
+      },
+      {
+        "call": "read_slice_5_8192",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0029717
+      },
+      {
+        "call": "read_slice_5_16384",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0032701
+      },
+      {
+        "call": "read_slice_5_24576",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003271
+      },
+      {
+        "call": "read_slice_6_0",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0032561
+      },
+      {
+        "call": "read_slice_6_8192",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033851
+      },
+      {
+        "call": "read_slice_6_16384",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003216001
+      },
+      {
+        "call": "read_slice_6_24576",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0039105
+      },
+      {
+        "call": "read_slice_7_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0039292
+      },
+      {
+        "call": "read_slice_7_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0037342
+      },
+      {
+        "call": "read_slice_7_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0041973
+      },
+      {
+        "call": "read_slice_7_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0040536
+      },
+      {
+        "call": "read_slice_8_0",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0038224
+      },
+      {
+        "call": "read_slice_8_8192",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0046619
+      },
+      {
+        "call": "read_slice_8_16384",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0041687
+      },
+      {
+        "call": "read_slice_8_24576",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0038661
+      },
+      {
+        "call": "read_slice_9_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0052892
+      },
+      {
+        "call": "read_slice_9_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0039094
+      },
+      {
+        "call": "read_slice_9_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0038077
+      },
+      {
+        "call": "read_slice_9_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0042689
+      },
+      {
+        "call": "read_slice_10_0",
+        "cpu_instructions": 523733,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0052322
+      },
+      {
+        "call": "read_slice_10_8192",
+        "cpu_instructions": 523733,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003061
+      },
+      {
+        "call": "read_slice_10_16384",
+        "cpu_instructions": 523733,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0031831
+      },
+      {
+        "call": "read_slice_10_24576",
+        "cpu_instructions": 523733,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0022838
+      },
+      {
+        "call": "read_slice_11_0",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0025151
+      },
+      {
+        "call": "read_slice_11_8192",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.002544
+      },
+      {
+        "call": "read_slice_11_16384",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0024118
+      },
+      {
+        "call": "read_slice_11_24576",
+        "cpu_instructions": 528941,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0022354
+      },
+      {
+        "call": "read_slice_12_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0025161
+      },
+      {
+        "call": "read_slice_12_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.001921801
+      },
+      {
+        "call": "read_slice_12_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.001907
+      },
+      {
+        "call": "read_slice_12_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0020599
+      },
+      {
+        "call": "read_slice_13_0",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0023409
+      },
+      {
+        "call": "read_slice_13_8192",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0019916
+      },
+      {
+        "call": "read_slice_13_16384",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.002284
+      },
+      {
+        "call": "read_slice_13_24576",
+        "cpu_instructions": 526337,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0022497
+      },
+      {
+        "call": "read_slice_14_0",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0021049
+      },
+      {
+        "call": "read_slice_14_8192",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.001931
+      },
+      {
+        "call": "read_slice_14_16384",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.003454401
+      },
+      {
+        "call": "read_slice_14_24576",
+        "cpu_instructions": 527639,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0033363
+      },
+      {
+        "call": "read_slice_15_0",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0022326
+      },
+      {
+        "call": "read_slice_15_8192",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0038191
+      },
+      {
+        "call": "read_slice_15_16384",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0029965
+      },
+      {
+        "call": "read_slice_15_24576",
+        "cpu_instructions": 525035,
+        "error": null,
+        "memory_bytes": 1446711,
+        "passed": true,
+        "wall_seconds": 0.0025345
+      },
+      {
+        "call": "read_slice_16_0",
+        "cpu_instructions": 519163,
+        "error": null,
+        "memory_bytes": 1378039,
+        "passed": true,
+        "wall_seconds": 0.003462801
+      },
+      {
+        "call": "read_slice_16_8192",
+        "cpu_instructions": 518967,
+        "error": null,
+        "memory_bytes": 1377255,
+        "passed": true,
+        "wall_seconds": 0.00245
+      },
+      {
+        "call": "backend_available",
+        "cpu_instructions": 393360,
+        "error": null,
+        "memory_bytes": 1264035,
+        "passed": true,
+        "wall_seconds": 0.0019432
+      },
+      {
+        "call": "require_verified_rejects",
+        "cpu_instructions": 395203,
+        "error": null,
+        "memory_bytes": 1264091,
+        "passed": true,
+        "wall_seconds": 0.0014659
+      }
+    ],
+    "per_call_cpu_limit": 400000000,
+    "per_call_memory_limit": 41943040,
+    "proof_bytes": 539888,
+    "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+    "read_slice_bytes": 8192,
+    "require_verified_rejected": true,
+    "roundtrip_bytes_equal": true,
+    "roundtrip_sha256_equal": true,
+    "schema": "qasset-mailbox-wasm-probe-v1",
+    "sealed_unverified": true,
+    "security_approved": false,
+    "session_id_hex": "52350d94a78f0b237445213947415e4c597ee6767721798ea5c564599d88ac0a",
+    "status": "passed_actual_wasm_transport_only",
+    "stellar_rpc_requests": 0,
+    "submitted_transactions": 0,
+    "wasm_sha256": "86453cb9bc79826889787a56a6bda5c5f493316148bee11e6b7a2b03c9b275bc"
+  },
+  "limits": [
+    "Sealing is only a hash-chain byte commitment; no seed proof, replacement possession or recovery authority is verified.",
+    "Transport authorization is mocked in the local Wasm host probe; sender credentials need real network signatures for a live upload.",
+    "CPU/memory observations are local SDK-host measurements with pinned test configuration, not live RPC simulation, fees or network inclusion.",
+    "Protocol23+ live-state reads have no disk-byte cap; footprint, CPU, host+guest memory, write and restored/classic disk limits still apply.",
+    "The quantum proof/backend and complete on-chain authority lifecycle remain unapproved; legacy recovery remains disabled."
+  ]
+}

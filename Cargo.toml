@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = [
+  "contracts/*",
+]
+exclude = [
+  # Disposable, unmodified upstream clone for research scoping only (see
+  # tools/rokoko-relation-research/pins.json); kept pristine, so it has no
+  # [workspace] table of its own like this project's other tools/* crates do.
+  "tools/rokoko-relation-research",
+  "tools/rokoko-gadget-research",
+]
+
+[workspace.dependencies]
+soroban-sdk = "25"
+
+[profile.release]
+# ML-DSA arithmetic needs speed optimization to fit metered Soroban execution.
+opt-level = 3
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true
+
+# For more information about this profile see https://soroban.stellar.org/docs/basic-tutorials/logging#cargotoml-profile
+[profile.release-with-logs]
+inherits = "release"
+debug-assertions = true

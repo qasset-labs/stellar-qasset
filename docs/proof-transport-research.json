@@ -1,0 +1,38 @@
+{
+  "schema": "qasset-proof-transport-research-v1",
+  "status": "passed_lossless_encoding_measurement_only",
+  "recorded_at_utc": "2026-10-25T11:39:29.756645+00:00",
+  "source_sha256": {
+    "scripts/check_proof_transport_research.py": "0251825c999732392fa68be729fe1ea854c5542585daca5dfda6845c11703408",
+    "docs/compact-seed-research.json": "00911c3dca943cad8da29298b9d78805f57df5a2433833d9e15a13bf228cdc9c",
+    "docs/seed-proof-network-limits.json": "4f475a4f6091caecca659e43416ad51ecbbe92e20db1b1cd73e3f542082ac7ab"
+  },
+  "network_requests": 0,
+  "submitted_transactions": 0,
+  "proof_sha256": "fdceefebfa4e6ec5a44f61faca25e06b7897f03869364704cb5c1e3bba818517",
+  "input_bytes": 8893905,
+  "recorded_whole_transaction_limit_bytes": 132096,
+  "recorded_ledger_entry_limit_bytes": 65536,
+  "raw_upload_transaction_lower_bound_ignoring_overhead": 68,
+  "raw_ledger_entry_lower_bound_ignoring_overhead": 136,
+  "zlib_runtime_version": "1.2.11",
+  "encodings": [
+    {
+      "name": "zlib_level_9",
+      "bytes": 7986385,
+      "sha256": "fd64d90a97a8d1dbeb1bfce4730ca84dba8ee586d51cf4135afec0e9f5c19470",
+      "encode_seconds": 1.293145,
+      "roundtrip_equal": true,
+      "times_recorded_whole_transaction_cap": 60.45894652374031
+    },
+    {
+      "name": "xz_preset_6",
+      "bytes": 7767592,
+      "sha256": "4c162cdde7ff886c57d261c5acc75b36ac10dc1033518576af4526b0f5ae478b",
+      "encode_seconds": 8.461242,
+      "roundtrip_equal": true,
+      "times_recorded_whole_transaction_cap": 58.802628391472865
+    }
+  ],
+  "scope": "Encoding only, no proof/security/parameter change, Soroban decoder, verifier port or submitted transaction. Caps are historical Testnet observations with CLI26/protocol29 compatibility warning, not current network guarantees."
+}

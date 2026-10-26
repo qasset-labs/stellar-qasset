@@ -1,0 +1,80 @@
+{
+  "schema": "qasset-rokoko-canonical-gadget-research-v1",
+  "status": "completed_research_frontend_only_soundness_validated_zk_hiding_and_chain_not_exercised",
+  "recorded_at_utc": "2026-10-23T00:00:00+00:00",
+  "security_approved": false,
+  "pinned_upstream": {
+    "repository": "https://github.com/lattice-arguments/rokoko.git",
+    "revision": "c3f8206465f4b4cf34b8aafa378af5b081608944"
+  },
+  "toolchain": "rustc 1.100.0-nightly (6bb1652a0 2026-09-22)",
+  "source_sha256": {
+    "tools/rokoko-gadget-research/Cargo.toml": "b5e5ef277a52fc29213787270f0de3bc80a81eaeb20ea80ea708dc9b60d580f6",
+    "tools/rokoko-gadget-research/Cargo.lock": "f53058a081be39dcf22f5ad88334dc038c52967b9e91039aea50f20b09e6a582",
+    "tools/rokoko-gadget-research/src/main.rs": "630b76adae095c781a0ec21c0407e5b5c465de166450284448e5b255e007b112",
+    "tools/rokoko-relation-research/pins.json": "ad468dfdb2938829885dbeafd4afd3073b06ff1a42aed1a25d64fadf2d398373",
+    "pinned upstream (read-only reference) src/common/ring_arithmetic.rs": "3a2f2c65c296ba961de2dad0cc44b65e1e8fecfa6e05ec2b8ef4928057eabd71",
+    "pinned upstream (read-only reference) src/protocol/snark/lowering.rs": "3632fd8142ba4cebcab0d6bbfeeff73aab07aa0f1590b81e152246e95a079671",
+    "pinned upstream (read-only reference) src/protocol/snark/mod.rs": "996eee1f844f079e4222d84bda788f769e7c501033bec39023d8b29fb2adb9eb",
+    "pinned upstream (read-only reference) docs/snark.md": "164f1437b87e8cc089e6d8cb996e544131ec182dc94e2c127fffe9a3aa8d0358"
+  },
+  "purpose": "Close the gaps left by the earlier AND/XOR and full-adder work in ROKOKO_RELATION_WIRING_SCOPE.md: (1) pin down the actual ring algebra, (2) test an adversary the earlier malicious tests never tried (junk in coefficients the gate gives no meaning to), (3) add the missing inter-gate wiring and input-canonicality constraints, and (4) build and measure a full 64-bit ripple-carry adder, the addition primitive the SHA-512 relation needs six times per round.",
+  "ring_model_confirmed": {
+    "finding": "The ring is the negacyclic polynomial ring Z_q[X]/(X^128 + 1), q = 1125899906839937 (prime, q = 1 mod 8). StridedCoefficients is a permutation of the true coefficient basis (strided[i + part*64] = coeff[2i + part]), so strided v[1] is the X^2 coefficient. (3 + 5X^2)^2 = 9 + 30X^2 + 25X^4, confirmed directly; X^127 * X = -1; ct(u * conj(u)) = sum of squared coefficients.",
+    "correction": "This replaces the earlier 'omega = 0 quadratic slot / dual numbers' explanation in ROKOKO_RELATION_WIRING_SCOPE.md. The arithmetic used earlier was real, but the explanation was wrong: b^2 was landing at X^4, which was never inspected. It also explains the earlier unexplained (v[2], v[3]) -> (0, 0) probe: those inputs were X^4 and X^6, whose square lands at X^8..X^12."
+  },
+  "soundness_gap_in_earlier_gate": {
+    "finding": "The earlier AND/XOR gate (packed region ab, p_ab = ab^2, xor = ab + ab*X^2 - p_ab) is unsound against a junk-coefficient adversary. With honest inputs a=1, b=0 (true AND = 0), packing ab = 1 + sqrt(2)*X (junk at X^1, inputs untouched) gives ab^2 = 1 + 2*sqrt(2)*X + 2X^2, so the X^2 coefficient the gate reads as 2*AND is 2, i.e. AND reads as 1. Setting p_ab and xor_region to exactly what the ties demand, the proof was ACCEPTED by the live library.",
+    "sqrt2_mod_q": 1063640708289491,
+    "consequence": "The earlier commits' 'validated sound' claim for the AND/XOR gate and the full adder built on it held only against an adversary that flips the meaningful coefficient. Neither should be relied on. The canonical design below replaces both."
+  },
+  "canonical_design": {
+    "invariant": "Every wire is a pure scalar bit: a constant polynomial in {0, 1}, all other 127 coefficients zero.",
+    "primary_inputs": "A region of 2n entries [c, 1-c]. Three claims: binariness (shipped value; constant term = sum over all coefficients of x(x-1), zero iff all are bits, given no wraparound mod q), scalar-ness (shipped value; constant term = sum of all non-constant coefficients, zero iff all are zero, given they are bits), and a complement tie (bits + comp = 1, eq-batched, target computed from public data). The caller must check both shipped constant terms are zero after verify_claims succeeds.",
+    "gate": "Over canonical inputs A, B: one auxiliary packed region ab and outputs C (AND), D (XOR), with three eq-batched sums_to_zero ties: t1: ab = A + B*X^2; t2: ab*ab = A + B*X^4 + 2*C*X^2; t3: D = A + B - 2C. Because t1 pins ab exactly, junk in ab is impossible; because (A + BX^2)^2 = A^2 + 2AB X^2 + B^2 X^4 with A^2 = A, B^2 = B for bits, and 2X^2 is invertible in the ring, t2 forces C = AB exactly, and t3 forces D = A xor B. Outputs are therefore canonical bits without any check of their own, so gates compose.",
+    "full_adder_and_carry": "Per bit: gate1(A, B) -> C1, S1; gate2(S1, Cin) -> C2, Sum; Cout = C1 + C2 (one linear eq-batched tie; C1 and C2 are mutually exclusive, asserted for every position). Carry chain: Cin[0] = 0 and Cin[i] = Cout[i-1], one individual length-1 tie per link (the batched copy-claim recipe cannot express a shift, per the earlier correction).",
+    "soundness_argument": "By induction over bit positions: Cin[0] is canonical by its tie; if Cin[i] is canonical, gate2's inputs (S1[i], Cin[i]) are canonical, so C2[i] and Sum[i] are forced correct, so Cout[i] is forced correct and canonical, so Cin[i+1] is. Eq-batched ties hold at every position with overwhelming probability over the random point; length-1 ties are exact."
+  },
+  "shipped_value_leakage": {
+    "finding": "The documented binariness recipe (docs/snark.md 'binariness of a region's coefficients'), applied to secret bits alone, ships a value that reveals their Hamming weight: two patterns of weight 4 and 7 shipped different values. With complement padding, the same two patterns shipped byte-identical values (honest shipped value = n*(1 - conj(ones)) and n*(conj(ones) - 1), independent of the bits).",
+    "consequence": "Any use of the documented binariness recipe on secret data must add complement padding (or an equivalent) or it leaks. This is a zero-knowledge observation about one shipped value, not a proof that the sumcheck transcript itself hides anything; that question remains with ROKOKO_ZK_HIDING_REVIEW_SCOPE.md."
+  },
+  "results": {
+    "old_gate_junk_attack": "ACCEPTED (gap confirmed)",
+    "canonical_bits_check": {
+      "honest": "ACCEPTED, shipped constant terms [0, 0]",
+      "bit = 1 + X^2, comp = -X^2 (complement tie holds)": "REJECTED by caller check, shipped constant terms [2, 0]",
+      "bit = 2, comp = -1 (complement tie holds)": "REJECTED by caller check, shipped constant terms [4, 0]",
+      "bit = 1 + X^2, comp = 0": "REJECTED, shipped constant terms [0, 1]"
+    },
+    "ripple_carry_adder_64_bit_honest": [
+      {"case": "0x0123456789abcdef + 0xfedcba9876543210 = 0xffffffffffffffff", "result": "ACCEPTED", "claims": 77, "prove_ms": 209.9, "verify_ms": 14.2, "claims_proof_bytes": 1283},
+      {"case": "0xffffffffffffffff + 0x1 = 0x0 (full 64-position carry chain)", "result": "ACCEPTED", "claims": 77, "prove_ms": 118.8, "verify_ms": 13.6, "claims_proof_bytes": 1279},
+      {"case": "0x8000000000000000 + 0x8000000000000000 = 0x0 (top-bit overflow)", "result": "ACCEPTED", "claims": 77, "prove_ms": 201.6, "verify_ms": 14.9, "claims_proof_bytes": 1279},
+      {"case": "12345 + 67890 = 80235", "result": "ACCEPTED", "claims": 77, "prove_ms": 169.0, "verify_ms": 19.1, "claims_proof_bytes": 1279},
+      {"case": "0 + 0 = 0", "result": "ACCEPTED", "claims": 77, "prove_ms": 80.7, "verify_ms": 22.0, "claims_proof_bytes": 1079}
+    ],
+    "honest_cases_checked_against": "native u64 wrapping_add, asserted before proving",
+    "ripple_carry_adder_64_bit_malicious_all_rejected": [
+      "carry link broken at bit 33 (everything downstream self-consistent)",
+      "carry-out tie broken at bit 12",
+      "junk X^1 coefficient in gate1 packing at bit 5 (the attack that broke the old gate)",
+      "wrong AND in gate1 at bit 7",
+      "wrong XOR in gate1 at bit 9",
+      "wrong AND in gate2 at bit 40",
+      "wrong sum bit (gate2 XOR) at bit 63",
+      "junk X^1 coefficient in gate2 packing at bit 20"
+    ]
+  },
+  "conclusion": "Addition, the primitive SHA-512 needs six times per round, now has a construction whose soundness was tested against the adversary that broke the previous one, with a written soundness argument rather than only test results. The earlier AND/XOR gate and full adder are superseded and should not be relied on. This does not close F-01: no SHA-512 round has been built, and the measured numbers cover only the claims (front-end sumcheck) proof, not the commitment chain/PCS opening that dominates RoKoko's 95-107 KB proof size.",
+  "scope_and_limits": [
+    "Front end only: prove_claims/verify_claims were exercised; the commitment chain (commit, prover_round, verifier_round) was not. The binariness argument relies on no wraparound mod q, which the docs attribute to the chain's certified l2 bound; that bound was not exercised here, so a wraparound-exploiting adversary is out of scope for these tests.",
+    "claims_proof_bytes is the front-end sumcheck proof only (InitialSumcheckProof::size_in_bits / 8); it excludes the commitment and its opening, which dominate total proof size.",
+    "Timing is native, single-run, on this evaluation machine without AVX-512; it is indicative, not a benchmark.",
+    "Soundness was validated by rejecting specific adversaries plus a written argument; it is not a formal proof and has not been independently reviewed.",
+    "Zero-knowledge hiding of the sumcheck transcript was not tested and cannot be by these methods; see ROKOKO_ZK_HIDING_REVIEW_SCOPE.md."
+  ],
+  "reproduce": [
+    "cd tools/rokoko-gadget-research && cargo +nightly run --release"
+  ]
+}

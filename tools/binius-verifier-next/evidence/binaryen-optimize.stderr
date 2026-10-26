@@ -1,0 +1,1 @@
+⚠️  `stellar contract optimize` is deprecated and will be removed in future versions of the CLI. Use `stellar contract build --optimize` instead.

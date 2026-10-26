@@ -1,0 +1,379 @@
+[
+  {
+    "log_inv_rate": 2,
+    "query_count": 142,
+    "returncode": 0,
+    "elapsed_seconds": 3.0330509589985013,
+    "address_space_limit_bytes": 4294967296,
+    "rayon_threads": 2,
+    "action_scope": "zero dummy digest for parameter-size comparison only; not a canonical recovery request",
+    "max_rss_kib_cumulative": 154236,
+    "measured_resources": {
+      "peak_rss_kib": 154236
+    },
+    "native": {
+      "action_digest_sha512_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fri_parameters": [
+        {
+          "fold_arities": [
+            2
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 2,
+          "log_len": 13,
+          "n_final_challenges": 8,
+          "query_count": 142
+        },
+        {
+          "fold_arities": [
+            2
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 2,
+          "log_len": 13,
+          "n_final_challenges": 8,
+          "query_count": 142
+        },
+        {
+          "fold_arities": [
+            4,
+            4
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 2,
+          "log_len": 20,
+          "n_final_challenges": 9,
+          "query_count": 142
+        },
+        {
+          "fold_arities": [],
+          "log_batch_size": 1,
+          "log_inv_rate": 2,
+          "log_len": 11,
+          "n_final_challenges": 8,
+          "query_count": 142
+        }
+      ],
+      "log_inv_rate": 2,
+      "oracle_specs": "[OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 17 }, OracleSpec { log_msg_len: 8 }]",
+      "private_digest_tail_published": false,
+      "proof_bytes": 432176,
+      "prove_seconds": 1.565085114,
+      "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "security_approved": false,
+      "setup_seconds": 0.919823254,
+      "status": "research_experiment_only",
+      "total_seconds": 3.010288442,
+      "upstream_configured_security_bits": 96,
+      "verification_seconds_including_setup": 0.524491673,
+      "verifier_accepted": true,
+      "witness_assertions_rejected": false,
+      "wrong_private_witness": false
+    },
+    "proof_sha256": "2604c4e4cab5d4125f2e6f30dc00458633feb0ad3b7c4422a3c61069c8a58062",
+    "separate_verifier_checks": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate2\",\"log_inv_rate\":2,\"proof_bytes\":432176,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.723331715,\"valid\":true}\n",
+        "stderr": ""
+      },
+      "changed_action": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate2\",\"log_inv_rate\":2,\"proof_bytes\":432176,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.440987114,\"valid\":false}\n",
+        "stderr": ""
+      },
+      "changed_rate": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate1\",\"log_inv_rate\":1,\"proof_bytes\":432176,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.344718745,\"valid\":false}\n",
+        "stderr": ""
+      }
+    },
+    "all_expected_checks_passed": true
+  },
+  {
+    "log_inv_rate": 3,
+    "query_count": 116,
+    "returncode": 0,
+    "elapsed_seconds": 4.149740464003116,
+    "address_space_limit_bytes": 4294967296,
+    "rayon_threads": 2,
+    "action_scope": "zero dummy digest for parameter-size comparison only; not a canonical recovery request",
+    "max_rss_kib_cumulative": 238356,
+    "measured_resources": {
+      "peak_rss_kib": 238356
+    },
+    "native": {
+      "action_digest_sha512_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fri_parameters": [
+        {
+          "fold_arities": [
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 3,
+          "log_len": 14,
+          "n_final_challenges": 7,
+          "query_count": 116
+        },
+        {
+          "fold_arities": [
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 3,
+          "log_len": 14,
+          "n_final_challenges": 7,
+          "query_count": 116
+        },
+        {
+          "fold_arities": [
+            4,
+            3,
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 3,
+          "log_len": 21,
+          "n_final_challenges": 7,
+          "query_count": 116
+        },
+        {
+          "fold_arities": [],
+          "log_batch_size": 1,
+          "log_inv_rate": 3,
+          "log_len": 12,
+          "n_final_challenges": 8,
+          "query_count": 116
+        }
+      ],
+      "log_inv_rate": 3,
+      "oracle_specs": "[OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 17 }, OracleSpec { log_msg_len: 8 }]",
+      "private_digest_tail_published": false,
+      "proof_bytes": 436112,
+      "prove_seconds": 2.831247808,
+      "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "security_approved": false,
+      "setup_seconds": 0.748576073,
+      "status": "research_experiment_only",
+      "total_seconds": 4.079390182,
+      "upstream_configured_security_bits": 96,
+      "verification_seconds_including_setup": 0.488824788,
+      "verifier_accepted": true,
+      "witness_assertions_rejected": false,
+      "wrong_private_witness": false
+    },
+    "proof_sha256": "6559fd2dfdd14ec431d35e558f3d79e53e7a99ff6e97d80a6173af191403505d",
+    "separate_verifier_checks": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate3\",\"log_inv_rate\":3,\"proof_bytes\":436112,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.544290955,\"valid\":true}\n",
+        "stderr": ""
+      },
+      "changed_action": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate3\",\"log_inv_rate\":3,\"proof_bytes\":436112,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.400088182,\"valid\":false}\n",
+        "stderr": ""
+      },
+      "changed_rate": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate1\",\"log_inv_rate\":1,\"proof_bytes\":436112,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.376139553,\"valid\":false}\n",
+        "stderr": ""
+      }
+    },
+    "all_expected_checks_passed": true
+  },
+  {
+    "log_inv_rate": 4,
+    "query_count": 106,
+    "returncode": 0,
+    "elapsed_seconds": 5.849409905000357,
+    "address_space_limit_bytes": 4294967296,
+    "rayon_threads": 2,
+    "action_scope": "zero dummy digest for parameter-size comparison only; not a canonical recovery request",
+    "max_rss_kib_cumulative": 418040,
+    "measured_resources": {
+      "peak_rss_kib": 418040
+    },
+    "native": {
+      "action_digest_sha512_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fri_parameters": [
+        {
+          "fold_arities": [
+            4
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 4,
+          "log_len": 15,
+          "n_final_challenges": 6,
+          "query_count": 106
+        },
+        {
+          "fold_arities": [
+            4
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 4,
+          "log_len": 15,
+          "n_final_challenges": 6,
+          "query_count": 106
+        },
+        {
+          "fold_arities": [
+            4,
+            4,
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 4,
+          "log_len": 22,
+          "n_final_challenges": 6,
+          "query_count": 106
+        },
+        {
+          "fold_arities": [
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 4,
+          "log_len": 13,
+          "n_final_challenges": 5,
+          "query_count": 106
+        }
+      ],
+      "log_inv_rate": 4,
+      "oracle_specs": "[OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 17 }, OracleSpec { log_msg_len: 8 }]",
+      "private_digest_tail_published": false,
+      "proof_bytes": 467760,
+      "prove_seconds": 4.48630239,
+      "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "security_approved": false,
+      "setup_seconds": 0.725227573,
+      "status": "research_experiment_only",
+      "total_seconds": 5.808634552,
+      "upstream_configured_security_bits": 96,
+      "verification_seconds_including_setup": 0.593880385,
+      "verifier_accepted": true,
+      "witness_assertions_rejected": false,
+      "wrong_private_witness": false
+    },
+    "proof_sha256": "d7d9d11037f1a5216b53b22740ba4df6ef0eca23bc5d94a7f8465e7087d2047d",
+    "separate_verifier_checks": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate4\",\"log_inv_rate\":4,\"proof_bytes\":467760,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.516821983,\"valid\":true}\n",
+        "stderr": ""
+      },
+      "changed_action": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate4\",\"log_inv_rate\":4,\"proof_bytes\":467760,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.323829128,\"valid\":false}\n",
+        "stderr": ""
+      },
+      "changed_rate": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate1\",\"log_inv_rate\":1,\"proof_bytes\":467760,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.359484475,\"valid\":false}\n",
+        "stderr": ""
+      }
+    },
+    "all_expected_checks_passed": true
+  },
+  {
+    "log_inv_rate": 5,
+    "query_count": 101,
+    "returncode": 0,
+    "elapsed_seconds": 10.818822522000119,
+    "address_space_limit_bytes": 4294967296,
+    "rayon_threads": 2,
+    "action_scope": "zero dummy digest for parameter-size comparison only; not a canonical recovery request",
+    "max_rss_kib_cumulative": 751424,
+    "measured_resources": {
+      "peak_rss_kib": 751424
+    },
+    "native": {
+      "action_digest_sha512_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "fri_parameters": [
+        {
+          "fold_arities": [
+            3,
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 5,
+          "log_len": 16,
+          "n_final_challenges": 4,
+          "query_count": 101
+        },
+        {
+          "fold_arities": [
+            3,
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 5,
+          "log_len": 16,
+          "n_final_challenges": 4,
+          "query_count": 101
+        },
+        {
+          "fold_arities": [
+            4,
+            4,
+            4
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 5,
+          "log_len": 23,
+          "n_final_challenges": 5,
+          "query_count": 101
+        },
+        {
+          "fold_arities": [
+            3
+          ],
+          "log_batch_size": 1,
+          "log_inv_rate": 5,
+          "log_len": 14,
+          "n_final_challenges": 5,
+          "query_count": 101
+        }
+      ],
+      "log_inv_rate": 5,
+      "oracle_specs": "[OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 17 }, OracleSpec { log_msg_len: 8 }]",
+      "private_digest_tail_published": false,
+      "proof_bytes": 512592,
+      "prove_seconds": 9.33657701,
+      "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "security_approved": false,
+      "setup_seconds": 0.738946877,
+      "status": "research_experiment_only",
+      "total_seconds": 10.760839284,
+      "upstream_configured_security_bits": 96,
+      "verification_seconds_including_setup": 0.678363893,
+      "verifier_accepted": true,
+      "witness_assertions_rejected": false,
+      "wrong_private_witness": false
+    },
+    "proof_sha256": "889467b91a59b2e8927dc45d95f7c76186c3d5f331a28d4ea5d95ee9895de4b3",
+    "separate_verifier_checks": {
+      "valid": {
+        "returncode": 0,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate5\",\"log_inv_rate\":5,\"proof_bytes\":512592,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.702530007,\"valid\":true}\n",
+        "stderr": ""
+      },
+      "changed_action": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate5\",\"log_inv_rate\":5,\"proof_bytes\":512592,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.413346124,\"valid\":false}\n",
+        "stderr": ""
+      },
+      "changed_rate": {
+        "returncode": 2,
+        "stdout": "{\"action_digest_sha512_hex\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"backend\":\"binius64-115108-zk-96-log-inv-rate1\",\"log_inv_rate\":1,\"proof_bytes\":512592,\"public_scalar_hex\":\"307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f\",\"relation\":\"rfc8032-leaf-clamped-seed-v1\",\"seconds_including_setup\":0.44781303,\"valid\":false}\n",
+        "stderr": ""
+      }
+    },
+    "all_expected_checks_passed": true
+  }
+]

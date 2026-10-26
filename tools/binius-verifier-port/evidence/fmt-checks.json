@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "package": "guest",
+      "command": [
+        "cargo",
+        "+1.94.1",
+        "fmt",
+        "--manifest-path",
+        "guest/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "package": "wasm-fixture",
+      "command": [
+        "cargo",
+        "+1.94.1",
+        "fmt",
+        "--manifest-path",
+        "wasm-fixture/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "package": "host-runner",
+      "command": [
+        "cargo",
+        "+1.94.1",
+        "fmt",
+        "--manifest-path",
+        "host-runner/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "package": "inspect",
+      "command": [
+        "cargo",
+        "+1.94.1",
+        "fmt",
+        "--manifest-path",
+        "inspect/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "guest_clippy_no_deps_deny_warnings_exit_code": 0,
+  "guest_native_regression_tests": 1
+}

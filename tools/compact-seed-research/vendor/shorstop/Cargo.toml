@@ -1,0 +1,66 @@
+[package]
+name = "plonky3-adapter"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["lib"]
+
+# Plonky3 publishes every crate we need to crates.io as of v0.5.2 (Apr 2026).
+# Pin to a single version across all p3-* deps to avoid resolver skew.
+[dependencies]
+p3-air         = "=0.5.2"
+p3-baby-bear   = "=0.5.2"
+# Multi-AIR batched STARK (used for the cross-AIR range-check via global LogUp).
+p3-batch-stark = "=0.5.2"
+# LogUp lookup-argument gadget. Wires the ed25519 AIR's accumulator limbs
+# into the 16-bit range-check AIR via a global multiset-equality bus.
+p3-lookup      = "=0.5.2"
+p3-keccak      = "=0.5.2"
+p3-keccak-air  = "=0.5.2"
+# Match Plonky3's internal rand version (0.10).
+# `sys_rng` enables `OsRng` for one-time seeding from platform entropy.
+# We deliberately do NOT enable `std_rng` because it pulls in `chacha20`
+# 0.10 stable, which doesn't exist on crates.io (only prereleases). We
+# get the same ChaCha-based CSPRNG via `rand_chacha 0.10` directly,
+# which is published as a stable independent crate.
+rand           = { version = "0.10", default-features = false, features = ["sys_rng"] }
+# Userspace CSPRNG seeded once from `OsRng`, replacing the per-call
+# `getentropy(2)` syscalls that dominated ~88% of prove wall time when
+# we fed `OsRng` directly into Hiding-FRI.
+rand_chacha    = "0.10"
+p3-challenger  = "=0.5.2"
+p3-commit      = "=0.5.2"
+p3-dft         = "=0.5.2"
+p3-field       = "=0.5.2"
+p3-fri         = "=0.5.2"
+p3-matrix      = "=0.5.2"
+p3-merkle-tree = "=0.5.2"
+p3-poseidon2   = "=0.5.2"
+p3-symmetric   = "=0.5.2"
+p3-uni-stark   = "=0.5.2"
+
+postcard = { version = "1.0", features = ["alloc"] }
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "2.0"
+
+# Big-integer arithmetic for off-circuit non-native multiplication
+# witness computation (quotient = (a*b) / p over the integers, p = 2^255 - 19).
+# Used only by the trace generator; constraints are pure BabyBear.
+num-bigint = "0.4"
+
+[dev-dependencies]
+# Third-party SHA-512 reference for cross-validating our trace generator
+# against an external implementation (different constants, different code).
+# Used only by `coverage_tests::*_matches_sha2_reference_*` tests.
+sha2 = "0.11"
+
+# Reference Ed25519 arithmetic. Used as a black-box oracle: for any scalar,
+# compute [s]B externally and compare against our AIR trace generator's
+# output (compressed pubkey bytes). We deliberately do not consult
+# dalek's *constraint* logic; this is a value-only reference.
+# `alloc`-only build (no std, no rand) keeps the dep light.
+curve25519-dalek = { version = "4", default-features = false, features = ["alloc"] }
+

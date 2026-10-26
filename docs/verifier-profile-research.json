@@ -1,0 +1,51 @@
+{
+  "schema": "qasset-verifier-profile-research-v1",
+  "status": "completed_research_hotspot_identification_not_soroban_instruction_count",
+  "recorded_at_utc": "2026-10-22T00:00:00+00:00",
+  "security_approved": false,
+  "purpose": "F-01 next-work item from VERIFIER_NEXT_EVIDENCE.md: 'identify the actual host CPU hotspots' behind the 400M-metered-instruction Soroban verification exhaustion. Uses the pinned Binius64 verifier's own pre-existing tracing::info_span! instrumentation (unmodified upstream source) to attribute native, single-threaded, release-build wall-clock cost across verification layers. This is a relative-cost-distribution proxy, not a Soroban metered-instruction count, and is not a security review.",
+  "pinned_upstream_commit": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "source_sha256": {
+    "tools/binius-verifier-profile-research/Cargo.toml": "b8d580afdf575c8a6bf64b080f3934e7d0bace3aeadc81fc833a8581bcb324b0",
+    "tools/binius-verifier-profile-research/src/main.rs": "955f1fb0d09b1b70e80fc6a424c6af02d830d3182bf4d2b5d6a33d3970dfc872",
+    "tools/binius-verifier-port/target/fixtures/fixed-setup.bin": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3",
+    "tools/binius-verifier-port/target/fixtures/proof.bin": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+    "pinned_upstream (read-only reference, not vendored again) crates/verifier/src/zk_config.rs": "3fdb9805f170c75dad8940e8c8e2c54cd0ba43ae6925e175096e4cba8bf002de"
+  },
+  "method": "A new, isolated tool directory (tools/binius-verifier-profile-research/) builds a native binary over the exact pinned fixtures already used throughout this project's Binius64 evidence, reusing the existing frozen.rs loader via #[path] (no duplication). It installs a hand-rolled tracing::Subscriber (no new dependency beyond the already-locked tracing v0.1.44 crate) that times every info_span! enter/exit already present in the pinned, unmodified upstream source, keyed by (span name, nesting depth, occurrence ordinal) -- the ordinal is necessary because two call sites share the span name 'Verify' at the same nesting depth (0) as sequential siblings, not nested, which a plain name+depth key would otherwise conflate.",
+  "architectural_finding": {
+    "summary": "The two 'Verify' spans are NOT parent/child as a first read of the source's lexical/RAII structure might suggest. Confirmed directly against crates/verifier/src/zk_config.rs:153-170 (ZKVerifier::verify): they are two sequential top-level calls.",
+    "layer_a": {
+      "code_location": "zk_config.rs:163, `self.inner_iop_verifier.verify(public, &mut wrapped_channel)`",
+      "description": "The inner structural-IOP verify (IntMul/BitAnd/Shift/PublicInput reduction + a 'PCS Opening' phase), run through ZKWrappedVerifierChannel, which per the module's own doc comment RECORDS values as outer public inputs rather than performing the real BaseFold cryptographic check. The 5 [phase] sub-spans measured inside this layer are this recording/bookkeeping pass, not the real verification cost, despite one of them being literally named 'PCS Opening'.",
+      "measured_pct_of_wall_across_8_runs": {"min": 2.79, "max": 5.21, "avg": 3.83}
+    },
+    "layer_b": {
+      "code_location": "zk_config.rs:167, `wrapped_channel.finish()`",
+      "description": "Runs the real outer Spartan verification: verify_mulcheck (masked zerocheck for A*B=C, crates/spartan-verifier/src/lib.rs) plus the actual channel.verify_oracle_relations BaseFold/FRI opening (Merkle-path + field-arithmetic checks), batched over ALL inner+outer oracles together. No further tracing::info_span! instrumentation exists upstream inside this call, so this tool cannot decompose it further without adding new spans, which would mean patching pinned/frozen source -- not done here, consistent with this project's standing discipline against modifying pinned dependencies.",
+      "measured_pct_of_wall_across_8_runs": {"min": 94.36, "max": 97.0, "avg": 95.76}
+    },
+    "conclusion": "The dominant verification cost is NOT the structural IOP's IntMul/BitAnd/Shift bit-operation reductions, and is NOT located inside the span literally named '[phase] Verify PCS Opening' (that span fires during the cheap recording pass, layer A). The real, expensive BaseFold/FRI polynomial-commitment opening together with the Spartan mulcheck both run inside the single unlabeled layer-B span, which this instrumentation cannot further subdivide without new spans in pinned source. Any F-01 optimization effort should target layer B specifically -- most plausibly the BaseFold opening's Merkle-path verification and field arithmetic over the batched oracle set -- rather than the bit-operation reduction phases layer A's [phase] spans name.",
+    "correction_note": "An earlier reading of this project's own source review (naming the two layers 'Phase 1: mulcheck' then 'Phase 2: PCS opening', in that call order) had the call order backwards and under-specified layer B's content. This file supersedes that framing with the call order and content confirmed directly against zk_config.rs."
+  },
+  "runs": [
+    {"run": 1, "wall_seconds": 0.2532, "layer_a_pct": 3.98, "layer_b_pct": 95.7, "verifier_accepted": true},
+    {"run": 2, "wall_seconds": 0.2988, "layer_a_pct": 4.12, "layer_b_pct": 95.61, "verifier_accepted": true},
+    {"run": 3, "wall_seconds": 0.2111, "layer_a_pct": 5.11, "layer_b_pct": 94.61, "verifier_accepted": true},
+    {"run": 4, "wall_seconds": 0.408574001, "layer_a_pct": 5.21, "layer_b_pct": 94.37, "verifier_accepted": true},
+    {"run": 5, "wall_seconds": 0.312803701, "layer_a_pct": 2.83, "layer_b_pct": 96.88, "verifier_accepted": true},
+    {"run": 6, "wall_seconds": 0.217257201, "layer_a_pct": 4.75, "layer_b_pct": 94.36, "verifier_accepted": true},
+    {"run": 7, "wall_seconds": 0.1602717, "layer_a_pct": 3.56, "layer_b_pct": 96.17, "verifier_accepted": true},
+    {"run": 8, "wall_seconds": 0.2096365, "layer_a_pct": 2.79, "layer_b_pct": 97.0, "verifier_accepted": true}
+  ],
+  "scope_and_limits": [
+    "Native, single-threaded, release-build wall-clock timing, not a Soroban metered-instruction count; the relative cost DISTRIBUTION across layers is the result, not an absolute Soroban cost prediction.",
+    "Confirms the existing canonical fixture is accepted (verifier_accepted: true) in every run; this tool performs no new cryptographic claim and changes no account, asset, or authorization state.",
+    "Does not itself reduce SDK code size, reduce metered instructions, or close F-01; it narrows WHERE a reduction effort should focus.",
+    "Does not decompose layer B further; doing so would require adding new tracing spans inside pinned upstream source, which this project avoids modifying."
+  ],
+  "reproduce": [
+    "cd tools/binius-verifier-profile-research && cargo build --release --offline",
+    "./target/release/qasset-binius-verifier-profile-research"
+  ]
+}

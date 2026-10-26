@@ -1,0 +1,54 @@
+{
+  "bytes": 3604811,
+  "sha256": "0bb7e380dfa8700627c2a86e2dcf75848977625cbe7a36e45bf094102f2a78f3",
+  "sections": [
+    {
+      "id": 1,
+      "payload_bytes": 366
+    },
+    {
+      "id": 3,
+      "payload_bytes": 424
+    },
+    {
+      "id": 4,
+      "payload_bytes": 5
+    },
+    {
+      "id": 5,
+      "payload_bytes": 5
+    },
+    {
+      "id": 6,
+      "payload_bytes": 25
+    },
+    {
+      "id": 7,
+      "payload_bytes": 164
+    },
+    {
+      "id": 9,
+      "payload_bytes": 189
+    },
+    {
+      "id": 10,
+      "payload_bytes": 229052
+    },
+    {
+      "id": 11,
+      "payload_bytes": 3333580
+    },
+    {
+      "id": 0,
+      "payload_bytes": 40847
+    },
+    {
+      "id": 0,
+      "payload_bytes": 77
+    },
+    {
+      "id": 0,
+      "payload_bytes": 34
+    }
+  ]
+}

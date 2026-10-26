@@ -1,0 +1,12 @@
+[package]
+name = "qasset-pq-demo-tool"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[workspace]
+
+[dependencies]
+ml-dsa = { version = "=0.1.1", default-features = false }
+hkdf = "=0.12.4"
+sha2 = "=0.10.9"

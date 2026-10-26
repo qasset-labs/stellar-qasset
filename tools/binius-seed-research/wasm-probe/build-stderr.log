@@ -1,0 +1,15 @@
+    Checking rand_core v0.9.5
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling syn v1.0.109
+error[E0463]: can't find crate for `std`
+  --> /home/mohamed/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.9.5/src/lib.rs:39:1
+   |
+39 | extern crate std;
+   | ^^^^^^^^^^^^^^^^^ can't find crate
+   |
+   = note: the `wasm32v1-none` target may not support the standard library
+
+For more information about this error, try `rustc --explain E0463`.
+error: could not compile `rand_core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,79 @@
+{
+  "scope": "Measures the relation-reframing hypothesis in docs/COMPACT_BACKEND_LATTICE_GATE.md section 2: does proving only a hash-preimage statement (SHA256(seed)=commitment) instead of the full clamp(SHA512(seed))[0:32]=scalar AND [scalar]B=point relation reduce Binius64 Iron Spartan proof size/cost. Same pinned commit, same ZKProver/ZKVerifier configuration, same public RFC8032 test1 fixture seed as witness, and the same dummy action digest as tools/binius-seed-research, for a direct comparison. Public fixture only; not a production relation, not a security approval.",
+  "upstream_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "upstream_repository": "https://github.com/IrreducibleOSS/binius64.git",
+  "program_source_sha256": "8dc6e78e0393f804a7bb956b87f3e9037145a17e5e03f2230e0e7a45ab86f88b",
+  "program_source_path": "tools/binius-commit-prove-research/src/main.rs",
+  "log_inv_rate": 1,
+  "upstream_configured_security_bits": 96,
+  "circuit": {
+    "relation": "exists_private_seed_32_bytes: SHA256(seed) = public_commitment",
+    "and_constraints": 912,
+    "mul_constraints": 0,
+    "committed_total_len": 2048,
+    "fixture_seed_hex": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+    "fixture_commitment_sha256_hex": "644d50ab64864c20a12b3c4656d46b4a48f69ef7c47ecdc8415cd28316b22ef5"
+  },
+  "comparator": {
+    "tool": "tools/binius-seed-research",
+    "relation": "clamp(SHA512(seed))[0:32] = scalar AND [scalar]B = point",
+    "and_constraints": 1155,
+    "mul_constraints": 0,
+    "committed_total_len": 2048,
+    "proof_bytes": 539888,
+    "prove_seconds": 1.086270004,
+    "setup_seconds": 0.752268242,
+    "verification_seconds_including_setup": 0.600781192,
+    "total_seconds": 2.441776639,
+    "source_record": "docs/binius-seed-research.json#native_measurement"
+  },
+  "native_measurement": {
+    "status": "research_experiment_only",
+    "wrong_private_witness": false,
+    "action_digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "public_commitment_hex": "644d50ab64864c20a12b3c4656d46b4a48f69ef7c47ecdc8415cd28316b22ef5",
+    "proof_bytes": 539856,
+    "setup_seconds": 0.851382486,
+    "prove_seconds": 0.747940588,
+    "verification_seconds_including_setup": 0.350663295,
+    "total_seconds": 1.953206169,
+    "verifier_accepted": true,
+    "witness_assertions_rejected": false,
+    "proof_sha256": "a194bae1aa3bc8914e7a856c7545220a7c185c29be9419ae529bc68edde8cfd6",
+    "report_sha256": "30bee0ae97b7b814822b88552cfe74a5422c31597d6f342e052744d60a466256"
+  },
+  "separate_verifier": {
+    "valid": true,
+    "proof_bytes": 539856,
+    "backend": "binius64-115108-zk-96-log-inv-rate1",
+    "relation": "sha256-preimage-commitment-v1"
+  },
+  "wrong_witness_measurement": {
+    "wrong_private_witness": true,
+    "proof_generated": false,
+    "rejection_phase": "upstream_prover_outer_witness_generation",
+    "native_exit_code": 101,
+    "stderr_sha256": "98b7b1ead2e3e121c319359be420f7f7e3652329d5a85fb8e037045357d856e3",
+    "process_peak_rss_kib": 97032,
+    "process_elapsed_seconds": 2.02,
+    "scope": "Actual unsatisfied-witness prover abort; NOT verifier rejection of an adversarially generated proof. Identical failure phase/exit code to tools/binius-seed-research's own wrong-witness measurement."
+  },
+  "padding_bucket_sweep": {
+    "scope": "Synthetic circuits of N sequential two-input AND gates, built with the same CircuitBuilder, to characterize the committed_total_len power-of-two padding rule this backend applies independent of the actual relation. Confirms there is no fixed 2048-word floor: a trivial 1-constraint circuit pads to 4 words. The crossover from a 1024-word bucket to a 2048-word bucket falls between roughly 256 and 512 raw AND gates in this synthetic shape, which explains why both the 912-AND-constraint SHA-256 relation and the 1155-AND-constraint SHA-512+clamp+scalar-mult relation land in the same 2048-word bucket and therefore produce almost identical proof sizes.",
+    "trivial_one_constraint_committed_total_len": 4,
+    "sweep": [
+      {"n_and_requested": 1, "and_constraints": 2, "committed_total_len": 8},
+      {"n_and_requested": 8, "and_constraints": 9, "committed_total_len": 32},
+      {"n_and_requested": 16, "and_constraints": 17, "committed_total_len": 64},
+      {"n_and_requested": 32, "and_constraints": 33, "committed_total_len": 128},
+      {"n_and_requested": 64, "and_constraints": 65, "committed_total_len": 256},
+      {"n_and_requested": 128, "and_constraints": 129, "committed_total_len": 512},
+      {"n_and_requested": 256, "and_constraints": 257, "committed_total_len": 1024},
+      {"n_and_requested": 512, "and_constraints": 513, "committed_total_len": 2048},
+      {"n_and_requested": 768, "and_constraints": 769, "committed_total_len": 2048},
+      {"n_and_requested": 1024, "and_constraints": 1025, "committed_total_len": 4096},
+      {"n_and_requested": 1536, "and_constraints": 1537, "committed_total_len": 4096}
+    ]
+  },
+  "conclusion": "The relation-reframing hypothesis (prove only a hash preimage instead of the full SHA-512/clamp/scalar-mult relation) is PARTIALLY FALSIFIED for proof size and CONFIRMED for CPU time, in this exact backend/parameter configuration. Proof size: 539,856 vs 539,888 bytes -- a 32-byte difference, not the 1-2 orders of magnitude the research doc's section 2 projected, because both relations' AND-constraint counts (912 and 1155) land in the identical 2048-word padded trace bucket; removing the scalar-multiplication gadget was not enough to cross down into the 1024-word bucket. Prove time: -31% (0.748s vs 1.086s). Verify time: -42% (0.351s vs 0.601s). This sharpens, rather than removes, the case for a true algebraic ZK-friendly commitment (Vision/Poseidon-over-binary-fields) over a merely smaller classical hash like SHA-256: the padding_bucket_sweep shows real headroom exists (a circuit under roughly 256-512 raw AND gates would drop to the 1024-word or smaller bucket and measurably shrink the proof), but SHA-256's own ~900 AND constraints is not small enough to reach it. This does not close F-01: no lattice-based or algebraic-hash backend has been measured here, and this specific finding is about Binius64's Iron Spartan/BaseFold padding behavior only."
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "qasset-binius-soroban-build-probe-v1",
+  "upstream_url": "https://github.com/IrreducibleOSS/binius64",
+  "upstream_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "command": [
+    "cargo",
+    "+1.94.1",
+    "check",
+    "--manifest-path",
+    "/tmp/qasset-binius-wasm-wrapper/Cargo.toml",
+    "--lib",
+    "--target",
+    "wasm32v1-none",
+    "--target-dir",
+    "/tmp/qasset-binius-wasm-target",
+    "--offline",
+    "--locked"
+  ],
+  "exit_code": 101,
+  "target": "wasm32v1-none",
+  "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)",
+  "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+  "status": "upstream_verifier_does_not_compile_unmodified_for_soroban_target",
+  "stderr": "    Checking rand_core v0.9.5\n   Compiling bytemuck_derive v1.12.1\n   Compiling thiserror-impl v2.0.21\n   Compiling syn v1.0.109\nerror[E0463]: can't find crate for `std`\n  --> /home/mohamed/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rand_core-0.9.5/src/lib.rs:39:1\n   |\n39 | extern crate std;\n   | ^^^^^^^^^^^^^^^^^ can't find crate\n   |\n   = note: the `wasm32v1-none` target may not support the standard library\n\nFor more information about this error, try `rustc --explain E0463`.\nerror: could not compile `rand_core` (lib) due to 1 previous error\nwarning: build failed, waiting for other jobs to finish...\n",
+  "inputs_sha256": {
+    "Cargo.toml": "9e1c98f6cedf8e9f7a3a3d289cda3353a6ba77473d0411748ad00fe3b969e89a",
+    "Cargo.lock": "7c0576e560f56ab8df828173c4711c850d23bff1f870cadfba6e296feccea618",
+    "src/lib.rs": "c4cb1a0cb3ed6946472a2b8f21acc8f127f1b8c6d2d08dd6d4c1972d282a2a18"
+  },
+  "limitations": [
+    "This failed unmodified dependency check is not evidence that a carefully reviewed no_std port is impossible.",
+    "No contract wrapper, successful Wasm instantiation, metered host execution or deployed verifier has been produced.",
+    "First std-related errors can mask further no_std and floating-point issues."
+  ],
+  "primary_sources": [
+    "https://github.com/IrreducibleOSS/binius64/tree/115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+    "https://developers.stellar.org/docs/learn/fundamentals/contract-development/rust-dialect"
+  ],
+  "direct_default_features": false,
+  "rand_core_feature_tree_sha256": "44e434efbeda37d57b748f30a189aebe2f47419046d8182f12ebe22930c62dbc",
+  "direct_feature_configuration_result": "Disabling default features on the direct binius-verifier dependency still enables rand/std through upstream workspace rand dependency features; upstream crates themselves have no no_std mode."
+}

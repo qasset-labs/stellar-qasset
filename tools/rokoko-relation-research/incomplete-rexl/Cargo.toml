@@ -1,0 +1,13 @@
+[package]
+name = "incomplete-rexl"
+version = "0.1.0"
+edition = "2021"
+description = "Pure-Rust modular arithmetic and NTT library with AVX-512 acceleration"
+readme = "README.md"
+repository = "https://github.com/lattice-arguments/rokoko"
+license = "Apache-2.0"
+keywords = ["ntt", "modular-arithmetic", "avx512", "fhe", "polynomial"]
+categories = ["cryptography", "mathematics"]
+
+[dependencies]
+rand = "0.9.2"

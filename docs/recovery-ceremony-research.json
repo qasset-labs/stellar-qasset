@@ -1,0 +1,107 @@
+{
+  "schema": "qasset-local-recovery-ceremony-research-v1",
+  "status": "passed_local_research_ceremony_only",
+  "recorded_at_utc": "2026-10-19T20:56:23.037103+00:00",
+  "checks": [
+    {
+      "label": "wrong_public_anchor",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "wrong_root_path",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "stale_epoch",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "revoked_eligibility",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "classical_authority_still_active",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "trailing_xdr_bytes",
+      "kind": "typed_request_or_policy_model_rejection",
+      "passed": true
+    },
+    {
+      "label": "forged_replacement_possession",
+      "kind": "real_ml_dsa_rejection",
+      "passed": true
+    },
+    {
+      "label": "old_proof_rejected_for_otherwise_current_new_epoch",
+      "kind": "real_proof_rejection_after_valid_replacement_possession",
+      "passed": true
+    },
+    {
+      "label": "exact_original_root_proof_and_possession_rotate_model_key",
+      "kind": "real_proof_and_ml_dsa_with_local_state_transition",
+      "passed": true
+    },
+    {
+      "label": "second_consumption_rejected",
+      "kind": "local_consumed_state_rejection",
+      "passed": true
+    },
+    {
+      "label": "replacement_key_signature_verifies_after_model_rotation",
+      "kind": "real_ml_dsa_verification",
+      "passed": true
+    },
+    {
+      "label": "old_active_key_signature_fails_under_replacement_key",
+      "kind": "real_ml_dsa_verification",
+      "passed": true
+    }
+  ],
+  "network_requests": 0,
+  "submitted_transactions": 0,
+  "policy_flags_are_fixture_assumptions": true,
+  "state_transition_is_in_memory_only": true,
+  "proof_security": "INSECURE_EIGHT_ROUNDS_UNAUDITED_RESEARCH_ONLY",
+  "source_sha256": {
+    "scripts/run_recovery_ceremony_research.py": "5352f709a06f65d436b94629ac87ea1d0536a721fdf3ae96b3b00ac61d8587e5",
+    "scripts/verify_recovery_research.py": "7f042375d073fd913fc1e4999052d7492b55cbf06305b45d7d6bb45d5f6b9e09",
+    "tools/pq-demo/src/main.rs": "8f73620f025744f660432e56cc5f498f9dfb86cc112584a2b3e7ec7250f9676d",
+    "tools/pq-demo/Cargo.toml": "233784e71dc1dd344fbb16fffe3f1dbf85b9736f392b7dfec366f073e2d0c58f",
+    "tools/pq-demo/Cargo.lock": "00ecf6217fff574e84dd16f362281ba9836f3b67009b638335c10f1943d4622d",
+    "scripts/recovery_statement.py": "54e865f5f63b70bd580a3b8c1714dfbc27ce794807f3cccace219cd3a4024106",
+    "docs/seed-proof-research.json": "5ae53158c23f7fc56eab24c772727d2a25231753c08cb5868c168eb7f57967ac"
+  },
+  "proof_sha256": "a92f6a5c58d4966088f34b5e2cd2d7d60ce5cae53100743a4c3550675931fb9a",
+  "proof_record_sha256": "5ae53158c23f7fc56eab24c772727d2a25231753c08cb5868c168eb7f57967ac",
+  "proof_verifier_binary_sha256": "57873e59a4ee3871925fb14f23e8360f09f86c2ed4c25115b51ad6b5f0774c39",
+  "fixture_helper_binary_sha256": "5f642ef1c7b42d4c21ec59c527ebae1fb545a6795730937dbb7530da5809c42e",
+  "initial_epoch": 7,
+  "statement_sha512": "88a4056dc62d7df52fa557e6161a3b6e328577a48fd5207910eff460a02bc3948d07ff857cabaa10b9a2da34d3c437679fbeeebc641aeed40a8954f3b2187764",
+  "final_epoch": 8,
+  "final_consumed": true,
+  "final_recovery_eligibility": false,
+  "replacement_key_sha256": "34b51d12f2cac14e1b24adab8a9104e3d31b47880ce9f9c3b850426667ab9352",
+  "real_proof_verification": {
+    "message_digest_hex": "88a4056dc62d7df52fa557e6161a3b6e328577a48fd5207910eff460a02bc3948d07ff857cabaa10b9a2da34d3c437679fbeeebc641aeed40a8954f3b2187764",
+    "proof_blake3": "7b01509885fe193ccfd9c9d212c8507b9eda667ff713864ac3af8faf23a9fa24",
+    "relation_mode": "sep5-root",
+    "rounds": 8,
+    "status": "experimental_reduced_rounds_not_secure",
+    "valid": true,
+    "verifier_uses_seed": false,
+    "verify_ms": 14793
+  },
+  "limits": [
+    "The backend uses deliberately insecure eight-round proof parameters.",
+    "Retirement and eligibility are explicit local fixture assumptions, not observed network facts.",
+    "The model updates in memory; it is not an on-chain recovery transaction or custody guarantee.",
+    "No complete asset adapter, pending-authority/cache lifecycle, or independent cryptographic audit is implemented."
+  ]
+}

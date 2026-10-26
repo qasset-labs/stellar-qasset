@@ -1,0 +1,8 @@
+{
+  "upstream_repository": "https://github.com/lattice-arguments/rokoko.git",
+  "upstream_revision": "c3f8206465f4b4cf34b8aafa378af5b081608944",
+  "upstream_revision_date": "2026-10-20T16:24:14+03:00",
+  "cloned_at_utc": "2026-10-23T00:00:00+00:00",
+  "security_approved": false,
+  "note": "Research-only clone for scoping a SEP-5 hash-preimage relation wiring task. No modification to this clone's source is tracked by this project's own git history; it is a disposable reference copy, re-clonable at any time from upstream at the pinned commit above."
+}

@@ -1,0 +1,97 @@
+{
+  "status": "STALE",
+  "consistent": true,
+  "fresh": false,
+  "paths_checked": 32,
+  "stale_paths": [
+    {
+      "asset": "QEXP",
+      "path": "issuer.classic_signers",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "issuer.classic_mint",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "issuer.trustline_flags",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.admin",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.set_authorized",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.mint",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.clawback",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.set_admin",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "admin.upgrade",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.corrupted_signature",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.wrong_network_signature",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.replayed_entry",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "transaction.source_and_fee_payer",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.admin",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.policy",
+      "status": "STALE"
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.revision_conflict",
+      "status": "STALE"
+    }
+  ],
+  "historical_rejections": "recorded RPC transcripts; credential semantics checked; not signed attestations",
+  "scope": "live Testnet verification",
+  "transactions_rechecked": 27,
+  "current_policy_revisions": {
+    "QEXP": 4,
+    "QCTL": 3
+  },
+  "verified_at_utc": "2026-10-25T15:01:05.629047+00:00",
+  "latest_ledger": 5383375
+}

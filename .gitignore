@@ -1,0 +1,14 @@
+# Rust's output directory
+target
+
+# Local settings
+.soroban
+.stellar
+__pycache__/
+.venv/
+
+# Auto-generated per-test debug event logs (not meaningful test logic, just noise in diffs)
+test_snapshots/
+
+# Disposable operator keys must always live outside the repository.
+*.seed

@@ -1,0 +1,19 @@
+[package]
+name = "binius-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+binius-utils = { path = "../utils" }
+bytemuck = { workspace = true }
+bytes = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
+rand = { workspace = true }

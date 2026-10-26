@@ -1,0 +1,21 @@
+[package]
+name = "binius-spartan-frontend"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+binius-field = { path = "../field" }
+binius-utils = { path = "../utils" }
+bytemuck.workspace = true
+getset.workspace = true
+itertools.workspace = true
+smallvec.workspace = true
+
+[dev-dependencies]
+binius-math = { path = "../math", features = ["test-utils"] }
+rand.workspace = true
+
+[lints]
+workspace = true

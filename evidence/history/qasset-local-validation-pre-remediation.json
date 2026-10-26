@@ -1,0 +1,112 @@
+{
+  "schema": "qasset-poc-local-validation-v1",
+  "recorded_at_utc": "2026-10-25T11:17:05.932018+00:00",
+  "phase": "approved fresh issuer lock and live registry staleness",
+  "previous_validation": {
+    "path": "evidence/history/qasset-local-validation-unlocked.json",
+    "sha256": "ff2197b45c9b0629afa031eef25374bf0c995fc9a6decdbc25566bba98c18621"
+  },
+  "unchanged_rust_results": {
+    "workspace_tests_passed": 88,
+    "signer_tests_passed": 4,
+    "rerun_in_this_phase": false,
+    "reason": "Rust sources and Wasm unchanged from preserved validation"
+  },
+  "commands": [
+    {
+      "command": "python3 -m unittest discover -s scripts -p 'test_*.py'",
+      "exit_code": 0,
+      "tests_passed": 112,
+      "log_sha256": "cf4a074343bfb9044e64bb71b5adfd11a5683629cdfdd2f1db3f7557c7896efc",
+      "output_tail": "...................../home/mohamed/.local/lib/python3.10/site-packages/stellar_sdk/operation/set_options.py:100: DeprecationWarning: `set_flags` is a int, we recommend using AuthorizationFlag.\n  warnings.warn(\n...........................................................................................\n----------------------------------------------------------------------\nRan 112 tests in 13.870s\n\nOK\n"
+    },
+    {
+      "command": "python3 -m py_compile scripts/qasset_poc_staleness.py scripts/qasset_authority_analyzer.py scripts/verify_qasset_evidence.py",
+      "exit_code": 0
+    }
+  ],
+  "live_verification": {
+    "consistent": true,
+    "fresh": true,
+    "paths_checked": 30,
+    "stale_paths": [],
+    "scope": "live Testnet verification",
+    "transactions_rechecked": 28,
+    "current_policy_revisions": {
+      "QEXP": 4,
+      "QCTL": 3
+    },
+    "verified_at_utc": "2026-10-25T11:11:19.988721+00:00",
+    "latest_ledger": 5380618
+  },
+  "backlog_check": [
+    {
+      "path": ".gitignore",
+      "unchanged": true,
+      "sha256": "4abaa1ad692b90d9bb44dc41a173579091f2e5eda20fa346226c51a32d2ed57b"
+    },
+    {
+      "path": "Cargo.lock",
+      "unchanged": true,
+      "sha256": "ce660e86e3652037539322a875fd753ce94448fa7c4d4d6046eef802af6822c1"
+    },
+    {
+      "path": "README.md",
+      "unchanged": true,
+      "sha256": "4c1b45ce8b4ed9f1c3a04d221dc228dcb43db99a16d2da4a8bfc9b808c72838f"
+    },
+    {
+      "path": "contracts/qasset-registry/Makefile",
+      "unchanged": true,
+      "sha256": "6d0f32ac85a5407511fde0a8683b7a1961532c1f7a111a0e8fa81b054c361f06"
+    },
+    {
+      "path": "contracts/qasset-registry/src/lib.rs",
+      "unchanged": true,
+      "sha256": "982eea4d1aae52da413f5189d3be80987da0e55a5ded48015655487e44f501a3"
+    },
+    {
+      "path": "contracts/qasset-registry/src/test.rs",
+      "unchanged": true,
+      "sha256": "f693479091083b65a800236cf3d172f310cab616c5f8681faaa54f6d61a4ebbf"
+    },
+    {
+      "path": "contracts/seed-recovery-verifier/src/lib.rs",
+      "unchanged": true,
+      "sha256": "c07d26a12a359253c3086465ed3842b9f7cc75f91ddb0f0c3bf61e69a5ff60aa"
+    },
+    {
+      "path": "contracts/seed-recovery-verifier/src/test.rs",
+      "unchanged": true,
+      "sha256": "082672bca057fbdca69ad09ee49ae912771edada1e54de016c3ee7eec3a450d8"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "unchanged": true,
+      "sha256": "cdb512df4b8fb5db65b06c44c9de1288f7bded79f69a4fef553beb69e66ce151"
+    }
+  ],
+  "focused_files_scanned": 27,
+  "wasm": {
+    "path": "target/wasm32v1-none/release/qasset_sac_admin.wasm",
+    "sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6",
+    "bytes": 59167
+  },
+  "issuer_lock": {
+    "state": "LOCKED",
+    "explicitly_approved": true,
+    "issuer_created_this_run": true,
+    "environment_enabled": true,
+    "transaction": "64abbe8deb5145e347d1562a82ac00723749d31c263063927ae2010ca0f3ceb2",
+    "classic_mint_outcome": "txBAD_AUTH rejection before inclusion",
+    "ml_dsa_after_lock": "36c5d3671f6841c5ccdf8dc38121c9b0dded8ecff16a5050cf7ad5acec8e455c"
+  },
+  "live_revision_bump": {
+    "status": "completed",
+    "hash": "79cf98dcc4d5ad5dc44e9a4c7e8b2d86cd0d0c509a8e6bae11e7ec543919f0e0",
+    "before": 3,
+    "after": 4,
+    "verifier_exit_code": 1,
+    "stale_paths": 15
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "qasset-poc-local-validation-v2",
+  "status": "PASS",
+  "recorded_at_utc": "2026-10-25T15:17:57.319576+00:00",
+  "implementation_commit": "52845f7a364ddcf09de7eb8b48f217ec4f9be8ca",
+  "tests_passed": {
+    "workspace": 90,
+    "signer": 4,
+    "python": 124,
+    "total": 218,
+    "public_credential_helper_unit_tests": 0
+  },
+  "wasm": {
+    "target/wasm32v1-none/release/qasset_sac_admin.wasm": {
+      "sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6",
+      "bytes": 59167
+    },
+    "target/wasm32v1-none/release/qasset_registry.wasm": {
+      "sha256": "26f684edb7e3255ac1617f1455fbfcf886a0f5b189f31974b873a5bc0f98a207",
+      "bytes": 28553
+    }
+  },
+  "live_verification": {
+    "status": "SUCCESS",
+    "consistent": true,
+    "fresh": true,
+    "paths_checked": 32,
+    "stale_paths": [],
+    "historical_rejections": "recorded RPC transcripts; credential semantics checked; not signed attestations",
+    "scope": "live Testnet verification",
+    "transactions_rechecked": 28,
+    "current_policy_revisions": {
+      "QEXP": 4,
+      "QCTL": 3
+    },
+    "verified_at_utc": "2026-10-25T15:01:21.707007+00:00",
+    "latest_ledger": 5383378
+  },
+  "remediation_report": {
+    "path": "evidence/qasset-remediation-validation.json",
+    "sha256": "66fba2e68143c9c4eaa798ebcd4e30527daa0b3e94a5b92bcc420fa3d88c3113"
+  },
+  "clean_reproduction_report": {
+    "path": "evidence/qasset-clean-reproduction.json",
+    "sha256": "fba4d559ce610b3a05a1ac590539171eadcae3bac91942134b0f1235b45fcc07"
+  },
+  "scope": "Pinned source/record checks, public relation checks and retained-proof transport measurement only. Optional ignored derived verifier artifacts are explicitly reported as absent in the clean checkout. No new proofs or security approvals were generated."
+}

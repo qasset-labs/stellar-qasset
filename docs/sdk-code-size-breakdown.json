@@ -1,0 +1,58 @@
+{
+  "schema": "qasset-sdk-code-size-breakdown-v1",
+  "status": "completed_research_negative_result_no_quick_flag_fix_available",
+  "recorded_at_utc": "2026-10-22T00:00:00+00:00",
+  "security_approved": false,
+  "purpose": "F-01 next-work item from VERIFIER_NEXT_EVIDENCE.md: 'reduce SDK code'. Breaks down exactly where the 183,090-byte actual Soroban SDK contract wrapper (over the 131,072-byte code cap) differs from the 127,068-byte raw verifier module (which fits), to find whether a quick, low-risk fix (Cargo profile flags, avoidable soroban-sdk features) closes the gap. Finds no such quick fix exists; the gap is inherent soroban-sdk contract-ABI glue.",
+  "source_sha256": {
+    "tools/binius-verifier-next/target/bin/qasset_binius_external_input.optimized.wasm": "96397a2de68b67718127f0a9102e4c9ca2347260176697343597ec2a8df1f91e",
+    "tools/binius-soroban-research/target/artifacts/qasset_binius_soroban_compact.optimized.wasm": "04666c636be4d0470108266a6ae566f31e1ca71e902b099fff970e2e8987a884",
+    "tools/binius-soroban-research/research-scripts/wasm_sections.py": "d789d28fd5f611b8895a1d5df76396723497b63a7973d5cf07b954ac204d1540"
+  },
+  "method": "A new, dependency-free Python script (no wasm-objdump/twiggy/wasm-opt available in this environment) parses the WASM binary module format directly and sums per-section byte sizes, run against the two already-built, already-pinned artifacts: the raw verifier module (fits the code cap) and the actual compact Soroban SDK contract wrapper (exceeds it). Read-only against existing build artifacts; builds nothing new, deploys nothing.",
+  "section_size_comparison_bytes": {
+    "raw_module_qasset_binius_external_input_optimized": {
+      "total": 127068,
+      "code": 115839,
+      "data": 10189,
+      "custom": 0,
+      "other_sections_sum": 1040
+    },
+    "sdk_wrapper_qasset_binius_soroban_compact_optimized": {
+      "total": 183090,
+      "code": 154752,
+      "data": 26627,
+      "custom": 544,
+      "other_sections_sum": 1167
+    },
+    "delta": {
+      "total": 56022,
+      "code": 38913,
+      "data": 16438,
+      "custom": 544,
+      "note": "code and data account for 56,021 of the 56,022-byte delta; export/import/function/global/type/element/datacount changes are noise-level (under 300 bytes combined, with export actually 147 bytes smaller in the SDK build)."
+    }
+  },
+  "ruled_out_as_quick_fixes": [
+    {
+      "candidate": "Cargo release profile flags (opt-level, lto, codegen-units, panic, strip)",
+      "finding": "Both the raw-module build and the SDK-wrapper build already use the same aggressive settings: opt-level 's' or 'z', lto=true, codegen-units=1, panic='abort', strip='symbols'. There is no unapplied flag to try.",
+      "source": "tools/binius-verifier-next (raw) vs tools/binius-soroban-research/compact/Cargo.toml (SDK wrapper), both read directly."
+    },
+    {
+      "candidate": "Avoidable soroban-sdk crate features",
+      "finding": "soroban-sdk 25.3.2 defines no [features] default set at all (features: alloc, docs, experimental_spec_shaking_v2, hazmat, hazmat-address, hazmat-crypto, testutils; none implied by default). The contract's dependency line already enables only 'alloc', which the verifier's heap-based field arithmetic requires. There is nothing further to disable.",
+      "source": "~/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/soroban-sdk-25.3.2/Cargo.toml, read directly."
+    }
+  ],
+  "conclusion": "The 56,022-byte gap is not a tuning oversight; it is the inherent cost of soroban-sdk's contract entry-point glue (host-function import bindings, Env/Val/XDR marshaling, the guest allocator, and the three required custom metadata sections: contractspecv0, contractmetav0, contractenvmetav0, totalling 544 bytes and not a meaningful contributor on their own). Closing this gap further would require either hand-rolling the Soroban contract ABI without soroban-sdk's abstractions (a substantial, higher-risk re-engineering effort, not attempted here) or waiting on upstream soroban-sdk size improvements. This is independent of, and smaller in magnitude than, the CPU-instruction budget gap (canonical verification exhausts the full 400M-instruction budget; see verifier-profile-research.json for where that cost concentrates), so closing code size alone would not by itself make this backend deployable.",
+  "profiler_availability_note": "A real sampling/instruction-level profiler (perf, valgrind/callgrind) would be needed to decompose the CPU-cost side (the 94-97% 'Layer B' step identified in verifier-profile-research.json) any further than tracing-span granularity allows. Neither is installed in this environment; apt has candidates for both (linux-tools-generic, valgrind) but installing them requires sudo, which is not available non-interactively here. Not pursued without the user's explicit go-ahead to install system packages.",
+  "scope_and_limits": [
+    "Static section-size accounting only; does not measure runtime CPU cost (see verifier-profile-research.json for that).",
+    "Read-only against existing, already-built artifacts; no new build, deployment, or account/asset action taken.",
+    "Does not itself reduce code size or close F-01; it rules out the cheapest category of fix and identifies the actual source of the overhead."
+  ],
+  "reproduce": [
+    "python3 -I tools/binius-soroban-research/research-scripts/wasm_sections.py tools/binius-verifier-next/target/bin/qasset_binius_external_input.optimized.wasm tools/binius-soroban-research/target/artifacts/qasset_binius_soroban_compact.optimized.wasm"
+  ]
+}

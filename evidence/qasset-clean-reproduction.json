@@ -1,0 +1,185 @@
+{
+  "schema": "qasset-poc-reproduction-v1",
+  "status": "PASS",
+  "commands": [
+    {
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "rustc 1.94.1 (e408947bf 2026-03-25)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "\nrunning 14 tests\ntest test::constructor_rejects_reusing_the_active_key_as_recovery_key - should panic ... ok\ntest test::constructor_without_owner_consent_is_rejected - should panic ... ok\ntest test::constructor_owner_has_no_administrative_or_signing_bypass ... ok\ntest test::counter_authority_rejects_empty_external_and_composite_contexts ... ok\ntest test::official_noncanonical_hint_and_norm_fixtures_fail_at_signature_decode ... ok\ntest test::official_external_pure_vectors_check_underlying_library_interface ... ok\ntest test::authorization_must_not_survive_a_handoff_in_an_unrelated_invocation_tree ... ok\ntest test::official_wycheproof_vectors_exercise_actual_digest_wrapper ... ok\ntest test::host_auth_checks_real_payload_context_and_nonce_replay ... ok\ntest test::recovery_rejects_bad_epoch_expiry_key_reuse_and_lengths ... ok\ntest test::recovery_is_bound_to_contract_and_network ... ok\ntest test::recovery_accepts_exact_current_and_maximum_expiry_boundaries ... ok\ntest test::real_recovery_handoff_changes_which_key_passes_host_require_auth ... ok\ntest test::recovery_requires_both_real_signatures_and_preserves_state_on_failure ... ok\n\ntest result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.77s\n\n\nrunning 36 tests\ntest test::deployment_initializes_atomically_without_a_callable_initializer ... ok\ntest test::one_tenant_cannot_modify_another_tenants_policy ... ok\ntest test::permissionless_keeper_extends_policy_and_quorum_lifetime ... ok\ntest test::cross_contract_gate_blocks_state_change_despite_declared_qs4 ... ok\ntest test::qs0_and_all_weak_unregistered_when_nothing_registered_at_all ... ok\ntest test::forged_algorithm_metadata_cannot_satisfy_verified_gate ... ok\ntest test::qs0_when_no_pq_signer_registered_anywhere ... ok\ntest test::qs1_when_pq_signer_exists_but_a_highest_impact_role_is_still_weak ... ok\ntest test::qs2_when_highest_impact_roles_protected_but_another_role_is_weak ... ok\ntest test::qs3_when_every_role_pq_required_but_highest_impact_single_key ... ok\ntest test::qs4_is_denied_when_a_single_signers_weight_alone_meets_the_threshold_despite_threshold_being_2 ... ok\ntest test::qs4_requires_two_pq_addresses_even_after_all_classical_signers_are_compromised ... ok\ntest test::reenrollment_rejects_orphaned_role_declarations_without_resetting_them ... ok\ntest test::qs4_when_every_role_pq_required_and_highest_impact_roles_are_multisig ... ok\ntest test::registration_requires_registrar_and_incoming_admin_consent ... ok\ntest test::registrar_cannot_overwrite_a_registered_tenant ... ok\ntest test::revision_checked_update_requires_the_tenant_administrator ... ok\ntest test::qs4_when_highest_impact_roles_require_every_signers_weight_together ... ok\ntest test::role_becomes_safe_once_the_pq_signers_weight_is_required_to_reach_the_threshold ... ok\ntest test::revision_checked_updates_reject_a_stale_writer_without_changing_policy_or_events ... ok\ntest test::rejected_quorum_replacements_preserve_existing_policy_and_revision ... ok\ntest test::role_becomes_safe_once_threshold_cannot_be_met_by_classical_signers_alone ... ok\ntest test::role_is_weak_when_a_single_high_weight_classical_signer_alone_meets_the_threshold ... ok\ntest test::set_role_quorum_rejects_duplicate_signer_address ... ok\ntest test::set_role_quorum_emits_an_event_on_every_change ... ok\ntest test::set_role_quorum_rejects_threshold_exceeding_total_signer_weight ... ok\ntest test::set_role_quorum_rejects_more_than_max_signers ... ok\ntest test::set_role_quorum_rejects_zero_threshold ... ok\ntest test::set_role_quorum_rejects_zero_weight_signer ... ok\ntest test::role_stays_weak_if_threshold_meetable_by_classical_signers_alone_even_with_a_pq_signer_present ... ok\ntest test::snapshot_records_observation_ledger_and_mutation_revision ... ok\ntest test::unregistered_assets_cannot_satisfy_verified_gate ... ok\ntest test::tenant_updates_require_the_exact_asset_admin_authorization ... ok\ntest test::tenant_transfer_requires_both_parties_and_revokes_the_old_admin ... ok\ntest test::weight_overflow_inputs_are_rejected_before_they_can_wrap ... ok\ntest test::exhaustive_small_quorums_match_independent_authorizing_coalition_oracle ... ok\n\ntest result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.99s\n\n\nrunning 21 tests\ntest test::constructor_rejects_a_malformed_operator_key ... ok\ntest test::context_policy_rejects_everything_but_one_direct_protected_call ... ok\ntest test::credential_for_different_arguments_does_not_authorize_the_call ... ok\ntest test::expired_authorization_entry_is_rejected ... ok\ntest test::corrupted_signature_is_rejected ... ok\ntest test::handover_requires_the_current_administrators_authorization ... ok\ntest test::handover_makes_the_contract_the_sac_administrator ... ok\ntest test::missing_authorization_is_rejected ... ok\ntest test::instance_lease_is_bounded_and_renewed_after_valid_authorization ... ok\ntest test::previous_administrators_authority_is_stale_after_handover ... ok\ntest test::nested_authorization_tree_is_rejected ... ok\ntest test::replayed_authorization_entry_is_rejected ... ok\ntest test::signature_for_another_network_is_rejected ... ok\ntest test::relayed_submission_carries_exactly_the_signed_operation_and_nothing_else ... ok\ntest test::signature_under_another_contracts_domain_context_is_rejected ... ok\ntest test::signature_from_an_unregistered_ml_dsa_key_is_rejected ... ok\ntest test::signature_checks_apply_after_the_context_check ... ok\ntest test::valid_signature_for_mint_is_rejected_by_the_context_policy ... ok\ntest test::valid_ml_dsa_authorization_sets_and_clears_trustline_authorization ... ok\ntest test::valid_signature_for_a_different_sac_is_rejected ... ok\ntest test::valid_signature_for_set_admin_is_rejected_by_the_context_policy ... ok\n\ntest result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s\n\n\nrunning 13 tests\ntest test::expiry_rejects_upload_sealing_and_reads ... ok\ntest test::commitment_from_one_session_cannot_seal_another ... ok\ntest test::header_changes_and_contract_network_domains_separate_sessions ... ok\ntest test::header_size_expiry_and_reinitialization_are_bounded ... ok\ntest test::independent_python_xdr_and_chain_vector_matches_rust ... ok\ntest test::read_range_checks_reject_overflow_and_oversized_return_values ... ok\ntest test::sealed_transport_is_never_a_verified_recovery ... ok\ntest test::temporary_entries_survive_until_logical_expiry_across_upload_ledgers ... ok\ntest test::uploader_authentication_is_required ... ok\ntest test::unauthorized_append_and_rejected_chunks_leave_state_unchanged ... ok\ntest test::wrong_bytes_cannot_match_the_committed_chain ... ok\ntest test::chunks_are_exact_sequential_and_immutable_after_sealing ... ok\ntest test::exact_maximum_length_and_full_final_chunk_remain_bounded ... ok\n\ntest result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.83s\n\n\nrunning 6 tests\ntest test::constructor_rejects_an_already_hardened_account_index - should panic ... ok\ntest test::constructor_sets_immutable_configuration_and_disabled_status ... ok\ntest test::constructor_without_owner_authorization_is_rejected - should panic ... ok\ntest test::public_initializer_and_constructor_cannot_rebind_deployed_instance ... ok\ntest test::forged_credentials_fail_through_real_require_auth_without_auth_mocks ... ok\ntest test::matching_or_modified_bindings_never_authorize_placeholder_proofs ... ok\n\ntest result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s\n\n",
+      "stderr": "   Compiling proc-macro2 v1.0.107\n   Compiling quote v1.0.47\n   Compiling unicode-ident v1.0.26\n   Compiling version_check v0.9.5\n   Compiling cfg-if v1.0.5\n   Compiling typenum v1.20.1\n   Compiling syn v2.0.119\n   Compiling syn v3.0.6\n   Compiling serde_core v1.0.229\n   Compiling serde v1.0.229\n   Compiling zmij v1.0.23\n   Compiling serde_derive v1.0.229\n   Compiling serde_json v1.0.151\n   Compiling zeroize_derive v1.5.0\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling zeroize v1.9.0\n   Compiling generic-array v0.14.9\n   Compiling subtle v2.6.1\n   Compiling autocfg v1.5.1\n   Compiling crate-git-revision v0.0.6\n   Compiling libc v0.2.189\n   Compiling const-oid v0.9.6\n   Compiling crypto-common v0.1.6\n   Compiling block-buffer v0.10.4\n   Compiling digest v0.10.7\n   Compiling strsim v0.11.1\n   Compiling ident_case v1.0.1\n   Compiling num-traits v0.2.19\n   Compiling semver v1.0.28\n   Compiling getrandom v0.2.17\n   Compiling rand_core v0.6.4\n   Compiling cpufeatures v0.2.17\n   Compiling zerocopy v0.8.59\n   Compiling darling_core v0.24.1\n   Compiling darling_macro v0.24.1\n   Compiling syn v1.0.109\n   Compiling schemars v0.8.22\n   Compiling darling v0.24.1\n   Compiling dyn-clone v1.0.20\n   Compiling serde_with_macros v3.24.0\n   Compiling stellar-strkey v0.0.13\n   Compiling data-encoding v2.11.1\n   Compiling cmov v0.5.4\n   Compiling paste v1.0.15\n   Compiling ctutils v0.4.3\n   Compiling ppv-lite86 v0.2.21\n   Compiling rustc_version v0.4.1\n   Compiling hex v0.4.3\n   Compiling rand_chacha v0.3.1\n   Compiling hybrid-array v0.4.15\n   Compiling num-integer v0.1.47\n   Compiling stellar-xdr v25.0.0\n   Compiling cfg_eval v0.1.2\n   Compiling escape-bytes v0.1.1\n   Compiling ethnum v1.5.3\n   Compiling num-bigint v0.4.8\n   Compiling rand v0.8.8\n   Compiling sha2 v0.10.9\n   Compiling serde_with v3.24.0\n   Compiling ahash v0.8.12\n   Compiling ark-std v0.4.0\n   Compiling ark-serialize-derive v0.4.2\n   Compiling ff v0.13.1\n   Compiling der v0.7.10\n   Compiling once_cell v1.21.4\n   Compiling hashbrown v0.17.1\n   Compiling equivalent v1.0.2\n   Compiling either v1.18.0\n   Compiling base16ct v0.2.0\n   Compiling itertools v0.10.5\n   Compiling sec1 v0.7.3\n   Compiling indexmap v2.14.2\n   Compiling group v0.13.0\n   Compiling ark-serialize v0.4.2\n   Compiling ark-ff-macros v0.4.2\n   Compiling derivative v2.2.0\n   Compiling ark-ff-asm v0.4.2\n   Compiling crypto-common v0.2.2\n   Compiling block-buffer v0.12.1\n   Compiling signature v2.2.0\n   Compiling crypto-bigint v0.5.5\n   Compiling base64 v0.22.1\n   Compiling libm v0.2.16\n   Compiling elliptic-curve v0.13.8\n   Compiling digest v0.11.3\n   Compiling ark-ff v0.4.2\n   Compiling hashbrown v0.13.2\n   Compiling wasmparser v0.116.1\n   Compiling hmac v0.12.1\n   Compiling thiserror v1.0.69\n   Compiling rfc6979 v0.4.0\n   Compiling ark-poly v0.4.2\n   Compiling soroban-env-macros v25.2.2\n   Compiling curve25519-dalek v4.1.3\n   Compiling thiserror-impl v1.0.69\n   Compiling num-derive v0.4.2\n   Compiling derive_arbitrary v1.3.2\n   Compiling curve25519-dalek-derive v0.1.1\n   Compiling static_assertions v1.1.0\n   Compiling downcast-rs v1.2.1\n   Compiling indexmap-nostd v0.4.0\n   Compiling wasmi_core v0.13.0\n   Compiling wasmparser-nostd v0.100.2\n   Compiling arbitrary v1.3.2\n   Compiling ark-ec v0.4.2\n   Compiling ecdsa v0.16.9\n   Compiling curve25519-dalek v5.0.0\n   Compiling soroban-env-common v25.2.2\n   Compiling wasmi_arena v0.4.1\n   Compiling prettyplease v0.2.37\n   Compiling spin v0.9.9\n   Compiling smallvec v1.16.2\n   Compiling fnv v1.0.7\n   Compiling darling_core v0.20.11\n   Compiling soroban-wasmi v0.31.1-soroban.20.0.1\n   Compiling primeorder v0.13.6\n   Compiling ed25519 v2.2.3\n   Compiling soroban-env-host v25.2.2\n   Compiling byteorder v1.5.0\n   Compiling cpufeatures v0.3.1\n   Compiling keccak v0.1.6\n   Compiling heapless v0.8.0\n   Compiling sha3 v0.10.9\n   Compiling hash32 v0.3.1\n   Compiling ed25519-dalek v2.2.0\n   Compiling p256 v0.13.2\n   Compiling darling_macro v0.20.11\n   Compiling k256 v0.13.4\n   Compiling ark-bn254 v0.4.0\n   Compiling ark-bls12-381 v0.4.0\n   Compiling soroban-spec v25.3.2\n   Compiling soroban-builtin-sdk-macros v25.2.2\n   Compiling stellar-strkey v0.0.16\n   Compiling dtor-proc-macro v0.0.6\n   Compiling stable_deref_trait v1.2.1\n   Compiling hex-literal v0.4.1\n   Compiling dtor v0.1.1\n   Compiling soroban-spec-rust v25.3.2\n   Compiling darling v0.20.11\n   Compiling soroban-sdk v25.3.2\n   Compiling macro-string v0.1.4\n   Compiling ctor-proc-macro v0.0.6\n   Compiling heck v0.5.0\n   Compiling soroban-sdk-macros v25.3.2\n   Compiling ctor v0.5.0\n   Compiling bytes-lit v0.0.5\n   Compiling visibility v0.1.1\n   Compiling keccak v0.2.2\n   Compiling sponge-cursor v0.1.0\n   Compiling shake v0.1.0\n   Compiling signature v3.0.0\n   Compiling module-lattice v0.2.3\n   Compiling ml-dsa v0.1.1\n   Compiling soroban-ledger-snapshot v25.3.2\n   Compiling recovery-proof-mailbox v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/recovery-proof-mailbox)\n   Compiling pq-recovery-demo v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/pq-recovery-demo)\n   Compiling qasset-sac-admin v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/qasset-sac-admin)\n   Compiling seed-recovery-verifier v0.0.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/seed-recovery-verifier)\n   Compiling qasset-registry v0.0.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/qasset-registry)\n    Finished `test` profile [unoptimized] target(s) in 7m 42s\n     Running unittests src/lib.rs (target/debug/deps/pq_recovery_demo-6a127a7ef4c249ae)\n     Running unittests src/lib.rs (target/debug/deps/qasset_registry-0c65b4ecbc5e06c9)\n     Running unittests src/lib.rs (target/debug/deps/qasset_sac_admin-66608e0fe5db1534)\n     Running unittests src/lib.rs (target/debug/deps/recovery_proof_mailbox-600185a544026177)\n     Running unittests src/lib.rs (target/debug/deps/seed_recovery_verifier-298fb899876d22e8)\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--workspace",
+        "--release",
+        "--target",
+        "wasm32v1-none",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "",
+      "stderr": "   Compiling proc-macro2 v1.0.107\n   Compiling quote v1.0.47\n   Compiling unicode-ident v1.0.26\n   Compiling serde_core v1.0.229\n   Compiling syn v3.0.6\n   Compiling serde v1.0.229\n   Compiling zmij v1.0.23\n   Compiling serde_json v1.0.151\n   Compiling itoa v1.0.18\n   Compiling memchr v2.8.3\n   Compiling serde_derive v1.0.229\n   Compiling syn v2.0.119\n   Compiling crate-git-revision v0.0.6\n   Compiling strsim v0.11.1\n   Compiling ident_case v1.0.1\n   Compiling version_check v0.9.5\n   Compiling autocfg v1.5.1\n   Compiling generic-array v0.14.9\n   Compiling typenum v1.20.1\n   Compiling darling_core v0.24.1\n   Compiling schemars v0.8.22\n   Compiling crypto-common v0.1.6\n   Compiling block-buffer v0.10.4\n   Compiling stellar-strkey v0.0.13\n   Compiling dyn-clone v1.0.20\n   Compiling digest v0.10.7\n   Compiling cfg_eval v0.1.2\n   Compiling darling_macro v0.24.1\n   Compiling stellar-xdr v25.0.0\n   Compiling darling v0.24.1\n   Compiling serde_with_macros v3.24.0\n   Compiling cfg-if v1.0.5\n   Compiling data-encoding v2.11.1\n   Compiling cpufeatures v0.2.17\n   Compiling sha2 v0.10.9\n   Compiling serde_with v3.24.0\n   Compiling hex v0.4.3\n   Compiling ethnum v1.5.3\n   Compiling escape-bytes v0.1.1\n   Compiling num-traits v0.2.19\n   Compiling semver v1.0.28\n   Compiling soroban-env-common v25.2.2\n   Compiling either v1.18.0\n   Compiling itertools v0.10.5\n   Compiling hashbrown v0.17.1\n   Compiling thiserror v1.0.69\n   Compiling equivalent v1.0.2\n   Compiling indexmap v2.14.2\n   Compiling num-derive v0.4.2\n   Compiling thiserror-impl v1.0.69\n   Compiling prettyplease v0.2.37\n   Compiling cmov v0.5.4\n   Compiling fnv v1.0.7\n   Compiling darling_core v0.20.11\n   Compiling ctutils v0.4.3\n   Compiling wasmparser v0.116.1\n   Compiling heapless v0.8.0\n   Compiling base64 v0.22.1\n   Compiling byteorder v1.5.0\n   Compiling hash32 v0.3.1\n   Compiling hybrid-array v0.4.15\n   Compiling soroban-spec v25.3.2\n   Compiling soroban-env-macros v25.2.2\n   Compiling darling_macro v0.20.11\n   Compiling num-integer v0.1.47\n   Compiling rustc_version v0.4.1\n   Compiling stellar-strkey v0.0.16\n   Compiling static_assertions v1.1.0\n   Compiling stable_deref_trait v1.2.1\n   Compiling soroban-sdk v25.3.2\n   Compiling num-bigint v0.4.8\n   Compiling darling v0.20.11\n   Compiling soroban-spec-rust v25.3.2\n   Compiling macro-string v0.1.4\n   Compiling heck v0.5.0\n   Compiling soroban-sdk-macros v25.3.2\n   Compiling bytes-lit v0.0.5\n   Compiling soroban-env-guest v25.2.2\n   Compiling crypto-common v0.2.2\n   Compiling visibility v0.1.1\n   Compiling digest v0.11.3\n   Compiling keccak v0.2.2\n   Compiling sponge-cursor v0.1.0\n   Compiling shake v0.1.0\n   Compiling signature v3.0.0\n   Compiling module-lattice v0.2.3\n   Compiling ml-dsa v0.1.1\n   Compiling recovery-proof-mailbox v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/recovery-proof-mailbox)\n   Compiling qasset-registry v0.0.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/qasset-registry)\n   Compiling seed-recovery-verifier v0.0.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/seed-recovery-verifier)\n   Compiling qasset-sac-admin v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/qasset-sac-admin)\n   Compiling pq-recovery-demo v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/contracts/pq-recovery-demo)\n    Finished `release` profile [optimized] target(s) in 2m 26s\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-sac-signer/Cargo.toml",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "\nrunning 4 tests\ntest tests::payload_parser_is_strict ... ok\ntest tests::rejects_repository_paths_and_parent_symlinks ... ok\ntest tests::rejects_key_symlinks_hardlinks_and_open_permissions ... ok\ntest tests::generated_key_signs_for_the_exact_contract_verifier_and_context ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s\n\n",
+      "stderr": "   Compiling cmov v0.5.4\n   Compiling typenum v1.20.1\n   Compiling ctutils v0.4.3\n   Compiling autocfg v1.5.1\n   Compiling num-traits v0.2.19\n   Compiling hybrid-array v0.4.15\n   Compiling cfg-if v1.0.5\n   Compiling keccak v0.2.2\n   Compiling libc v0.2.189\n   Compiling crypto-common v0.2.2\n   Compiling sponge-cursor v0.1.0\n   Compiling module-lattice v0.2.3\n   Compiling digest v0.11.3\n   Compiling signature v3.0.0\n   Compiling shake v0.1.0\n   Compiling ml-dsa v0.1.1\n   Compiling qasset-sac-signer v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-sac-signer)\n    Finished `test` profile [unoptimized] target(s) in 17.69s\n     Running unittests src/main.rs (tools/qasset-sac-signer/target/debug/deps/qasset_sac_signer-82a46af36978144f)\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-sac-signer/Cargo.toml",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "",
+      "stderr": "   Compiling cmov v0.5.4\n   Compiling typenum v1.20.1\n   Compiling ctutils v0.4.3\n   Compiling autocfg v1.5.1\n   Compiling num-traits v0.2.19\n   Compiling hybrid-array v0.4.15\n   Compiling cfg-if v1.0.5\n   Compiling keccak v0.2.2\n   Compiling crypto-common v0.2.2\n   Compiling libc v0.2.189\n   Compiling sponge-cursor v0.1.0\n   Compiling module-lattice v0.2.3\n   Compiling digest v0.11.3\n   Compiling signature v3.0.0\n   Compiling shake v0.1.0\n   Compiling ml-dsa v0.1.1\n   Compiling qasset-sac-signer v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-sac-signer)\n    Finished `release` profile [optimized] target(s) in 19.47s\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-evidence-crypto/Cargo.toml",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "   Compiling cmov v0.5.4\n   Compiling typenum v1.20.1\n   Compiling ctutils v0.4.3\n   Compiling autocfg v1.5.1\n   Compiling num-traits v0.2.19\n   Compiling hybrid-array v0.4.15\n   Compiling serde_core v1.0.229\n   Compiling zmij v1.0.23\n   Compiling cfg-if v1.0.5\n   Compiling keccak v0.2.2\n   Compiling crypto-common v0.2.2\n   Compiling sponge-cursor v0.1.0\n   Compiling serde_json v1.0.154\n   Compiling module-lattice v0.2.3\n   Compiling digest v0.11.3\n   Compiling shake v0.1.0\n   Compiling signature v3.0.0\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling ml-dsa v0.1.1\n   Compiling qasset-evidence-crypto v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-evidence-crypto)\n    Finished `test` profile [unoptimized] target(s) in 13.34s\n     Running unittests src/main.rs (tools/qasset-evidence-crypto/target/debug/deps/qasset_evidence_crypto-62fffe0fefb829c8)\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--manifest-path",
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-evidence-crypto/Cargo.toml",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "",
+      "stderr": "   Compiling cmov v0.5.4\n   Compiling typenum v1.20.1\n   Compiling ctutils v0.4.3\n   Compiling autocfg v1.5.1\n   Compiling num-traits v0.2.19\n   Compiling zmij v1.0.23\n   Compiling hybrid-array v0.4.15\n   Compiling cfg-if v1.0.5\n   Compiling serde_core v1.0.229\n   Compiling keccak v0.2.2\n   Compiling crypto-common v0.2.2\n   Compiling sponge-cursor v0.1.0\n   Compiling serde_json v1.0.154\n   Compiling module-lattice v0.2.3\n   Compiling digest v0.11.3\n   Compiling signature v3.0.0\n   Compiling shake v0.1.0\n   Compiling memchr v2.8.3\n   Compiling itoa v1.0.18\n   Compiling ml-dsa v0.1.1\n   Compiling qasset-evidence-crypto v0.1.0 (/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout/tools/qasset-evidence-crypto)\n    Finished `release` profile [optimized] target(s) in 25.69s\n"
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "",
+      "stderr": "...................../home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/lib/python3.10/site-packages/stellar_sdk/operation/set_options.py:100: DeprecationWarning: `set_flags` is a int, we recommend using AuthorizationFlag.\n  warnings.warn(\n.......................................................................................................\n----------------------------------------------------------------------\nRan 124 tests in 11.731s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "scripts/verify_qasset_evidence.py",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\n  \"status\": \"SUCCESS\",\n  \"consistent\": true,\n  \"fresh\": true,\n  \"paths_checked\": 32,\n  \"stale_paths\": [],\n  \"historical_rejections\": \"recorded RPC transcripts; credential semantics checked; not signed attestations\",\n  \"scope\": \"offline consistency only\",\n  \"live_freshness_checked\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "-c",
+        "import sys; sys.path.insert(0, 'scripts'); from check_seed_recovery_evidence import run; r = run(); print(r['status'], r['case_count'], r['relation_and_counterexample_checks'])"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "passed 15 195\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "scripts/check_recovery_relation.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "PASS sep5-test-1: root/leaf/scalar relation, published G-addresses, negative cases\nPASS sep5-test-2: root/leaf/scalar relation, published G-addresses, negative cases\nPASS sep5-test-3: root/leaf/scalar relation, published G-addresses, negative cases\nPASS sep5-test-4: root/leaf/scalar relation, published G-addresses, negative cases\nPASS sep5-test-5: root/leaf/scalar relation, published G-addresses, negative cases\nPASS: 5 public SEP-5 fixture groups, 168 checks; PyNaCl 1.6.2\nCompatibility check only: no ZK proof, implemented recovery, quantum attack, or PQ security certification.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "scripts/check_verifier_port_evidence.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\n  \"status\": \"passed_source_and_record_consistency_only\",\n  \"source_count\": 319,\n  \"retained_artifacts_checked\": [],\n  \"ignored_artifacts_missing\": [\n    \"target/bin/qasset_binius_wasm_fixture.wasm\",\n    \"target/bin/qasset-binius-port-host\",\n    \"target/bin/qasset-wasm-inspect\",\n    \"target/fixtures/proof.bin\",\n    \"target/fixtures/fixed-setup.bin\"\n  ],\n  \"proof_execution_rerun\": false,\n  \"security_approved\": false,\n  \"scope\": \"Local consistency only; no independent attestation, fresh execution, Soroban metering or production security approval.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "scripts/check_verifier_next_evidence.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\n  \"status\": \"passed_source_and_record_consistency_only\",\n  \"source_count\": 327,\n  \"raw_module_bytes\": 127068,\n  \"recorded_partial_code_cap_bytes\": 131072,\n  \"raw_module_margin_bytes\": 4004,\n  \"artifacts_checked\": [],\n  \"ignored_artifacts_missing\": [\n    \"target/bin/qasset_binius_external_input.optimized.wasm\",\n    \"target/bin/qasset_binius_external_input.raw.wasm\",\n    \"target/fixtures/fixed-setup.bin\",\n    \"target/fixtures/proof.bin\"\n  ],\n  \"fresh_proof_execution\": false,\n  \"security_approved\": false,\n  \"soroban_compatible\": false,\n  \"scope\": \"Local source/record/hash consistency only; raw size fit is not a Soroban contract ABI, successful SDK verification, current network guarantee or security attestation.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+        "scripts/check_proof_transport_research.py",
+        "--proof",
+        "evidence/research-fixtures/compact-proof.postcard",
+        "--output",
+        "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/reproduction-proof-transport.json"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout": "{\n  \"status\": \"passed_lossless_encoding_measurement_only\",\n  \"encodings\": [\n    {\n      \"name\": \"zlib_level_9\",\n      \"bytes\": 7986385,\n      \"sha256\": \"fd64d90a97a8d1dbeb1bfce4730ca84dba8ee586d51cf4135afec0e9f5c19470\",\n      \"encode_seconds\": 0.804144,\n      \"roundtrip_equal\": true,\n      \"times_recorded_whole_transaction_cap\": 60.45894652374031\n    },\n    {\n      \"name\": \"xz_preset_6\",\n      \"bytes\": 7767592,\n      \"sha256\": \"4c162cdde7ff886c57d261c5acc75b36ac10dc1033518576af4526b0f5ae478b\",\n      \"encode_seconds\": 7.395789,\n      \"roundtrip_equal\": true,\n      \"times_recorded_whole_transaction_cap\": 58.802628391472865\n    }\n  ]\n}\n",
+      "stderr": ""
+    }
+  ]
+}

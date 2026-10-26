@@ -1,0 +1,56 @@
+{
+  "historical_report": "evidence/result.json",
+  "source_inputs": {
+    "Cargo.toml": {
+      "path": "Cargo.toml",
+      "encoding": "identity",
+      "original_sha256": "d4c4b9004e7808e8d627e2d4f1b6ba01037e6c0fb44136f0910d406c46609cda"
+    },
+    "Cargo.lock": {
+      "path": "Cargo.lock",
+      "encoding": "identity",
+      "original_sha256": "707e941166301a40fd3cb82737b12ba6afc8de9a5652ab6563f454589c08fabd"
+    },
+    "src/main.rs": {
+      "path": "src/main.rs",
+      "encoding": "identity",
+      "original_sha256": "c11e19d4454e83ae3cf79e8a374824d45c9c8d56ae9880d279ab3aeda906e02c"
+    },
+    "src/native.rs": {
+      "path": "src/native.rs",
+      "encoding": "identity",
+      "original_sha256": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945"
+    },
+    "src/frozen.rs": {
+      "path": "src/frozen.rs",
+      "encoding": "identity",
+      "original_sha256": "b75c26af5b714d0068910dfa35ba8be4281876d3e0a1f46cdcc93a5121fdbade"
+    },
+    "setup.sha256": {
+      "path": "setup.sha256",
+      "encoding": "identity",
+      "original_sha256": "f27c0cc3de6d79d9cfe69d14a8d6f0963e93e2a00a75b70359a154795c81148e"
+    },
+    "trusted-constructors.patch": {
+      "path": "trusted-constructors.patch",
+      "encoding": "identity",
+      "original_sha256": "54b716b05a2c11347d3d1c4e8678f87316c4b1c184ee48f489b8d4e73b7e6904"
+    },
+    "provenance.json": {
+      "path": "evidence/provenance.json.gz",
+      "encoding": "gzip",
+      "original_sha256": "efd5647b0598c6d0ad16024842d019899c5cea89523970f7a18f7bdb4a9488b9"
+    },
+    "transcript-vector.rs": {
+      "path": "evidence/transcript-vector.rs",
+      "encoding": "identity",
+      "original_sha256": "4b1bd20a5691ff47a910f11f2f86e38470ee036d77a6ee4bf2d5376045ef40a5"
+    },
+    "README.md": {
+      "path": "evidence/native-probe-README.md",
+      "encoding": "identity",
+      "original_sha256": "af0fba4807d46a842d39241ce8bad048f10198f65e90f64a00eca57bad3ea1b6"
+    }
+  },
+  "native_binary_and_proof_bundled": false
+}

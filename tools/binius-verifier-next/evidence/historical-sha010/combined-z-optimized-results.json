@@ -1,0 +1,209 @@
+{
+  "scope": "raw_external_input_fixed_fixture_only_not_soroban_host_or_contract",
+  "wasm_bytes": 130373,
+  "wasm_sha256": "709bd5106e94f9ba1f669009a17b19a2be162a786dd73a230cc11e8d99422c61",
+  "setup_sha256": "0d1a3b775ce006e07df6af3aa1491d2d7c29202e11985fd6045ef398cb3be424",
+  "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+  "transcript_vector": [
+    394127921,
+    1463445479,
+    3541783
+  ],
+  "transcript_vector_passed": true,
+  "checks": [
+    {
+      "id": 0,
+      "name": "canonical",
+      "expected": 1,
+      "result": 1,
+      "runtime_error": null,
+      "rejection_code": "",
+      "repeat_result": 0,
+      "elapsed_ms": 612.9251979999999,
+      "phase": 3,
+      "allocated_end": 27849360,
+      "linear_memory_bytes": 27852800,
+      "passed": true
+    },
+    {
+      "id": 1,
+      "name": "changed_action",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "verification_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 150.3942219999999,
+      "phase": 3,
+      "allocated_end": 20532288,
+      "linear_memory_bytes": 20578304,
+      "passed": true
+    },
+    {
+      "id": 2,
+      "name": "corrupted_proof",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "verification_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 148.1208200000001,
+      "phase": 3,
+      "allocated_end": 20532288,
+      "linear_memory_bytes": 20578304,
+      "passed": true
+    },
+    {
+      "id": 3,
+      "name": "trailing_proof",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "trailing_or_unread_proof",
+      "repeat_result": 0,
+      "elapsed_ms": 634.0656160000001,
+      "phase": 3,
+      "allocated_end": 27849360,
+      "linear_memory_bytes": 27852800,
+      "passed": true
+    },
+    {
+      "id": 4,
+      "name": "truncated_proof",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "verification_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 479.93519000000015,
+      "phase": 3,
+      "allocated_end": 27847104,
+      "linear_memory_bytes": 27852800,
+      "passed": true
+    },
+    {
+      "id": 5,
+      "name": "empty_proof",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "verification_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 123.19270000000006,
+      "phase": 3,
+      "allocated_end": 19114196,
+      "linear_memory_bytes": 19136512,
+      "passed": true
+    },
+    {
+      "id": 6,
+      "name": "changed_scalar",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "",
+      "repeat_result": 0,
+      "elapsed_ms": 1.9116009999997914,
+      "phase": 0,
+      "allocated_end": 2940760,
+      "linear_memory_bytes": 2949120,
+      "passed": true
+    },
+    {
+      "id": 7,
+      "name": "padded_constraints_match_native_identity",
+      "expected": 1,
+      "result": 1,
+      "runtime_error": null,
+      "rejection_code": "",
+      "repeat_result": 0,
+      "elapsed_ms": 282.8742299999999,
+      "phase": 3,
+      "allocated_end": 19685872,
+      "linear_memory_bytes": 19726336,
+      "passed": true
+    },
+    {
+      "id": 8,
+      "name": "unclamped_scalar",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "",
+      "repeat_result": 0,
+      "elapsed_ms": 1.8705019999997603,
+      "phase": 0,
+      "allocated_end": 2940760,
+      "linear_memory_bytes": 2949120,
+      "passed": true
+    },
+    {
+      "id": 9,
+      "name": "changed_preprocessing",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "preprocessing_identity_or_decode_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 33.28762700000016,
+      "phase": 1,
+      "allocated_end": 2940859,
+      "linear_memory_bytes": 2949120,
+      "passed": true
+    },
+    {
+      "id": 10,
+      "name": "trailing_preprocessing",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "preprocessing_identity_or_decode_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 1.523001000000022,
+      "phase": 1,
+      "allocated_end": 2940796,
+      "linear_memory_bytes": 2949120,
+      "passed": true
+    },
+    {
+      "id": 11,
+      "name": "truncated_preprocessing",
+      "expected": 0,
+      "result": 0,
+      "runtime_error": null,
+      "rejection_code": "preprocessing_identity_or_decode_failed",
+      "repeat_result": 0,
+      "elapsed_ms": 3.0932020000000193,
+      "phase": 1,
+      "allocated_end": 2940794,
+      "linear_memory_bytes": 2949120,
+      "passed": true
+    }
+  ],
+  "bounds": [
+    {
+      "name": "empty_setup",
+      "result": 0,
+      "passed": true
+    },
+    {
+      "name": "oversize_setup",
+      "result": 0,
+      "passed": true
+    },
+    {
+      "name": "oversize_proof",
+      "result": 0,
+      "passed": true
+    },
+    {
+      "name": "verify_without_input",
+      "passed": true
+    },
+    {
+      "name": "input_slot_can_be_prepared_once",
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

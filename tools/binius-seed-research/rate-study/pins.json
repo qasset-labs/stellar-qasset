@@ -1,0 +1,22 @@
+{
+  "binius64": {
+    "repository": "https://github.com/IrreducibleOSS/binius64",
+    "revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+    "license": "MIT OR Apache-2.0"
+  },
+  "shorstop_adapter_reference": {
+    "repository": "https://github.com/LimeChain/ShorStop",
+    "revision": "e7692712c601814d03acc5b638e0a15962f50452",
+    "paths": [
+      "libs/mopro/binius-adapter/src/common.rs",
+      "libs/mopro/binius-adapter/src/sha512.rs"
+    ],
+    "license": "MIT"
+  },
+  "local_wrapper": "src/main.rs",
+  "upstream_configured_security_bits": 96,
+  "log_inv_rate": "runtime explicit integer1..6; measured2..5",
+  "security_approved": false,
+  "query_count_formula": "ceil(96 / -log2((1 + 2^(-rate))/2))",
+  "source_unchanged_upstream_crypto": true
+}

@@ -1,0 +1,4789 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -1,5 +1,5 @@
+ [workspace]
+-members = ["crates/*", "crates/frontend/ceck"]
++members = ["crates/*"]
+ resolver = "2"
+ 
+ [workspace.package]
+@@ -37,13 +37,13 @@
+     "min_const_generics",
+     "must_cast",
+ ] }
+-bytes = "1.7.2"
++bytes = { version = "1.7.2", default-features = false }
+ cfg-if = "1.0.0"
+ clap = { version = "4.5", features = ["derive"] }
+ cranelift-entity = "0.121.1"
+ criterion = { version = "0.7.0", default-features = false }
+ derive_more = "0.99.17"
+-digest = "0.11.2"
++digest = { version = "0.11.2", default-features = false }
+ either = "1.11.0"
+ getrandom = "0.3.3"
+ getset = "0.1.6"
+@@ -51,7 +51,7 @@
+ hex-literal = "1.0.0"
+ hmac = "0.13.0"
+ hybrid-array = "0.4.7"
+-itertools = "0.14.0"
++itertools = { version = "0.14.0", default-features = false, features = ["use_alloc"] }
+ jwt-simple = { version = "0.12.14", default-features = false, features = [
+     "pure-rust",
+ ] }
+@@ -64,10 +64,7 @@
+ pest = "2.8.1"
+ pest_derive = "2.8.1"
+ proptest = { version = "1.2.0", default-features = false, features = ["std"] }
+-rand = { version = "0.9.1", default-features = false, features = [
+-    "std",
+-    "std_rng",
+-] }
++rand = { version = "0.9.1", default-features = false, features = ["alloc"] }
+ rayon = "1.10.0"
+ regex = "1.10"
+ ripemd = "0.1.3"
+@@ -76,19 +73,19 @@
+ seq-macro = "0.3.5"
+ serde = { version = "1.0.219", features = ["derive"] }
+ serde_json = "1.0.140"
+-sha2 = "0.11.0"
+-sha3 = "0.11.0"
++sha2 = { version = "0.11.0", default-features = false }
++sha3 = { version = "0.11.0", default-features = false }
+ insta = "1.43.1"
+ petgraph = "0.8.2"
+ rustc-hash = "2.1.1"
+ smallvec = "1.15.1"
+-thiserror = "2.0.3"
++thiserror = { version = "2.0.3", default-features = false }
+ transpose = "0.2.2"
+-tracing = "0.1.38"
++tracing = { version = "0.1.38", default-features = false, features = ["attributes"] }
+ tracing-subscriber = { version = "0.3.18", features = ["env-filter", "fmt"] }
+ tracing-profile = "0.10.11"
+ trait-set = "0.3.0"
+-uninit = "0.6.2"
++uninit = { version = "0.6.2", default-features = false, features = ["alloc"] }
+ z3 = "0.13.3"
+ ureq = "3.1"
+ 
+--- a/crates/core/Cargo.toml
++++ b/crates/core/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-utils = { path = "../utils" }
+ bytemuck = { workspace = true }
+ bytes = { workspace = true }
+--- a/crates/core/src/constraint_system.rs
++++ b/crates/core/src/constraint_system.rs
+@@ -1,7 +1,11 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! Constraint system and related definitions.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, string::String, borrow::ToOwned, string::ToString};
++use crate::qasset_nostd::{
+ 	borrow::Cow,
+ 	cmp,
+ 	ops::{Index, IndexMut},
+@@ -979,7 +983,7 @@
+ 	}
+ }
+ 
+-impl<'a> std::ops::Deref for ValuesData<'a> {
++impl<'a> crate::qasset_nostd::ops::Deref for ValuesData<'a> {
+ 	type Target = [Word];
+ 
+ 	fn deref(&self) -> &Self::Target {
+@@ -1116,7 +1120,7 @@
+ 	}
+ }
+ 
+-impl<'a> std::ops::Deref for Proof<'a> {
++impl<'a> crate::qasset_nostd::ops::Deref for Proof<'a> {
+ 	type Target = [u8];
+ 
+ 	fn deref(&self) -> &Self::Target {
+@@ -1445,14 +1449,14 @@
+ 		constraint_system.serialize(&mut buf).unwrap();
+ 
+ 		// Write to reference file.
+-		let test_data_path = std::path::Path::new("test_data/constraint_system_v2.bin");
++		let test_data_path = crate::qasset_nostd::path::Path::new("test_data/constraint_system_v2.bin");
+ 
+ 		// Create directory if it doesn't exist
+ 		if let Some(parent) = test_data_path.parent() {
+-			std::fs::create_dir_all(parent).unwrap();
+-		}
+-
+-		std::fs::write(test_data_path, &buf).unwrap();
++			crate::qasset_nostd::fs::create_dir_all(parent).unwrap();
++		}
++
++		crate::qasset_nostd::fs::write(test_data_path, &buf).unwrap();
+ 
+ 		println!("Created reference binary file at: {:?}", test_data_path);
+ 		println!("Binary data length: {} bytes", buf.len());
+@@ -1559,13 +1563,13 @@
+ 		let mut buf = Vec::new();
+ 		witness.serialize(&mut buf).unwrap();
+ 
+-		let test_data_path = std::path::Path::new("verifier/core/test_data/witness_v1.bin");
++		let test_data_path = crate::qasset_nostd::path::Path::new("verifier/core/test_data/witness_v1.bin");
+ 
+ 		if let Some(parent) = test_data_path.parent() {
+-			std::fs::create_dir_all(parent).unwrap();
+-		}
+-
+-		std::fs::write(test_data_path, &buf).unwrap();
++			crate::qasset_nostd::fs::create_dir_all(parent).unwrap();
++		}
++
++		crate::qasset_nostd::fs::write(test_data_path, &buf).unwrap();
+ 
+ 		println!("Created Witness reference binary file at: {:?}", test_data_path);
+ 		println!("Binary data length: {} bytes", buf.len());
+@@ -1755,13 +1759,13 @@
+ 		let mut buf = Vec::new();
+ 		proof.serialize(&mut buf).unwrap();
+ 
+-		let test_data_path = std::path::Path::new("verifier/core/test_data/proof_v1.bin");
++		let test_data_path = crate::qasset_nostd::path::Path::new("verifier/core/test_data/proof_v1.bin");
+ 
+ 		if let Some(parent) = test_data_path.parent() {
+-			std::fs::create_dir_all(parent).unwrap();
+-		}
+-
+-		std::fs::write(test_data_path, &buf).unwrap();
++			crate::qasset_nostd::fs::create_dir_all(parent).unwrap();
++		}
++
++		crate::qasset_nostd::fs::write(test_data_path, &buf).unwrap();
+ 
+ 		println!("Created Proof reference binary file at: {:?}", test_data_path);
+ 		println!("Binary data length: {} bytes", buf.len());
+--- a/crates/core/src/lib.rs
++++ b/crates/core/src/lib.rs
+@@ -1,10 +1,16 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! Core datatypes common to prover and verifier of Binius64.
+ //!
+ //! Most imporantly it hosts the definition of a [`ConstraintSystem`].
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod constraint_system;
+ pub mod consts;
+ pub mod error;
+--- a/crates/core/src/qasset_nostd.rs
++++ b/crates/core/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/core/src/verify.rs
++++ b/crates/core/src/verify.rs
+@@ -1,8 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! Routines for checking whether the
+ //! [constraint system][`crate::constraint_system::ConstraintSystem`] is satisfied with the given
+ //! [value vector][`ValueVec`].
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{string::String};
+ use crate::{
+ 	constraint_system::{
+ 		AndConstraint, ConstraintSystem, MulConstraint, ShiftVariant, ShiftedValueIndex, ValueVec,
+--- a/crates/core/src/word.rs
++++ b/crates/core/src/word.rs
+@@ -1,7 +1,8 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! [`Word`] related definitions.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	fmt,
+ 	ops::{BitAnd, BitOr, BitXor, Not, Shl, Shr},
+ };
+--- a/crates/field/Cargo.toml
++++ b/crates/field/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-utils = { path = "../utils", default-features = false }
+ bytemuck.workspace = true
+ cfg-if.workspace = true
+@@ -28,6 +29,7 @@
+ getrandom = { workspace = true, features = ["wasm_js"] }
+ 
+ [features]
++compact-inversion = []
+ default = []
+ benchmark_alternative_strategies = []
+ trace_multiplications = ["dep:tracing"]
+--- a/crates/field/src/aes_field.rs
++++ b/crates/field/src/aes_field.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	fmt::{Debug, Display, Formatter},
+ 	iter::{Product, Sum},
+ 	marker::PhantomData,
+--- a/crates/field/src/arch/aarch64/m128.rs
++++ b/crates/field/src/arch/aarch64/m128.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	arch::aarch64::*,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+ };
+@@ -36,15 +37,15 @@
+ 
+ impl M128 {
+ 	pub const fn from_le_bytes(bytes: [u8; 16]) -> Self {
+-		Self(unsafe { std::mem::transmute::<u128, uint64x2_t>(u128::from_le_bytes(bytes)) })
++		Self(unsafe { crate::qasset_nostd::mem::transmute::<u128, uint64x2_t>(u128::from_le_bytes(bytes)) })
+ 	}
+ 
+ 	pub const fn from_be_bytes(bytes: [u8; 16]) -> Self {
+-		Self(unsafe { std::mem::transmute::<u128, uint64x2_t>(u128::from_be_bytes(bytes)) })
++		Self(unsafe { crate::qasset_nostd::mem::transmute::<u128, uint64x2_t>(u128::from_be_bytes(bytes)) })
+ 	}
+ 
+ 	pub const fn from_u128(value: u128) -> Self {
+-		Self(unsafe { std::mem::transmute::<u128, uint64x2_t>(value) })
++		Self(unsafe { crate::qasset_nostd::mem::transmute::<u128, uint64x2_t>(value) })
+ 	}
+ 
+ 	#[inline]
+@@ -71,13 +72,13 @@
+ impl Eq for M128 {}
+ 
+ impl PartialOrd for M128 {
+-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++	fn partial_cmp(&self, other: &Self) -> Option<crate::qasset_nostd::cmp::Ordering> {
+ 		Some(self.cmp(other))
+ 	}
+ }
+ 
+ impl Ord for M128 {
+-	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++	fn cmp(&self, other: &Self) -> crate::qasset_nostd::cmp::Ordering {
+ 		u128::from(*self).cmp(&u128::from(*other))
+ 	}
+ }
+@@ -196,7 +197,7 @@
+ 
+ impl SerializeBytes for M128 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		write_buf.put_u128_le(u128::from(*self));
+ 
+@@ -209,7 +210,7 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		Ok(Self::from(read_buf.get_u128_le()))
+ 	}
+@@ -616,15 +617,15 @@
+ 	}
+ }
+ 
+-impl std::fmt::Display for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Display for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: u128 = (*self).into();
+ 		write!(f, "{data:02X?}")
+ 	}
+ }
+ 
+-impl std::fmt::Debug for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Debug for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		write!(f, "M128({self})")
+ 	}
+ }
+--- a/crates/field/src/arch/aarch64/packed_aes_128.rs
++++ b/crates/field/src/arch/aarch64/packed_aes_128.rs
+@@ -1,7 +1,7 @@
+ // Copyright 2024-2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::ops::Mul;
++use crate::qasset_nostd::ops::Mul;
+ 
+ use super::{
+ 	m128::M128,
+--- a/crates/field/src/arch/aarch64/packed_ghash_128.rs
++++ b/crates/field/src/arch/aarch64/packed_ghash_128.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ // Copyright (c) 2019-2023 RustCrypto Developers
+ 
+@@ -35,7 +36,7 @@
+ 			_ => panic!("Unsupported IMM8 value for clmulepi64"),
+ 		};
+ 
+-		unsafe { std::mem::transmute::<u128, uint64x2_t>(result) }.into()
++		unsafe { crate::qasset_nostd::mem::transmute::<u128, uint64x2_t>(result) }.into()
+ 	}
+ 
+ 	#[inline]
+--- a/crates/field/src/arch/aarch64/simd_arithmetic.rs
++++ b/crates/field/src/arch/aarch64/simd_arithmetic.rs
+@@ -1,7 +1,7 @@
+ // Copyright 2024-2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::arch::aarch64::*;
++use crate::qasset_nostd::arch::aarch64::*;
+ 
+ use super::m128::M128;
+ 
+@@ -69,10 +69,10 @@
+ 		// Since q+(x) doesn't fit into 8 bits, we right shift the polynomial (divide by x) and
+ 		// correct for this later. This works because q+(x) is divisible by x/the last polynomial
+ 		// bit is 0. q+(x)/x = (x^8 + x^4 + x^3 + x)/x = 0b100011010 >> 1 = 0b10001101 = 0x8d
+-		const QPLUS_RSH1: poly8x8_t = unsafe { std::mem::transmute(0x8d8d8d8d8d8d8d8d_u64) };
++		const QPLUS_RSH1: poly8x8_t = unsafe { crate::qasset_nostd::mem::transmute(0x8d8d8d8d8d8d8d8d_u64) };
+ 
+ 		// q*(x) = x^4 + x^3 + x + 1 = 0b00011011 = 0x1b
+-		const QSTAR: poly8x8_t = unsafe { std::mem::transmute(0x1b1b1b1b1b1b1b1b_u64) };
++		const QSTAR: poly8x8_t = unsafe { crate::qasset_nostd::mem::transmute(0x1b1b1b1b1b1b1b1b_u64) };
+ 
+ 		let cl = vuzp1q_p8(c0, c1);
+ 		let ch = vuzp2q_p8(c0, c1);
+@@ -96,7 +96,7 @@
+ #[inline]
+ pub fn lookup_16x8b(table: [u8; 256], x: M128) -> M128 {
+ 	unsafe {
+-		let table: [uint8x16x4_t; 4] = std::mem::transmute(table);
++		let table: [uint8x16x4_t; 4] = crate::qasset_nostd::mem::transmute(table);
+ 		let x = x.into();
+ 		let y0 = vqtbl4q_u8(table[0], x);
+ 		let y1 = vqtbl4q_u8(table[1], veorq_u8(x, vdupq_n_u8(0x40)));
+--- a/crates/field/src/arch/portable/nibble_invert_128b.rs
++++ b/crates/field/src/arch/portable/nibble_invert_128b.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+ //! Generic nibble-based inversion algorithm for 128-bit binary fields.
+@@ -5,7 +6,8 @@
+ //! This module provides a generic implementation of the nibble table-based inversion
+ //! algorithm that can be used for any 128-bit binary field, including GHASH.
+ 
+-use std::ops::BitXor;
++#[cfg(not(feature = "compact-inversion"))]
++use crate::qasset_nostd::ops::BitXor;
+ 
+ use crate::{Field, arithmetic_traits::Square, underlier::WithUnderlier};
+ 
+@@ -73,6 +75,17 @@
+ where
+ 	F: Field + WithUnderlier<Underlier = u128> + Square,
+ {
++    #[cfg(feature = "compact-inversion")]
++    {
++        // Preserve exactly value^(2^(2^n)) and the upstream out-of-range case.
++        // This trades 2^n existing field squarings for the same table lookup.
++        let _ = (to_bases, nibble_table);
++        return match n {
++            0..=6 => (0..(1usize << n)).fold(value, |v, _| v.square()),
++            _ => value,
++        };
++    }
++    #[cfg(not(feature = "compact-inversion"))]
+ 	match n {
+ 		// value^(2^(2^0)) = value^2
+ 		0 => value.square(),
+@@ -135,6 +148,7 @@
+ /// Print the nibble power table in a format that can be copied into source code.
+ /// This is a utility function for generating static tables.
+ #[allow(unused)]
++#[cfg(not(target_os = "none"))]
+ pub fn print_nibble_table(table: &[[[u128; 16]; 32]; 6], table_name: &str) {
+ 	println!("static {table_name}: [[[u128; 16]; 32]; 6] = [");
+ 	for n in 0..6 {
+--- a/crates/field/src/arch/portable/packed.rs
++++ b/crates/field/src/arch/portable/packed.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ // This is because derive(bytemuck::TransparentWrapper) adds some type constraints to
+@@ -6,7 +7,10 @@
+ // definition.
+ #![allow(clippy::multiple_bound_locations)]
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	fmt::Debug,
+ 	iter::{Product, Sum},
+ 	marker::PhantomData,
+@@ -130,7 +134,7 @@
+ where
+ 	Self: PackedField,
+ {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let width = checked_int_div(U::BITS, Scalar::N_BITS);
+ 		let values_str = self
+ 			.iter()
+--- a/crates/field/src/arch/portable/packed_arithmetic.rs
++++ b/crates/field/src/arch/portable/packed_arithmetic.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use crate::{
+ 	PackedField,
+ 	binary_field::BinaryField,
+--- a/crates/field/src/arch/portable/packed_macros.rs
++++ b/crates/field/src/arch/portable/packed_macros.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ macro_rules! define_packed_binary_fields {
+@@ -75,7 +76,7 @@
+ 			) -> Result<Self, binius_utils::SerializationError> {
+ 				Ok(Self(
+ 					binius_utils::DeserializeBytes::deserialize(read_buf)?,
+-					std::marker::PhantomData,
++					crate::qasset_nostd::marker::PhantomData,
+ 				))
+ 			}
+ 		}
+--- a/crates/field/src/arch/portable/reuse_multiply_arithmetic.rs
++++ b/crates/field/src/arch/portable/reuse_multiply_arithmetic.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::ops::Mul;
++use crate::qasset_nostd::ops::Mul;
+ 
+ use crate::{arch::ReuseMultiplyStrategy, arithmetic_traits::TaggedSquare};
+ 
+--- a/crates/field/src/arch/portable/scaled_arithmetic.rs
++++ b/crates/field/src/arch/portable/scaled_arithmetic.rs
+@@ -1,6 +1,6 @@
+ // Copyright 2025-2026 The Binius Developers
+ 
+-use std::array;
++use crate::qasset_nostd::array;
+ 
+ use bytemuck::{Pod, TransparentWrapper};
+ 
+@@ -15,7 +15,7 @@
+ impl<U: UnderlierType + Pod, Scalar: BinaryField, const N: usize> TaggedMul<ScaledStrategy>
+ 	for PackedPrimitiveType<ScaledUnderlier<U, N>, Scalar>
+ where
+-	PackedPrimitiveType<U, Scalar>: std::ops::Mul<Output = PackedPrimitiveType<U, Scalar>>,
++	PackedPrimitiveType<U, Scalar>: crate::qasset_nostd::ops::Mul<Output = PackedPrimitiveType<U, Scalar>>,
+ {
+ 	fn mul(self, rhs: Self) -> Self {
+ 		Self::wrap(ScaledUnderlier(array::from_fn(|i| {
+--- a/crates/field/src/arch/wasm32/m128.rs
++++ b/crates/field/src/arch/wasm32/m128.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	arch::wasm32::*,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+ };
+@@ -62,14 +63,14 @@
+ 
+ impl PartialOrd for M128 {
+ 	#[inline]
+-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++	fn partial_cmp(&self, other: &Self) -> Option<crate::qasset_nostd::cmp::Ordering> {
+ 		Some(self.cmp(other))
+ 	}
+ }
+ 
+ impl Ord for M128 {
+ 	#[inline]
+-	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++	fn cmp(&self, other: &Self) -> crate::qasset_nostd::cmp::Ordering {
+ 		u128::from(*self).cmp(&u128::from(*other))
+ 	}
+ }
+@@ -86,7 +87,7 @@
+ impl From<u128> for M128 {
+ 	#[inline]
+ 	fn from(value: u128) -> Self {
+-		debug_assert_eq!(std::mem::align_of::<u128>(), std::mem::align_of::<v128>());
++		debug_assert_eq!(crate::qasset_nostd::mem::align_of::<u128>(), crate::qasset_nostd::mem::align_of::<v128>());
+ 
+ 		Self(unsafe { v128_load(&raw const value as *const v128) })
+ 	}
+@@ -95,7 +96,7 @@
+ impl From<M128> for u128 {
+ 	#[inline]
+ 	fn from(m: M128) -> Self {
+-		debug_assert_eq!(std::mem::align_of::<u128>(), std::mem::align_of::<v128>());
++		debug_assert_eq!(crate::qasset_nostd::mem::align_of::<u128>(), crate::qasset_nostd::mem::align_of::<v128>());
+ 
+ 		let mut value = 0u128;
+ 		unsafe {
+@@ -147,7 +148,7 @@
+ impl SerializeBytes for M128 {
+ 	#[inline]
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		write_buf.put_u128_le((*self).into());
+ 
+@@ -161,7 +162,7 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		Ok(Self::from(read_buf.get_u128_le()))
+ 	}
+@@ -256,8 +257,8 @@
+ 	}
+ }
+ 
+-impl std::fmt::Display for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Display for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: u128 = unsafe {
+ 			let mut value = 0u128;
+ 			v128_store(&raw mut value as *mut v128, self.0);
+@@ -267,8 +268,8 @@
+ 	}
+ }
+ 
+-impl std::fmt::Debug for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Debug for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: u128 = unsafe {
+ 			let mut value = 0u128;
+ 			v128_store(&raw mut value as *mut v128, self.0);
+--- a/crates/field/src/arch/wasm32/packed_ghash_128.rs
++++ b/crates/field/src/arch/wasm32/packed_ghash_128.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ // Copyright (c) 2019-2023 RustCrypto Developers
+ 
+@@ -6,7 +7,7 @@
+ //! Based on the portable GHASH implementation adapted for WebAssembly
+ //! using WASM SIMD instructions where available.
+ 
+-use std::{arch::wasm32::*, ops::Mul};
++use crate::qasset_nostd::{arch::wasm32::*, ops::Mul};
+ 
+ use super::{super::portable::packed::PackedPrimitiveType, m128::M128};
+ use crate::{
+--- a/crates/field/src/arch/x86_64/m128.rs
++++ b/crates/field/src/arch/x86_64/m128.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	arch::x86_64::*,
+ 	array,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+@@ -37,7 +38,7 @@
+ 	pub const fn from_u128(val: u128) -> Self {
+ 		let mut result = Self::ZERO;
+ 		unsafe {
+-			result.0 = std::mem::transmute_copy(&val);
++			result.0 = crate::qasset_nostd::mem::transmute_copy(&val);
+ 		}
+ 
+ 		result
+@@ -112,7 +113,7 @@
+ 
+ impl SerializeBytes for M128 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		let raw_value: u128 = (*self).into();
+ 
+@@ -126,7 +127,7 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		let raw_value = read_buf.get_u128_le();
+ 
+@@ -208,7 +209,7 @@
+ 	}
+ }
+ 
+-/// `std::cmp::max` isn't const, so we need our own implementation
++/// `crate::qasset_nostd::cmp::max` isn't const, so we need our own implementation
+ pub(crate) const fn max_i32(left: i32, right: i32) -> i32 {
+ 	if left > right { left } else { right }
+ }
+@@ -280,13 +281,13 @@
+ impl Eq for M128 {}
+ 
+ impl PartialOrd for M128 {
+-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++	fn partial_cmp(&self, other: &Self) -> Option<crate::qasset_nostd::cmp::Ordering> {
+ 		Some(self.cmp(other))
+ 	}
+ }
+ 
+ impl Ord for M128 {
+-	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++	fn cmp(&self, other: &Self) -> crate::qasset_nostd::cmp::Ordering {
+ 		u128::from(*self).cmp(&u128::from(*other))
+ 	}
+ }
+@@ -297,15 +298,15 @@
+ 	}
+ }
+ 
+-impl std::fmt::Display for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Display for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: u128 = (*self).into();
+ 		write!(f, "{data:02X?}")
+ 	}
+ }
+ 
+-impl std::fmt::Debug for M128 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Debug for M128 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		write!(f, "M128({self})")
+ 	}
+ }
+@@ -690,12 +691,12 @@
+ 
+ 	#[inline]
+ 	fn value_iter(value: Self) -> impl ExactSizeIterator<Item = u128> + Send + Clone {
+-		std::iter::once(u128::from(value))
++		crate::qasset_nostd::iter::once(u128::from(value))
+ 	}
+ 
+ 	#[inline]
+ 	fn ref_iter(value: &Self) -> impl ExactSizeIterator<Item = u128> + Send + Clone + '_ {
+-		std::iter::once(u128::from(*value))
++		crate::qasset_nostd::iter::once(u128::from(*value))
+ 	}
+ 
+ 	#[inline]
+--- a/crates/field/src/arch/x86_64/m256.rs
++++ b/crates/field/src/arch/x86_64/m256.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	arch::x86_64::*,
+ 	mem::transmute,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+@@ -111,7 +112,7 @@
+ 
+ impl SerializeBytes for M256 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		let raw_values: [u128; 2] = (*self).into();
+ 
+@@ -273,13 +274,13 @@
+ impl Eq for M256 {}
+ 
+ impl PartialOrd for M256 {
+-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++	fn partial_cmp(&self, other: &Self) -> Option<crate::qasset_nostd::cmp::Ordering> {
+ 		Some(self.cmp(other))
+ 	}
+ }
+ 
+ impl Ord for M256 {
+-	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++	fn cmp(&self, other: &Self) -> crate::qasset_nostd::cmp::Ordering {
+ 		<[u128; 2]>::from(*self).cmp(&<[u128; 2]>::from(*other))
+ 	}
+ }
+@@ -291,15 +292,15 @@
+ 	}
+ }
+ 
+-impl std::fmt::Display for M256 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Display for M256 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: [u128; 2] = (*self).into();
+ 		write!(f, "{data:02X?}")
+ 	}
+ }
+ 
+-impl std::fmt::Debug for M256 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Debug for M256 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		write!(f, "M256({self})")
+ 	}
+ }
+@@ -1328,14 +1329,14 @@
+ 
+ 	impl From<ByteData> for M256 {
+ 		fn from(value: ByteData) -> Self {
+-			let vals: [u128; 2] = unsafe { std::mem::transmute(value) };
++			let vals: [u128; 2] = unsafe { crate::qasset_nostd::mem::transmute(value) };
+ 			vals.into()
+ 		}
+ 	}
+ 
+ 	impl From<[u128; 2]> for ByteData {
+ 		fn from(value: [u128; 2]) -> Self {
+-			unsafe { std::mem::transmute(value) }
++			unsafe { crate::qasset_nostd::mem::transmute(value) }
+ 		}
+ 	}
+ 
+--- a/crates/field/src/arch/x86_64/m512.rs
++++ b/crates/field/src/arch/x86_64/m512.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	arch::x86_64::*,
+ 	mem::transmute_copy,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+@@ -123,7 +124,7 @@
+ 
+ impl SerializeBytes for M512 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 
+ 		let raw_values: [u128; 4] = (*self).into();
+ 
+@@ -325,13 +326,13 @@
+ impl Eq for M512 {}
+ 
+ impl PartialOrd for M512 {
+-	fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
++	fn partial_cmp(&self, other: &Self) -> Option<crate::qasset_nostd::cmp::Ordering> {
+ 		Some(self.cmp(other))
+ 	}
+ }
+ 
+ impl Ord for M512 {
+-	fn cmp(&self, other: &Self) -> std::cmp::Ordering {
++	fn cmp(&self, other: &Self) -> crate::qasset_nostd::cmp::Ordering {
+ 		<[u128; 4]>::from(*self).cmp(&<[u128; 4]>::from(*other))
+ 	}
+ }
+@@ -343,15 +344,15 @@
+ 	}
+ }
+ 
+-impl std::fmt::Display for M512 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Display for M512 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		let data: [u128; 4] = (*self).into();
+ 		write!(f, "{data:02X?}")
+ 	}
+ }
+ 
+-impl std::fmt::Debug for M512 {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++impl crate::qasset_nostd::fmt::Debug for M512 {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		write!(f, "M512({self})")
+ 	}
+ }
+@@ -1280,14 +1281,14 @@
+ 
+ 	impl From<ByteData> for M512 {
+ 		fn from(value: ByteData) -> Self {
+-			let vals: [u128; 4] = unsafe { std::mem::transmute(value) };
++			let vals: [u128; 4] = unsafe { crate::qasset_nostd::mem::transmute(value) };
+ 			vals.into()
+ 		}
+ 	}
+ 
+ 	impl From<[u128; 4]> for ByteData {
+ 		fn from(value: [u128; 4]) -> Self {
+-			unsafe { std::mem::transmute(value) }
++			unsafe { crate::qasset_nostd::mem::transmute(value) }
+ 		}
+ 	}
+ 
+--- a/crates/field/src/arch/x86_64/packed_ghash_128.rs
++++ b/crates/field/src/arch/x86_64/packed_ghash_128.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ //! PCLMULQDQ-accelerated implementation of GHASH for x86_64.
+@@ -22,12 +23,12 @@
+ impl crate::arch::shared::ghash::ClMulUnderlier for M128 {
+ 	#[inline]
+ 	fn clmulepi64<const IMM8: i32>(a: Self, b: Self) -> Self {
+-		unsafe { std::arch::x86_64::_mm_clmulepi64_si128::<IMM8>(a.into(), b.into()) }.into()
++		unsafe { crate::qasset_nostd::arch::x86_64::_mm_clmulepi64_si128::<IMM8>(a.into(), b.into()) }.into()
+ 	}
+ 
+ 	#[inline]
+ 	fn move_64_to_hi(a: Self) -> Self {
+-		unsafe { std::arch::x86_64::_mm_slli_si128::<8>(a.into()) }.into()
++		unsafe { crate::qasset_nostd::arch::x86_64::_mm_slli_si128::<8>(a.into()) }.into()
+ 	}
+ }
+ 
+@@ -66,7 +67,7 @@
+ 				let portable_lhs = PortablePackedBinaryGhash1x128b::from(u128::from(self.to_underlier()));
+ 				let portable_rhs = PortablePackedBinaryGhash1x128b::from(u128::from(rhs.to_underlier()));
+ 
+-				Self::from_underlier(std::ops::Mul::mul(portable_lhs, portable_rhs).to_underlier().into())
++				Self::from_underlier(crate::qasset_nostd::ops::Mul::mul(portable_lhs, portable_rhs).to_underlier().into())
+ 			}
+ 		}
+ 	}
+--- a/crates/field/src/arch/x86_64/packed_ghash_256.rs
++++ b/crates/field/src/arch/x86_64/packed_ghash_256.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ //! VPCLMULQDQ-accelerated implementation of GHASH for x86_64 AVX2.
+@@ -29,13 +30,13 @@
+ 	impl ClMulUnderlier for M256 {
+ 		#[inline]
+ 		fn clmulepi64<const IMM8: i32>(a: Self, b: Self) -> Self {
+-			unsafe { std::arch::x86_64::_mm256_clmulepi64_epi128::<IMM8>(a.into(), b.into()) }
++			unsafe { crate::qasset_nostd::arch::x86_64::_mm256_clmulepi64_epi128::<IMM8>(a.into(), b.into()) }
+ 				.into()
+ 		}
+ 
+ 		#[inline]
+ 		fn move_64_to_hi(a: Self) -> Self {
+-			unsafe { std::arch::x86_64::_mm256_slli_si256::<8>(a.into()) }.into()
++			unsafe { crate::qasset_nostd::arch::x86_64::_mm256_slli_si256::<8>(a.into()) }.into()
+ 		}
+ 	}
+ }
+@@ -78,11 +79,11 @@
+ 					let rhs_0 = rhs.to_underlier().get_subvalue::<M128>(0);
+ 					let rhs_1 = rhs.to_underlier().get_subvalue::<M128>(1);
+ 
+-					let result_0 = std::ops::Mul::mul(
++					let result_0 = crate::qasset_nostd::ops::Mul::mul(
+ 						PackedBinaryGhash1x128b::from(self_0),
+ 						PackedBinaryGhash1x128b::from(rhs_0),
+ 					);
+-					let result_1 = std::ops::Mul::mul(
++					let result_1 = crate::qasset_nostd::ops::Mul::mul(
+ 						PackedBinaryGhash1x128b::from(self_1),
+ 						PackedBinaryGhash1x128b::from(rhs_1),
+ 					);
+--- a/crates/field/src/arch/x86_64/packed_ghash_512.rs
++++ b/crates/field/src/arch/x86_64/packed_ghash_512.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ //! VPCLMULQDQ-accelerated implementation of GHASH for x86_64 AVX-512.
+@@ -23,14 +24,14 @@
+ impl crate::arch::shared::ghash::ClMulUnderlier for M512 {
+ 	#[inline]
+ 	fn clmulepi64<const IMM8: i32>(a: Self, b: Self) -> Self {
+-		unsafe { std::arch::x86_64::_mm512_clmulepi64_epi128::<IMM8>(a.into(), b.into()) }.into()
++		unsafe { crate::qasset_nostd::arch::x86_64::_mm512_clmulepi64_epi128::<IMM8>(a.into(), b.into()) }.into()
+ 	}
+ 
+ 	#[inline]
+ 	fn move_64_to_hi(a: Self) -> Self {
+ 		unsafe {
+-			std::arch::x86_64::_mm512_unpacklo_epi64(
+-				std::arch::x86_64::_mm512_setzero_si512(),
++			crate::qasset_nostd::arch::x86_64::_mm512_unpacklo_epi64(
++				crate::qasset_nostd::arch::x86_64::_mm512_setzero_si512(),
+ 				a.into(),
+ 			)
+ 		}
+@@ -82,19 +83,19 @@
+ 
+ 					// Use the portable scalar multiplication for each element
+ 					use super::super::portable::packed_ghash_128::PackedBinaryGhash1x128b as PortablePackedBinaryGhash1x128b;
+-					let result_0 = std::ops::Mul::mul(
++					let result_0 = crate::qasset_nostd::ops::Mul::mul(
+ 						PortablePackedBinaryGhash1x128b::from(self_0),
+ 						PortablePackedBinaryGhash1x128b::from(rhs_0),
+ 					);
+-					let result_1 = std::ops::Mul::mul(
++					let result_1 = crate::qasset_nostd::ops::Mul::mul(
+ 						PortablePackedBinaryGhash1x128b::from(self_1),
+ 						PortablePackedBinaryGhash1x128b::from(rhs_1),
+ 					);
+-					let result_2 = std::ops::Mul::mul(
++					let result_2 = crate::qasset_nostd::ops::Mul::mul(
+ 						PortablePackedBinaryGhash1x128b::from(self_2),
+ 						PortablePackedBinaryGhash1x128b::from(rhs_2),
+ 					);
+-					let result_3 = std::ops::Mul::mul(
++					let result_3 = crate::qasset_nostd::ops::Mul::mul(
+ 						PortablePackedBinaryGhash1x128b::from(self_3),
+ 						PortablePackedBinaryGhash1x128b::from(rhs_3),
+ 					);
+--- a/crates/field/src/arch/x86_64/simd/simd_arithmetic.rs
++++ b/crates/field/src/arch/x86_64/simd/simd_arithmetic.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{any::TypeId, arch::x86_64::*};
++use crate::qasset_nostd::{any::TypeId, arch::x86_64::*};
+ 
+ use crate::{BinaryField, aes_field::AESTowerField8b, underlier::UnderlierWithBitOps};
+ 
+--- a/crates/field/src/arithmetic_traits.rs
++++ b/crates/field/src/arithmetic_traits.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ /// Value that can be multiplied by itself
+@@ -19,7 +20,7 @@
+ 
+ macro_rules! impl_mul_with {
+ 	($name:ident @ $strategy:ty) => {
+-		impl std::ops::Mul for $name {
++		impl crate::qasset_nostd::ops::Mul for $name {
+ 			type Output = Self;
+ 
+ 			#[inline]
+@@ -31,7 +32,7 @@
+ 		}
+ 	};
+ 	($name:ty => $bigger:ty) => {
+-		impl std::ops::Mul for $name {
++		impl crate::qasset_nostd::ops::Mul for $name {
+ 			type Output = Self;
+ 
+ 			#[inline]
+--- a/crates/field/src/binary_field.rs
++++ b/crates/field/src/binary_field.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	fmt::{Debug, Display, Formatter},
+ 	iter::{Product, Sum},
+ 	ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
+@@ -243,14 +247,14 @@
+ 		}
+ 
+ 		impl Display for $name {
+-			fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
++			fn fmt(&self, f: &mut Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 				write!(f, "0x{repr:0>width$x}", repr=self.val(), width=Self::N_BITS.max(4) / 4)
+ 			}
+ 		}
+ 
+ 		impl Debug for $name {
+-			fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+-				let structure_name = std::any::type_name::<$name>().split("::").last().expect("exist");
++			fn fmt(&self, f: &mut Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
++				let structure_name = crate::qasset_nostd::any::type_name::<$name>().split("::").last().expect("exist");
+ 
+ 				write!(f, "{}({})",structure_name, self)
+ 			}
+--- a/crates/field/src/extension.rs
++++ b/crates/field/src/extension.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	iter,
+ 	ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
+ };
+--- a/crates/field/src/field.rs
++++ b/crates/field/src/field.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	fmt::{Debug, Display},
+ 	hash::Hash,
+ 	iter::{Product, Sum},
+--- a/crates/field/src/ghash.rs
++++ b/crates/field/src/ghash.rs
+@@ -1,9 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+ //! Binary field implementation of GF(2^128) with a modulus of X^128 + X^7 + X^2 + X + 1.
+ //! This is the GHASH field used in AES-GCM.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	any::TypeId,
+ 	fmt::{Debug, Display, Formatter},
+ 	iter::{Product, Sum},
+--- a/crates/field/src/lib.rs
++++ b/crates/field/src/lib.rs
+@@ -1,6 +1,8 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Binary tower field implementations for use in Binius.
+ //!
+@@ -11,6 +13,10 @@
+ //!
+ //! [DP23]: https://eprint.iacr.org/2023/1784
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod aes_field;
+ pub mod arch;
+ pub mod arithmetic_traits;
+--- a/crates/field/src/linear_transformation.rs
++++ b/crates/field/src/linear_transformation.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{iter, marker::PhantomData, ops::BitXor};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{iter, marker::PhantomData, ops::BitXor};
+ 
+ use rand::RngCore;
+ 
+--- a/crates/field/src/macros.rs
++++ b/crates/field/src/macros.rs
+@@ -1,10 +1,11 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ #[macro_export]
+ macro_rules! impl_packed_field_display {
+ 	($name:ident) => {
+-		impl std::fmt::Display for $name {
+-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++		impl crate::qasset_nostd::fmt::Display for $name {
++			fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 				write!(f, "{{")?;
+ 				let mut iter = self.iter();
+ 				if let Some(scalar) = iter.next() {
+--- a/crates/field/src/packed.rs
++++ b/crates/field/src/packed.rs
+@@ -1,10 +1,14 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+ //! Traits for packed field elements which support SIMD implementations.
+ //!
+ //! Interfaces are derived from [`plonky2`](https://github.com/mir-protocol/plonky2).
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	fmt::Debug,
+ 	iter,
+ 	ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
+@@ -552,7 +556,7 @@
+ 
+ 	fn check_slice_iteration<P: PackedField>(mut rng: impl RngCore) {
+ 		for len in [0, 1, 5] {
+-			let packed = std::iter::repeat_with(|| P::random(&mut rng))
++			let packed = crate::qasset_nostd::iter::repeat_with(|| P::random(&mut rng))
+ 				.take(len)
+ 				.collect::<Vec<_>>();
+ 
+--- a/crates/field/src/packed_aes_field.rs
++++ b/crates/field/src/packed_aes_field.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ pub use crate::arch::{
+@@ -221,7 +222,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::ops::Mul;
++	use crate::qasset_nostd::ops::Mul;
+ 
+ 	use proptest::prelude::*;
+ 
+--- a/crates/field/src/packed_binary_field.rs
++++ b/crates/field/src/packed_binary_field.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ pub use crate::arch::{
+ 	packed_1::*, packed_2::*, packed_4::*, packed_8::*, packed_16::*, packed_32::*, packed_64::*,
+ 	packed_128::*, packed_256::*, packed_512::*, packed_aes_8::*, packed_aes_16::*,
+@@ -88,7 +92,7 @@
+ 
+ 			impl<T> TestMulTrait<$crate::packed_binary_field::test_utils::Unit> for T {}
+ 
+-			struct TestMult<T>(std::marker::PhantomData<T>);
++			struct TestMult<T>(crate::qasset_nostd::marker::PhantomData<T>);
+ 
+ 			impl<T: $constraint + PackedField + $crate::underlier::WithUnderlier> TestMult<T> {
+ 				#[allow(unused)]
+@@ -119,7 +123,7 @@
+ 
+ 			impl<T> TestSquareTrait<$crate::packed_binary_field::test_utils::Unit> for T {}
+ 
+-			struct TestSquare<T>(std::marker::PhantomData<T>);
++			struct TestSquare<T>(crate::qasset_nostd::marker::PhantomData<T>);
+ 
+ 			impl<T: $constraint + PackedField + $crate::underlier::WithUnderlier> TestSquare<T> {
+ 				#[allow(unused)]
+@@ -146,7 +150,7 @@
+ 
+ 			impl<T> TestInvertTrait<$crate::packed_binary_field::test_utils::Unit> for T {}
+ 
+-			struct TestInvert<T>(std::marker::PhantomData<T>);
++			struct TestInvert<T>(crate::qasset_nostd::marker::PhantomData<T>);
+ 
+ 			#[allow(unused)]
+ 			impl<T: $constraint + PackedField + $crate::underlier::WithUnderlier> TestInvert<T> {
+@@ -510,7 +514,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::{iter::repeat_with, ops::Mul};
++	use crate::qasset_nostd::{iter::repeat_with, ops::Mul};
+ 
+ 	use binius_utils::{DeserializeBytes, SerializeBytes, bytes::BytesMut};
+ 	use proptest::prelude::*;
+--- a/crates/field/src/packed_extension_ops.rs
++++ b/crates/field/src/packed_extension_ops.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ use binius_utils::rayon::prelude::{
+@@ -86,7 +87,7 @@
+ where
+ 	PE: PackedExtension<F>,
+ 	F: Field,
+-	Func: Fn(usize, PE, PE::PackedSubfield) -> PE + std::marker::Sync,
++	Func: Fn(usize, PE, PE::PackedSubfield) -> PE + crate::qasset_nostd::marker::Sync,
+ {
+ 	assert!(
+ 		lhs.len() == rhs.len() * PE::Scalar::DEGREE,
+--- a/crates/field/src/packed_ghash.rs
++++ b/crates/field/src/packed_ghash.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ pub use crate::arch::{
+@@ -107,7 +108,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::ops::Mul;
++	use crate::qasset_nostd::ops::Mul;
+ 
+ 	use proptest::{arbitrary::any, proptest};
+ 
+--- a/crates/field/src/qasset_nostd.rs
++++ b/crates/field/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/field/src/tests.rs
++++ b/crates/field/src/tests.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use proptest::prelude::*;
+ 
+--- a/crates/field/src/tracing.rs
++++ b/crates/field/src/tracing.rs
+@@ -1,9 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ use cfg_if::cfg_if;
+ 
+ cfg_if! {
+ 	if #[cfg(feature = "trace_multiplications")] {
+-		use std::cell::Cell;
++		use crate::qasset_nostd::cell::Cell;
+ 
+ 		thread_local! {
+ 			/// Thread-local flag to check if we are in a multiplication function.
+--- a/crates/field/src/underlier/divisible.rs
++++ b/crates/field/src/underlier/divisible.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::mem::size_of;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::mem::size_of;
+ 
+ /// Divides an underlier type into smaller underliers in memory and iterates over them.
+ ///
+@@ -463,12 +467,12 @@
+ 
+ 				#[inline]
+ 				fn value_iter(value: Self) -> impl ExactSizeIterator<Item = $crate::underlier::SmallU<$bits>> + Send + Clone {
+-					$crate::underlier::SmallUDivisIter::new(std::iter::once(value))
++					$crate::underlier::SmallUDivisIter::new(crate::qasset_nostd::iter::once(value))
+ 				}
+ 
+ 				#[inline]
+ 				fn ref_iter(value: &Self) -> impl ExactSizeIterator<Item = $crate::underlier::SmallU<$bits>> + Send + Clone + '_ {
+-					$crate::underlier::SmallUDivisIter::new(std::iter::once(*value))
++					$crate::underlier::SmallUDivisIter::new(crate::qasset_nostd::iter::once(*value))
+ 				}
+ 
+ 				#[inline]
+@@ -634,7 +638,7 @@
+ 
+ 	#[inline]
+ 	fn from_iter(iter: impl Iterator<Item = SmallU<1>>) -> Self {
+-		iter.chain(std::iter::repeat(SmallU::<1>::new(0)))
++		iter.chain(crate::qasset_nostd::iter::repeat(SmallU::<1>::new(0)))
+ 			.take(2)
+ 			.enumerate()
+ 			.fold(SmallU::<2>::new(0), |acc, (i, val)| acc.set(i, val))
+@@ -681,7 +685,7 @@
+ 
+ 	#[inline]
+ 	fn from_iter(iter: impl Iterator<Item = SmallU<1>>) -> Self {
+-		iter.chain(std::iter::repeat(SmallU::<1>::new(0)))
++		iter.chain(crate::qasset_nostd::iter::repeat(SmallU::<1>::new(0)))
+ 			.take(4)
+ 			.enumerate()
+ 			.fold(SmallU::<4>::new(0), |acc, (i, val)| acc.set(i, val))
+@@ -727,7 +731,7 @@
+ 
+ 	#[inline]
+ 	fn from_iter(iter: impl Iterator<Item = SmallU<2>>) -> Self {
+-		iter.chain(std::iter::repeat(SmallU::<2>::new(0)))
++		iter.chain(crate::qasset_nostd::iter::repeat(SmallU::<2>::new(0)))
+ 			.take(2)
+ 			.enumerate()
+ 			.fold(SmallU::<4>::new(0), |acc, (i, val)| acc.set(i, val))
+@@ -743,12 +747,12 @@
+ 
+ 				#[inline]
+ 				fn value_iter(value: Self) -> impl ExactSizeIterator<Item = $ty> + Send + Clone {
+-					std::iter::once(value)
++					crate::qasset_nostd::iter::once(value)
+ 				}
+ 
+ 				#[inline]
+ 				fn ref_iter(value: &Self) -> impl ExactSizeIterator<Item = $ty> + Send + Clone + '_ {
+-					std::iter::once(*value)
++					crate::qasset_nostd::iter::once(*value)
+ 				}
+ 
+ 				#[inline]
+@@ -1005,7 +1009,7 @@
+ 
+ 	#[test]
+ 	fn test_from_iter_empty() {
+-		let result: u32 = Divisible::<u8>::from_iter(std::iter::empty());
++		let result: u32 = Divisible::<u8>::from_iter(crate::qasset_nostd::iter::empty());
+ 		assert_eq!(result, 0);
+ 	}
+ 
+--- a/crates/field/src/underlier/scaled.rs
++++ b/crates/field/src/underlier/scaled.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	array, mem,
+ 	ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr},
+ };
+--- a/crates/field/src/underlier/small_uint.rs
++++ b/crates/field/src/underlier/small_uint.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++use crate::qasset_nostd::{
+ 	fmt::{Debug, Display, LowerHex},
+ 	hash::{Hash, Hasher},
+ 	ops::{Not, Shl, Shr},
+@@ -79,19 +80,19 @@
+ }
+ 
+ impl<const N: usize> Debug for SmallU<N> {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		Debug::fmt(&self.val(), f)
+ 	}
+ }
+ 
+ impl<const N: usize> Display for SmallU<N> {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		Display::fmt(&self.val(), f)
+ 	}
+ }
+ 
+ impl<const N: usize> LowerHex for SmallU<N> {
+-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++	fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 		LowerHex::fmt(&self.0, f)
+ 	}
+ }
+--- a/crates/field/src/underlier/underlier_type.rs
++++ b/crates/field/src/underlier/underlier_type.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::fmt::Debug;
++use crate::qasset_nostd::fmt::Debug;
+ 
+ use bytemuck::{NoUninit, TransparentWrapper, Zeroable};
+ 
+--- a/crates/field/src/underlier/underlier_with_bit_ops.rs
++++ b/crates/field/src/underlier/underlier_with_bit_ops.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr};
++use crate::qasset_nostd::ops::{BitAnd, BitAndAssign, BitOr, BitOrAssign, BitXor, BitXorAssign, Not, Shl, Shr};
+ 
+ use binius_utils::checked_arithmetics::checked_int_div;
+ 
+@@ -225,7 +226,7 @@
+ 	U: UnderlierWithBitOps + From<T> + Divisible<T>,
+ 	T: UnderlierType + NumCast<U>,
+ {
+-	std::array::from_fn(|i| unsafe { value.get_subvalue::<T>(block_idx * BLOCK_LEN + i) })
++	crate::qasset_nostd::array::from_fn(|i| unsafe { value.get_subvalue::<T>(block_idx * BLOCK_LEN + i) })
+ }
+ 
+ /// A helper functions for implementing `UnderlierWithBitOps::spread_unchecked` for SIMD types.
+--- a/crates/field/src/util.rs
++++ b/crates/field/src/util.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use crate::field::FieldOps;
+ 
+--- a/crates/hash/Cargo.toml
++++ b/crates/hash/Cargo.toml
+@@ -10,6 +10,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-field = { path = "../field" }
+ binius-math = { path = "../math" }
+ binius-transcript = { path = "../transcript" }
+--- a/crates/hash/src/lib.rs
++++ b/crates/hash/src/lib.rs
+@@ -1,6 +1,7 @@
+ // Copyright 2026 The Binius Developers
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Cryptographic hash functions and compression functions for Binius.
+ //!
+@@ -8,6 +9,10 @@
+ //! including both standard hash functions (SHA-256) and specialized binary field hash functions
+ //! (Vision).
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod compress;
+ pub mod parallel_compression;
+ pub mod parallel_digest;
+--- a/crates/hash/src/parallel_compression.rs
++++ b/crates/hash/src/parallel_compression.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, fmt::Debug, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, fmt::Debug, mem::MaybeUninit};
+ 
+ use binius_utils::rayon::prelude::*;
+ 
+@@ -95,7 +98,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::mem::MaybeUninit;
++	use crate::qasset_nostd::mem::MaybeUninit;
+ 
+ 	use rand::{Rng, SeedableRng, rngs::StdRng};
+ 
+--- a/crates/hash/src/parallel_digest.rs
++++ b/crates/hash/src/parallel_digest.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, mem::MaybeUninit};
+ 
+ use binius_utils::{
+ 	SerializeBytes,
+@@ -176,7 +179,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::iter::repeat_with;
++	use crate::qasset_nostd::iter::repeat_with;
+ 
+ 	use binius_utils::rayon::iter::IntoParallelRefIterator;
+ 	use digest::{
+@@ -255,7 +258,7 @@
+ 		fn finalize_into_reset(&mut self, out: &mut [MaybeUninit<Output<Self::Digest>>; 4]) {
+ 			for (digest, out) in self.digests.iter_mut().zip(out.iter_mut()) {
+ 				let mut digest_copy = MockDigest::default();
+-				std::mem::swap(digest, &mut digest_copy);
++				crate::qasset_nostd::mem::swap(digest, &mut digest_copy);
+ 				*out = MaybeUninit::new(digest_copy.finalize());
+ 			}
+ 			self.reset();
+--- a/crates/hash/src/qasset_nostd.rs
++++ b/crates/hash/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/hash/src/serialization.rs
++++ b/crates/hash/src/serialization.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{borrow::Borrow, cmp::min};
++use crate::qasset_nostd::{borrow::Borrow, cmp::min};
+ 
+ use binius_transcript::BufMut;
+ use binius_utils::{SerializationError, SerializeBytes};
+--- a/crates/hash/src/vision.rs
++++ b/crates/hash/src/vision.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, mem::MaybeUninit};
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+ use binius_utils::SerializeBytes;
+@@ -68,7 +71,7 @@
+ 		// Serialize first two state elements for each digest (32 bytes total per digest)
+ 		for i in 0..N {
+ 			let output_slice = out[i].as_mut_ptr() as *mut u8;
+-			let output_bytes = unsafe { std::slice::from_raw_parts_mut(output_slice, 32) };
++			let output_bytes = unsafe { crate::qasset_nostd::slice::from_raw_parts_mut(output_slice, 32) };
+ 			let (state0, state1) = output_bytes.split_at_mut(16);
+ 			self.states[i][0]
+ 				.serialize(state0)
+@@ -93,7 +96,7 @@
+ 		});
+ 
+ 		if self.filled_bytes != 0 {
+-			let to_copy = std::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
++			let to_copy = crate::qasset_nostd::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
+ 			data.iter().enumerate().for_each(|(row_i, row)| {
+ 				self.buffers[row_i][self.filled_bytes..self.filled_bytes + to_copy]
+ 					.copy_from_slice(&row[..to_copy]);
+@@ -145,7 +148,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::mem::MaybeUninit;
++	use crate::qasset_nostd::mem::MaybeUninit;
+ 
+ 	use digest::Digest;
+ 	use rand::{Rng, SeedableRng, rngs::StdRng};
+--- a/crates/hash/src/vision_4/constants.rs
++++ b/crates/hash/src/vision_4/constants.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ use binius_field::BinaryField128bGhash as Ghash;
+@@ -270,7 +271,7 @@
+ 	};
+ 
+ 	pub fn matrix_mul(matrix: &[Ghash; M * M], vector: &[Ghash; M]) -> [Ghash; M] {
+-		std::array::from_fn(|i| {
++		crate::qasset_nostd::array::from_fn(|i| {
+ 			// Row i: slice from i*N to (i+1)*N, dot product with vector
+ 			matrix[i * M..(i + 1) * M]
+ 				.iter()
+--- a/crates/hash/src/vision_4/digest.rs
++++ b/crates/hash/src/vision_4/digest.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+@@ -10,7 +11,7 @@
+ use super::{constants::M, permutation::permutation};
+ 
+ pub const RATE_AS_U128: usize = 2;
+-pub const RATE_AS_U8: usize = RATE_AS_U128 * std::mem::size_of::<u128>();
++pub const RATE_AS_U8: usize = RATE_AS_U128 * crate::qasset_nostd::mem::size_of::<u128>();
+ 
+ const PADDING_START: u8 = 0x80;
+ const PADDING_END: u8 = 0x01;
+@@ -82,7 +83,7 @@
+ impl Update for VisionHasherDigest {
+ 	fn update(&mut self, mut data: &[u8]) {
+ 		if self.filled_bytes != 0 {
+-			let to_copy = std::cmp::min(data.len(), RATE_AS_U8 - self.filled_bytes);
++			let to_copy = crate::qasset_nostd::cmp::min(data.len(), RATE_AS_U8 - self.filled_bytes);
+ 			self.buffer[self.filled_bytes..self.filled_bytes + to_copy]
+ 				.copy_from_slice(&data[..to_copy]);
+ 			data = &data[to_copy..];
+--- a/crates/hash/src/vision_4/parallel_compression.rs
++++ b/crates/hash/src/vision_4/parallel_compression.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, fmt::Debug, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, fmt::Debug, mem::MaybeUninit};
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+ use binius_utils::{
+@@ -149,7 +152,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use digest::Digest;
+ 
+--- a/crates/hash/src/vision_4/parallel_digest.rs
++++ b/crates/hash/src/vision_4/parallel_digest.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, mem::MaybeUninit};
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+ use binius_utils::{DeserializeBytes, SerializeBytes};
+@@ -77,7 +80,7 @@
+ 		// Serialize first two state elements for each digest (32 bytes total per digest)
+ 		for i in 0..N {
+ 			let output_slice = out[i].as_mut_ptr() as *mut u8;
+-			let output_bytes = unsafe { std::slice::from_raw_parts_mut(output_slice, 32) };
++			let output_bytes = unsafe { crate::qasset_nostd::slice::from_raw_parts_mut(output_slice, 32) };
+ 			let (state0, state1) = output_bytes.split_at_mut(16);
+ 			self.states[i * M]
+ 				.serialize(state0)
+@@ -102,7 +105,7 @@
+ 		});
+ 
+ 		if self.filled_bytes != 0 {
+-			let to_copy = std::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
++			let to_copy = crate::qasset_nostd::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
+ 			data.iter().enumerate().for_each(|(row_i, row)| {
+ 				self.buffers[row_i][self.filled_bytes..self.filled_bytes + to_copy]
+ 					.copy_from_slice(&row[..to_copy]);
+@@ -154,7 +157,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::mem::MaybeUninit;
++	use crate::qasset_nostd::mem::MaybeUninit;
+ 
+ 	use digest::Digest;
+ 	use rand::{Rng, SeedableRng, rngs::StdRng};
+--- a/crates/hash/src/vision_4/parallel_permutation.rs
++++ b/crates/hash/src/vision_4/parallel_permutation.rs
+@@ -103,7 +103,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use binius_field::Random;
+ 	use rand::{SeedableRng, rngs::StdRng};
+--- a/crates/hash/src/vision_4/permutation.rs
++++ b/crates/hash/src/vision_4/permutation.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ //! Vision-4 hash permutation implementation.
+@@ -102,7 +103,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use binius_field::Random;
+ 	use rand::{SeedableRng, rngs::StdRng};
+@@ -112,7 +113,7 @@
+ 	#[test]
+ 	fn test_mds() {
+ 		let mut rng = StdRng::seed_from_u64(0);
+-		let input: [Ghash; M] = std::array::from_fn(|_| Ghash::random(&mut rng));
++		let input: [Ghash; M] = crate::qasset_nostd::array::from_fn(|_| Ghash::random(&mut rng));
+ 
+ 		let matrix: [Ghash; M * M] = [
+ 			2, 3, 1, 1, //
+--- a/crates/hash/src/vision_6/constants.rs
++++ b/crates/hash/src/vision_6/constants.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ use binius_field::BinaryField128bGhash as Ghash;
+@@ -304,7 +305,7 @@
+ 	};
+ 
+ 	pub fn matrix_mul(matrix: &[Ghash; M * M], vector: &[Ghash; M]) -> [Ghash; M] {
+-		std::array::from_fn(|i| {
++		crate::qasset_nostd::array::from_fn(|i| {
+ 			// Row i: slice from i*N to (i+1)*N, dot product with vector
+ 			matrix[i * M..(i + 1) * M]
+ 				.iter()
+--- a/crates/hash/src/vision_6/digest.rs
++++ b/crates/hash/src/vision_6/digest.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+@@ -10,7 +11,7 @@
+ use super::{constants::M, permutation::permutation};
+ 
+ pub const RATE_AS_U128: usize = 4;
+-pub const RATE_AS_U8: usize = RATE_AS_U128 * std::mem::size_of::<u128>();
++pub const RATE_AS_U8: usize = RATE_AS_U128 * crate::qasset_nostd::mem::size_of::<u128>();
+ 
+ const PADDING_START: u8 = 0x80;
+ const PADDING_END: u8 = 0x01;
+@@ -82,7 +83,7 @@
+ impl Update for VisionHasherDigest {
+ 	fn update(&mut self, mut data: &[u8]) {
+ 		if self.filled_bytes != 0 {
+-			let to_copy = std::cmp::min(data.len(), RATE_AS_U8 - self.filled_bytes);
++			let to_copy = crate::qasset_nostd::cmp::min(data.len(), RATE_AS_U8 - self.filled_bytes);
+ 			self.buffer[self.filled_bytes..self.filled_bytes + to_copy]
+ 				.copy_from_slice(&data[..to_copy]);
+ 			data = &data[to_copy..];
+--- a/crates/hash/src/vision_6/parallel_digest.rs
++++ b/crates/hash/src/vision_6/parallel_digest.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
+-use std::{array, mem::MaybeUninit};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, mem::MaybeUninit};
+ 
+ use binius_field::{BinaryField128bGhash as Ghash, Field};
+ use binius_utils::{DeserializeBytes, SerializeBytes};
+@@ -77,7 +80,7 @@
+ 		// Serialize first two state elements for each digest (32 bytes total per digest)
+ 		for i in 0..N {
+ 			let output_slice = out[i].as_mut_ptr() as *mut u8;
+-			let output_bytes = unsafe { std::slice::from_raw_parts_mut(output_slice, 32) };
++			let output_bytes = unsafe { crate::qasset_nostd::slice::from_raw_parts_mut(output_slice, 32) };
+ 			let (state0, state1) = output_bytes.split_at_mut(16);
+ 			self.states[i * M]
+ 				.serialize(state0)
+@@ -102,7 +105,7 @@
+ 		});
+ 
+ 		if self.filled_bytes != 0 {
+-			let to_copy = std::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
++			let to_copy = crate::qasset_nostd::cmp::min(data[0].len(), RATE_AS_U8 - self.filled_bytes);
+ 			data.iter().enumerate().for_each(|(row_i, row)| {
+ 				self.buffers[row_i][self.filled_bytes..self.filled_bytes + to_copy]
+ 					.copy_from_slice(&row[..to_copy]);
+@@ -154,7 +157,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::mem::MaybeUninit;
++	use crate::qasset_nostd::mem::MaybeUninit;
+ 
+ 	use digest::Digest;
+ 	use rand::{Rng, SeedableRng, rngs::StdRng};
+--- a/crates/hash/src/vision_6/parallel_permutation.rs
++++ b/crates/hash/src/vision_6/parallel_permutation.rs
+@@ -105,7 +105,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use binius_field::Random;
+ 	use rand::{SeedableRng, rngs::StdRng};
+--- a/crates/hash/src/vision_6/permutation.rs
++++ b/crates/hash/src/vision_6/permutation.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ //! Vision-6 hash permutation implementation.
+@@ -123,7 +124,7 @@
+ #[cfg(test)]
+ mod tests {
+ 
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use binius_field::{Field, Random};
+ 	use rand::{SeedableRng, rngs::StdRng};
+@@ -145,7 +146,7 @@
+ 		use rand::{SeedableRng, rngs::StdRng};
+ 
+ 		let mut rng = StdRng::seed_from_u64(0);
+-		let input: [Ghash; M] = std::array::from_fn(|_| Ghash::random(&mut rng));
++		let input: [Ghash; M] = crate::qasset_nostd::array::from_fn(|_| Ghash::random(&mut rng));
+ 
+ 		// 6x6 circulant matrix: x = 2, x^(-1) = 1/2, x + 1 = 3
+ 		let x_inv = Ghash::new(2).invert().expect("2 is invertible");
+--- a/crates/iop/Cargo.toml
++++ b/crates/iop/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-field = { path = "../field" }
+ binius-hash = { path = "../hash" }
+ binius-ip = { path = "../ip" }
+--- a/crates/iop/src/basefold.rs
++++ b/crates/iop/src/basefold.rs
+@@ -20,6 +20,9 @@
+ //! [DP24]: <https://eprint.iacr.org/2024/504>
+ //! [BCS16]: <https://eprint.iacr.org/2016/116>
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::{BinaryField, Field};
+ use binius_ip::sumcheck::{RoundCoeffs, RoundProof};
+ use binius_math::{line::extrapolate_line_packed, multilinear::eq::eq_ind};
+--- a/crates/iop/src/basefold_channel.rs
++++ b/crates/iop/src/basefold_channel.rs
+@@ -5,6 +5,9 @@
+ //! This module provides [`BaseFoldVerifierChannel`], which implements [`IOPVerifierChannel`] using
+ //! FRI commitment and BaseFold opening protocols.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ use binius_ip::channel::IPVerifierChannel;
+ use binius_transcript::{
+--- a/crates/iop/src/basefold_compiler.rs
++++ b/crates/iop/src/basefold_compiler.rs
+@@ -5,6 +5,9 @@
+ //! This module provides [`BaseFoldVerifierCompiler`] and [`BaseFoldZKVerifierCompiler`], which
+ //! precompute FRI parameters and can create verifier channel instances.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ use binius_math::{BinarySubspace, ntt::domain_context::GenericOnTheFly};
+ use binius_transcript::{VerifierTranscript, fiat_shamir::Challenger};
+@@ -172,6 +175,15 @@
+ 	F: BinaryField,
+ 	MerkleScheme_: MerkleTreeScheme<F>,
+ {
++	/// Reconstitutes operator-trusted fixed preprocessing. Never use prover-selected parts.
++	pub fn from_preprocessed(
++		merkle_scheme: MerkleScheme_,
++		oracle_specs: Vec<OracleSpec>,
++		fri_params: Vec<FRIParams<F>>,
++	) -> Self {
++		Self { merkle_scheme, oracle_specs, fri_params }
++	}
++
+ 	/// Creates a new ZK compiler with precomputed FRI parameters.
+ 	///
+ 	/// All oracle specs are treated as ZK: FRI parameters use `log_msg_len + 1` and
+--- a/crates/iop/src/basefold_zk_channel.rs
++++ b/crates/iop/src/basefold_zk_channel.rs
+@@ -6,6 +6,9 @@
+ //! using FRI commitment and ZK BaseFold opening protocols. Unlike [`super::basefold_channel`],
+ //! this channel always applies zero-knowledge blinding to all oracles.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ use binius_ip::channel::IPVerifierChannel;
+ use binius_transcript::{
+--- a/crates/iop/src/channel.rs
++++ b/crates/iop/src/channel.rs
+@@ -14,6 +14,9 @@
+ //! This abstraction allows protocol implementations to be generic over the underlying
+ //! communication and commitment mechanisms.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{boxed::Box};
+ use binius_field::Field;
+ use binius_ip::channel::IPVerifierChannel;
+ 
+--- a/crates/iop/src/fri/common.rs
++++ b/crates/iop/src/fri/common.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{BinaryField, Field};
+ use binius_math::{ntt::DomainContext, reed_solomon::ReedSolomonCode};
+@@ -206,6 +210,7 @@
+ /// parameters.
+ ///
+ /// [DP24]: <https://eprint.iacr.org/2024/504>
++#[cfg(not(target_os = "none"))]
+ pub fn calculate_n_test_queries(security_bits: usize, log_inv_rate: usize) -> usize {
+ 	let rate = 2.0f64.powi(-(log_inv_rate as i32));
+ 	let per_query_err = 0.5 * (1f64 + rate);
+@@ -370,8 +375,8 @@
+ 		F: Field,
+ 		MerkleScheme: MerkleTreeScheme<F>,
+ 	{
+-		let digest_size = std::mem::size_of::<MerkleScheme::Digest>() * 8;
+-		let field_size = std::mem::size_of::<F>() * 8;
++		let digest_size = crate::qasset_nostd::mem::size_of::<MerkleScheme::Digest>() * 8;
++		let field_size = crate::qasset_nostd::mem::size_of::<F>() * 8;
+ 
+ 		// Estimate optimal arity using a heuristic based on the approximation of a single
+ 		// query_proof_size, where θ is the arity:
+--- a/crates/iop/src/fri/error.rs
++++ b/crates/iop/src/fri/error.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{string::String};
+ use crate::merkle_tree;
+ 
+ #[derive(Debug, thiserror::Error)]
+--- a/crates/iop/src/fri/fold.rs
++++ b/crates/iop/src/fri/fold.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, string::ToString};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{BinaryField, ExtensionField, Field, PackedField};
+ use binius_math::{
+@@ -143,7 +147,7 @@
+ 	round_commitments: Vec<Digest>,
+ 	/// Current round number
+ 	curr_round: usize,
+-	_phantom: std::marker::PhantomData<&'a F>,
++	_phantom: crate::qasset_nostd::marker::PhantomData<&'a F>,
+ }
+ 
+ impl<'a, F, Digest> FRIFoldVerifier<'a, F, Digest>
+@@ -170,7 +174,7 @@
+ 			commit_rounds,
+ 			round_commitments: Vec::with_capacity(expected_oracles),
+ 			curr_round: 0,
+-			_phantom: std::marker::PhantomData,
++			_phantom: crate::qasset_nostd::marker::PhantomData,
+ 		}
+ 	}
+ 
+--- a/crates/iop/src/fri/size_estimation.rs
++++ b/crates/iop/src/fri/size_estimation.rs
+@@ -1,6 +1,9 @@
+ // Copyright 2026 The Binius Developers
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::BinaryField;
+ 
+@@ -22,7 +25,7 @@
+ 	F: BinaryField,
+ 	VCS: MerkleTreeScheme<F>,
+ {
+-	let digest_size = std::mem::size_of::<VCS::Digest>();
++	let digest_size = crate::qasset_nostd::mem::size_of::<VCS::Digest>();
+ 
+ 	// Serialized byte-size of a single field element.
+ 	let value_size = {
+--- a/crates/iop/src/fri/verify.rs
++++ b/crates/iop/src/fri/verify.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::BinaryField;
+ use binius_math::{
+--- a/crates/iop/src/lib.rs
++++ b/crates/iop/src/lib.rs
+@@ -24,7 +24,12 @@
+ //! - `binius_verifier` - High-level verification that uses this crate
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod basefold;
+ pub mod basefold_channel;
+ pub mod basefold_compiler;
+--- a/crates/iop/src/merkle_tree/scheme.rs
++++ b/crates/iop/src/merkle_tree/scheme.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{array, fmt::Debug, marker::PhantomData};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, fmt::Debug, marker::PhantomData};
+ 
+ use binius_hash::{PseudoCompressionFunction, hash_serialize};
+ use binius_transcript::{Buf, TranscriptReader};
+--- a/crates/iop/src/naive_channel.rs
++++ b/crates/iop/src/naive_channel.rs
+@@ -6,6 +6,9 @@
+ //! that reads full polynomial data from the transcript instead of verifying FRI commitments.
+ //! This is intended for unit testing of protocols without the overhead of BaseFold/FRI.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::Field;
+ use binius_ip::channel::IPVerifierChannel;
+ use binius_math::{FieldBuffer, inner_product::inner_product_buffers};
+--- a/crates/iop/src/qasset_nostd.rs
++++ b/crates/iop/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/iop/src/size_tracking_channel.rs
++++ b/crates/iop/src/size_tracking_channel.rs
+@@ -5,6 +5,9 @@
+ //!
+ //! This is useful for estimating proof sizes without running the full protocol.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ use binius_ip::channel::IPVerifierChannel;
+ 
+--- a/crates/ip/Cargo.toml
++++ b/crates/ip/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ array-util.workspace = true
+ binius-field = { path = "../field" }
+ binius-math = { path = "../math" }
+--- a/crates/ip/src/channel.rs
++++ b/crates/ip/src/channel.rs
+@@ -16,7 +16,10 @@
+ //! communication mechanism, whether it's an actual interactive channel or a non-interactive
+ //! transcript using the Fiat-Shamir heuristic.
+ 
+-use std::iter::repeat_with;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter::repeat_with;
+ 
+ use binius_field::{Field, field::FieldOps};
+ use binius_transcript::{
+@@ -64,7 +67,7 @@
+ 
+ 	/// Samples a fixed-size array of random challenges.
+ 	fn sample_array<const N: usize>(&mut self) -> [Self::Elem; N] {
+-		std::array::from_fn(|_| self.sample())
++		crate::qasset_nostd::array::from_fn(|_| self.sample())
+ 	}
+ 
+ 	/// Observes a single field element, feeding it into the Fiat-Shamir state.
+--- a/crates/ip/src/fracaddcheck.rs
++++ b/crates/ip/src/fracaddcheck.rs
+@@ -5,6 +5,9 @@
+ //! Each layer represents combining siblings with the fractional-addition rule:
+ //! (a0 / b0) + (a1 / b1) = (a0 * b1 + a1 * b0) / (b0 * b1).
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::Field;
+ use binius_math::line::extrapolate_line;
+ use binius_transcript::Error as TranscriptError;
+--- a/crates/ip/src/lib.rs
++++ b/crates/ip/src/lib.rs
+@@ -25,7 +25,15 @@
+ //! - `binius_iop` - Higher-level IOP protocols built on IP
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ pub mod channel;
+ pub mod fracaddcheck;
+ pub mod mlecheck;
+--- a/crates/ip/src/mlecheck.rs
++++ b/crates/ip/src/mlecheck.rs
+@@ -1,6 +1,9 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::{Field, field::FieldOps, util::powers};
+ use binius_math::multilinear::eq::eq_ind_partial_eval_scalars;
+ 
+--- a/crates/ip/src/qasset_nostd.rs
++++ b/crates/ip/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/ip/src/sumcheck/batch.rs
++++ b/crates/ip/src/sumcheck/batch.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::Field;
+ use binius_math::univariate::evaluate_univariate;
+ 
+--- a/crates/ip/src/sumcheck/common.rs
++++ b/crates/ip/src/sumcheck/common.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+-use std::ops::{Add, AddAssign, Index, Mul, MulAssign};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::{Add, AddAssign, Index, Mul, MulAssign};
+ 
+ use binius_field::{Field, field::FieldOps};
+ use binius_math::univariate::evaluate_univariate;
+@@ -64,7 +68,7 @@
+ 	}
+ }
+ 
+-impl<F: Field> std::iter::Sum for RoundCoeffs<F> {
++impl<F: Field> crate::qasset_nostd::iter::Sum for RoundCoeffs<F> {
+ 	fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+ 		iter.fold(Self::default(), |acc, x| acc + &x)
+ 	}
+--- a/crates/ip/src/sumcheck/verify.rs
++++ b/crates/ip/src/sumcheck/verify.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::Field;
+ 
+ use super::error::Error;
+--- a/crates/math/Cargo.toml
++++ b/crates/math/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-field = { path = "../field", default-features = false }
+ binius-utils = { path = "../utils", default-features = false }
+ bytemuck.workspace = true
+--- a/crates/math/src/batch_invert.rs
++++ b/crates/math/src/batch_invert.rs
+@@ -1,7 +1,10 @@
+ // Copyright 2025-2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{Field, PackedField};
+ 
+--- a/crates/math/src/binary_subspace.rs
++++ b/crates/math/src/binary_subspace.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::ops::Deref;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::Deref;
+ 
+ use binius_field::{BinaryField, BinaryField1b};
+ 
+@@ -160,7 +164,7 @@
+ 	}
+ }
+ 
+-impl<'a, F: BinaryField> std::iter::FusedIterator for BinarySubspaceIterator<'a, F> {}
++impl<'a, F: BinaryField> crate::qasset_nostd::iter::FusedIterator for BinarySubspaceIterator<'a, F> {}
+ 
+ impl<F: BinaryField> Default for BinarySubspace<F> {
+ 	fn default() -> Self {
+--- a/crates/math/src/bit_reverse.rs
++++ b/crates/math/src/bit_reverse.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ use binius_field::{PackedField, square_transpose};
+@@ -133,7 +134,7 @@
+ 				let ptr = buffer_ptr as *mut T;
+ 				let ptr_i = ptr.add(i);
+ 				let ptr_i_rev = ptr.add(i_rev);
+-				std::ptr::swap_nonoverlapping(ptr_i, ptr_i_rev, 1);
++				crate::qasset_nostd::ptr::swap_nonoverlapping(ptr_i, ptr_i_rev, 1);
+ 			}
+ 		}
+ 	});
+--- a/crates/math/src/field_buffer.rs
++++ b/crates/math/src/field_buffer.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
++use crate::qasset_nostd::{
+ 	ops::{Deref, DerefMut, Index, IndexMut},
+ 	slice,
+ };
+--- a/crates/math/src/fold.rs
++++ b/crates/math/src/fold.rs
+@@ -1,7 +1,11 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! Algorithms for matrix multiplications and generalized tensor contractions.
+ 
+-use std::ops::Deref;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
++use crate::qasset_nostd::ops::Deref;
+ 
+ use binius_field::Field;
+ 
+@@ -119,7 +123,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::iter;
++	use crate::qasset_nostd::iter;
+ 
+ 	use binius_field::Random;
+ 	use rand::{SeedableRng, rngs::StdRng};
+--- a/crates/math/src/inner_product.rs
++++ b/crates/math/src/inner_product.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{iter, ops::Deref};
++use crate::qasset_nostd::{iter, ops::Deref};
+ 
+ use binius_field::{ExtensionField, Field, FieldOps, PackedField};
+ use binius_utils::rayon::prelude::*;
+--- a/crates/math/src/lib.rs
++++ b/crates/math/src/lib.rs
+@@ -1,6 +1,8 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Mathematical primitives used in Binius, built atop the `binius-field` crate.
+ //!
+@@ -12,6 +14,10 @@
+ //! * Additive number-theoretic transform
+ //! * Error-correcting codes
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod batch_invert;
+ pub mod binary_subspace;
+ pub mod bit_reverse;
+--- a/crates/math/src/matrix.rs
++++ b/crates/math/src/matrix.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{boxed::Box};
++use crate::qasset_nostd::{
+ 	iter::repeat_with,
+ 	ops::{Add, AddAssign, Index, IndexMut, Sub, SubAssign},
+ };
+--- a/crates/math/src/multilinear/eq.rs
++++ b/crates/math/src/multilinear/eq.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{iter, ops::DerefMut};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{iter, ops::DerefMut};
+ 
+ use binius_field::{
+ 	Field, PackedField,
+--- a/crates/math/src/multilinear/evaluate.rs
++++ b/crates/math/src/multilinear/evaluate.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::ops::{Deref, DerefMut};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::{Deref, DerefMut};
+ 
+ use binius_field::{Field, PackedField, field::FieldOps};
+ use binius_utils::rayon::prelude::*;
+--- a/crates/math/src/multilinear/fold.rs
++++ b/crates/math/src/multilinear/fold.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::ops::{Deref, DerefMut};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::{Deref, DerefMut};
+ 
+ use binius_field::{Field, PackedField};
+ use binius_utils::{random_access_sequence::RandomAccessSequence, rayon::prelude::*};
+@@ -91,7 +95,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::iter::repeat_with;
++	use crate::qasset_nostd::iter::repeat_with;
+ 
+ 	use rand::prelude::*;
+ 
+--- a/crates/math/src/ntt/domain_context.rs
++++ b/crates/math/src/ntt/domain_context.rs
+@@ -1,7 +1,11 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ //! Different implementations for the [`DomainContext`] trait.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ 
+ use super::DomainContext;
+--- a/crates/math/src/ntt/neighbors_last.rs
++++ b/crates/math/src/ntt/neighbors_last.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	cmp::{max, min},
+ 	iter,
+ 	ops::Range,
+--- a/crates/math/src/ntt/tests_evaluation.rs
++++ b/crates/math/src/ntt/tests_evaluation.rs
+@@ -1,8 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ //! This module tests that running the NTT is equivalent to evaluating the respective polynomial at
+ //! the respective points of $S^{(0)}$.
+ 
+-use std::ops::{Add, AddAssign, Mul, MulAssign};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::{Add, AddAssign, Mul, MulAssign};
+ 
+ use binius_field::{BinaryField, Field};
+ use rand::prelude::*;
+@@ -93,7 +97,7 @@
+ // Polynomial += Polynomial
+ impl<F: Field> AddAssign for Polynomial<F> {
+ 	fn add_assign(&mut self, other: Self) {
+-		*self = std::mem::take(self) + other;
++		*self = crate::qasset_nostd::mem::take(self) + other;
+ 	}
+ }
+ 
+--- a/crates/math/src/qasset_nostd.rs
++++ b/crates/math/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/math/src/reed_solomon.rs
++++ b/crates/math/src/reed_solomon.rs
+@@ -1,10 +1,14 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2023-2025 Irreducible Inc.
+ 
+ //! [Reed–Solomon] codes over binary fields.
+ //!
+ //! See [`ReedSolomonCode`] for details.
+ 
+-use std::ptr;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ptr;
+ 
+ use binius_field::{BinaryField, PackedField};
+ use binius_utils::rayon::prelude::*;
+--- a/crates/math/src/span.rs
++++ b/crates/math/src/span.rs
+@@ -1,8 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ //! Utilities for computing subset sums and vector span operations.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::Field;
+ 
+--- a/crates/math/src/tensor_algebra.rs
++++ b/crates/math/src/tensor_algebra.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	iter::Sum,
+ 	marker::PhantomData,
+ 	mem,
+--- a/crates/math/src/test_utils.rs
++++ b/crates/math/src/test_utils.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter::repeat_with;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter::repeat_with;
+ 
+ use binius_field::{BinaryField128bGhash, Field, PackedBinaryGhash4x128b, PackedField};
+ use rand::RngCore;
+--- a/crates/math/src/univariate.rs
++++ b/crates/math/src/univariate.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::{BinaryField, Field, field::FieldOps};
+ use itertools::izip;
+ 
+--- a/crates/spartan-frontend/Cargo.toml
++++ b/crates/spartan-frontend/Cargo.toml
+@@ -5,6 +5,7 @@
+ authors.workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-field = { path = "../field" }
+ binius-utils = { path = "../utils" }
+ bytemuck.workspace = true
+--- a/crates/spartan-frontend/src/circuit_builder.rs
++++ b/crates/spartan-frontend/src/circuit_builder.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{array, backtrace::Backtrace, collections::HashMap, mem};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, backtrace::Backtrace, collections::HashMap, mem};
+ 
+ use binius_field::Field;
+ use bytemuck::zeroed_vec;
+@@ -423,7 +427,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::iter::successors;
++	use crate::qasset_nostd::iter::successors;
+ 
+ 	use binius_field::{BinaryField128bGhash as B128, Field, PackedField};
+ 
+--- a/crates/spartan-frontend/src/circuits.rs
++++ b/crates/spartan-frontend/src/circuits.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{iter, iter::successors};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{iter, iter::successors};
+ 
+ use binius_field::{Field, arithmetic_traits::InvertOrZero};
+ 
+@@ -115,7 +119,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::{array, iter};
++	use crate::qasset_nostd::{array, iter};
+ 
+ 	use binius_field::{BinaryField128bGhash as B128, Field, Random, arithmetic_traits::Square};
+ 	use binius_math::{
+--- a/crates/spartan-frontend/src/constraint_system.rs
++++ b/crates/spartan-frontend/src/constraint_system.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	cmp::Ordering,
+ 	collections::HashMap,
+ 	mem,
+@@ -303,6 +307,11 @@
+ 		&self.mul_constraints
+ 	}
+ 
++	/// Moves constraints into a verifier-only padded representation, retaining metadata.
++	pub fn take_mul_constraints(&mut self) -> Vec<MulConstraint<WitnessIndex>> {
++		core::mem::take(&mut self.mul_constraints)
++	}
++
+ 	pub fn one_wire(&self) -> WitnessIndex {
+ 		WitnessIndex {
+ 			segment: WitnessSegment::Public,
+--- a/crates/spartan-frontend/src/lib.rs
++++ b/crates/spartan-frontend/src/lib.rs
+@@ -1,6 +1,8 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Frontend for building constraint systems for the Binius proof system.
+ //!
+@@ -92,6 +94,10 @@
+ //! [`WitnessLayout`]: constraint_system::WitnessLayout
+ //! [`compile()`]: compiler::compile
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod circuit_builder;
+ pub mod circuits;
+ pub mod compiler;
+--- a/crates/spartan-frontend/src/qasset_nostd.rs
++++ b/crates/spartan-frontend/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/spartan-frontend/src/wire_elimination.rs
++++ b/crates/spartan-frontend/src/wire_elimination.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::mem;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::mem;
+ 
+ use binius_field::Field;
+ 
+@@ -219,7 +223,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::{iter, iter::successors};
++	use crate::qasset_nostd::{iter, iter::successors};
+ 
+ 	use binius_field::{BinaryField128bGhash as B128, Field, PackedField};
+ 
+--- a/crates/spartan-verifier/Cargo.toml
++++ b/crates/spartan-verifier/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ array-util.workspace = true
+ binius-field = { path = "../field" }
+ binius-hash = { path = "../hash", default-features = false }
+--- a/crates/spartan-verifier/src/constraint_system.rs
++++ b/crates/spartan-verifier/src/constraint_system.rs
+@@ -1,6 +1,9 @@
+ // Copyright 2025 Irreducible Inc.
+ // Copyright 2026 The Binius Developers
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::Field;
+ use binius_ip::mlecheck::mask_buffer_dimensions;
+ pub use binius_spartan_frontend::constraint_system::BlindingInfo;
+@@ -17,6 +20,7 @@
+ #[derive(Debug, Clone)]
+ pub struct ConstraintSystemPadded<F: Field> {
+ 	inner: ConstraintSystem<F>,
++    n_unpadded_constraints: usize,
+ 	log_precommit: u32,
+ 	log_private: u32,
+ 	blinding_info: BlindingInfo,
+@@ -34,7 +38,35 @@
+ 	/// 3. Calculates the log_size based on witness requirements
+ 	/// 4. Computes mask buffer dimensions for the ZK mulcheck mask polynomial
+ 	pub fn new(cs: ConstraintSystem<F>, blinding_info: BlindingInfo) -> Self {
+-		let mut mul_constraints = cs.mul_constraints().to_vec();
++		// Reserve the identical final sequence once. This avoids bump allocator leaks
++        // from intermediate Vec growth; no constraint or masking rule changes.
++        let final_len = cs.mul_constraints().len()
++            .checked_add(blinding_info.n_dummy_constraints)
++            .expect("fixed preprocessing constraint count is bounded")
++            .next_power_of_two();
++        let mut mul_constraints = Vec::with_capacity(final_len);
++        mul_constraints.extend_from_slice(cs.mul_constraints());
++        Self::with_owned_constraints(cs, blinding_info, mul_constraints)
++    }
++
++    /// Creates verifier-only padding while moving, rather than duplicating, constraints.
++    /// The retained inner constraint system contains metadata only; do not use it for export.
++    pub fn new_verifier_only(mut cs: ConstraintSystem<F>, blinding_info: BlindingInfo) -> Self {
++        let constraints = cs.take_mul_constraints();
++        Self::with_owned_constraints(cs, blinding_info, constraints)
++    }
++
++    fn with_owned_constraints(
++        cs: ConstraintSystem<F>,
++        blinding_info: BlindingInfo,
++        mut mul_constraints: Vec<MulConstraint<WitnessIndex>>,
++    ) -> Self {
++        let n_unpadded_constraints = mul_constraints.len();
++        let final_len = mul_constraints.len()
++            .checked_add(blinding_info.n_dummy_constraints)
++            .expect("fixed preprocessing constraint count is bounded")
++            .next_power_of_two();
++        mul_constraints.reserve_exact(final_len - mul_constraints.len());
+ 
+ 		/// Adds dummy blinding constraints for a segment and returns its padded log-size.
+ 		fn add_blinding_constraints(
+@@ -96,6 +128,7 @@
+ 
+ 		Self {
+ 			inner: cs,
++            n_unpadded_constraints,
+ 			log_precommit,
+ 			log_private,
+ 			blinding_info,
+@@ -104,6 +137,24 @@
+ 		}
+ 	}
+ 
++    /// Returns complete unpadded compiler output for host preprocessing export.
++    ///
++    /// # Preconditions
++    /// The instance must come from `new`, which retains unpadded constraints.
++    /// Verifier-only callers must use `retained_unpadded_constraint_system` instead.
++    pub fn unpadded_constraint_system(&self) -> &ConstraintSystem<F> {
++        self.retained_unpadded_constraint_system()
++            .expect("verifier-only preprocessing does not retain export constraints")
++    }
++
++    /// Returns complete export data only when this instance actually retains it.
++    pub fn retained_unpadded_constraint_system(&self) -> Option<&ConstraintSystem<F>> {
++        (self.inner.mul_constraints().len() == self.n_unpadded_constraints).then_some(&self.inner)
++    }
++
++    /// Returns the original number of constraints before blinding and padding.
++    pub fn n_unpadded_constraints(&self) -> usize { self.n_unpadded_constraints }
++
+ 	pub fn constants(&self) -> &[F] {
+ 		self.inner.constants()
+ 	}
+--- a/crates/spartan-verifier/src/lib.rs
++++ b/crates/spartan-verifier/src/lib.rs
+@@ -27,13 +27,21 @@
+ //! - `binius_verifier` - Alternative verification backend
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
+-
++#![cfg_attr(target_os = "none", no_std)]
++
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
+ pub mod config;
+ pub mod constraint_system;
+ pub mod wiring;
+ pub mod wrapper;
+ 
+-use std::slice;
++use crate::qasset_nostd::slice;
+ 
+ use binius_field::{BinaryField, Field, field::FieldOps};
+ use binius_hash::PseudoCompressionFunction;
+@@ -264,6 +272,7 @@
+ 	/// Constructs a verifier for a constraint system.
+ 	///
+ 	/// See [`Verifier`] struct documentation for details.
++	#[cfg(not(target_os = "none"))]
+ 	pub fn setup(
+ 		constraint_system: ConstraintSystem<F>,
+ 		log_inv_rate: usize,
+--- a/crates/spartan-verifier/src/qasset_nostd.rs
++++ b/crates/spartan-verifier/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/spartan-verifier/src/wiring.rs
++++ b/crates/spartan-verifier/src/wiring.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{boxed::Box};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{Field, field::FieldOps};
+ use binius_math::{multilinear::eq::eq_ind_partial_eval_scalars, univariate::evaluate_univariate};
+--- a/crates/spartan-verifier/src/wrapper/channel.rs
++++ b/crates/spartan-verifier/src/wrapper/channel.rs
+@@ -2,7 +2,10 @@
+ 
+ //! Channels that symbolically execute a verifier to build constraint systems or fill witnesses.
+ 
+-use std::{cell::RefCell, rc::Rc, vec::IntoIter as VecIntoIter};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{cell::RefCell, rc::Rc, vec::IntoIter as VecIntoIter};
+ 
+ use binius_field::Field;
+ use binius_iop::channel::{IOPVerifierChannel, OracleLinearRelation, OracleSpec};
+--- a/crates/spartan-verifier/src/wrapper/circuit_elem.rs
++++ b/crates/spartan-verifier/src/wrapper/circuit_elem.rs
+@@ -10,7 +10,10 @@
+ //! [`ConstraintBuilder`]: binius_spartan_frontend::circuit_builder::ConstraintBuilder
+ //! [`WitnessGenerator`]: binius_spartan_frontend::circuit_builder::WitnessGenerator
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	cell::RefCell,
+ 	iter::{Product, Sum},
+ 	mem,
+--- a/crates/spartan-verifier/src/wrapper/gadgets.rs
++++ b/crates/spartan-verifier/src/wrapper/gadgets.rs
+@@ -3,6 +3,9 @@
+ //! Circuit gadgets — functions generic over [`CircuitBuilder`] that take input wires and return
+ //! output wires.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::{ExtensionField, Field};
+ use binius_spartan_frontend::circuit_builder::CircuitBuilder;
+ 
+--- a/crates/spartan-verifier/src/wrapper/mod.rs
++++ b/crates/spartan-verifier/src/wrapper/mod.rs
+@@ -9,6 +9,9 @@
+ //! [`IPVerifierChannel`]: binius_ip::channel::IPVerifierChannel
+ //! [`ConstraintBuilder`]: binius_spartan_frontend::circuit_builder::ConstraintBuilder
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ mod channel;
+ pub mod circuit_elem;
+ pub mod gadgets;
+@@ -19,7 +22,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::rc::Rc;
++	use crate::qasset_nostd::rc::Rc;
+ 
+ 	use binius_field::{
+ 		BinaryField1b as B1, BinaryField128bGhash as B128, ExtensionField, Field, Random,
+@@ -36,7 +39,7 @@
+ 	type BuildWire = CircuitWire<ConstraintBuilder<B128>>;
+ 
+ 	/// Helper to create a BuildWire from a ConstraintBuilder Rc for tests.
+-	fn alloc_inout_wire(rc: &Rc<std::cell::RefCell<ConstraintBuilder<B128>>>) -> BuildElem {
++	fn alloc_inout_wire(rc: &Rc<crate::qasset_nostd::cell::RefCell<ConstraintBuilder<B128>>>) -> BuildElem {
+ 		let wire = rc.borrow_mut().alloc_inout();
+ 		BuildElem::Wire {
+ 			wire: BuildWire::new(rc, wire),
+@@ -64,7 +67,7 @@
+ 
+ 	#[test]
+ 	fn test_constant_identity_shortcuts() {
+-		let rc = Rc::new(std::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
++		let rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
+ 		let elem = alloc_inout_wire(&rc);
+ 
+ 		// Adding zero returns the wire unchanged.
+@@ -82,7 +85,7 @@
+ 
+ 	#[test]
+ 	fn test_wire_addition_creates_constraint() {
+-		let rc = Rc::new(std::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
++		let rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
+ 		let a = alloc_inout_wire(&rc);
+ 		let b = alloc_inout_wire(&rc);
+ 
+@@ -95,7 +98,7 @@
+ 
+ 	#[test]
+ 	fn test_wire_multiplication_creates_constraint() {
+-		let rc = Rc::new(std::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
++		let rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
+ 		let a = alloc_inout_wire(&rc);
+ 		let b = alloc_inout_wire(&rc);
+ 
+@@ -107,7 +110,7 @@
+ 
+ 	#[test]
+ 	fn test_invert_or_zero_creates_constraints() {
+-		let rc = Rc::new(std::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
++		let rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(ConstraintBuilder::<B128>::new()));
+ 		let elem = alloc_inout_wire(&rc);
+ 
+ 		let _inv = elem.invert_or_zero();
+@@ -259,7 +262,7 @@
+ 			.collect();
+ 
+ 		// Build CircuitElem wires via a shared Rc.
+-		let rc = Rc::new(std::cell::RefCell::new(constraint_builder));
++		let rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(constraint_builder));
+ 		let mut elems: Vec<BuildElem> = inout_wires
+ 			.iter()
+ 			.map(|&w| BuildElem::Wire {
+@@ -292,7 +295,7 @@
+ 			.collect();
+ 
+ 		type WitnessElem<'a> = CircuitElem<WitnessGenerator<'a, B128>>;
+-		let witness_rc = Rc::new(std::cell::RefCell::new(witness_gen));
++		let witness_rc = Rc::new(crate::qasset_nostd::cell::RefCell::new(witness_gen));
+ 		let mut witness_elems: Vec<WitnessElem> = witness_wires
+ 			.iter()
+ 			.map(|&w| WitnessElem::Wire {
+--- a/crates/spartan-verifier/src/wrapper/zk_wrapped_channel.rs
++++ b/crates/spartan-verifier/src/wrapper/zk_wrapped_channel.rs
+@@ -8,6 +8,9 @@
+ //!
+ //! [`finish()`]: ZKWrappedVerifierChannel::finish
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::BinaryField;
+ use binius_iop::{
+ 	basefold_zk_channel::{BaseFoldZKOracle, BaseFoldZKVerifierChannel},
+--- a/crates/transcript/Cargo.toml
++++ b/crates/transcript/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ auto_impl.workspace = true
+ binius-field = { path = "../field" }
+ binius-utils = { path = "../utils" }
+--- a/crates/transcript/src/fiat_shamir/buffer.rs
++++ b/crates/transcript/src/fiat_shamir/buffer.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::slice;
++use crate::qasset_nostd::slice;
+ 
+ use bytes::{Buf, BufMut, buf::UninitSlice};
+ 
+--- a/crates/transcript/src/fiat_shamir/hasher_challenger.rs
++++ b/crates/transcript/src/fiat_shamir/hasher_challenger.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{cmp::min, mem};
++use crate::qasset_nostd::{cmp::min, mem};
+ 
+ use bytes::{Buf, BufMut, buf::UninitSlice};
+ use digest::{
+@@ -95,7 +96,9 @@
+ 	H: Digest + Default + BlockSizeUser,
+ {
+ 	fn into_observer(mut self) -> HasherObserver<H> {
+-		Digest::update(&mut self.hasher, self.index.to_le_bytes());
++		// Canonicalize the original 64-bit host transcript on Wasm32.
++        // Upstream usize::to_le_bytes hashes only four bytes on this target.
++        Digest::update(&mut self.hasher, (self.index as u64).to_le_bytes());
+ 
+ 		HasherObserver {
+ 			hasher: self.hasher,
+--- a/crates/transcript/src/fiat_shamir/sampling.rs
++++ b/crates/transcript/src/fiat_shamir/sampling.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ // Copyright (c) 2024 The Plonky3 authors
+ 
+@@ -9,7 +10,10 @@
+ //!
+ //! [Plonky3]: <https://github.com/plonky3/plonky3>
+ 
+-use std::array;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::array;
+ 
+ use bytes::Buf;
+ 
+--- a/crates/transcript/src/lib.rs
++++ b/crates/transcript/src/lib.rs
+@@ -1,6 +1,8 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Objects used to read and write proof strings.
+ //!
+@@ -14,6 +16,10 @@
+ //! example, it is secure to write a Merkle tree root to the transcript tape, sample a random
+ //! index, then provide the Merkle leaf opening at that index in the advice tape.
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ mod error;
+ pub mod fiat_shamir;
+ mod transcript;
+--- a/crates/transcript/src/qasset_nostd.rs
++++ b/crates/transcript/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/transcript/src/transcript.rs
++++ b/crates/transcript/src/transcript.rs
+@@ -1,6 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::{fs::File, io::Write, iter::repeat_with, slice};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{iter::repeat_with, slice};
++#[cfg(not(target_os = "none"))]
++use crate::qasset_nostd::{fs::File, io::Write};
+ 
+ use binius_field::Field;
+ use binius_utils::{DeserializeBytes, SerializeBytes};
+@@ -255,11 +261,12 @@
+ 		);
+ 
+ 		// Dumps the transcript to the path set in the BINIUS_DUMP_PROOF env variable.
+-		if let Ok(path) = std::env::var("BINIUS_DUMP_PROOF") {
++		#[cfg(not(target_os = "none"))]
++		if let Ok(path) = crate::qasset_nostd::env::var("BINIUS_DUMP_PROOF") {
+ 			let path = if cfg!(test) {
+ 				// Because tests may run simultaneously, each test includes its name in the file
+ 				// name to avoid collisions.
+-				let current_thread = std::thread::current();
++				let current_thread = crate::qasset_nostd::thread::current();
+ 				let test_name = current_thread.name().unwrap_or("unknown");
+ 				// Adjust "./" to "../../" to ensure files are saved in the project root rather than
+ 				// the package root.
+@@ -268,7 +275,7 @@
+ 				} else {
+ 					path
+ 				};
+-				std::fs::create_dir_all(&path)
++				crate::qasset_nostd::fs::create_dir_all(&path)
+ 					.unwrap_or_else(|_| panic!("Failed to create directories for path: {path}",));
+ 				format!("{path}/{test_name}.bin")
+ 			} else {
+--- a/crates/utils/Cargo.toml
++++ b/crates/utils/Cargo.toml
+@@ -9,6 +9,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ array-util.workspace = true
+ bytemuck = { workspace = true, features = ["extern_crate_alloc"] }
+ bytes.workspace = true
+--- a/crates/utils/src/array_2d.rs
++++ b/crates/utils/src/array_2d.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::ops::{AddAssign, Deref, DerefMut, Index, IndexMut};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::ops::{AddAssign, Deref, DerefMut, Index, IndexMut};
+ 
+ use bytemuck::{Zeroable, allocation::zeroed_vec};
+ 
+--- a/crates/utils/src/bitwise.rs
++++ b/crates/utils/src/bitwise.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	marker::PhantomData,
+ 	ops::{BitAnd, Shr},
+ };
+--- a/crates/utils/src/env.rs
++++ b/crates/utils/src/env.rs
+@@ -1,8 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ /// Read boolean flag from the environment variable.
+ pub fn boolean_env_flag_set(flag: &str) -> bool {
+-	match std::env::var(flag) {
++	#[cfg(target_os = "none")]
++	{ let _ = flag; false }
++	#[cfg(not(target_os = "none"))]
++	match crate::qasset_nostd::env::var(flag) {
+ 		Ok(val) => ["1", "on", "ON", "true", "TRUE", "yes", "YES"].contains(&val.as_str()),
+ 		Err(_) => false,
+ 	}
+--- a/crates/utils/src/iter.rs
++++ b/crates/utils/src/iter.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+-use std::iter::FusedIterator;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter::FusedIterator;
+ 
+ pub trait IterExtensions: Iterator + Sized {
+ 	fn map_skippable<R, F>(self, f: F) -> SkippableMap<Self, F>
+@@ -15,9 +19,9 @@
+ 
+ /// A map iterator that skips values when `nth` is called.
+ ///
+-/// `std::iter::Map` guarantees that the function will be called for every value of the inner
++/// `crate::qasset_nostd::iter::Map` guarantees that the function will be called for every value of the inner
+ /// iterator. However, it makes it impossible to implement `nth` in efficient way. `SkippableMap`
+-/// pretty much follows the interface of the `std::iter::Map` except that F is required to be `Fn`
++/// pretty much follows the interface of the `crate::qasset_nostd::iter::Map` except that F is required to be `Fn`
+ /// instead of `FnMut`.
+ #[derive(Debug, Clone)]
+ pub struct SkippableMap<I, F> {
+@@ -75,7 +79,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::cell::RefCell;
++	use crate::qasset_nostd::cell::RefCell;
+ 
+ 	use super::*;
+ 
+--- a/crates/utils/src/lib.rs
++++ b/crates/utils/src/lib.rs
+@@ -1,9 +1,15 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
+ //! Utility modules used in Binius.
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod array_2d;
+ pub mod bitwise;
+ pub mod checked_arithmetics;
+--- a/crates/utils/src/mem.rs
++++ b/crates/utils/src/mem.rs
+@@ -1,6 +1,7 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::mem::MaybeUninit;
++use crate::qasset_nostd::mem::MaybeUninit;
+ 
+ /// Turn a given slice of `T` into a slice of `MaybeUninit<T>`.
+ ///
+@@ -8,7 +9,7 @@
+ ///
+ /// This function is going to panic in case `T` has a destructor.
+ pub fn slice_uninit_mut<T>(slice: &mut [T]) -> &mut [MaybeUninit<T>] {
+-	assert!(!std::mem::needs_drop::<T>());
++	assert!(!crate::qasset_nostd::mem::needs_drop::<T>());
+ 	unsafe {
+ 		// SAFETY:
+ 		//
+@@ -27,7 +28,7 @@
+ 		//
+ 		// The returned slice takes over the lifetime of the input slice making the lifetime
+ 		// correct.
+-		std::slice::from_raw_parts_mut(slice.as_mut_ptr() as *mut MaybeUninit<T>, slice.len())
++		crate::qasset_nostd::slice::from_raw_parts_mut(slice.as_mut_ptr() as *mut MaybeUninit<T>, slice.len())
+ 	}
+ }
+ 
+@@ -44,7 +45,7 @@
+ ///
+ /// [`assume_init_mut`]: MaybeUninit::assume_init_mut
+ pub const unsafe fn slice_assume_init_mut<T>(slice: &mut [MaybeUninit<T>]) -> &mut [T] {
+-	unsafe { std::mem::transmute(slice) }
++	unsafe { crate::qasset_nostd::mem::transmute(slice) }
+ }
+ 
+ /// This can be removed when MaybeUninit::slice_assume_init_ref is stabilized
+@@ -60,5 +61,5 @@
+ ///
+ /// [`assume_init_ref`]: MaybeUninit::assume_init_ref
+ pub const unsafe fn slice_assume_init_ref<T>(slice: &[MaybeUninit<T>]) -> &[T] {
+-	unsafe { std::mem::transmute(slice) }
++	unsafe { crate::qasset_nostd::mem::transmute(slice) }
+ }
+--- a/crates/utils/src/platform_diagnostics.rs
++++ b/crates/utils/src/platform_diagnostics.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+-use std::{collections::BTreeMap, sync::OnceLock};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, string::String, string::ToString};
++use crate::qasset_nostd::{collections::BTreeMap, sync::OnceLock};
+ 
+ use regex::Regex;
+ 
+@@ -159,7 +163,7 @@
+ // Platform detection helper functions
+ #[cfg(target_os = "macos")]
+ fn get_macos_cpu_brand() -> Option<String> {
+-	std::process::Command::new("sysctl")
++	crate::qasset_nostd::process::Command::new("sysctl")
+ 		.args(["-n", "machdep.cpu.brand_string"])
+ 		.output()
+ 		.ok()
+@@ -169,7 +173,7 @@
+ 
+ #[cfg(target_os = "macos")]
+ fn get_kernel_version_via_uname() -> Option<String> {
+-	std::process::Command::new("uname")
++	crate::qasset_nostd::process::Command::new("uname")
+ 		.arg("-r")
+ 		.output()
+ 		.ok()
+@@ -180,7 +184,7 @@
+ // Runtime feature detection functions
+ #[cfg(target_arch = "aarch64")]
+ fn detect_aarch64_features() -> BTreeMap<&'static str, bool> {
+-	use std::arch::is_aarch64_feature_detected;
++	use crate::qasset_nostd::arch::is_aarch64_feature_detected;
+ 	let mut features = BTreeMap::new();
+ 
+ 	// Note: We can't use a loop here because the macro requires literal strings
+@@ -209,7 +213,7 @@
+ 
+ #[cfg(target_arch = "x86_64")]
+ fn detect_x86_64_features() -> BTreeMap<&'static str, bool> {
+-	use std::arch::is_x86_feature_detected;
++	use crate::qasset_nostd::arch::is_x86_feature_detected;
+ 	let mut features = BTreeMap::new();
+ 
+ 	// Note: We can't use a loop here because the macro requires literal strings
+@@ -241,13 +245,13 @@
+ 	fn detect_hardware() -> HardwareInfo {
+ 		let cpu_model = Self::get_cpu_model();
+ 		let vendor = Self::detect_vendor(&cpu_model);
+-		let core_count = std::thread::available_parallelism()
+-			.map(std::num::NonZeroUsize::get)
++		let core_count = crate::qasset_nostd::thread::available_parallelism()
++			.map(crate::qasset_nostd::num::NonZeroUsize::get)
+ 			.unwrap_or(1);
+ 
+ 		HardwareInfo {
+ 			cpu_model,
+-			architecture: std::env::consts::ARCH,
++			architecture: crate::qasset_nostd::env::consts::ARCH,
+ 			vendor,
+ 			core_count,
+ 		}
+@@ -266,7 +270,7 @@
+ 	fn get_cpu_model() -> String {
+ 		#[cfg(target_os = "linux")]
+ 		{
+-			if let Ok(cpuinfo) = std::fs::read_to_string("/proc/cpuinfo") {
++			if let Ok(cpuinfo) = crate::qasset_nostd::fs::read_to_string("/proc/cpuinfo") {
+ 				// For x86_64
+ 				if let Some(line) = cpuinfo.lines().find(|l| l.starts_with("model name")) {
+ 					return line.split(':').nth(1).unwrap_or("").trim().to_string();
+@@ -305,7 +309,7 @@
+ 		let kernel_version = Self::get_kernel_version();
+ 
+ 		OSRuntimeInfo {
+-			os: std::env::consts::OS,
++			os: crate::qasset_nostd::env::consts::OS,
+ 			kernel_version,
+ 			runtime_features,
+ 		}
+@@ -314,7 +318,7 @@
+ 	fn get_kernel_version() -> String {
+ 		#[cfg(target_os = "linux")]
+ 		{
+-			std::fs::read_to_string("/proc/version")
++			crate::qasset_nostd::fs::read_to_string("/proc/version")
+ 				.ok()
+ 				.and_then(|s| s.split_whitespace().nth(2).map(|s| s.to_string()))
+ 				.unwrap_or_else(|| config::UNKNOWN_VERSION.to_string())
+@@ -382,17 +386,17 @@
+ 		let mut arch_modules = Vec::new();
+ 
+ 		// Try to find the workspace root
+-		let workspace_root = std::env::var("CARGO_MANIFEST_DIR").ok().and_then(|dir| {
+-			let path = std::path::Path::new(&dir);
++		let workspace_root = crate::qasset_nostd::env::var("CARGO_MANIFEST_DIR").ok().and_then(|dir| {
++			let path = crate::qasset_nostd::path::Path::new(&dir);
+ 			// Walk up to find workspace root (has Cargo.toml with [workspace])
+ 			let mut current = Some(path);
+ 			while let Some(p) = current {
+ 				let cargo_toml = p.join("Cargo.toml");
+ 				if cargo_toml.exists()
+-					&& let Ok(content) = std::fs::read_to_string(&cargo_toml)
++					&& let Ok(content) = crate::qasset_nostd::fs::read_to_string(&cargo_toml)
+ 					&& content.contains("[workspace]")
+ 				{
+-					return p.to_str().map(std::string::ToString::to_string);
++					return p.to_str().map(crate::qasset_nostd::string::ToString::to_string);
+ 				}
+ 				current = p.parent();
+ 			}
+@@ -406,7 +410,7 @@
+ 
+ 			// Scan for arch modules and features
+ 			Self::scan_directory_with_regex(
+-				std::path::Path::new(&root),
++				crate::qasset_nostd::path::Path::new(&root),
+ 				&mut cfg_features,
+ 				&mut runtime_detections,
+ 				&mut arch_modules,
+@@ -427,7 +431,7 @@
+ 	}
+ 
+ 	fn scan_directory_with_regex(
+-		dir: &std::path::Path,
++		dir: &crate::qasset_nostd::path::Path,
+ 		cfg_features: &mut BTreeMap<String, Vec<String>>,
+ 		runtime_detections: &mut BTreeMap<String, Vec<String>>,
+ 		arch_modules: &mut Vec<String>,
+@@ -442,15 +446,15 @@
+ 			return;
+ 		}
+ 
+-		if let Ok(entries) = std::fs::read_dir(dir) {
++		if let Ok(entries) = crate::qasset_nostd::fs::read_dir(dir) {
+ 			for entry in entries.flatten() {
+ 				let path = entry.path();
+ 
+ 				if path.is_dir() {
+ 					// Check if this is an arch module
+-					if path.file_name() == Some(std::ffi::OsStr::new(config::ARCH_DIR_NAME)) {
++					if path.file_name() == Some(crate::qasset_nostd::ffi::OsStr::new(config::ARCH_DIR_NAME)) {
+ 						// List subdirectories as arch modules
+-						if let Ok(arch_entries) = std::fs::read_dir(&path) {
++						if let Ok(arch_entries) = crate::qasset_nostd::fs::read_dir(&path) {
+ 							for arch_entry in arch_entries.flatten() {
+ 								if arch_entry.path().is_dir()
+ 									&& let Some(name) = arch_entry.file_name().to_str()
+@@ -471,9 +475,9 @@
+ 						cfg_regex,
+ 						detect_regex,
+ 					);
+-				} else if path.extension() == Some(std::ffi::OsStr::new(config::RUST_FILE_EXT)) {
++				} else if path.extension() == Some(crate::qasset_nostd::ffi::OsStr::new(config::RUST_FILE_EXT)) {
+ 					// Scan Rust file for features
+-					if let Ok(content) = std::fs::read_to_string(&path) {
++					if let Ok(content) = crate::qasset_nostd::fs::read_to_string(&path) {
+ 						let relative_path = path
+ 							.strip_prefix(root)
+ 							.unwrap_or(&path)
+@@ -942,7 +946,7 @@
+ 
+ 		// Test that print() doesn't panic
+ 		// Redirect output to avoid cluttering test output
+-		let _output = std::panic::catch_unwind(|| {
++		let _output = crate::qasset_nostd::panic::catch_unwind(|| {
+ 			diag.print();
+ 		});
+ 		assert!(_output.is_ok(), "print() should not panic");
+--- a/crates/utils/src/qasset_nostd.rs
++++ b/crates/utils/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/utils/src/random_access_sequence.rs
++++ b/crates/utils/src/random_access_sequence.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ /// A trait for a collection that allows indexed access by value.
+@@ -93,7 +94,7 @@
+ 	inner: &'a Inner,
+ 	offset: usize,
+ 	len: usize,
+-	_marker: std::marker::PhantomData<T>,
++	_marker: crate::qasset_nostd::marker::PhantomData<T>,
+ }
+ 
+ impl<'a, T: Copy, Inner: RandomAccessSequence<T>> SequenceSubrange<'a, T, Inner> {
+@@ -105,7 +106,7 @@
+ 			inner,
+ 			offset,
+ 			len,
+-			_marker: std::marker::PhantomData,
++			_marker: crate::qasset_nostd::marker::PhantomData,
+ 		}
+ 	}
+ }
+@@ -129,7 +130,7 @@
+ 	inner: &'a mut Inner,
+ 	offset: usize,
+ 	len: usize,
+-	_marker: std::marker::PhantomData<&'a T>,
++	_marker: crate::qasset_nostd::marker::PhantomData<&'a T>,
+ }
+ 
+ impl<'a, T: Copy, Inner: RandomAccessSequenceMut<T>> SequenceSubrangeMut<'a, T, Inner> {
+@@ -141,7 +142,7 @@
+ 			inner,
+ 			offset,
+ 			len,
+-			_marker: std::marker::PhantomData,
++			_marker: crate::qasset_nostd::marker::PhantomData,
+ 		}
+ 	}
+ }
+@@ -178,7 +179,7 @@
+ 	log_slice: usize,
+ 	slice_index: usize,
+ 	len: usize,
+-	_marker: std::marker::PhantomData<T>,
++	_marker: crate::qasset_nostd::marker::PhantomData<T>,
+ }
+ 
+ impl<'a, T: Copy, Inner: RandomAccessSequence<T>> MatrixVertSliceSubrange<'a, T, Inner> {
+@@ -209,7 +210,7 @@
+ 			log_slice,
+ 			slice_index,
+ 			len,
+-			_marker: std::marker::PhantomData,
++			_marker: crate::qasset_nostd::marker::PhantomData,
+ 		}
+ 	}
+ }
+@@ -233,7 +234,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::fmt::Debug;
++	use crate::qasset_nostd::fmt::Debug;
+ 
+ 	use rand::{Rng, SeedableRng, rngs::StdRng};
+ 
+--- a/crates/utils/src/rayon/config.rs
++++ b/crates/utils/src/rayon/config.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ use cfg_if::cfg_if;
+@@ -17,14 +18,14 @@
+ pub fn adjust_thread_pool() -> &'static Result<(), ThreadPoolBuildError> {
+ 	cfg_if! {
+ 		if #[cfg(feature = "rayon")] {
+-			use std::sync::OnceLock;
++			use crate::qasset_nostd::sync::OnceLock;
+ 
+ 			static ONCE_GUARD: OnceLock<Result<(), ThreadPoolBuildError>> = OnceLock::new();
+ 
+ 			ONCE_GUARD.get_or_init(|| {
+ 				// We cannot use `binius_maybe_rayon::get_current_threads` because it would force the global thread pool
+ 				// to initialize, so we won't be able to override it.
+-				match std::env::var("RAYON_NUM_THREADS") {
++				match crate::qasset_nostd::env::var("RAYON_NUM_THREADS") {
+ 					Ok(v) if v == "1" => super::ThreadPoolBuilder::new()
+ 						.num_threads(1)
+ 						.use_current_thread()
+--- a/crates/utils/src/rayon/iter/from_parallel_iterator.rs
++++ b/crates/utils/src/rayon/iter/from_parallel_iterator.rs
+@@ -1,8 +1,12 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+ // Licensed under MIT License
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
+ use super::{IntoParallelIterator, parallel_iterator::ParallelIterator};
+ 
+ pub trait FromParallelIterator<T> {
+--- a/crates/utils/src/rayon/iter/indexed_parallel_iterator.rs
++++ b/crates/utils/src/rayon/iter/indexed_parallel_iterator.rs
+@@ -1,16 +1,20 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+ // Licensed under MIT License
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use super::{
+ 	IntoParallelIterator, ParallelIterator, parallel_iterator::ParallelIteratorInner,
+ 	parallel_wrapper::ParallelWrapper,
+ };
+ 
+ /// The reason why we need this trait is because `IndexedParallelIterator` contains
+-/// methods that overlaps with `std::iterator::Iterator` trait. So we implement it separately for
+-/// different `std::iter::Iterator` types while `IndexedParallelIterator` is implemented for
++/// methods that overlaps with `crate::qasset_nostd::iterator::Iterator` trait. So we implement it separately for
++/// different `crate::qasset_nostd::iter::Iterator` types while `IndexedParallelIterator` is implemented for
+ /// `ParallelWrapper<I>` where `I` is `IndexedParallelIteratorInner`.
+ ///
+ /// Currently only those methods are implemented that are used in the `binius` code base. All other
+@@ -49,7 +53,7 @@
+ 	}
+ 
+ 	#[inline]
+-	fn zip<Z>(self, zip_op: Z) -> std::iter::Zip<Self, Z>
++	fn zip<Z>(self, zip_op: Z) -> crate::qasset_nostd::iter::Zip<Self, Z>
+ 	where
+ 		Z: IndexedParallelIteratorInner,
+ 	{
+@@ -65,7 +69,7 @@
+ 	}
+ 
+ 	#[inline]
+-	fn step_by(self, step: usize) -> std::iter::StepBy<Self>
++	fn step_by(self, step: usize) -> crate::qasset_nostd::iter::StepBy<Self>
+ 	where
+ 		Self: Sized,
+ 	{
+@@ -121,9 +125,9 @@
+ 
+ impl<I: ExactSizeIterator> IndexedParallelIteratorInner for Chunks<I> {}
+ 
+-/// Wrapper around std::iter::Chain that implements ExactSizeIterator.
++/// Wrapper around crate::qasset_nostd::iter::Chain that implements ExactSizeIterator.
+ pub struct Chain<I1, I2> {
+-	pub(super) inner: std::iter::Chain<I1, I2>,
++	pub(super) inner: crate::qasset_nostd::iter::Chain<I1, I2>,
+ }
+ 
+ impl<I1, I2> Iterator for Chain<I1, I2>
+@@ -158,31 +162,31 @@
+ {
+ }
+ 
+-// Implement `IndexedParallelIteratorInner` for different `std::iter::Iterator` types.
+-// Unfortunately, we can't implement it for all `std::iter::Iterator` types because of the
++// Implement `IndexedParallelIteratorInner` for different `crate::qasset_nostd::iter::Iterator` types.
++// Unfortunately, we can't implement it for all `crate::qasset_nostd::iter::Iterator` types because of the
+ // collisions with generic implementation for tuples (see `multizip_impls!` macro in
+ // `parallel_iterator.rs`). If you need to implement it for some other type, please add
+ // implementation here.
+-impl<Idx> IndexedParallelIteratorInner for std::ops::Range<Idx> where
++impl<Idx> IndexedParallelIteratorInner for crate::qasset_nostd::ops::Range<Idx> where
+ 	Self: ExactSizeIterator<Item = Idx>
+ {
+ }
+-impl<T> IndexedParallelIteratorInner for std::slice::IterMut<'_, T> {}
++impl<T> IndexedParallelIteratorInner for crate::qasset_nostd::slice::IterMut<'_, T> {}
+ impl<L: IndexedParallelIteratorInner, R: IndexedParallelIteratorInner> IndexedParallelIteratorInner
+-	for std::iter::Zip<L, R>
+-{
+-}
+-impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for std::iter::Enumerate<I> {}
+-impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for std::iter::StepBy<I> {}
++	for crate::qasset_nostd::iter::Zip<L, R>
++{
++}
++impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for crate::qasset_nostd::iter::Enumerate<I> {}
++impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for crate::qasset_nostd::iter::StepBy<I> {}
+ impl<I: IndexedParallelIteratorInner, R, F: FnMut(I::Item) -> R> IndexedParallelIteratorInner
+-	for std::iter::Map<I, F>
+-{
+-}
+-impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for std::iter::Take<I> {}
+-impl<T> IndexedParallelIteratorInner for std::vec::IntoIter<T> {}
+-impl<T, const N: usize> IndexedParallelIteratorInner for std::array::IntoIter<T, N> {}
+-impl<T: Clone> IndexedParallelIteratorInner for std::iter::RepeatN<T> {}
+-impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for std::iter::Skip<I> {}
++	for crate::qasset_nostd::iter::Map<I, F>
++{
++}
++impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for crate::qasset_nostd::iter::Take<I> {}
++impl<T> IndexedParallelIteratorInner for crate::qasset_nostd::vec::IntoIter<T> {}
++impl<T, const N: usize> IndexedParallelIteratorInner for crate::qasset_nostd::array::IntoIter<T, N> {}
++impl<T: Clone> IndexedParallelIteratorInner for crate::qasset_nostd::iter::RepeatN<T> {}
++impl<I: IndexedParallelIteratorInner> IndexedParallelIteratorInner for crate::qasset_nostd::iter::Skip<I> {}
+ impl<L: IndexedParallelIteratorInner, R: IndexedParallelIteratorInner<Item = L::Item>>
+ 	IndexedParallelIteratorInner for itertools::Either<L, R>
+ {
+@@ -233,7 +237,7 @@
+ 		self,
+ 		zip_op: Z,
+ 	) -> ParallelWrapper<
+-		std::iter::Zip<
++		crate::qasset_nostd::iter::Zip<
+ 			<Self as ParallelIterator>::Inner,
+ 			<<Z as IntoParallelIterator>::Iter as ParallelIterator>::Inner,
+ 		>,
+@@ -270,7 +274,7 @@
+ 	fn step_by(
+ 		self,
+ 		step: usize,
+-	) -> ParallelWrapper<std::iter::StepBy<<Self as ParallelIterator>::Inner>>
++	) -> ParallelWrapper<crate::qasset_nostd::iter::StepBy<<Self as ParallelIterator>::Inner>>
+ 	where
+ 		Self: Sized,
+ 	{
+--- a/crates/utils/src/rayon/iter/into_parallel_iterator.rs
++++ b/crates/utils/src/rayon/iter/into_parallel_iterator.rs
+@@ -1,9 +1,13 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+ // Licensed under MIT License
+ 
+-use std::collections::HashSet;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::collections::HashSet;
+ 
+ use super::{ParallelIterator, ParallelWrapper};
+ 
+@@ -56,7 +60,7 @@
+ 
+ impl<'a, T> IntoParallelIterator for &'a [T] {
+ 	type Item = &'a T;
+-	type Iter = ParallelWrapper<<std::slice::Iter<'a, T> as IntoIterator>::IntoIter>;
++	type Iter = ParallelWrapper<<crate::qasset_nostd::slice::Iter<'a, T> as IntoIterator>::IntoIter>;
+ 
+ 	#[inline(always)]
+ 	fn into_par_iter(self) -> Self::Iter {
+@@ -66,7 +70,7 @@
+ 
+ impl<'a, T> IntoParallelIterator for &'a mut [T] {
+ 	type Item = &'a mut T;
+-	type Iter = ParallelWrapper<<std::slice::IterMut<'a, T> as IntoIterator>::IntoIter>;
++	type Iter = ParallelWrapper<<crate::qasset_nostd::slice::IterMut<'a, T> as IntoIterator>::IntoIter>;
+ 
+ 	#[inline(always)]
+ 	fn into_par_iter(self) -> Self::Iter {
+@@ -74,7 +78,7 @@
+ 	}
+ }
+ 
+-impl<Idx> IntoParallelIterator for std::ops::Range<Idx>
++impl<Idx> IntoParallelIterator for crate::qasset_nostd::ops::Range<Idx>
+ where
+ 	Self: Iterator<Item = Idx>,
+ {
+@@ -96,7 +100,7 @@
+ }
+ 
+ impl<'a, T> IntoParallelRefIterator<'a> for &'a [T] {
+-	type Iter = ParallelWrapper<std::slice::Iter<'a, T>>;
++	type Iter = ParallelWrapper<crate::qasset_nostd::slice::Iter<'a, T>>;
+ 	type Item = &'a T;
+ 
+ 	#[inline(always)]
+--- a/crates/utils/src/rayon/iter/parallel_iterator.rs
++++ b/crates/utils/src/rayon/iter/parallel_iterator.rs
+@@ -1,9 +1,13 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+ // Licensed under MIT License
+ 
+-use std::{
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{
+ 	cmp::Ordering,
+ 	collections::LinkedList,
+ 	iter::{Product, Sum},
+@@ -17,8 +21,8 @@
+ use crate::rayon::iter::indexed_parallel_iterator::Chain;
+ 
+ /// `rayon::prelude::ParallelIterator` has at least `fold` method with a signature
+-/// that is not compatible with the one in `std::iter::Iterator`. That's why we can't use
+-/// `std::iter::Iterator` as a drop-in replacement for `rayon::prelude::ParallelIterator`
++/// that is not compatible with the one in `crate::qasset_nostd::iter::Iterator`. That's why we can't use
++/// `crate::qasset_nostd::iter::Iterator` as a drop-in replacement for `rayon::prelude::ParallelIterator`
+ /// (like it is in the original `maybe-rayon` crate) or even derive from it (this would raise
+ /// ambiguous methods error at the place of usages allowing fully-qualified call syntax only which
+ /// looks super-ugly).
+@@ -99,7 +103,7 @@
+ 	}
+ 
+ 	#[inline]
+-	fn map<F, R>(self, map_op: F) -> std::iter::Map<Self, F>
++	fn map<F, R>(self, map_op: F) -> crate::qasset_nostd::iter::Map<Self, F>
+ 	where
+ 		F: Fn(Self::Item) -> R,
+ 	{
+@@ -111,7 +115,7 @@
+ 		self,
+ 		mut init: T,
+ 		map_op: F,
+-	) -> std::iter::Map<Self, impl FnMut(Self::Item) -> R>
++	) -> crate::qasset_nostd::iter::Map<Self, impl FnMut(Self::Item) -> R>
+ 	where
+ 		F: Fn(&mut T, Self::Item) -> R,
+ 	{
+@@ -123,7 +127,7 @@
+ 		self,
+ 		init: INIT,
+ 		map_op: F,
+-	) -> std::iter::Map<Self, impl FnMut(Self::Item) -> R>
++	) -> crate::qasset_nostd::iter::Map<Self, impl FnMut(Self::Item) -> R>
+ 	where
+ 		F: Fn(&mut T, Self::Item) -> R,
+ 		INIT: Fn() -> T,
+@@ -250,7 +254,7 @@
+ 			.unwrap_or_else(|| Self::Item::from_output(identity()))
+ 	}
+ 
+-	/// Since `std::iterator::Iterator::try_reduce` is not stable yet, we have to implement it
++	/// Since `crate::qasset_nostd::iterator::Iterator::try_reduce` is not stable yet, we have to implement it
+ 	/// manually.
+ 	#[inline]
+ 	fn try_reduce_with<T, OP>(self, op: OP) -> Option<Self::Item>
+@@ -296,7 +300,7 @@
+ 	where
+ 		F: Fn(T, Self::Item) -> T,
+ 	{
+-		std::iter::once(Iterator::fold(self, init, fold_op))
++		crate::qasset_nostd::iter::once(Iterator::fold(self, init, fold_op))
+ 	}
+ 
+ 	#[inline]
+@@ -318,12 +322,12 @@
+ 		let mut accum = init;
+ 		for item in self {
+ 			accum = match fold_op(accum, item).branch() {
+-				ControlFlow::Break(r) => return std::iter::once(R::from_residual(r)),
++				ControlFlow::Break(r) => return crate::qasset_nostd::iter::once(R::from_residual(r)),
+ 				ControlFlow::Continue(c) => c,
+ 			};
+ 		}
+ 
+-		std::iter::once(R::from_output(accum))
++		crate::qasset_nostd::iter::once(R::from_output(accum))
+ 	}
+ 
+ 	#[inline]
+@@ -505,9 +509,9 @@
+ 
+ 		for item in self {
+ 			if predicate(&item) {
+-				left.extend(std::iter::once(item));
++				left.extend(crate::qasset_nostd::iter::once(item));
+ 			} else {
+-				right.extend(std::iter::once(item));
++				right.extend(crate::qasset_nostd::iter::once(item));
+ 			}
+ 		}
+ 
+@@ -526,8 +530,8 @@
+ 
+ 		for item in self {
+ 			match predicate(item) {
+-				Either::Left(l) => left.extend(std::iter::once(l)),
+-				Either::Right(r) => right.extend(std::iter::once(r)),
++				Either::Left(l) => left.extend(crate::qasset_nostd::iter::once(l)),
++				Either::Right(r) => right.extend(crate::qasset_nostd::iter::once(r)),
+ 			}
+ 		}
+ 
+@@ -608,7 +612,7 @@
+ 
+ 	#[inline]
+ 	fn collect_vec_list(self) -> LinkedList<Vec<Self::Item>> {
+-		std::iter::once(Iterator::collect(self)).collect()
++		crate::qasset_nostd::iter::once(Iterator::collect(self)).collect()
+ 	}
+ 
+ 	#[inline(always)]
+@@ -686,7 +690,7 @@
+ 	}
+ 
+ 	#[inline]
+-	fn map<F, R>(self, map_op: F) -> ParallelWrapper<std::iter::Map<Self::Inner, F>>
++	fn map<F, R>(self, map_op: F) -> ParallelWrapper<crate::qasset_nostd::iter::Map<Self::Inner, F>>
+ 	where
+ 		F: Fn(Self::Item) -> R,
+ 	{
+@@ -698,7 +702,7 @@
+ 		self,
+ 		init: T,
+ 		map_op: F,
+-	) -> ParallelWrapper<std::iter::Map<Self::Inner, impl FnMut(Self::Item) -> R>>
++	) -> ParallelWrapper<crate::qasset_nostd::iter::Map<Self::Inner, impl FnMut(Self::Item) -> R>>
+ 	where
+ 		F: Fn(&mut T, Self::Item) -> R,
+ 	{
+@@ -710,7 +714,7 @@
+ 		self,
+ 		init: INIT,
+ 		map_op: F,
+-	) -> ParallelWrapper<std::iter::Map<Self::Inner, impl FnMut(Self::Item) -> R>>
++	) -> ParallelWrapper<crate::qasset_nostd::iter::Map<Self::Inner, impl FnMut(Self::Item) -> R>>
+ 	where
+ 		F: Fn(&mut T, Self::Item) -> R,
+ 		INIT: Fn() -> T,
+@@ -1182,13 +1186,13 @@
+ /// This section is copied from the `rayon` crate.
+ /// Since `Try` in the standard library is unstable, we need to define our own version.
+ mod private {
+-	use std::{
++	use crate::qasset_nostd::{
+ 		convert::Infallible,
+ 		ops::ControlFlow::{self, Break, Continue},
+ 		task::Poll,
+ 	};
+ 
+-	/// Clone of `std::ops::Try`.
++	/// Clone of `crate::qasset_nostd::ops::Try`.
+ 	///
+ 	/// Implementing this trait is not permitted outside of `rayon`.
+ 	pub trait Try {
+--- a/crates/utils/src/rayon/iter/parallel_wrapper.rs
++++ b/crates/utils/src/rayon/iter/parallel_wrapper.rs
+@@ -1,9 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ /// We use this struct to wrap some inner iterator trate (e.g. `ParallelIteratorInner` or
+ /// `IndexedParallelIteratorInner`) and implement the outer iterator trait (e.g. `ParallelIterator`
+ /// or `IndexedParallelIterator`) for it. That allows us avoid collisions with the methods of the
+-/// `std::iterator::Iterator` for the methods which have different signatures.
++/// `crate::qasset_nostd::iterator::Iterator` for the methods which have different signatures.
+ pub struct ParallelWrapper<I>(pub(crate) I);
+ 
+ impl<I> ParallelWrapper<I> {
+--- a/crates/utils/src/rayon/mod.rs
++++ b/crates/utils/src/rayon/mod.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ //
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+@@ -9,13 +10,16 @@
+ //! This is useful for profiling single-threaded code, as it simplifies call stacks significantly.
+ //! The initial code was taken from the `maybe-rayon` crate, but many changes were made to
+ //! support the usage of `ParallelIterator` and `IndexedParallelIterator` methods, which have
+-//! different signatures from `std::iter::Iterator`. Some of these changes may be potentially
++//! different signatures from `crate::qasset_nostd::iter::Iterator`. Some of these changes may be potentially
+ //! backward-incompatible, and given the absence of tests in the original crate, it is very unlikely
+ //! that it is possible to commit the changes back to the original crate.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{boxed::Box};
+ cfg_if::cfg_if! {
+ 	if #[cfg(any(not(feature = "rayon"), all(target_arch="wasm32", not(target_feature = "atomics"))))] {
+-		use std::marker::PhantomData;
++		use crate::qasset_nostd::marker::PhantomData;
+ 
+ 		pub mod iter;
+ 		pub mod slice;
+@@ -68,12 +72,12 @@
+ 
+ 		#[derive(Debug, Default)]
+ 		pub struct ThreadPoolBuildError;
+-		impl std::fmt::Display for ThreadPoolBuildError {
+-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
++		impl crate::qasset_nostd::fmt::Display for ThreadPoolBuildError {
++			fn fmt(&self, f: &mut crate::qasset_nostd::fmt::Formatter<'_>) -> crate::qasset_nostd::fmt::Result {
+ 				write!(f, "ThreadPoolBuildError")
+ 			}
+ 		}
+-		impl std::error::Error for ThreadPoolBuildError {
++		impl crate::qasset_nostd::error::Error for ThreadPoolBuildError {
+ 			fn description(&self) -> &str {
+ 				"Error building thread pool"
+ 			}
+--- a/crates/utils/src/rayon/slice/parallel_slice.rs
++++ b/crates/utils/src/rayon/slice/parallel_slice.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+@@ -9,7 +10,7 @@
+ 	fn as_parallel_slice(&self) -> &[T];
+ 
+ 	#[inline(always)]
+-	fn par_split<P>(&self, separator: P) -> ParallelWrapper<std::slice::Split<'_, T, P>>
++	fn par_split<P>(&self, separator: P) -> ParallelWrapper<crate::qasset_nostd::slice::Split<'_, T, P>>
+ 	where
+ 		P: Fn(&T) -> bool + Sync + Send,
+ 	{
+@@ -20,7 +21,7 @@
+ 	fn par_split_inclusive<P>(
+ 		&self,
+ 		separator: P,
+-	) -> ParallelWrapper<std::slice::SplitInclusive<'_, T, P>>
++	) -> ParallelWrapper<crate::qasset_nostd::slice::SplitInclusive<'_, T, P>>
+ 	where
+ 		P: Fn(&T) -> bool + Sync + Send,
+ 	{
+@@ -28,12 +29,12 @@
+ 	}
+ 
+ 	#[inline(always)]
+-	fn par_windows(&self, window_size: usize) -> ParallelWrapper<std::slice::Windows<'_, T>> {
++	fn par_windows(&self, window_size: usize) -> ParallelWrapper<crate::qasset_nostd::slice::Windows<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice().windows(window_size))
+ 	}
+ 
+ 	#[inline(always)]
+-	fn par_chunks(&self, chunk_size: usize) -> ParallelWrapper<std::slice::Chunks<'_, T>> {
++	fn par_chunks(&self, chunk_size: usize) -> ParallelWrapper<crate::qasset_nostd::slice::Chunks<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice().chunks(chunk_size))
+ 	}
+ 
+@@ -41,12 +42,12 @@
+ 	fn par_chunks_exact(
+ 		&self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::ChunksExact<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::ChunksExact<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice().chunks_exact(chunk_size))
+ 	}
+ 
+ 	#[inline(always)]
+-	fn par_rchunks(&self, chunk_size: usize) -> ParallelWrapper<std::slice::RChunks<'_, T>> {
++	fn par_rchunks(&self, chunk_size: usize) -> ParallelWrapper<crate::qasset_nostd::slice::RChunks<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice().rchunks(chunk_size))
+ 	}
+ 
+@@ -54,12 +55,12 @@
+ 	fn par_rchunks_exact(
+ 		&self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::RChunksExact<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::RChunksExact<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice().rchunks_exact(chunk_size))
+ 	}
+ 
+ 	#[inline(always)]
+-	fn par_chunk_by<F>(&self, pred: F) -> ParallelWrapper<std::slice::ChunkBy<'_, T, F>>
++	fn par_chunk_by<F>(&self, pred: F) -> ParallelWrapper<crate::qasset_nostd::slice::ChunkBy<'_, T, F>>
+ 	where
+ 		F: Fn(&T, &T) -> bool + Send + Sync,
+ 	{
+@@ -74,9 +75,9 @@
+ 	}
+ }
+ 
+-impl<T> IndexedParallelIteratorInner for std::slice::Iter<'_, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::Chunks<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::Windows<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::ChunksExact<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::RChunks<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::RChunksExact<'a, T> {}
++impl<T> IndexedParallelIteratorInner for crate::qasset_nostd::slice::Iter<'_, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::Chunks<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::Windows<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::ChunksExact<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::RChunks<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::RChunksExact<'a, T> {}
+--- a/crates/utils/src/rayon/slice/parallel_slice_mut.rs
++++ b/crates/utils/src/rayon/slice/parallel_slice_mut.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ // The code is initially based on `maybe-rayon` crate, https://github.com/shssoichiro/maybe-rayon
+ // Original: Copyright (c) 2021 Joshua Holmer
+@@ -9,7 +10,7 @@
+ 	fn as_parallel_slice_mut(&mut self) -> &mut [T];
+ 
+ 	#[inline(always)]
+-	fn par_split_mut<P>(&mut self, separator: P) -> ParallelWrapper<std::slice::SplitMut<'_, T, P>>
++	fn par_split_mut<P>(&mut self, separator: P) -> ParallelWrapper<crate::qasset_nostd::slice::SplitMut<'_, T, P>>
+ 	where
+ 		P: Fn(&T) -> bool + Sync + Send,
+ 	{
+@@ -20,7 +21,7 @@
+ 	fn par_split_inclusive_mut<P>(
+ 		&mut self,
+ 		separator: P,
+-	) -> ParallelWrapper<std::slice::SplitInclusiveMut<'_, T, P>>
++	) -> ParallelWrapper<crate::qasset_nostd::slice::SplitInclusiveMut<'_, T, P>>
+ 	where
+ 		P: Fn(&T) -> bool + Sync + Send,
+ 	{
+@@ -31,7 +32,7 @@
+ 	fn par_chunks_mut(
+ 		&mut self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::ChunksMut<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::ChunksMut<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice_mut().chunks_mut(chunk_size))
+ 	}
+ 
+@@ -39,7 +40,7 @@
+ 	fn par_chunks_exact_mut(
+ 		&mut self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::ChunksExactMut<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::ChunksExactMut<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice_mut().chunks_exact_mut(chunk_size))
+ 	}
+ 
+@@ -47,7 +48,7 @@
+ 	fn par_rchunks_mut(
+ 		&mut self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::RChunksMut<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::RChunksMut<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice_mut().rchunks_mut(chunk_size))
+ 	}
+ 
+@@ -55,7 +56,7 @@
+ 	fn par_rchunks_exact_mut(
+ 		&mut self,
+ 		chunk_size: usize,
+-	) -> ParallelWrapper<std::slice::RChunksExactMut<'_, T>> {
++	) -> ParallelWrapper<crate::qasset_nostd::slice::RChunksExactMut<'_, T>> {
+ 		ParallelWrapper::new(self.as_parallel_slice_mut().rchunks_exact_mut(chunk_size))
+ 	}
+ 
+@@ -70,7 +71,7 @@
+ 	#[inline(always)]
+ 	fn par_sort_by<F>(&mut self, compare: F)
+ 	where
+-		F: Fn(&T, &T) -> std::cmp::Ordering + Sync,
++		F: Fn(&T, &T) -> crate::qasset_nostd::cmp::Ordering + Sync,
+ 	{
+ 		self.as_parallel_slice_mut().sort_by(compare)
+ 	}
+@@ -104,7 +105,7 @@
+ 	#[inline(always)]
+ 	fn par_sort_unstable_by<F>(&mut self, compare: F)
+ 	where
+-		F: Fn(&T, &T) -> std::cmp::Ordering + Sync,
++		F: Fn(&T, &T) -> crate::qasset_nostd::cmp::Ordering + Sync,
+ 	{
+ 		self.as_parallel_slice_mut().sort_unstable_by(compare)
+ 	}
+@@ -119,7 +120,7 @@
+ 	}
+ 
+ 	#[inline(always)]
+-	fn par_chunk_by_mut<F>(&mut self, pred: F) -> ParallelWrapper<std::slice::ChunkByMut<'_, T, F>>
++	fn par_chunk_by_mut<F>(&mut self, pred: F) -> ParallelWrapper<crate::qasset_nostd::slice::ChunkByMut<'_, T, F>>
+ 	where
+ 		F: Fn(&T, &T) -> bool + Send + Sync,
+ 	{
+@@ -134,7 +135,7 @@
+ 	}
+ }
+ 
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::ChunksExactMut<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::ChunksMut<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::RChunksMut<'a, T> {}
+-impl<'a, T: 'a> IndexedParallelIteratorInner for std::slice::RChunksExactMut<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::ChunksExactMut<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::ChunksMut<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::RChunksMut<'a, T> {}
++impl<'a, T: 'a> IndexedParallelIteratorInner for crate::qasset_nostd::slice::RChunksExactMut<'a, T> {}
+--- a/crates/utils/src/serialization.rs
++++ b/crates/utils/src/serialization.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, string::String};
+ use bytes::{Buf, BufMut};
+ use hybrid_array::{Array, ArraySize};
+ use thiserror::Error;
+@@ -31,7 +35,7 @@
+ 	#[error("Multiple deserializers with the same name {name} has been registered")]
+ 	DeserializerNameConflict { name: String },
+ 	#[error("FromUtf8Error: {0}")]
+-	FromUtf8Error(#[from] std::string::FromUtf8Error),
++	FromUtf8Error(#[from] crate::qasset_nostd::string::FromUtf8Error),
+ 	#[error("Invalid construction of {name}")]
+ 	InvalidConstruction { name: &'static str },
+ 	#[error("usize {size} is too large to serialize (max is {max})", max = u32::MAX)]
+@@ -65,7 +69,7 @@
+ 
+ impl SerializeBytes for u128 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		write_buf.put_u128_le(*self);
+ 		Ok(())
+ 	}
+@@ -76,14 +80,14 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		Ok(read_buf.get_u128_le())
+ 	}
+ }
+ 
+ impl SerializeBytes for u64 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		write_buf.put_u64_le(*self);
+ 		Ok(())
+ 	}
+@@ -94,14 +98,14 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		Ok(read_buf.get_u64_le())
+ 	}
+ }
+ 
+ impl SerializeBytes for u32 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		write_buf.put_u32_le(*self);
+ 		Ok(())
+ 	}
+@@ -112,14 +116,14 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		Ok(read_buf.get_u32_le())
+ 	}
+ }
+ 
+ impl SerializeBytes for u16 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		write_buf.put_u16_le(*self);
+ 		Ok(())
+ 	}
+@@ -130,14 +134,14 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		Ok(read_buf.get_u16_le())
+ 	}
+ }
+ 
+ impl SerializeBytes for u8 {
+ 	fn serialize(&self, mut write_buf: impl BufMut) -> Result<(), SerializationError> {
+-		assert_enough_space_for(&write_buf, std::mem::size_of::<Self>())?;
++		assert_enough_space_for(&write_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		write_buf.put_u8(*self);
+ 		Ok(())
+ 	}
+@@ -148,7 +152,7 @@
+ 	where
+ 		Self: Sized,
+ 	{
+-		assert_enough_data_for(&read_buf, std::mem::size_of::<Self>())?;
++		assert_enough_data_for(&read_buf, crate::qasset_nostd::mem::size_of::<Self>())?;
+ 		Ok(read_buf.get_u8())
+ 	}
+ }
+@@ -168,13 +172,13 @@
+ 	}
+ }
+ 
+-impl<T> SerializeBytes for std::marker::PhantomData<T> {
++impl<T> SerializeBytes for crate::qasset_nostd::marker::PhantomData<T> {
+ 	fn serialize(&self, _write_buf: impl BufMut) -> Result<(), SerializationError> {
+ 		Ok(())
+ 	}
+ }
+ 
+-impl<T> DeserializeBytes for std::marker::PhantomData<T> {
++impl<T> DeserializeBytes for crate::qasset_nostd::marker::PhantomData<T> {
+ 	fn deserialize(_read_buf: impl Buf) -> Result<Self, SerializationError>
+ 	where
+ 		Self: Sized,
+--- a/crates/utils/src/sorting.rs
++++ b/crates/utils/src/sorting.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use itertools::Itertools;
+ 
+ /// Returns whether the given values are sorted in ascending order.
+@@ -37,7 +41,7 @@
+ 	let mut indexed_objs = objs.into_iter().enumerate().collect::<Vec<_>>();
+ 	// NOTE: Important to use stable sorting for prover-verifier consistency!
+ 	if descending {
+-		indexed_objs.sort_by_key(|b| std::cmp::Reverse(key(&b.1)));
++		indexed_objs.sort_by_key(|b| crate::qasset_nostd::cmp::Reverse(key(&b.1)));
+ 	} else {
+ 		indexed_objs.sort_by_key(|a| key(&a.1));
+ 	}
+--- a/crates/utils/src/sparse_index.rs
++++ b/crates/utils/src/sparse_index.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
+ /// An index mapping positive integer IDs to optional values.
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ #[derive(Debug, Clone)]
+ pub struct SparseIndex<T> {
+ 	entries: Vec<Option<T>>,
+@@ -91,8 +95,8 @@
+ 
+ impl<T> IntoIterator for SparseIndex<T> {
+ 	type Item = (usize, T);
+-	type IntoIter = std::iter::FilterMap<
+-		std::iter::Enumerate<std::vec::IntoIter<Option<T>>>,
++	type IntoIter = crate::qasset_nostd::iter::FilterMap<
++		crate::qasset_nostd::iter::Enumerate<crate::qasset_nostd::vec::IntoIter<Option<T>>>,
+ 		fn((usize, Option<T>)) -> Option<(usize, T)>,
+ 	>;
+ 
+@@ -104,7 +108,7 @@
+ 	}
+ }
+ 
+-impl<T> std::iter::FromIterator<(usize, T)> for SparseIndex<T> {
++impl<T> crate::qasset_nostd::iter::FromIterator<(usize, T)> for SparseIndex<T> {
+ 	fn from_iter<I: IntoIterator<Item = (usize, T)>>(iter: I) -> Self {
+ 		let mut index = Self::new();
+ 		for (i, v) in iter {
+@@ -114,7 +118,7 @@
+ 	}
+ }
+ 
+-impl<T> std::ops::Index<usize> for SparseIndex<T> {
++impl<T> crate::qasset_nostd::ops::Index<usize> for SparseIndex<T> {
+ 	type Output = T;
+ 
+ 	fn index(&self, index: usize) -> &Self::Output {
+@@ -122,7 +126,7 @@
+ 	}
+ }
+ 
+-impl<T> std::ops::IndexMut<usize> for SparseIndex<T> {
++impl<T> crate::qasset_nostd::ops::IndexMut<usize> for SparseIndex<T> {
+ 	fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+ 		self.get_mut(index).unwrap()
+ 	}
+--- a/crates/utils/src/strided_array.rs
++++ b/crates/utils/src/strided_array.rs
+@@ -1,7 +1,11 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2024-2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use core::slice;
+-use std::ops::{Index, IndexMut, Range};
++use crate::qasset_nostd::ops::{Index, IndexMut, Range};
+ 
+ use crate::rayon::prelude::*;
+ 
+@@ -262,7 +266,7 @@
+ 
+ #[cfg(test)]
+ mod tests {
+-	use std::array;
++	use crate::qasset_nostd::array;
+ 
+ 	use super::*;
+ 
+--- a/crates/verifier/Cargo.toml
++++ b/crates/verifier/Cargo.toml
+@@ -8,6 +8,7 @@
+ workspace = true
+ 
+ [dependencies]
++hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+ binius-core = { path = "../core" }
+ binius-field = { path = "../field" }
+ binius-ip = { path = "../ip" }
+--- a/crates/verifier/src/lib.rs
++++ b/crates/verifier/src/lib.rs
+@@ -32,7 +32,12 @@
+ //! - `binius_spartan_verifier` - Spartan-based verification (alternative backend)
+ 
+ #![warn(rustdoc::missing_crate_level_docs)]
++#![cfg_attr(target_os = "none", no_std)]
+ 
++#[cfg(target_os = "none")]
++#[macro_use]
++extern crate alloc;
++pub mod qasset_nostd;
+ pub mod config;
+ mod error;
+ pub mod protocols;
+--- a/crates/verifier/src/protocols/bitand.rs
++++ b/crates/verifier/src/protocols/bitand.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter::{self};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter::{self};
+ 
+ use binius_field::{BinaryField, field::FieldOps};
+ use binius_ip::channel::IPVerifierChannel;
+--- a/crates/verifier/src/protocols/intmul/common.rs
++++ b/crates/verifier/src/protocols/intmul/common.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{BinaryField, Field, field::FieldOps};
+ use itertools::iterate;
+--- a/crates/verifier/src/protocols/intmul/verify.rs
++++ b/crates/verifier/src/protocols/intmul/verify.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{iter, slice};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{iter, slice};
+ 
+ use binius_field::{BinaryField, Field, field::FieldOps};
+ use binius_ip::channel::IPVerifierChannel;
+--- a/crates/verifier/src/protocols/pubcheck.rs
++++ b/crates/verifier/src/protocols/pubcheck.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::Field;
+ use binius_transcript::{VerifierTranscript, fiat_shamir::Challenger};
+--- a/crates/verifier/src/protocols/shift/monster.rs
++++ b/crates/verifier/src/protocols/shift/monster.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::{array, iter};
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::{array, iter};
+ 
+ use binius_core::{
+ 	ShiftVariant,
+--- a/crates/verifier/src/protocols/shift/shift_ind.rs
++++ b/crates/verifier/src/protocols/shift/shift_ind.rs
+@@ -1,3 +1,4 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+ //! Shift indicator partial evaluation functions.
+@@ -5,6 +6,9 @@
+ //! This module provides functions for computing partial evaluations of shift indicator
+ //! multilinear extensions and their helper polynomials.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_field::FieldOps;
+ 
+ /// Partial evaluation of the shift indicator helper polynomials $\sigma, \sigma'$ over all i on the
+--- a/crates/verifier/src/protocols/shift/verify.rs
++++ b/crates/verifier/src/protocols/shift/verify.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_core::constraint_system::{AndConstraint, ConstraintSystem, MulConstraint};
+ use binius_field::{BinaryField, field::FieldOps};
+ use binius_ip::channel::IPVerifierChannel;
+--- a/crates/verifier/src/qasset_nostd.rs
++++ b/crates/verifier/src/qasset_nostd.rs
+@@ -0,0 +1,20 @@
++// Copyright 2026 The Binius Developers
++//! Core and allocation imports for the experimental Wasm port.
++#[cfg(not(target_os = "none"))]
++pub use ::std::*;
++#[cfg(target_os = "none")]
++pub use core::*;
++#[cfg(target_os = "none")]
++pub use ::alloc::{borrow, boxed, format, string, vec, rc};
++#[cfg(target_os = "none")]
++pub mod collections {
++    pub use ::alloc::collections::*;
++    pub use hashbrown::{HashMap, HashSet};
++}
++#[cfg(target_os = "none")]
++pub mod backtrace {
++    /// No-OS diagnostic marker; never used in cryptographic verification.
++    #[derive(Debug)]
++    pub struct Backtrace;
++    impl Backtrace { pub fn capture() -> Self { Self } }
++}
+--- a/crates/verifier/src/ring_switch.rs
++++ b/crates/verifier/src/ring_switch.rs
+@@ -1,6 +1,10 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
+-use std::iter;
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
++use crate::qasset_nostd::iter;
+ 
+ use binius_field::{BinaryField, ExtensionField, FieldOps, PackedField};
+ use binius_ip::channel::IPVerifierChannel;
+--- a/crates/verifier/src/verify.rs
++++ b/crates/verifier/src/verify.rs
+@@ -1,5 +1,9 @@
++// Copyright 2026 The Binius Developers
+ // Copyright 2025 Irreducible Inc.
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec, boxed::Box};
+ use binius_core::{constraint_system::ConstraintSystem, word::Word};
+ use binius_field::{AESTowerField8b as B8, BinaryField, ExtensionField, FieldOps};
+ use binius_iop::{
+@@ -26,7 +30,7 @@
+ 	config::{
+ 		B1, B128, LOG_WORD_SIZE_BITS, LOG_WORDS_PER_ELEM, PROVER_SMALL_FIELD_ZEROCHECK_CHALLENGES,
+ 	},
+-	fri::{ConstantArityStrategy, FRIParams, calculate_n_test_queries},
++	fri::{ConstantArityStrategy, FRIParams},
+ 	hash::PseudoCompressionFunction,
+ 	merkle_tree::BinaryMerkleTreeScheme,
+ 	protocols::{
+@@ -289,6 +293,7 @@
+ 	/// Constructs a verifier for a constraint system.
+ 	///
+ 	/// See [`Verifier`] struct documentation for details.
++	#[cfg(not(target_os = "none"))]
+ 	pub fn setup(
+ 		mut constraint_system: ConstraintSystem,
+ 		log_inv_rate: usize,
+@@ -314,7 +319,7 @@
+ 			ConstantArityStrategy::with_optimal_arity::<B128, _>(&merkle_scheme, log_code_len)
+ 				.arity;
+ 
+-		let n_test_queries = calculate_n_test_queries(SECURITY_BITS, log_inv_rate);
++		let n_test_queries = binius_iop::fri::calculate_n_test_queries(SECURITY_BITS, log_inv_rate);
+ 
+ 		let iop_compiler = BaseFoldVerifierCompiler::new(
+ 			merkle_scheme,
+--- a/crates/verifier/src/zk_config.rs
++++ b/crates/verifier/src/zk_config.rs
+@@ -13,6 +13,9 @@
+ //!
+ //! [`ZKWrappedVerifierChannel`]: binius_spartan_verifier::wrapper::ZKWrappedVerifierChannel
+ 
++#[cfg(target_os = "none")]
++#[allow(unused_imports)]
++use alloc::{vec::Vec};
+ use binius_core::{constraint_system::ConstraintSystem, word::Word};
+ use binius_field::BinaryField128bGhash as B128;
+ use binius_iop::{
+@@ -62,6 +65,7 @@
+ 	Output<MerkleHash>: DeserializeBytes,
+ {
+ 	/// Constructs a ZK verifier for a constraint system.
++	#[cfg(not(target_os = "none"))]
+ 	pub fn setup(
+ 		mut constraint_system: ConstraintSystem,
+ 		log_inv_rate: usize,
+@@ -119,6 +123,15 @@
+ 			outer_iop_verifier,
+ 			basefold_compiler,
+ 		})
++	}
++
++	/// Reconstitutes operator-trusted fixed preprocessing. Never use prover-selected parts.
++	pub fn from_preprocessed(
++		inner_iop_verifier: IOPVerifier,
++		outer_iop_verifier: IronSpartanIOPVerifier<B128>,
++		basefold_compiler: BaseFoldZKVerifierCompiler<B128, BinaryMerkleTreeScheme<B128, MerkleHash, MerkleCompress>>,
++	) -> Self {
++		Self { inner_iop_verifier, outer_iop_verifier, basefold_compiler }
+ 	}
+ 
+ 	/// Returns a reference to the inner IOP verifier.

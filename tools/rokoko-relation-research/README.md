@@ -1,0 +1,262 @@
+![Project Banner](banner.png)
+
+# RoKoko
+
+A Rust implementation of a SNARK/PCS built from the argument system presented in _RoKoko: Lattice-based Succinct Arguments, a Committed Refinement_.
+
+## Intro
+
+Our protocol is run over power-of-two cyclotomic rings, and parameters are selected such that the ring splits into factors of degree 2 ("almost splitting"), which allows us to leverage incomplete NTT for efficient multiplication.
+
+The sumcheck protocol efficiently enforces a collection of algebraic constraints over committed and folded witnesses. A general, highly modular interface for sumcheck protocols is provided, which supports different constraints and may be used for different relations.
+
+We implement two variants of committed random projections based on the Johnson-Lindestrauss lemma, a coarse variant (`Projection::Coarse`, paper: Π^proj-c) applying a projection matrix to full ring elements, and a fine variant (`Projection::Fine`, paper: Π^proj-f) projecting only the coefficients of the witness ring elements. Both implementations are efficient and vectorised, specifically achieving a higher degree of vectorisation for the coarse projection by leveraging smaller registers and thus utilising a greater number of lanes.
+
+## Build and Run Instructions
+
+Ring arithmetic runs on `incomplete-rexl`, a [pure Rust implementation](incomplete-rexl/README.md) of modular arithmetic and NTT operations. It runs on any Rust-supported platform (with degraded performance).
+
+For the best performance, it is required to compile and run the project on an AVX-512-enabled processor.
+Note that your processor may not support all AVX-512 instruction subsets, as listed here: https://en.wikipedia.org/wiki/AVX-512#CPUs_with_AVX-512.  
+If your platform does not support some of the instruction subsets (such as `avx512dq` or `avx512vbmi2`), performance will degrade accordingly.
+
+The protocol can be compiled and run directly with:
+
+```
+cargo +nightly run --release
+```
+
+## Cached allocations
+For the best performance, it is advisable to run the protocol twice. During the first run, the protocol collects the allocation descriptions (and stores them as a file, while printing a number of warnings about an unpopulated cache). On the next run, those allocations will be done in advance, which impact especially the commitment and verifier performance. 
+
+## Memory allocator
+
+The provided binary uses [mimalloc](https://github.com/microsoft/mimalloc) as its global allocator with `MIMALLOC_PURGE_DELAY=-1` (set in `.cargo/config.toml`. If you use RoKoKo as a library, your application gets to choose its own global allocator, so this is not applied automatically. Be aware that:
+
+- For best performance, use mimalloc as the global allocator and set `MIMALLOC_PURGE_DELAY=-1`. No other mimalloc tuning is required, but this option is essential.
+- With the default mimalloc (i.e. without `MIMALLOC_PURGE_DELAY=-1`), performance is **worse** than the standard system (glibc) allocator. The prover's rounds allocates and frees large buffers, and by default mimalloc purges those freed pages back to the OS; causing soft page faults. Setting `MIMALLOC_PURGE_DELAY=-1` disables purging so the pages stay warm for reuse.
+
+If you use a different global allocator, you may want to check its equivalent page-retention behaviour.
+
+## API
+
+### Committer
+
+```rust
+pub fn commit(
+    crs: &CRS,
+    config: &SumcheckConfig,
+    witness: &VerticallyAlignedMatrix<RingElement>,
+) -> (CommitmentWithAux, Vec<RingElement>)
+```
+
+Performs the basic commitment via `commit_basic`, and then outputs a tuple consisting of the recursive commitment (including auxiliary data) in `CommitmentWithAux` and the commitment.
+
+### Prover
+
+```rust
+pub fn prover_round(
+    crs: &CRS,
+    config: &SumcheckConfig,
+    commitment_with_aux: &CommitmentWithAux,
+    witness: &VerticallyAlignedMatrix<RingElement>,
+    evaluation_points_inner: &Vec<StructuredRow>,
+    evaluation_points_outer: &Vec<StructuredRow>,
+    sumcheck_context: &mut SumcheckContext,
+    with_claims: bool,
+    hash_wrapper: Option<HashWrapper>,
+) -> (SumcheckRoundProof, Option<Vec<RingElement>>)
+```
+
+The prover takes as input the CRS, `SumcheckConfig`, the recursive commitment (plus auxiliary data), the witness, and structured evaluation points (corresponding to left-right constraints on the witness used to construct a PCS). Additionally, a `with_claims` flag may be provided to determine whether to output left-right evaluation claims. An initialised Fiat–Shamir transcript may be provided via `hash_wrapper`; otherwise, it is newly initialised within the round.
+
+### Verifier
+
+```rust
+pub fn verifier_round(
+    crs: &CRS,
+    config: &SumcheckConfig,
+    rc_commitment: &[RingElement],
+    round_proof: &SumcheckRoundProof,
+    evaluation_points_inner: &[StructuredRow],
+    evaluation_points_outer: &[StructuredRow],
+    claims: &[RingElement],
+    sumcheck_context_verifier: &mut VerifierSumcheckContext,
+    hash_wrapper_verifier: Option<HashWrapper>,
+)
+```
+
+The verifier interface, similarly to the prover, requires a CRS, `SumcheckConfig`, structured evaluation points, and an (optionally pre-initialised) Fiat–Shamir transcript. Additionally, it takes as input the claimed polynomial evaluations to be checked and a mutable `VerifierSumcheckContext`.
+
+### Sumcheck Interface
+
+We support different constraint types, each encoding a specific semantic guarantee:
+
+Each constraint family is implemented as a sumcheck gadget named after the paper constraint it enforces (former `TypeN` codenames in parentheses):
+
+* `CommitmentFold` (Type0): basic commitment correctness - verifies `CK · folded_witness = commitment · fold_challenge`
+* `InnerEvalFold` (Type1): inner evaluation consistency - verifies the opening RHS matches the witness evaluation; the claim ``matrix-from-rows(l) W = T'' from the publication.
+* `OuterEvalClaim` (Type2): outer evaluation consistency - verifies the evaluation of the rows of the matrix T at the outer evaluation points; these inner products are known to the verifier.
+* `CoarseProj` (Type3): coarse projection validity (block-diagonal) - verifies the projection image is correctly computed from the witness
+* `FineProj` (Type3_1): fine projection validity - verifies `c^T (I ⊗ P) · witness = c^T projection_image · fold_challenge` (batched), plus the correspondence of the constant terms of the fine projection.
+* `ComVerify` (Type4): recursive commitment well-formedness - verifies the recursive commitment tree structure (paper: `COM.Verify`)
+* `NormCheck` (Type5): witness norm check - verifies `<combined_witness, conjugated_witness> = norm_claim` (paper: `v = <w-hat, conj(w-hat)>`), with an additional check for the innermost commitment layer.
+
+Currently, a framework for supporting different kinds of relations is not fully exposed. Yet, all of those checks have been (generally) built from composable blocks, not specific to our relation in general. 
+
+## Code ↔ paper notation
+
+| Code | Paper |
+|---|---|
+| `witness` (`witness_height` × `witness_width`) | `W ∈ R^{m_w × r}` |
+| `fold_challenge` | folding challenge `c ∈ C^r` |
+| `folded_witness` / decomposed | `W c` / `w̃ = G^{-1}(W c)` |
+| `next_round_data` (packed) | `ŵ = pack(w̃, Y_i, x_i, …)` |
+| `next_round_witness` | `U = reshape_{r'}(ŵ)` |
+| `opening.rhs` | `T = matrix-from-rows(l_j) · W` |
+| `evaluation_points_inner` / `outer` | left/right vectors `l_j` / `r_j` |
+| `claims` (`outer_eval_claims`) | `t_j = l_j^T W r_j` |
+| `rc_commitment` / `rc_opening` | recursive commitments `com_i` of `vec(Y_i)`, aux `x_i` |
+| `projection_matrix` | `J ← χ^{n_rp × m_rp}` (block-diagonal `I ⊗ J`) |
+| `norm_claim` | `v = ⟨ŵ, conj(ŵ)⟩`, norm via `ct(v)` |
+| `claim_over_witness`, `…_conjugate` | `z_0 = MLE[w](c)`, `z_1 = MLE[w](conj(c))` |
+| sumcheck `combination` challenges | batching `γ` (via `eq(bin(i), γ)`) |
+| `combination_to_field` (`RingToFieldCombiner`) | the F_{q^a}-linear map `Φ = δ^T ∘ θ_a` |
+| `Prefix` selectors | packing prefixes `p_i` with `eq(p_i, ·)` |
+
+## Configuration and Structure
+
+The ring degree `DEGREE`, the modulus `MOD_Q` and the number of fine-projection batches `NOF_BATCHES` are constants in `src/common/config.rs`, generated from the ring spec (see [Ring](#ring)).
+
+Protocol configuration is defined in `src/protocol/config.rs`. The library takes the chain of rounds as a runtime value, `protocol::params::Instantiation`, which bundles the chain `Config` with the parameters of the initial witness. The concrete parameter sets are defined in the binary, `src/instantiation.rs`, and selected by its command-line argument. In the future, we plan to provide automatic selection.
+
+Each run executed by the prover or verifier consists of one or more **rounds**. Each round is either:
+
+- `Config::Sumcheck(SumcheckConfig)` — the main sumcheck-based round, optionally chaining into further round(s)
+- `Config::Simple(SimpleConfig)` — a sumcheck-less round with a plain folded witness, executed last
+
+### Core Parameters
+
+The following parameters are shared by both `SumcheckConfig` and `SimpleConfig`:
+
+- `witness_height`: number of rows in the witness matrix
+- `witness_width`: number of columns in the witness matrix
+- `projection_ratio`: target witness height reduction by projections
+- `projection_height`: height of the projection image (typically, 256) 
+- `basic_commitment_rank`: rank of the (non-recursive) commitment (`F_0` part of the committed linear relation from the publication)
+
+### Sumcheck Configuration
+
+The following parameters are sumcheck-specific and defined in `SumcheckConfig`.
+
+Sumcheck rounds:
+
+- `commitment_recursion: RecursionConfig`: controls how witness commitments are recursively represented via decomposition and prefix
+- `opening_recursion: RecursionConfig`: same idea, but for left-constraint opening (T). In many setups, it mirrors `commitment_recursion`
+- `projection_recursion: Projection`: selects which (if any) projection to run
+- `nof_openings`: number of openings per round
+
+Witness decomposition-related settings:
+
+- `witness_decomposition_base_log`
+- `witness_decomposition_chunks`
+- `composed_witness_length`
+
+The different variants of projections can be selected through:
+
+```rust
+pub enum Projection {
+    Coarse(CoarseProjectionConfig),
+    Fine(FineProjectionConfig),
+    Skip,
+}
+```
+
+where `Coarse` and `Fine` are the two random projection variants (paper: Π^proj-c and Π^proj-f).
+
+## Tracing and Profiling
+
+The protocol is instrumented with [`tracing`](https://docs.rs/tracing) spans. Instrumentation is opt-in through two feature flags, which are independent and may be combined:
+
+* `events` — prints a per-phase timing summary to the console when the run finishes
+* `profile` — writes machine-readable artifacts to `profiles/` for analysis
+
+Without either flag a global subscriber is still installed, so `tracing` log messages are printed, but no timings are collected.
+
+### Console summary (`events`)
+
+```
+cargo +nightly run --release --features events -- p-28
+```
+
+The summary is aggregated by `(parent, child)` edge — that is, it reports where time went within each phase, showing per-edge totals, call counts, and the share of the parent's time. Repeated rounds are collapsed into a single `total <round>` line.
+
+### Log level
+
+Level filtering is controlled by `RUST_LOG` and defaults to `info`:
+
+```
+RUST_LOG=debug cargo +nightly run --release --features events -- p-28
+```
+
+Beyond enabling `debug!` messages, the level changes how `events` renders: at `info` the summary is aggregated as described above, while at `debug` (or lower) it switches to a **linear** trace that prints spans in execution order, indented by nesting depth. Use `info` to see where time is spent, `debug` to follow what happened in sequence.
+
+The prover and the verifier log their diagnostics - such as round shapes, next-round commitment lengths, the proof-size breakdown, the norm-bound checks — at `debug`.
+
+Valid log levels to be set for RUST_LOG are (all case insensitive) `debug`, `warn` or `warning`, `err` or `error`, and `info`, with `info` being the default. Note that other syntaxes or numeric values are not supported.
+
+### File artifacts (`profile`)
+
+```
+cargo +nightly run --release --features profile -- p-28
+```
+
+Artifacts are written to `profiles/<params>_<timestamp>/`, where `<params>` is the parameter set of the run (`p26`, `p28`, `p30`, ...):
+
+* `trace.json` — a Chrome trace. Drag it into [Firefox Profiler](https://profiler.firefox.com/) or [Perfetto](https://ui.perfetto.dev/) to inspect the run as a flame chart.
+* `snapshot.json` — per-span totals (`total_ns`, `calls`) plus run metadata: git SHA, date, enabled features, and machine description. Aggregation is by span *name*, i.e. total time spent in a span anywhere in the tree, which makes snapshots comparable across runs.
+
+## Experiments
+
+This codebase has been benchmarked on a Precision 750, which features an Intel Core i7-11850H and 64 GB of memory. The benchmarks have been run using the pure-Rust back-end, specifically with the features `unsafe-sumcheck` and `incomplete-rexl` enabled. Logs have been placed under the [experiments/tiger_lake](experiments/tiger_lake) folder.
+
+Additionally, benchmarks of [Greyhound](https://github.com/lattice-dogs/labrador) and [SALSAA](https://github.com/lattice-arguments/salsaaa) have been recorded on the same machine for polynomial degrees 2^26 and 2^28.
+
+Due to memory requirements for polynomial degree 2^30 exceeding 64 GB, the respective benchmarks for Greyhound and SALSAA were run on a different machine (Dell PowerEdge XE8640 with Xeon Platinum 8468) and placed in the [experiments/sapphire_rapids](experiments/sapphire_rapids) folder.
+
+## Parameter sets
+
+The binary takes the parameter set as its argument: `p-22`, `p-24`, `p-26`, `p-28` (default) and `p-30` for polynomial degrees 2^22 to 2^30, e.g. `cargo run --release -- p-26`; `p-29` exists as an exact-norm chain for `snark` mode. The sets are defined in `src/instantiation.rs`, measured for rings with 2 projection batches. The build script passes the spec's file name to the crate as the cfg `rokoko_ring`, and `src/main.rs` selects `src/instantiation_n128_d4.rs` for `rokoko_ring = "n128_d4"`; that module retunes the default chains for `rings/n128_d4.toml` and fails to compile against any other ring.
+
+## Ring
+
+The ring R_q = Z_q[X]/(X^N + 1) and the challenge set are fixed at build time by a spec file read by `build.rs`:
+
+```toml
+degree = 128
+mod_q = 1125899906839937 # 2^50 - 2687
+tau = 22
+op_norm_bound = 9.8
+```
+
+`rings/default.toml` holds these values and is used unless the environment variable `ROKOKO_RING` names another spec; a relative path is resolved against this crate's root, e.g. `ROKOKO_RING=rings/n256.toml cargo build --release`. The build fails with a message unless N is a power of two in [128, 256], q is a prime in (2^15, 2^50), q - 1 has 2-adic valuation exactly log2(N) (so X^N + 1 splits into irreducible quadratics), and 1 <= tau <= N.
+
+A crate depending on `rokoko` sets the ring in its own `.cargo/config.toml`; cargo passes `[env]` to the build scripts of dependencies as well, and `relative = true` resolves the path against the directory holding `.cargo`:
+
+```toml
+[env]
+ROKOKO_RING = { value = "rings/mine.toml", relative = true }
+```
+
+## Features
+
+* `snark`: runs the executor in SNARK mode; without it, the executor runs the PCS chain (disclaimer: snark mode is currently highly experimental). The claim-language guide is [docs/snark.md](docs/snark.md), and `cargo run --release --example claims` is a runnable walk-through.
+* `events`: prints a per-phase timing summary to the console at the end of the run (see [Tracing and Profiling](#tracing-and-profiling))
+* `profile`: writes a Chrome trace and a per-span snapshot to `profiles/` for offline analysis (see [Tracing and Profiling](#tracing-and-profiling))
+* `unsafe-sumcheck`: enables zero-cost borrow checking by using `UnsafeCell` instead of `RefCell` in sumcheck subprotocols
+* `debug-hardness`: verifies the hardness of underlying SIS instances (requires [Lattice Estimator](https://github.com/malb/lattice-estimator) cloned as a submodule and [SageMath](https://www.sagemath.org/) installed)
+* `debug-decomp`: additional checks for decomposition and overflows in type 0 projections
+
+## License
+
+RoKoko is licensed under the Apache 2.0 Licence.

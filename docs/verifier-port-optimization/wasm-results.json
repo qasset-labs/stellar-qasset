@@ -1,0 +1,132 @@
+{
+  "transcript_vector": [
+    394127921,
+    1463445479,
+    3541783
+  ],
+  "transcript_vector_passed": true,
+  "scope": "raw_wasm_fixture_execution_only_not_soroban_metering_or_contract",
+  "wasm_bytes": 3513618,
+  "wasm_sha256": "0c93f5fa4bd10be3257f227db5919cce14ca03b176610f76495de73fae733d11",
+  "compile_ms": 14.979599999999976,
+  "checks": [
+    {
+      "id": 0,
+      "name": "canonical",
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "detail": "",
+      "elapsed_ms": 704.4049669999999,
+      "phase": 3,
+      "allocated_end": 39880336,
+      "linear_memory_bytes": 39911424,
+      "passed": true
+    },
+    {
+      "id": 1,
+      "name": "changed_action",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "verification_failed",
+      "elapsed_ms": 141.261893,
+      "phase": 3,
+      "allocated_end": 32563264,
+      "linear_memory_bytes": 32571392,
+      "passed": true
+    },
+    {
+      "id": 2,
+      "name": "corrupted_proof",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "verification_failed",
+      "elapsed_ms": 468.94707800000015,
+      "phase": 3,
+      "allocated_end": 33103152,
+      "linear_memory_bytes": 33161216,
+      "passed": true
+    },
+    {
+      "id": 3,
+      "name": "trailing_proof",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "trailing_or_unread_proof",
+      "elapsed_ms": 941.4402550000002,
+      "phase": 3,
+      "allocated_end": 41500000,
+      "linear_memory_bytes": 41549824,
+      "passed": true
+    },
+    {
+      "id": 4,
+      "name": "truncated_proof",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "verification_failed",
+      "elapsed_ms": 777.8317630000001,
+      "phase": 3,
+      "allocated_end": 39878080,
+      "linear_memory_bytes": 39911424,
+      "passed": true
+    },
+    {
+      "id": 5,
+      "name": "empty_proof",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "verification_failed",
+      "elapsed_ms": 117.61759500000016,
+      "phase": 3,
+      "allocated_end": 31685060,
+      "linear_memory_bytes": 31719424,
+      "passed": true
+    },
+    {
+      "id": 6,
+      "name": "changed_scalar",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "",
+      "elapsed_ms": 0.08010000000012951,
+      "phase": 0,
+      "allocated_end": 0,
+      "linear_memory_bytes": 4390912,
+      "passed": true
+    },
+    {
+      "id": 7,
+      "name": "padded_constraints_match_native_identity",
+      "expected": 1,
+      "result": 1,
+      "error": null,
+      "detail": "",
+      "elapsed_ms": 278.0759869999997,
+      "phase": 3,
+      "allocated_end": 31716848,
+      "linear_memory_bytes": 31719424,
+      "passed": true
+    },
+    {
+      "id": 8,
+      "name": "unclamped_scalar",
+      "expected": 0,
+      "result": 0,
+      "error": null,
+      "detail": "",
+      "elapsed_ms": 0.18620000000009895,
+      "phase": 0,
+      "allocated_end": 0,
+      "linear_memory_bytes": 4390912,
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

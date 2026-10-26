@@ -1,0 +1,1 @@
+{"status": "passed_exact_lossless_preprocessing_recoding_only", "original_bytes": 2714051, "compact_bytes": 1286664, "original_sha256": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3", "compact_sha256": "0d1a3b775ce006e07df6af3aa1491d2d7c29202e11985fd6045ef398cb3be424", "byte_exact_expansion_equal": true, "security_approved": false}

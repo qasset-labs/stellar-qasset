@@ -1,0 +1,28 @@
+{
+  "scope": "Evidence validation negative fixtures only; no fabricated positive cryptographic execution",
+  "security_approved": false,
+  "package_execution_record_sha256": "736dacbf7d4c865d6c871e745c263f7d048d84f4d8f0375fe02636aa067a9831",
+  "checks": [
+    {
+      "case": "original_source_passes_explicit_checks_under_O",
+      "passed": true,
+      "exit_code": 0
+    },
+    {
+      "case": "changed_source_rejected_under_O",
+      "passed": true,
+      "exit_code": 1
+    },
+    {
+      "case": "generated_fixture_mutation_rejected_under_O",
+      "passed": true,
+      "exit_code": 1
+    },
+    {
+      "case": "duplicate_case_id_rejected_under_O_with_consistent_record_hash",
+      "passed": true,
+      "exit_code": 1
+    }
+  ],
+  "all_passed": true
+}

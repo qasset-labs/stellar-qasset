@@ -1,0 +1,565 @@
+--- a/host-runner/setup.sha256
++++ b/host-runner/setup.sha256
+@@ -1 +1 @@
+-4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3
++0d1a3b775ce006e07df6af3aa1491d2d7c29202e11985fd6045ef398cb3be424
+--- a/host-runner/src/frozen.rs
++++ b/host-runner/src/frozen.rs
+@@ -15,13 +15,13 @@
+ use binius_spartan_verifier::{
+     IOPVerifier as OuterVerifier, constraint_system::ConstraintSystemPadded,
+ };
+-use binius_utils::{DeserializeBytes, SerializeBytes};
++use binius_utils::DeserializeBytes;
+ use binius_verifier::{IOPVerifier as InnerVerifier, zk_config::ZKVerifier};
+ use sha2::{Digest, Sha256};
+ 
+ pub type Verifier = ZKVerifier<StdDigest, StdCompression>;
+-pub const MAX_SETUP_BYTES: usize = 64 * 1024 * 1024;
+-const MAGIC: &[u8] = b"qasset-fixed-binius-zk-preprocessing-v1\0";
++pub const MAX_SETUP_BYTES: usize = 1_286_664;
++const MAGIC: &[u8] = b"qasset-fixed-binius-zk-preprocessing-v2\0";
+ const PIN: &str = "115108d5a661d95c0b474b6ab02558bfe6c6bec7";
+ const PROGRAM: &str = "qasset-binius-leaf-clamp-research-v1";
+ const SOURCE: &[u8] = include_bytes!("native.rs");
+@@ -35,11 +35,6 @@
+             .to_le_bytes(),
+     );
+     Ok(())
+-}
+-fn fieldout(b: &mut Vec<u8>, field: &F) -> Result<(), String> {
+-    field
+-        .serialize(b)
+-        .map_err(|e| format!("field serialize: {e:?}"))
+ }
+ fn operandout(b: &mut Vec<u8>, operand: &Operand<WitnessIndex>) -> Result<(), String> {
+     u32out(b, operand.len())?;
+@@ -71,73 +66,6 @@
+     Ok(hex::encode(hash.finalize()))
+ }
+ 
+-pub fn export(v: &Verifier) -> Result<Vec<u8>, String> {
+-    let mut b = MAGIC.to_vec();
+-    b.extend_from_slice(PIN.as_bytes());
+-    b.extend_from_slice(PROGRAM.as_bytes());
+-    b.extend_from_slice(&Sha256::digest(SOURCE));
+-    u32out(&mut b, 96)?;
+-    u32out(&mut b, 1)?;
+-    let mut inner = Vec::new();
+-    v.constraint_system()
+-        .serialize(&mut inner)
+-        .map_err(|e| format!("inner serialize: {e:?}"))?;
+-    u32out(&mut b, inner.len())?;
+-    b.extend(inner);
+-    u32out(&mut b, v.log_public_words())?;
+-    let padded = v.outer_iop_verifier().constraint_system();
+-    let c = padded.unpadded_constraint_system();
+-    u32out(&mut b, c.constants().len())?;
+-    for field in c.constants() {
+-        fieldout(&mut b, field)?;
+-    }
+-    for n in [
+-        c.n_inout(),
+-        c.n_precommit(),
+-        c.n_private(),
+-        c.log_public(),
+-        c.one_wire().index,
+-    ] {
+-        u32out(&mut b, n as usize)?;
+-    }
+-    u32out(&mut b, c.mul_constraints().len())?;
+-    for m in c.mul_constraints() {
+-        for o in [&m.a, &m.b, &m.c] {
+-            operandout(&mut b, o)?;
+-        }
+-    }
+-    u32out(&mut b, padded.blinding_info().n_dummy_wires)?;
+-    u32out(&mut b, padded.blinding_info().n_dummy_constraints)?;
+-    let compiler = v.basefold_compiler();
+-    u32out(&mut b, compiler.oracle_specs().len())?;
+-    for spec in compiler.oracle_specs() {
+-        u32out(&mut b, spec.log_msg_len)?;
+-    }
+-    u32out(&mut b, compiler.fri_params().len())?;
+-    for params in compiler.fri_params() {
+-        for n in [
+-            params.rs_code().log_dim(),
+-            params.rs_code().log_inv_rate(),
+-            params.log_batch_size(),
+-            params.n_test_queries(),
+-        ] {
+-            u32out(&mut b, n)?;
+-        }
+-        u32out(&mut b, params.fold_arities().len())?;
+-        for arity in params.fold_arities() {
+-            u32out(&mut b, *arity)?;
+-        }
+-        u32out(&mut b, params.rs_code().subspace().basis().len())?;
+-        for field in params.rs_code().subspace().basis() {
+-            fieldout(&mut b, field)?;
+-        }
+-    }
+-    if b.len() > MAX_SETUP_BYTES {
+-        return Err("preprocessing too large".into());
+-    }
+-    Ok(b)
+-}
+-
+ struct Reader<'a> {
+     bytes: &'a [u8],
+     at: usize,
+@@ -173,12 +101,33 @@
+     fn field(&mut self) -> Result<F, String> {
+         F::deserialize(self.bytes(16)?).map_err(|e| format!("field decode: {e:?}"))
+     }
++    fn var_u32(&mut self) -> Result<u32, String> {
++        let mut value = 0u32;
++        for index in 0..5 {
++            let byte = self.bytes(1)?[0];
++            if index == 4 && byte > 15 {
++                return Err("variable integer overflow".into());
++            }
++            value |= u32::from(byte & 127) << (7 * index);
++            if byte & 128 == 0 {
++                if index > 0 && byte == 0 {
++                    return Err("nonminimal variable integer".into());
++                }
++                return Ok(value);
++            }
++        }
++        Err("variable integer too long".into())
++    }
+     fn operand(&mut self, limits: [u32; 3]) -> Result<Operand<WitnessIndex>, String> {
+-        let n = self.count(MAX_WIRES_PER_OPERAND)?;
++        let n = self.var_u32()? as usize;
++        if n > MAX_WIRES_PER_OPERAND {
++            return Err("operand too large".into());
++        }
+         let mut wires = smallvec::SmallVec::<[WitnessIndex; 4]>::with_capacity(n);
+         for _ in 0..n {
+-            let tag = self.bytes(1)?[0];
+-            let index = self.u32()?;
++            let packed = self.var_u32()?;
++            let tag = (packed & 3) as u8;
++            let index = packed >> 2;
+             let segment = match tag {
+                 0 => WitnessSegment::Public,
+                 1 => WitnessSegment::Precommit,
+@@ -203,16 +152,8 @@
+     load_with_approved_hash(bytes, include_str!("../setup.sha256").trim())
+ }
+ 
+-/// Host exporter roundtrip only; requires bytes produced by this trusted native object.
+-pub fn export_roundtrip(verifier: &Verifier, bytes: &[u8]) -> Result<Verifier, String> {
+-    if export(verifier)? != bytes {
+-        return Err("export does not match trusted verifier".into());
+-    }
+-    load_with_approved_hash(bytes, &hex::encode(Sha256::digest(bytes)))
+-}
+-
+ fn load_with_approved_hash(bytes: &[u8], expected_sha256: &str) -> Result<Verifier, String> {
+-    if bytes.len() > MAX_SETUP_BYTES
++    if bytes.len() != MAX_SETUP_BYTES
+         || expected_sha256.len() != 64
+         || hex::encode(Sha256::digest(bytes)) != expected_sha256
+     {
+@@ -259,7 +200,10 @@
+     }
+     let limits = [1u32 << outer_log_public, precommit, private];
+     let n = r.count(MAX_CONSTRAINTS)?;
+-    let mut constraints = Vec::with_capacity(n);
++    if n != 82_373 {
++        return Err("fixed constraint count mismatch".into());
++    }
++    let mut constraints = Vec::with_capacity((n + 2).next_power_of_two());
+     for _ in 0..n {
+         constraints.push(MulConstraint {
+             a: r.operand(limits)?,
+@@ -278,7 +222,10 @@
+     );
+     let dummy_wires = r.count(4096)?;
+     let dummy_constraints = r.count(4096)?;
+-    let padded = ConstraintSystemPadded::new(
++    if dummy_wires != 232 || dummy_constraints != 2 {
++        return Err("fixed blinding dimensions mismatch".into());
++    }
++    let padded = ConstraintSystemPadded::new_verifier_only(
+         outer,
+         BlindingInfo {
+             n_dummy_wires: dummy_wires,
+@@ -348,3 +295,39 @@
+     );
+     Ok(Verifier::from_preprocessed(inner, outer, compiler))
+ }
++
++#[cfg(test)]
++mod compact_integer_tests {
++    use super::Reader;
++    #[test]
++    fn canonical_u32_boundaries() {
++        for (bytes, expected) in [
++            (&[0u8][..], 0),
++            (&[1][..], 1),
++            (&[127][..], 127),
++            (&[128, 1][..], 128),
++            (&[255, 127][..], 16383),
++            (&[128, 128, 1][..], 16384),
++            (&[255, 255, 255, 255, 15][..], u32::MAX),
++        ] {
++            let mut reader = Reader { bytes, at: 0 };
++            assert_eq!(reader.var_u32().unwrap(), expected);
++            assert_eq!(reader.at, bytes.len());
++        }
++    }
++    #[test]
++    fn malformed_u32_encodings_rejected() {
++        for bytes in [
++            &[][..],
++            &[128][..],
++            &[128, 0][..],
++            &[129, 0][..],
++            &[255, 255, 255, 255, 16][..],
++            &[255, 255, 255, 255, 128][..],
++            &[128, 128, 128, 128, 128, 0][..],
++        ] {
++            let mut reader = Reader { bytes, at: 0 };
++            assert!(reader.var_u32().is_err());
++        }
++    }
++}
+--- a/host-runner/src/main.rs
++++ b/host-runner/src/main.rs
+@@ -7,6 +7,9 @@
+     let args = std::env::args().collect::<Vec<_>>();
+     if args.len() != 3 {
+         return Err("usage: qasset-binius-port-host SETUP PROOF".into());
++    }
++    if fs::metadata(&args[1])?.len() != frozen::MAX_SETUP_BYTES as u64 {
++        return Err("setup byte bound".into());
+     }
+     let setup = fs::read(&args[1])?;
+     let proof_path = Path::new(&args[2]);
+@@ -56,7 +59,7 @@
+     let all = checks.iter().all(|x| x["passed"] == true) && vector_passed && padded_passed;
+     println!(
+         "{}",
+-        serde_json::json!({"scope":"fixed_public_fixture_native_port_only","checks":checks,"transcript_vector":vector,"transcript_vector_passed":vector_passed,"padded_constraints_sha256":padded,"padded_constraints_passed":padded_passed,"all_passed":all})
++        serde_json::json!({"scope":"fixed_public_fixture_native_port_only","checks":checks,"transcript_vector":vector,"transcript_vector_passed":vector_passed,"padded_constraints_sha256":padded,"padded_constraints_passed":padded_passed,"all_passed":all,"setup_bytes":setup.len(),"padded_count":verifier.outer_iop_verifier().constraint_system().mul_constraints().len(),"retained_unpadded_count":verifier.outer_iop_verifier().constraint_system().retained_unpadded_constraint_system().map_or(0, |cs| cs.mul_constraints().len()),"unpadded_count_metadata":verifier.outer_iop_verifier().constraint_system().n_unpadded_constraints()})
+     );
+     if !all {
+         std::process::exit(2)
+--- a/vendor/binius64/crates/spartan-frontend/src/constraint_system.rs
++++ b/vendor/binius64/crates/spartan-frontend/src/constraint_system.rs
+@@ -307,6 +307,11 @@
+ 		&self.mul_constraints
+ 	}
+ 
++	/// Moves constraints into a verifier-only padded representation, retaining metadata.
++	pub fn take_mul_constraints(&mut self) -> Vec<MulConstraint<WitnessIndex>> {
++		core::mem::take(&mut self.mul_constraints)
++	}
++
+ 	pub fn one_wire(&self) -> WitnessIndex {
+ 		WitnessIndex {
+ 			segment: WitnessSegment::Public,
+--- a/vendor/binius64/crates/spartan-verifier/src/constraint_system.rs
++++ b/vendor/binius64/crates/spartan-verifier/src/constraint_system.rs
+@@ -20,6 +20,7 @@
+ #[derive(Debug, Clone)]
+ pub struct ConstraintSystemPadded<F: Field> {
+ 	inner: ConstraintSystem<F>,
++    n_unpadded_constraints: usize,
+ 	log_precommit: u32,
+ 	log_private: u32,
+ 	blinding_info: BlindingInfo,
+@@ -45,6 +46,27 @@
+             .next_power_of_two();
+         let mut mul_constraints = Vec::with_capacity(final_len);
+         mul_constraints.extend_from_slice(cs.mul_constraints());
++        Self::with_owned_constraints(cs, blinding_info, mul_constraints)
++    }
++
++    /// Creates verifier-only padding while moving, rather than duplicating, constraints.
++    /// The retained inner constraint system contains metadata only; do not use it for export.
++    pub fn new_verifier_only(mut cs: ConstraintSystem<F>, blinding_info: BlindingInfo) -> Self {
++        let constraints = cs.take_mul_constraints();
++        Self::with_owned_constraints(cs, blinding_info, constraints)
++    }
++
++    fn with_owned_constraints(
++        cs: ConstraintSystem<F>,
++        blinding_info: BlindingInfo,
++        mut mul_constraints: Vec<MulConstraint<WitnessIndex>>,
++    ) -> Self {
++        let n_unpadded_constraints = mul_constraints.len();
++        let final_len = mul_constraints.len()
++            .checked_add(blinding_info.n_dummy_constraints)
++            .expect("fixed preprocessing constraint count is bounded")
++            .next_power_of_two();
++        mul_constraints.reserve_exact(final_len - mul_constraints.len());
+ 
+ 		/// Adds dummy blinding constraints for a segment and returns its padded log-size.
+ 		fn add_blinding_constraints(
+@@ -106,6 +128,7 @@
+ 
+ 		Self {
+ 			inner: cs,
++            n_unpadded_constraints,
+ 			log_precommit,
+ 			log_private,
+ 			blinding_info,
+@@ -114,8 +137,23 @@
+ 		}
+ 	}
+ 
+-	/// Returns the unpadded deterministic compiler output for fixed preprocessing export.
+-	pub fn unpadded_constraint_system(&self) -> &ConstraintSystem<F> { &self.inner }
++    /// Returns complete unpadded compiler output for host preprocessing export.
++    ///
++    /// # Preconditions
++    /// The instance must come from `new`, which retains unpadded constraints.
++    /// Verifier-only callers must use `retained_unpadded_constraint_system` instead.
++    pub fn unpadded_constraint_system(&self) -> &ConstraintSystem<F> {
++        self.retained_unpadded_constraint_system()
++            .expect("verifier-only preprocessing does not retain export constraints")
++    }
++
++    /// Returns complete export data only when this instance actually retains it.
++    pub fn retained_unpadded_constraint_system(&self) -> Option<&ConstraintSystem<F>> {
++        (self.inner.mul_constraints().len() == self.n_unpadded_constraints).then_some(&self.inner)
++    }
++
++    /// Returns the original number of constraints before blinding and padding.
++    pub fn n_unpadded_constraints(&self) -> usize { self.n_unpadded_constraints }
+ 
+ 	pub fn constants(&self) -> &[F] {
+ 		self.inner.constants()
+--- a/wasm-fixture/setup.sha256
++++ b/wasm-fixture/setup.sha256
+@@ -1 +1 @@
+-4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3
++0d1a3b775ce006e07df6af3aa1491d2d7c29202e11985fd6045ef398cb3be424
+--- a/wasm-fixture/src/frozen.rs
++++ b/wasm-fixture/src/frozen.rs
+@@ -15,13 +15,13 @@
+ use binius_spartan_verifier::{
+     IOPVerifier as OuterVerifier, constraint_system::ConstraintSystemPadded,
+ };
+-use binius_utils::{DeserializeBytes, SerializeBytes};
++use binius_utils::DeserializeBytes;
+ use binius_verifier::{IOPVerifier as InnerVerifier, zk_config::ZKVerifier};
+ use sha2::{Digest, Sha256};
+ 
+ pub type Verifier = ZKVerifier<StdDigest, StdCompression>;
+-pub const MAX_SETUP_BYTES: usize = 64 * 1024 * 1024;
+-const MAGIC: &[u8] = b"qasset-fixed-binius-zk-preprocessing-v1\0";
++pub const MAX_SETUP_BYTES: usize = 1_286_664;
++const MAGIC: &[u8] = b"qasset-fixed-binius-zk-preprocessing-v2\0";
+ const PIN: &str = "115108d5a661d95c0b474b6ab02558bfe6c6bec7";
+ const PROGRAM: &str = "qasset-binius-leaf-clamp-research-v1";
+ const SOURCE: &[u8] = include_bytes!("native.rs");
+@@ -35,11 +35,6 @@
+             .to_le_bytes(),
+     );
+     Ok(())
+-}
+-fn fieldout(b: &mut Vec<u8>, field: &F) -> Result<(), String> {
+-    field
+-        .serialize(b)
+-        .map_err(|e| format!("field serialize: {e:?}"))
+ }
+ fn operandout(b: &mut Vec<u8>, operand: &Operand<WitnessIndex>) -> Result<(), String> {
+     u32out(b, operand.len())?;
+@@ -71,73 +66,6 @@
+     Ok(hex::encode(hash.finalize()))
+ }
+ 
+-pub fn export(v: &Verifier) -> Result<Vec<u8>, String> {
+-    let mut b = MAGIC.to_vec();
+-    b.extend_from_slice(PIN.as_bytes());
+-    b.extend_from_slice(PROGRAM.as_bytes());
+-    b.extend_from_slice(&Sha256::digest(SOURCE));
+-    u32out(&mut b, 96)?;
+-    u32out(&mut b, 1)?;
+-    let mut inner = Vec::new();
+-    v.constraint_system()
+-        .serialize(&mut inner)
+-        .map_err(|e| format!("inner serialize: {e:?}"))?;
+-    u32out(&mut b, inner.len())?;
+-    b.extend(inner);
+-    u32out(&mut b, v.log_public_words())?;
+-    let padded = v.outer_iop_verifier().constraint_system();
+-    let c = padded.unpadded_constraint_system();
+-    u32out(&mut b, c.constants().len())?;
+-    for field in c.constants() {
+-        fieldout(&mut b, field)?;
+-    }
+-    for n in [
+-        c.n_inout(),
+-        c.n_precommit(),
+-        c.n_private(),
+-        c.log_public(),
+-        c.one_wire().index,
+-    ] {
+-        u32out(&mut b, n as usize)?;
+-    }
+-    u32out(&mut b, c.mul_constraints().len())?;
+-    for m in c.mul_constraints() {
+-        for o in [&m.a, &m.b, &m.c] {
+-            operandout(&mut b, o)?;
+-        }
+-    }
+-    u32out(&mut b, padded.blinding_info().n_dummy_wires)?;
+-    u32out(&mut b, padded.blinding_info().n_dummy_constraints)?;
+-    let compiler = v.basefold_compiler();
+-    u32out(&mut b, compiler.oracle_specs().len())?;
+-    for spec in compiler.oracle_specs() {
+-        u32out(&mut b, spec.log_msg_len)?;
+-    }
+-    u32out(&mut b, compiler.fri_params().len())?;
+-    for params in compiler.fri_params() {
+-        for n in [
+-            params.rs_code().log_dim(),
+-            params.rs_code().log_inv_rate(),
+-            params.log_batch_size(),
+-            params.n_test_queries(),
+-        ] {
+-            u32out(&mut b, n)?;
+-        }
+-        u32out(&mut b, params.fold_arities().len())?;
+-        for arity in params.fold_arities() {
+-            u32out(&mut b, *arity)?;
+-        }
+-        u32out(&mut b, params.rs_code().subspace().basis().len())?;
+-        for field in params.rs_code().subspace().basis() {
+-            fieldout(&mut b, field)?;
+-        }
+-    }
+-    if b.len() > MAX_SETUP_BYTES {
+-        return Err("preprocessing too large".into());
+-    }
+-    Ok(b)
+-}
+-
+ struct Reader<'a> {
+     bytes: &'a [u8],
+     at: usize,
+@@ -173,12 +101,33 @@
+     fn field(&mut self) -> Result<F, String> {
+         F::deserialize(self.bytes(16)?).map_err(|e| format!("field decode: {e:?}"))
+     }
++    fn var_u32(&mut self) -> Result<u32, String> {
++        let mut value = 0u32;
++        for index in 0..5 {
++            let byte = self.bytes(1)?[0];
++            if index == 4 && byte > 15 {
++                return Err("variable integer overflow".into());
++            }
++            value |= u32::from(byte & 127) << (7 * index);
++            if byte & 128 == 0 {
++                if index > 0 && byte == 0 {
++                    return Err("nonminimal variable integer".into());
++                }
++                return Ok(value);
++            }
++        }
++        Err("variable integer too long".into())
++    }
+     fn operand(&mut self, limits: [u32; 3]) -> Result<Operand<WitnessIndex>, String> {
+-        let n = self.count(MAX_WIRES_PER_OPERAND)?;
++        let n = self.var_u32()? as usize;
++        if n > MAX_WIRES_PER_OPERAND {
++            return Err("operand too large".into());
++        }
+         let mut wires = smallvec::SmallVec::<[WitnessIndex; 4]>::with_capacity(n);
+         for _ in 0..n {
+-            let tag = self.bytes(1)?[0];
+-            let index = self.u32()?;
++            let packed = self.var_u32()?;
++            let tag = (packed & 3) as u8;
++            let index = packed >> 2;
+             let segment = match tag {
+                 0 => WitnessSegment::Public,
+                 1 => WitnessSegment::Precommit,
+@@ -203,16 +152,8 @@
+     load_with_approved_hash(bytes, include_str!("../setup.sha256").trim())
+ }
+ 
+-/// Host exporter roundtrip only; requires bytes produced by this trusted native object.
+-pub fn export_roundtrip(verifier: &Verifier, bytes: &[u8]) -> Result<Verifier, String> {
+-    if export(verifier)? != bytes {
+-        return Err("export does not match trusted verifier".into());
+-    }
+-    load_with_approved_hash(bytes, &hex::encode(Sha256::digest(bytes)))
+-}
+-
+ fn load_with_approved_hash(bytes: &[u8], expected_sha256: &str) -> Result<Verifier, String> {
+-    if bytes.len() > MAX_SETUP_BYTES
++    if bytes.len() != MAX_SETUP_BYTES
+         || expected_sha256.len() != 64
+         || hex::encode(Sha256::digest(bytes)) != expected_sha256
+     {
+@@ -259,7 +200,10 @@
+     }
+     let limits = [1u32 << outer_log_public, precommit, private];
+     let n = r.count(MAX_CONSTRAINTS)?;
+-    let mut constraints = Vec::with_capacity(n);
++    if n != 82_373 {
++        return Err("fixed constraint count mismatch".into());
++    }
++    let mut constraints = Vec::with_capacity((n + 2).next_power_of_two());
+     for _ in 0..n {
+         constraints.push(MulConstraint {
+             a: r.operand(limits)?,
+@@ -278,7 +222,10 @@
+     );
+     let dummy_wires = r.count(4096)?;
+     let dummy_constraints = r.count(4096)?;
+-    let padded = ConstraintSystemPadded::new(
++    if dummy_wires != 232 || dummy_constraints != 2 {
++        return Err("fixed blinding dimensions mismatch".into());
++    }
++    let padded = ConstraintSystemPadded::new_verifier_only(
+         outer,
+         BlindingInfo {
+             n_dummy_wires: dummy_wires,
+@@ -348,3 +295,39 @@
+     );
+     Ok(Verifier::from_preprocessed(inner, outer, compiler))
+ }
++
++#[cfg(test)]
++mod compact_integer_tests {
++    use super::Reader;
++    #[test]
++    fn canonical_u32_boundaries() {
++        for (bytes, expected) in [
++            (&[0u8][..], 0),
++            (&[1][..], 1),
++            (&[127][..], 127),
++            (&[128, 1][..], 128),
++            (&[255, 127][..], 16383),
++            (&[128, 128, 1][..], 16384),
++            (&[255, 255, 255, 255, 15][..], u32::MAX),
++        ] {
++            let mut reader = Reader { bytes, at: 0 };
++            assert_eq!(reader.var_u32().unwrap(), expected);
++            assert_eq!(reader.at, bytes.len());
++        }
++    }
++    #[test]
++    fn malformed_u32_encodings_rejected() {
++        for bytes in [
++            &[][..],
++            &[128][..],
++            &[128, 0][..],
++            &[129, 0][..],
++            &[255, 255, 255, 255, 16][..],
++            &[255, 255, 255, 255, 128][..],
++            &[128, 128, 128, 128, 128, 0][..],
++        ] {
++            let mut reader = Reader { bytes, at: 0 };
++            assert!(reader.var_u32().is_err());
++        }
++    }
++}

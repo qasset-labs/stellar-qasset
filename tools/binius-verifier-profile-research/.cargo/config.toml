@@ -1,0 +1,7 @@
+# Scoped to this research tool only (Cargo applies config.toml from the
+# invocation directory upward; this crate is always built from within its own
+# directory). Required so `pprof`'s frame-pointer-based unwinder can actually
+# walk the stack during signal-based sampling in pprof_profile.rs; without it,
+# every captured sample has zero resolved frames.
+[build]
+rustflags = ["-C", "force-frame-pointers=yes"]

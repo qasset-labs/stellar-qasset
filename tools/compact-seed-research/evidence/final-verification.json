@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "mode": "separate_native_verifier_process_no_seed_input",
+  "proof_sha256": "fdceefebfa4e6ec5a44f61faca25e06b7897f03869364704cb5c1e3bba818517",
+  "proof_bytes": 8893905,
+  "binary_sha256": "561f6d2a764fe3f36360fe42357d4f6c09bc7824ae72edea5d68817d65c851ce",
+  "source_sha256": {
+    "src/main.rs": "8024adf55bc33d5805566957269ee981802b642a189bbb2a5071348c11a514a3",
+    "vendor/shorstop/src/qasset_leaf_seed.rs": "163158d17d0029411aaca71a30016f0c5fa4ea726905c4b72d9ac2e92c3e95bf",
+    "vendor/shorstop/src/lib.rs": "6b1ca9c0633f826a82af0bb9c87c0587bfd1caefa077ebf62c5257b35796d6eb",
+    "Cargo.lock": "0b15159d6198db5003154dac97276b04bc79cbf3b95db00625b52e86660d1322"
+  },
+  "cases": [
+    {
+      "case": "valid",
+      "exit_code": 0,
+      "stdout": {
+        "accepted": true
+      },
+      "seconds": 0.6139416779988096
+    },
+    {
+      "case": "changed_scalar",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.048499590000574244
+    },
+    {
+      "case": "changed_action",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.06191798800136894
+    },
+    {
+      "case": "corrupt",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.042506691002927255
+    },
+    {
+      "case": "truncated",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.020989896001992747
+    },
+    {
+      "case": "trailing_zero",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.047391891002916964
+    },
+    {
+      "case": "invalid_clamp_bits",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false
+      },
+      "seconds": 0.012530996998975752
+    },
+    {
+      "case": "oversize_before_read",
+      "exit_code": 2,
+      "stdout": {
+        "accepted": false,
+        "error": "proof exceeds research limit"
+      },
+      "seconds": 0.0031323000002885237
+    }
+  ],
+  "note": "Same existing proof as initial measured generation; decoder and CLI size checks hardened afterward; AIR/proof configuration unchanged."
+}

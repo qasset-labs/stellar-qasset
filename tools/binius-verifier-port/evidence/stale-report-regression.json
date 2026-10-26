@@ -1,0 +1,7 @@
+{
+  "case": "invalid_input_supersedes_old_passed_report",
+  "passed": true,
+  "final_status": "failed",
+  "error_type": "FileNotFoundError",
+  "scope": "failure_reporting_control_flow_only_no_crypto_mock"
+}

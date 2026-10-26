@@ -1,0 +1,605 @@
+//! Q-Asset: bounded analysis of administrator-declared weighted authorization policies.
+//!
+//! Signer algorithms and role coverage are metadata, not verified on-chain evidence. The
+//! declared QS level must never be presented as an asset's verified quantum security level.
+//! The verification and enforcement APIs fail closed until an audited integration can prove
+//! actual signer algorithms, complete authority coverage, and configuration integrity.
+
+#![no_std]
+
+use soroban_sdk::{
+    contract, contracterror, contractevent, contractimpl, contracttype, symbol_short, Address, Env,
+    Map, Symbol, Vec,
+};
+
+// ============================================================
+// Types
+// ============================================================
+
+/// Administrator-declared signature algorithm; not evidence of actual authentication.
+///
+/// Used only to calculate declared policy. The registry cannot verify a signer's actual
+/// account code, verifier, upgrade path, keys, or authentication algorithm. Implementing such
+/// checks requires a separate, reviewed integration with complete asset authority coverage.
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum SignerAlgo {
+    /// Classic Stellar account signer. Broken by a cryptographically-relevant quantum computer
+    /// (Shor's algorithm against the underlying elliptic curve).
+    Ed25519,
+    /// secp256r1 (WebAuthn/passkey-style signers). Equally quantum-vulnerable as Ed25519.
+    Secp256r1,
+    /// ML-DSA-44 (FIPS 204, NIST security level 2).
+    MlDsa44,
+    /// ML-DSA-65 (FIPS 204, NIST security level 3). The level SDF's Quantum Preparedness Plan
+    /// Stage 1 targets first for Soroban host-function acceleration.
+    MlDsa65,
+    /// ML-DSA-87 (FIPS 204, NIST security level 5).
+    MlDsa87,
+}
+
+impl SignerAlgo {
+    pub fn is_post_quantum(&self) -> bool {
+        matches!(
+            self,
+            SignerAlgo::MlDsa44 | SignerAlgo::MlDsa65 | SignerAlgo::MlDsa87
+        )
+    }
+}
+
+/// One signer inside a role's authorization quorum.
+///
+/// `weight` mirrors Stellar's real classic-account multisig model directly (each signer has a
+/// weight, and a threshold is met once the summed weight of participating signers reaches it)
+/// rather than simplifying to unweighted 1-signer-1-vote counting — a control graph that can't
+/// represent "the CEO's key is weight 3, the two co-signers are weight 1 each" doesn't actually
+/// describe weighted Stellar multisig policy. Address identity and actual key independence
+/// are unverified; the algorithm field is only a declaration.
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Signer {
+    pub address: Address,
+    pub algo: SignerAlgo,
+    pub weight: u32,
+}
+
+/// A weighted authorization quorum for one critical role, matching Stellar's own
+/// signer-weight/threshold multisig model.
+///
+/// `threshold` is the summed signer *weight* required to authorize an operation gated by this
+/// role, not a signer count — a quorum of one weight-3 signer and one weight-1 signer with
+/// threshold 3 is satisfied by the first signer alone, exactly as it would be on a real Stellar
+/// account.
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct Quorum {
+    pub signers: Vec<Signer>,
+    pub threshold: u32,
+}
+
+/// A critical authority every tokenized asset's control graph is checked against.
+///
+/// This exact set mirrors the original Q-Asset/PQ-RWA proposal's own enumeration: mint, burn,
+/// freeze, clawback, treasury, upgrade, governance, recovery.
+#[contracttype]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum Role {
+    Mint,
+    Burn,
+    Freeze,
+    Clawback,
+    Treasury,
+    Upgrade,
+    Governance,
+    Recovery,
+}
+
+impl Role {
+    /// All 8 tracked critical roles, in a fixed order used for iteration.
+    pub const ALL: [Role; 8] = [
+        Role::Mint,
+        Role::Burn,
+        Role::Freeze,
+        Role::Clawback,
+        Role::Treasury,
+        Role::Upgrade,
+        Role::Governance,
+        Role::Recovery,
+    ];
+
+    /// Highest-impact roles in this declared model. Their real authority and their ability to
+    /// change other operations depend on an asset's actual implementation, which is unverified.
+    pub const HIGHEST_IMPACT: [Role; 3] = [Role::Treasury, Role::Upgrade, Role::Governance];
+}
+
+/// Declared Quantum Security level for one asset's registered metadata, QS0-QS4.
+///
+/// Monotonic within this declared model; none proves actual asset security. See
+/// docs/ARCHITECTURE.md "QS0-QS4 standard" for the full rationale and worked examples.
+#[contracttype]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum QsLevel {
+    /// No post-quantum signer declared anywhere in the policy.
+    Qs0 = 0,
+    /// At least one PQ signer is declared, but a highest-impact role is missing or has a
+    /// declared quorum meetable using classical signers alone.
+    Qs1 = 1,
+    /// All highest-impact declared quorums need PQ weight; at least one other role is missing
+    /// or classically meetable within the declaration.
+    Qs2 = 2,
+    /// All 8 roles are declared and no declared quorum is classically meetable. This does not
+    /// verify that actual operations enforce those quorums or that algorithms are genuine.
+    Qs3 = 3,
+    /// Declared QS3 plus at least two declared PQ addresses are needed for each highest-impact
+    /// quorum, even with every classical signer compromised. Distinct underlying keys,
+    /// controllers, algorithms, and complete actual authority coverage remain unverified.
+    Qs4 = 4,
+}
+
+/// A single weak path: a critical role whose current quorum can still be satisfied using
+/// classical signers alone, with the declared classical and PQ weights that produced the
+/// finding. This is metadata analysis and does not establish an actual exploit path.
+#[contracttype]
+#[derive(Clone, Debug)]
+pub struct WeakPath {
+    pub role: Role,
+    pub reason: WeakPathReason,
+    pub classical_weight: u32,
+    pub post_quantum_weight: u32,
+    pub threshold: u32,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum WeakPathReason {
+    /// The role has no registered quorum at all. Treated as maximally weak: an unregistered
+    /// role is not "safe by omission", it's an authority this registry has no visibility into
+    /// and therefore cannot vouch for — the conservative, fail-closed reading.
+    Unregistered,
+    /// The role's quorum threshold can be met by counting classical signers alone, so a
+    /// The declared classical weight reaches threshold without any declared PQ contribution.
+    ThresholdMeetableClassically,
+}
+
+#[contracterror]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum Error {
+    NotAdmin = 1,
+    /// The threshold exceeds the summed weight of every signer in the quorum — no combination
+    /// of signatures could ever satisfy it, regardless of who signs.
+    ThresholdUnreachable = 2,
+    ZeroThreshold = 3,
+    AssetNotRegistered = 4,
+    QsLevelTooLow = 5,
+    /// A signer was registered with `weight == 0` — such a signer can never contribute toward
+    /// any threshold and its presence would misrepresent the quorum's real composition.
+    ZeroSignerWeight = 6,
+    /// An asset already has an administrator; the registrar cannot overwrite it.
+    AssetAlreadyRegistered = 7,
+    /// The same signer address appears more than once in a single quorum. Counted once each,
+    /// duplicates would inflate that address's effective weight in the classical/PQ tally.
+    /// Distinct addresses do not themselves establish distinct keys or independent controllers.
+    DuplicateSigner = 8,
+    /// The quorum exceeds this registry's 20-entry resource bound. This is a policy limit,
+    /// not Stellar's protocol total: classic accounts can also have a separate master key.
+    TooManySigners = 9,
+    /// Declared algorithms and role mappings do not prove real asset authority coverage.
+    UnverifiedPolicy = 10,
+    /// Individual weights are bounded to Stellar classic's unsigned-byte weight range.
+    SignerWeightTooHigh = 11,
+    WeightOverflow = 12,
+    RevisionOverflow = 13,
+    /// Role declarations exist without their tenant metadata. Restore original metadata;
+    /// re-enrollment must not inherit or silently reset an orphaned policy.
+    OrphanedPolicy = 14,
+}
+
+/// Resource bound for a declared policy, not a claim about the protocol's total signer count.
+const MAX_SIGNERS: u32 = 20;
+const MAX_SIGNER_WEIGHT: u32 = 255;
+// Approximately seven days at five seconds per ledger; capped to the network's max TTL.
+const TTL_TARGET: u32 = 120_960;
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum VerificationStatus {
+    Unverified,
+}
+
+/// A point-in-time declaration. Revision covers both quorum and administrator changes.
+/// Ledger sequence records observation time; it is not a cryptographic attestation.
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PolicyAssessment {
+    pub asset: Address,
+    pub declared_level: QsLevel,
+    pub policy_revision: u64,
+    pub ledger_sequence: u32,
+    pub verification: VerificationStatus,
+}
+
+#[contracttype]
+#[derive(Clone, Debug)]
+struct AssetPolicy {
+    admin: Address,
+    revision: u64,
+}
+
+#[contractevent]
+#[derive(Clone, Debug)]
+pub struct AssetAdminChanged {
+    #[topic]
+    pub asset: Address,
+    pub admin: Address,
+    pub revision: u64,
+}
+
+fn asset_key(asset: &Address) -> (Symbol, Address) {
+    (symbol_short!("ASSET"), asset.clone())
+}
+
+fn touch_instance(env: &Env) {
+    let target = env.storage().max_ttl().min(TTL_TARGET);
+    env.storage().instance().extend_ttl(target / 2, target);
+}
+
+fn touch_persistent<K: soroban_sdk::IntoVal<Env, soroban_sdk::Val>>(env: &Env, key: &K) {
+    let target = env.storage().max_ttl().min(TTL_TARGET);
+    env.storage()
+        .persistent()
+        .extend_ttl(key, target / 2, target);
+}
+
+fn load_policy(env: &Env, asset: &Address) -> Result<AssetPolicy, Error> {
+    let key = asset_key(asset);
+    let policy = env
+        .storage()
+        .persistent()
+        .get(&key)
+        .ok_or(Error::AssetNotRegistered)?;
+    touch_persistent(env, &key);
+    touch_instance(env);
+    Ok(policy)
+}
+
+fn write_policy(env: &Env, asset: &Address, policy: &AssetPolicy) {
+    let key = asset_key(asset);
+    env.storage().persistent().set(&key, policy);
+    touch_persistent(env, &key);
+    touch_instance(env);
+}
+
+const ADMIN: Symbol = symbol_short!("ADMIN");
+
+/// Emitted every time a role's quorum is registered or replaced, so an off-chain scanner or
+/// dashboard (M2) can watch for a downgrade by subscribing to this event instead of having to
+/// poll every registered asset's every role on a schedule to notice a regression.
+#[contractevent]
+#[derive(Clone, Debug)]
+pub struct QuorumSet {
+    #[topic]
+    pub asset: Address,
+    #[topic]
+    pub role: Role,
+    pub threshold: u32,
+    pub signers: Vec<Signer>,
+    pub revision: u64,
+}
+
+fn role_key(_env: &Env, asset: &Address, role: Role) -> (Symbol, Address, Role) {
+    (symbol_short!("ROLE"), asset.clone(), role)
+}
+
+// ============================================================
+// Contract
+// ============================================================
+
+#[contract]
+pub struct QAssetRegistry;
+
+#[contractimpl]
+impl QAssetRegistry {
+    /// Constructor arguments are committed in the deployment transaction, removing any
+    /// separately callable first-initializer race. This admin only registers metadata tenants.
+    pub fn __constructor(env: Env, admin: Address) {
+        env.storage().instance().set(&ADMIN, &admin);
+        touch_instance(&env);
+    }
+
+    /// Creates a metadata tenant with consent from both registrar and tenant administrator.
+    /// This does not prove ownership or control of the address named by `asset`.
+    pub fn register_asset(env: Env, asset: Address, admin: Address) -> Result<(), Error> {
+        let registrar: Address = env.storage().instance().get(&ADMIN).unwrap();
+        registrar.require_auth();
+        if admin != registrar {
+            admin.require_auth();
+        }
+        if env.storage().persistent().has(&asset_key(&asset)) {
+            return Err(Error::AssetAlreadyRegistered);
+        }
+        for role in Role::ALL {
+            if env
+                .storage()
+                .persistent()
+                .has(&role_key(&env, &asset, role))
+            {
+                return Err(Error::OrphanedPolicy);
+            }
+        }
+        let policy = AssetPolicy {
+            admin: admin.clone(),
+            revision: 0,
+        };
+        write_policy(&env, &asset, &policy);
+        AssetAdminChanged {
+            asset,
+            admin,
+            revision: 0,
+        }
+        .publish(&env);
+        Ok(())
+    }
+
+    pub fn asset_admin(env: Env, asset: Address) -> Result<Address, Error> {
+        Ok(load_policy(&env, &asset)?.admin)
+    }
+
+    /// The registrar has no override; both outgoing and incoming administrators consent.
+    pub fn transfer_asset_admin(env: Env, asset: Address, admin: Address) -> Result<(), Error> {
+        let mut policy = load_policy(&env, &asset)?;
+        policy.admin.require_auth();
+        if admin != policy.admin {
+            admin.require_auth();
+        }
+        policy.admin = admin.clone();
+        policy.revision = policy
+            .revision
+            .checked_add(1)
+            .ok_or(Error::RevisionOverflow)?;
+        write_policy(&env, &asset, &policy);
+        AssetAdminChanged {
+            asset,
+            admin,
+            revision: policy.revision,
+        }
+        .publish(&env);
+        Ok(())
+    }
+
+    /// Any keeper can extend live entries. Archived entries need network restoration first.
+    pub fn keep_alive(env: Env, asset: Address) -> Result<(), Error> {
+        load_policy(&env, &asset)?;
+        for role in Role::ALL {
+            let key = role_key(&env, &asset, role);
+            if env.storage().persistent().has(&key) {
+                touch_persistent(&env, &key);
+            }
+        }
+        Ok(())
+    }
+
+    /// Registers (or replaces) the authorization quorum for one (asset, role) pair.
+    ///
+    /// Fails closed on nonsensical input: `threshold == 0`, any signer with `weight == 0`, a
+    /// threshold whose summed signer weight could never reach it, a duplicate signer address,
+    /// weights above 255, or a signer count exceeding this registry's bounded policy limit.
+    pub fn set_role_quorum(
+        env: Env,
+        asset: Address,
+        role: Role,
+        quorum: Quorum,
+    ) -> Result<(), Error> {
+        let mut policy = load_policy(&env, &asset)?;
+        policy.admin.require_auth();
+
+        if quorum.threshold == 0 {
+            return Err(Error::ZeroThreshold);
+        }
+        if quorum.signers.len() > MAX_SIGNERS {
+            return Err(Error::TooManySigners);
+        }
+
+        let mut total_weight: u32 = 0;
+        for i in 0..quorum.signers.len() {
+            let signer = quorum.signers.get(i).unwrap();
+            if signer.weight == 0 {
+                return Err(Error::ZeroSignerWeight);
+            }
+            if signer.weight > MAX_SIGNER_WEIGHT {
+                return Err(Error::SignerWeightTooHigh);
+            }
+            for j in (i + 1)..quorum.signers.len() {
+                if quorum.signers.get(j).unwrap().address == signer.address {
+                    return Err(Error::DuplicateSigner);
+                }
+            }
+            total_weight = total_weight
+                .checked_add(signer.weight)
+                .ok_or(Error::WeightOverflow)?;
+        }
+        if quorum.threshold > total_weight {
+            return Err(Error::ThresholdUnreachable);
+        }
+
+        policy.revision = policy
+            .revision
+            .checked_add(1)
+            .ok_or(Error::RevisionOverflow)?;
+        let key = role_key(&env, &asset, role);
+        env.storage().persistent().set(&key, &quorum);
+        touch_persistent(&env, &key);
+        write_policy(&env, &asset, &policy);
+
+        QuorumSet {
+            asset: asset.clone(),
+            role,
+            threshold: quorum.threshold,
+            signers: quorum.signers.clone(),
+            revision: policy.revision,
+        }
+        .publish(&env);
+
+        Ok(())
+    }
+
+    /// Returns the registered quorum for (asset, role), if any.
+    pub fn get_role_quorum(env: Env, asset: Address, role: Role) -> Option<Quorum> {
+        env.storage()
+            .persistent()
+            .get(&role_key(&env, &asset, role))
+    }
+
+    /// Evaluates declared algorithms and weights, returning a weak path if the declared
+    /// classical weight reaches threshold. `None` does not establish actual PQ protection.
+    fn evaluate_role(env: &Env, asset: &Address, role: Role) -> Option<WeakPath> {
+        let quorum: Option<Quorum> = env.storage().persistent().get(&role_key(env, asset, role));
+        let quorum = match quorum {
+            Some(q) => q,
+            None => {
+                return Some(WeakPath {
+                    role,
+                    reason: WeakPathReason::Unregistered,
+                    classical_weight: 0,
+                    post_quantum_weight: 0,
+                    threshold: 0,
+                })
+            }
+        };
+
+        let mut classical_weight: u32 = 0;
+        let mut post_quantum_weight: u32 = 0;
+        for signer in quorum.signers.iter() {
+            if signer.algo.is_post_quantum() {
+                post_quantum_weight += signer.weight;
+            } else {
+                classical_weight += signer.weight;
+            }
+        }
+
+        // The security-critical line: a role is weak iff its threshold is meetable using
+        // classical signers ALONE, i.e. without needing even one PQ signature. Merely having a
+        // PQ signer present in the quorum is not sufficient — if the summed weight of classical
+        // signers alone already reaches the threshold, an adversary who has broken every
+        // classical key in the quorum never needs to forge the PQ one at all.
+        if classical_weight >= quorum.threshold {
+            Some(WeakPath {
+                role,
+                reason: WeakPathReason::ThresholdMeetableClassically,
+                classical_weight,
+                post_quantum_weight,
+                threshold: quorum.threshold,
+            })
+        } else {
+            None
+        }
+    }
+
+    /// Returns weak paths in declared metadata only. Empty does not prove actual asset safety;
+    /// signer algorithms, role coverage, and registry administration remain unverified.
+    pub fn list_weak_paths(env: Env, asset: Address) -> Vec<WeakPath> {
+        let mut out = Vec::new(&env);
+        for role in Role::ALL {
+            if let Some(weak) = Self::evaluate_role(&env, &asset, role) {
+                out.push_back(weak);
+            }
+        }
+        out
+    }
+
+    /// Computes the deterministic QS0-QS4 level for `asset` from its currently registered
+    /// control graph. See `QsLevel`'s own doc comments for the exact rule at each level.
+    pub fn declared_security_level(env: Env, asset: Address) -> QsLevel {
+        let mut weak_roles: Map<Role, WeakPath> = Map::new(&env);
+        for role in Role::ALL {
+            if let Some(weak) = Self::evaluate_role(&env, &asset, role) {
+                weak_roles.set(role, weak);
+            }
+        }
+
+        let any_pq_signer_anywhere = Role::ALL.iter().any(|role| {
+            let quorum: Option<Quorum> = env
+                .storage()
+                .persistent()
+                .get(&role_key(&env, &asset, *role));
+            quorum
+                .map(|q| q.signers.iter().any(|s| s.algo.is_post_quantum()))
+                .unwrap_or(false)
+        });
+
+        if !any_pq_signer_anywhere {
+            return QsLevel::Qs0;
+        }
+
+        let highest_impact_weak = Role::HIGHEST_IMPACT
+            .iter()
+            .any(|role| weak_roles.contains_key(*role));
+
+        if highest_impact_weak {
+            return QsLevel::Qs1;
+        }
+
+        let any_role_weak = !weak_roles.is_empty();
+
+        if any_role_weak {
+            return QsLevel::Qs2;
+        }
+
+        // Declared QS3 from here. Assume all classical signers compromised: QS4 additionally
+        // requires that they cannot reach threshold together with any ONE declared PQ signer.
+        // Merely checking individual signer weight would incorrectly promote a classical/PQ
+        // 2-of-2 quorum even though compromising its one PQ key then completes the quorum.
+        let highest_impact_all_multisig = Role::HIGHEST_IMPACT.iter().all(|role| {
+            let quorum: Option<Quorum> = env
+                .storage()
+                .persistent()
+                .get(&role_key(&env, &asset, *role));
+            quorum
+                .map(|q| {
+                    let mut classical_weight = 0u32;
+                    let mut largest_pq_weight = 0u32;
+                    for signer in q.signers.iter() {
+                        if signer.algo.is_post_quantum() {
+                            largest_pq_weight = largest_pq_weight.max(signer.weight);
+                        } else {
+                            classical_weight += signer.weight;
+                        }
+                    }
+                    classical_weight + largest_pq_weight < q.threshold
+                })
+                .unwrap_or(false)
+        });
+
+        if highest_impact_all_multisig {
+            QsLevel::Qs4
+        } else {
+            QsLevel::Qs3
+        }
+    }
+
+    /// Returns an explicitly unverified metadata snapshot, versioned for change detection.
+    pub fn policy_assessment(env: Env, asset: Address) -> Result<PolicyAssessment, Error> {
+        let policy = load_policy(&env, &asset)?;
+        Ok(PolicyAssessment {
+            asset: asset.clone(),
+            declared_level: Self::declared_security_level(env.clone(), asset),
+            policy_revision: policy.revision,
+            ledger_sequence: env.ledger().sequence(),
+            verification: VerificationStatus::Unverified,
+        })
+    }
+
+    /// A computed declaration is not a verified security rating. No administrator can promote
+    /// a policy to verified by setting a flag or approving an algorithm label.
+    pub fn quantum_security_level(_env: Env, _asset: Address) -> Result<QsLevel, Error> {
+        Err(Error::UnverifiedPolicy)
+    }
+
+    /// Fail closed even for QS0: unverified metadata must never authorize an operation.
+    pub fn require_min_qs(_env: Env, _asset: Address, _min_level: QsLevel) -> Result<(), Error> {
+        Err(Error::UnverifiedPolicy)
+    }
+}
+
+mod test;

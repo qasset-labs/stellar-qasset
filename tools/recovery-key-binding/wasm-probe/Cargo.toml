@@ -1,0 +1,14 @@
+[package]
+name = "qasset-recovery-key-binding-wasm"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+test = false
+doctest = false
+
+[dependencies]
+qasset-recovery-key-binding = { path = "..", features = ["fixtures"] }

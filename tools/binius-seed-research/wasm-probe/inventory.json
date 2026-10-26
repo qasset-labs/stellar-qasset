@@ -1,0 +1,13 @@
+{
+  "schema": "qasset-binius-wasm-probe-inventory-v1",
+  "files_sha256": {
+    "Cargo.lock": "7c0576e560f56ab8df828173c4711c850d23bff1f870cadfba6e296feccea618",
+    "Cargo.toml": "9e1c98f6cedf8e9f7a3a3d289cda3353a6ba77473d0411748ad00fe3b969e89a",
+    "README.md": "da88e61d92721bd1744e33c7a4635f3cdf6ba955a70f244d8b6ba8eba66edc38",
+    "build-probe.json": "3ffc9d135c6cb8848f802bfd2e6c656f0be8eea93dfe821b3d28e70408e1f564",
+    "build-stderr.log": "4acb6b9d4c0d5f4357069d52e47ab32cd5cc2286af4bd379d623aa5a0839cac7",
+    "build-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "rand-core-feature-tree.txt": "44e434efbeda37d57b748f30a189aebe2f47419046d8182f12ebe22930c62dbc",
+    "src/lib.rs": "c4cb1a0cb3ed6946472a2b8f21acc8f127f1b8c6d2d08dd6d4c1972d282a2a18"
+  }
+}

@@ -1,0 +1,11 @@
+
+running 6 tests
+test tests::external_lengths_are_exact_and_seed_is_not_scalar ... ok
+test tests::noncanonical_field_and_identity_sign_alias_reject ... ok
+test tests::different_valid_key_and_changed_clamped_scalar_reject ... ok
+test tests::every_forced_clamp_bit_and_reduced_scalar_reject ... ok
+test tests::all_small_order_and_mixed_order_public_keys_reject ... ok
+test tests::official_rfc8032_and_sep5_vectors_bind_exact_keys ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+

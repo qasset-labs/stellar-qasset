@@ -1,0 +1,1790 @@
+{
+  "schema": "qasset-binius-nostd-source-v1",
+  "upstream_repository": "https://github.com/IrreducibleOSS/binius64.git",
+  "upstream_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "security_approved": false,
+  "vendor_origin": {
+    "AGENTS.md": {
+      "upstream_sha256": "b6a6f695241437ecf940d07e9a43f951b57b0454e2a0d85ccf4bb8221a3bcad0",
+      "local_sha256": "b6a6f695241437ecf940d07e9a43f951b57b0454e2a0d85ccf4bb8221a3bcad0",
+      "modified": false
+    },
+    "CONTRIBUTING.md": {
+      "upstream_sha256": "758d7898d24525c9963080488bd4bbaa04c69b29b1d54de62c711fe986ea6328",
+      "local_sha256": "758d7898d24525c9963080488bd4bbaa04c69b29b1d54de62c711fe986ea6328",
+      "modified": false
+    },
+    "Cargo.toml": {
+      "upstream_sha256": "a7502b92d62a911d8a24ae96ba718b71b810d0e5052446abfd5f81b7d8283052",
+      "local_sha256": "73847c5a7e08642af8ec82c7668045bf13da2ef3a36d3ccf32a27bfe376df05b",
+      "modified": true
+    },
+    "LICENSE-Apache-2.0.txt": {
+      "upstream_sha256": "245f1fe888a9b2cc730d5313b1b430ef896bf29aede9649d4f11ebcf42faa8f2",
+      "local_sha256": "245f1fe888a9b2cc730d5313b1b430ef896bf29aede9649d4f11ebcf42faa8f2",
+      "modified": false
+    },
+    "LICENSE-MIT.txt": {
+      "upstream_sha256": "723891a70c107d694fe1d457a7c7ed5d0580c274ac8cfa2aa18f3ee75f49790e",
+      "local_sha256": "723891a70c107d694fe1d457a7c7ed5d0580c274ac8cfa2aa18f3ee75f49790e",
+      "modified": false
+    },
+    "crates/core/Cargo.toml": {
+      "upstream_sha256": "f6d37974f9d7c43549a319a7239230866d6dd672844cc66e58f243bb83a2e106",
+      "local_sha256": "8ae712a732dbe0358cbc5792cfd99da35183327ba7150a37b744a4f3e335a5b1",
+      "modified": true
+    },
+    "crates/core/src/constraint_system.rs": {
+      "upstream_sha256": "a0cd97cbc59719f7a7381dd468a7c7e94107acef3287fb5373c2f7dcc1c6a19a",
+      "local_sha256": "4813dd41ac34e4484652b68b164da331ff13f5144d58ba2682a45223e73950d8",
+      "modified": true
+    },
+    "crates/core/src/consts.rs": {
+      "upstream_sha256": "080518468c296a8655047b9bb3e15d288be13fe344a2b51b33b57bd085abad1d",
+      "local_sha256": "080518468c296a8655047b9bb3e15d288be13fe344a2b51b33b57bd085abad1d",
+      "modified": false
+    },
+    "crates/core/src/error.rs": {
+      "upstream_sha256": "82bce758dafdd59210cfac15ca2464cd328a89f6172290255ba924cbcbed2e2b",
+      "local_sha256": "82bce758dafdd59210cfac15ca2464cd328a89f6172290255ba924cbcbed2e2b",
+      "modified": false
+    },
+    "crates/core/src/lib.rs": {
+      "upstream_sha256": "4e137dae1aaedea6e2022cb069b3362dea4e30bf9022d3449303ae78a89f03d1",
+      "local_sha256": "eaa4ca16583d12794b8971eca466b0d5d213bdb543e34b4f1babe09aa22f69d9",
+      "modified": true
+    },
+    "crates/core/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/core/src/verify.rs": {
+      "upstream_sha256": "872f7b1c7d80c5cdfbafad1e467d82b2a32d7ff60aa609b5f2fbae37106bfd62",
+      "local_sha256": "acb56710fcf2d1ed92845ecf61ba887231596c7ba9dee65d286c830001b64d35",
+      "modified": true
+    },
+    "crates/core/src/word.rs": {
+      "upstream_sha256": "7d9708cd624dbc6cc9260a4f646fd7329f11d45dd7aa9b06f1e89a3189f4a21e",
+      "local_sha256": "5658a91cc370390f56b5bd854790f6840c433d660daeb9903140acea8d491bd9",
+      "modified": true
+    },
+    "crates/core/test_data/README.md": {
+      "upstream_sha256": "a99166c21e355140c15a2c8bf7223e42b2cc1ca840ad5e3828f5b9e103e5f23d",
+      "local_sha256": "a99166c21e355140c15a2c8bf7223e42b2cc1ca840ad5e3828f5b9e103e5f23d",
+      "modified": false
+    },
+    "crates/core/test_data/constraint_system_v2.bin": {
+      "upstream_sha256": "4e3dc5fa171806f39eee47b523a85e02de610d183423812d0cde7fd5e8050357",
+      "local_sha256": "4e3dc5fa171806f39eee47b523a85e02de610d183423812d0cde7fd5e8050357",
+      "modified": false
+    },
+    "crates/core/test_data/proof_v1.bin": {
+      "upstream_sha256": "93cb01be00d89b85ca39ea90b75488bcad92237cec72d3a7d11d2cd59b3e802b",
+      "local_sha256": "93cb01be00d89b85ca39ea90b75488bcad92237cec72d3a7d11d2cd59b3e802b",
+      "modified": false
+    },
+    "crates/core/test_data/witness_v1.bin": {
+      "upstream_sha256": "7d6af6d64e943307a0c00090db37042675f75c4938bcc6de789abcca049dac76",
+      "local_sha256": "7d6af6d64e943307a0c00090db37042675f75c4938bcc6de789abcca049dac76",
+      "modified": false
+    },
+    "crates/field/Cargo.toml": {
+      "upstream_sha256": "d2c382b459b4d6cb5e525175a75d5fd30e7b92eac9160a2ac1a877ce7205313e",
+      "local_sha256": "01323cdd8ec63325182d6d5d01293166286ef6163c8f01f08b0cd021731c6afb",
+      "modified": true
+    },
+    "crates/field/benches/binary_field.rs": {
+      "upstream_sha256": "c9dea7d907aea54805c4b443f70197097d239983c2bf677e08a57b722c6067af",
+      "local_sha256": "c9dea7d907aea54805c4b443f70197097d239983c2bf677e08a57b722c6067af",
+      "modified": false
+    },
+    "crates/field/benches/main_field_binary_ops.rs": {
+      "upstream_sha256": "91f69373f1bdda99b0c3f76cde1dfe23605377b9a91055d3d4a17d91134cf151",
+      "local_sha256": "91f69373f1bdda99b0c3f76cde1dfe23605377b9a91055d3d4a17d91134cf151",
+      "modified": false
+    },
+    "crates/field/benches/main_field_unary_ops.rs": {
+      "upstream_sha256": "d63863ad64000a0961fa63fb5b866d515a2f57957e7d80e61d8984b36d4e5e23",
+      "local_sha256": "d63863ad64000a0961fa63fb5b866d515a2f57957e7d80e61d8984b36d4e5e23",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_element_access.rs": {
+      "upstream_sha256": "39ddbc7583763ea1412f150c42282ebb6cfb7269d9839f13c7ba8fd7f3f2052e",
+      "local_sha256": "39ddbc7583763ea1412f150c42282ebb6cfb7269d9839f13c7ba8fd7f3f2052e",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_init.rs": {
+      "upstream_sha256": "854a49e3740edeb5c13082cae477383663a13312f72c19156f347a41c61ab1fb",
+      "local_sha256": "854a49e3740edeb5c13082cae477383663a13312f72c19156f347a41c61ab1fb",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_invert.rs": {
+      "upstream_sha256": "31f6c379b8c6864e3379b69d4e6e1ac4227545f869680c75cd80b648064dafc8",
+      "local_sha256": "31f6c379b8c6864e3379b69d4e6e1ac4227545f869680c75cd80b648064dafc8",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_iter.rs": {
+      "upstream_sha256": "c547fd43ad5795443aaabdf9d3f60b6b5722e5f366463fe2d5ff69da8079a78e",
+      "local_sha256": "c547fd43ad5795443aaabdf9d3f60b6b5722e5f366463fe2d5ff69da8079a78e",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_multiply.rs": {
+      "upstream_sha256": "7fa393da8ae969a062375384aaf247ccae0cd7ad1a8227fee42964eb205c2956",
+      "local_sha256": "7fa393da8ae969a062375384aaf247ccae0cd7ad1a8227fee42964eb205c2956",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_slice_iter.rs": {
+      "upstream_sha256": "d95b5739783e0b33d7f1d56c479d5da4ae8fdf1a640cde8c6bbe57eb00acd3b6",
+      "local_sha256": "d95b5739783e0b33d7f1d56c479d5da4ae8fdf1a640cde8c6bbe57eb00acd3b6",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_spread.rs": {
+      "upstream_sha256": "ddce8d516788c6135afe3b33716e3d933666d888da0971d7c8c2b5a742a99f0c",
+      "local_sha256": "ddce8d516788c6135afe3b33716e3d933666d888da0971d7c8c2b5a742a99f0c",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_square.rs": {
+      "upstream_sha256": "46f58904575a4a6f21a4f9df04c776d287dbfea5d0203c26160e3e0972e654ac",
+      "local_sha256": "46f58904575a4a6f21a4f9df04c776d287dbfea5d0203c26160e3e0972e654ac",
+      "modified": false
+    },
+    "crates/field/benches/packed_field_utils.rs": {
+      "upstream_sha256": "7b4b435f08649765e21969c536d8af25ebdbbe04bd7d5038144adf8b0aa7c14c",
+      "local_sha256": "7b4b435f08649765e21969c536d8af25ebdbbe04bd7d5038144adf8b0aa7c14c",
+      "modified": false
+    },
+    "crates/field/src/aes_field.rs": {
+      "upstream_sha256": "3925ee50662a913262c6ff2f01f38dc07e7fc849473c562ccf035b045d19d69c",
+      "local_sha256": "41a07ea73e663b7508c2435f9b4b5d67dcb6e6bc9d4d833a5174d286b241f326",
+      "modified": true
+    },
+    "crates/field/src/arch/aarch64/m128.rs": {
+      "upstream_sha256": "93a336826d74d7062a77c2d08e3344e2423e666eae9dabb1060e8a32b4e2fb91",
+      "local_sha256": "7f9b8b41b74901a9fdfdf4a8aa3d514d8f34cf0caa1da3defe7d55fa38c33cc1",
+      "modified": true
+    },
+    "crates/field/src/arch/aarch64/mod.rs": {
+      "upstream_sha256": "2c5defbde59e526cdb8136c110ec9246b2e50beeac773d516e71c967fcc166d2",
+      "local_sha256": "2c5defbde59e526cdb8136c110ec9246b2e50beeac773d516e71c967fcc166d2",
+      "modified": false
+    },
+    "crates/field/src/arch/aarch64/packed_128.rs": {
+      "upstream_sha256": "d00e57eb7259a3c03a44fe177ca188d278875ce16bc15adc1c053a86e5744c4c",
+      "local_sha256": "d00e57eb7259a3c03a44fe177ca188d278875ce16bc15adc1c053a86e5744c4c",
+      "modified": false
+    },
+    "crates/field/src/arch/aarch64/packed_aes_128.rs": {
+      "upstream_sha256": "5a141432506849018002d4636134580160c12e13a985322b0472ec81bf6565b6",
+      "local_sha256": "ad7f02b9a9b5d16918e68c4ffd51e3728c631791b17d41be9bccc4285880f8bb",
+      "modified": true
+    },
+    "crates/field/src/arch/aarch64/packed_ghash_128.rs": {
+      "upstream_sha256": "20a5b244e349202b11c870d997c2d941edcb0aef0390705384caa43006a24941",
+      "local_sha256": "8b45c8505a223c8bba36aba4927fc6915859a32fff63e72f87950c0111308f23",
+      "modified": true
+    },
+    "crates/field/src/arch/aarch64/simd_arithmetic.rs": {
+      "upstream_sha256": "e4232eee72139d9b7a10541e7f0932f0f018dcdbeacb10b48d28202fd5d5a4d2",
+      "local_sha256": "1497aa121486b78ab233e094f26a5c9d8d508a761e2b1076d3b2c1ec34625177",
+      "modified": true
+    },
+    "crates/field/src/arch/arch_optimal.rs": {
+      "upstream_sha256": "5840d27aa8d7f98f748adf77bc25df142c6938a4312f22b5e8898e8141d7926c",
+      "local_sha256": "5840d27aa8d7f98f748adf77bc25df142c6938a4312f22b5e8898e8141d7926c",
+      "modified": false
+    },
+    "crates/field/src/arch/mod.rs": {
+      "upstream_sha256": "51a2792052dfa731872865dc2ac16efdedb61f432657845d6f38b379dec3e34f",
+      "local_sha256": "51a2792052dfa731872865dc2ac16efdedb61f432657845d6f38b379dec3e34f",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/bitwise_and_arithmetic.rs": {
+      "upstream_sha256": "0ced5c9e55b66f2a11a6c11be5406a8fdb3f7499bd48cc405b39bd43c1e3bf70",
+      "local_sha256": "0ced5c9e55b66f2a11a6c11be5406a8fdb3f7499bd48cc405b39bd43c1e3bf70",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/mod.rs": {
+      "upstream_sha256": "ce329ea39ce994fd7628f8632b330dbd23a36388b25b9ca36e849735e2368088",
+      "local_sha256": "ce329ea39ce994fd7628f8632b330dbd23a36388b25b9ca36e849735e2368088",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/nibble_invert_128b.rs": {
+      "upstream_sha256": "efc843b495331a54976fbfed9efab44d5b55906eb297b717b24fbe61385f0fa5",
+      "local_sha256": "9102480e1618552fd348cba7581a54cf884caabd5495b63402209e497b7c3ac4",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/packed.rs": {
+      "upstream_sha256": "1c5bac7139c421bac5b78e786063dd3b274ea1cd3cd2be4df506f56c24070a57",
+      "local_sha256": "af196d5cdc43384bed1c7fee2f8838ad141645bbd878d7a10c056cceabc021e7",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/packed_1.rs": {
+      "upstream_sha256": "7e953c78b57940ff7407e0f6bda5292e68ef98a61eb86dfea17ec14fa8bef3cc",
+      "local_sha256": "7e953c78b57940ff7407e0f6bda5292e68ef98a61eb86dfea17ec14fa8bef3cc",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_128.rs": {
+      "upstream_sha256": "b73dead75243328238f435ed89b655045a8a58a98ae0cedeff67f470bcf46bdd",
+      "local_sha256": "b73dead75243328238f435ed89b655045a8a58a98ae0cedeff67f470bcf46bdd",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_16.rs": {
+      "upstream_sha256": "fb39dc48aa4ed26e75a12b8d638a67e02930bb08f99c769a75a82fc150486ba3",
+      "local_sha256": "fb39dc48aa4ed26e75a12b8d638a67e02930bb08f99c769a75a82fc150486ba3",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_2.rs": {
+      "upstream_sha256": "46f5461c26e443f8d23f78a4f2f01775d73da1ce66a86df1a3032f27dbf875f1",
+      "local_sha256": "46f5461c26e443f8d23f78a4f2f01775d73da1ce66a86df1a3032f27dbf875f1",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_256.rs": {
+      "upstream_sha256": "138eb989338db6f5f270f98a8a24a26110961200ab20e1b7d34931f4f6db2d77",
+      "local_sha256": "138eb989338db6f5f270f98a8a24a26110961200ab20e1b7d34931f4f6db2d77",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_32.rs": {
+      "upstream_sha256": "254d0717b21e6b2172774a0882efd8ed3bc12a090d54faf34216fe2f36558177",
+      "local_sha256": "254d0717b21e6b2172774a0882efd8ed3bc12a090d54faf34216fe2f36558177",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_4.rs": {
+      "upstream_sha256": "18a81f4539cb82205b502a6e34269d0a3a431ec5ef969159fc0342b1fd15b72e",
+      "local_sha256": "18a81f4539cb82205b502a6e34269d0a3a431ec5ef969159fc0342b1fd15b72e",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_512.rs": {
+      "upstream_sha256": "3175de295b068871cace53aa81d8154041a738da60d4589c6cacc9a0ddf8148d",
+      "local_sha256": "3175de295b068871cace53aa81d8154041a738da60d4589c6cacc9a0ddf8148d",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_64.rs": {
+      "upstream_sha256": "1d85744b9e38ae6b0ca585817b871461effa002b89b283a88a4b0441f60c1780",
+      "local_sha256": "1d85744b9e38ae6b0ca585817b871461effa002b89b283a88a4b0441f60c1780",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_8.rs": {
+      "upstream_sha256": "4961e968998155dc835da6375686850ba8af828c40a0fb147517de58a9226f56",
+      "local_sha256": "4961e968998155dc835da6375686850ba8af828c40a0fb147517de58a9226f56",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_128.rs": {
+      "upstream_sha256": "2734fe97b0782837d96802261c3fab1159d7cb2ba8baab8b88851cef7d2728d6",
+      "local_sha256": "2734fe97b0782837d96802261c3fab1159d7cb2ba8baab8b88851cef7d2728d6",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_16.rs": {
+      "upstream_sha256": "f1e1649dcceb16bc869807fd3d75fc24d434f6354367558da164f112600bcf3d",
+      "local_sha256": "f1e1649dcceb16bc869807fd3d75fc24d434f6354367558da164f112600bcf3d",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_256.rs": {
+      "upstream_sha256": "6c704c123957b5db62eb2bb2a5e9b29ee0de2a332cc8a412fa9690adc2fda4da",
+      "local_sha256": "6c704c123957b5db62eb2bb2a5e9b29ee0de2a332cc8a412fa9690adc2fda4da",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_32.rs": {
+      "upstream_sha256": "91daa834f14afd8e96b92eac018005417115267a150cb0b836a47df7ffde2581",
+      "local_sha256": "91daa834f14afd8e96b92eac018005417115267a150cb0b836a47df7ffde2581",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_512.rs": {
+      "upstream_sha256": "b2fb7952b303adbc5f7525dd3bdd01424384cadecf67af87d596f52093a69521",
+      "local_sha256": "b2fb7952b303adbc5f7525dd3bdd01424384cadecf67af87d596f52093a69521",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_64.rs": {
+      "upstream_sha256": "d65fe002279a7abc13e78971d0d85390996e1d9af85facf98cc93e97e38497c2",
+      "local_sha256": "d65fe002279a7abc13e78971d0d85390996e1d9af85facf98cc93e97e38497c2",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_aes_8.rs": {
+      "upstream_sha256": "311b31b0146d43baba6a0f4efc6e67ccc94df361fe49c2d03b2214957e53794b",
+      "local_sha256": "311b31b0146d43baba6a0f4efc6e67ccc94df361fe49c2d03b2214957e53794b",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_arithmetic.rs": {
+      "upstream_sha256": "8075038b4b4fd2d5778080d1eb5a47a4368d425abbff6b4f5c013859caae13f5",
+      "local_sha256": "7c243b316dad13150dace52a728860b77cbe6d37ef2b42b366e98ece03716590",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/packed_ghash_128.rs": {
+      "upstream_sha256": "02b7617083b461ea81eaad483d9e72868f2c8a3f9a13ab4cd3657e4654daeb25",
+      "local_sha256": "02b7617083b461ea81eaad483d9e72868f2c8a3f9a13ab4cd3657e4654daeb25",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_ghash_256.rs": {
+      "upstream_sha256": "4ebc7c603ffbe26dc9ba65596631cc2e1620d9099f0a931efe76294404ad3cd4",
+      "local_sha256": "4ebc7c603ffbe26dc9ba65596631cc2e1620d9099f0a931efe76294404ad3cd4",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_ghash_512.rs": {
+      "upstream_sha256": "f7d8de84e554b36bdd4ef60399ea2d6ca3d58204336c7d4d054c96a60266821d",
+      "local_sha256": "f7d8de84e554b36bdd4ef60399ea2d6ca3d58204336c7d4d054c96a60266821d",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/packed_macros.rs": {
+      "upstream_sha256": "56d30b05fc0c792a2381ea9c13ba8eaa38c1da84ce3040e4f956393a4e37106f",
+      "local_sha256": "b1afeeb0bb68dcc003fd7e292ce49f9046b57eba827fe9f0d055bf47f6bd1474",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/pairwise_arithmetic.rs": {
+      "upstream_sha256": "d6891178407cc77d7bee2dd277ca9280279e127dc75890107adef0ca65601d11",
+      "local_sha256": "d6891178407cc77d7bee2dd277ca9280279e127dc75890107adef0ca65601d11",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/pairwise_table_arithmetic.rs": {
+      "upstream_sha256": "1cc15b2a8fed5777bc986c3de455ccba0eb116d49932e8914bcd0a9cb7b60300",
+      "local_sha256": "1cc15b2a8fed5777bc986c3de455ccba0eb116d49932e8914bcd0a9cb7b60300",
+      "modified": false
+    },
+    "crates/field/src/arch/portable/reuse_multiply_arithmetic.rs": {
+      "upstream_sha256": "2abb84416e8ac2416707a83378900a00ef74cf10dd2574009767131892af4aca",
+      "local_sha256": "70039efe8378f6fd361c2fe5be4d3f3a9f3a44ff509bf1c936d46570d5caec26",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/scaled_arithmetic.rs": {
+      "upstream_sha256": "a6df87bd5334d9d15fc71bc4f2c8574f35ad7173a96196b0b5aeeb1bfbe75ffe",
+      "local_sha256": "2c7579e9b840bc5c79d0a2efa328b1c9415f0ef80395ebace6371bf2a6fe2518",
+      "modified": true
+    },
+    "crates/field/src/arch/portable/univariate_mul_utils_128.rs": {
+      "upstream_sha256": "0be75c2ffc81bbae3703f7f1a7cc9286e55280547c3f7edb7dae760cd8d0cef3",
+      "local_sha256": "0be75c2ffc81bbae3703f7f1a7cc9286e55280547c3f7edb7dae760cd8d0cef3",
+      "modified": false
+    },
+    "crates/field/src/arch/shared/ghash.rs": {
+      "upstream_sha256": "0ded589af28c783e4b4cfa514b62c4174025dbfe9398a1cce0ea29934f947c59",
+      "local_sha256": "0ded589af28c783e4b4cfa514b62c4174025dbfe9398a1cce0ea29934f947c59",
+      "modified": false
+    },
+    "crates/field/src/arch/shared/mod.rs": {
+      "upstream_sha256": "9b3a96fddeb622476bb84ed100be9b46a50ab4fc4bf525e8fa77c4c9f2ca8059",
+      "local_sha256": "9b3a96fddeb622476bb84ed100be9b46a50ab4fc4bf525e8fa77c4c9f2ca8059",
+      "modified": false
+    },
+    "crates/field/src/arch/strategies.rs": {
+      "upstream_sha256": "67e3260b4fbca3c377e17167a5963c349c2fd570ee6f7f41acdda0919a79a095",
+      "local_sha256": "67e3260b4fbca3c377e17167a5963c349c2fd570ee6f7f41acdda0919a79a095",
+      "modified": false
+    },
+    "crates/field/src/arch/wasm32/m128.rs": {
+      "upstream_sha256": "824eb506bc72eff5ad4b7502f6f4faba79553f7b650f73f1442f681aeb985a76",
+      "local_sha256": "347cd9d4980fbb739f360f869190e3278abf27932b5c3b6dfde8ac8a0f252666",
+      "modified": true
+    },
+    "crates/field/src/arch/wasm32/mod.rs": {
+      "upstream_sha256": "ea7ed882055453cfe37b8a254cf8485e1d3c313746cf57f4f2200b84aee56630",
+      "local_sha256": "ea7ed882055453cfe37b8a254cf8485e1d3c313746cf57f4f2200b84aee56630",
+      "modified": false
+    },
+    "crates/field/src/arch/wasm32/packed_ghash_128.rs": {
+      "upstream_sha256": "778393833d6355fc4dd81a405e423a02a51d8b1681aecf4babca2c4a50ef722e",
+      "local_sha256": "dd847cca7df8b41671f1f6a5b16e0a4c934b23e85279555d6a0bc2323b21e904",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/gfni/gfni_arithmetics.rs": {
+      "upstream_sha256": "a26b7aecc2269158beed0a36908d28488cd2e241f560ce011d37bca650778cbe",
+      "local_sha256": "a26b7aecc2269158beed0a36908d28488cd2e241f560ce011d37bca650778cbe",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/gfni/m128.rs": {
+      "upstream_sha256": "ac13d538b4e8f3e034210c3d930617760ce597c920aef9ecb45a2e15ce7285f7",
+      "local_sha256": "ac13d538b4e8f3e034210c3d930617760ce597c920aef9ecb45a2e15ce7285f7",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/gfni/m256.rs": {
+      "upstream_sha256": "002dd66a25479a275dac405c7f1ab0d82d7e7ed733fe41d58cc415cbfb70e734",
+      "local_sha256": "002dd66a25479a275dac405c7f1ab0d82d7e7ed733fe41d58cc415cbfb70e734",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/gfni/m512.rs": {
+      "upstream_sha256": "ebc17e9bb4256f11d740e4d43e79cd67c7a935868693589e867b7b5900624a48",
+      "local_sha256": "ebc17e9bb4256f11d740e4d43e79cd67c7a935868693589e867b7b5900624a48",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/gfni/mod.rs": {
+      "upstream_sha256": "b236f0786558ad9c3353c14717986894aae6e869646f5fa517c78bd071be7caf",
+      "local_sha256": "b236f0786558ad9c3353c14717986894aae6e869646f5fa517c78bd071be7caf",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/m128.rs": {
+      "upstream_sha256": "b9099a40c203eaea097cdd15b425d684a9f65b9d658d5b97257b8eadab0a0ba1",
+      "local_sha256": "eacb9cb8f5887827d620b39722b9799b7d82cc4829c188199559d4673ebc60e2",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/m256.rs": {
+      "upstream_sha256": "0f5a7ca2df8ec5899ab00d1e7150cdcbee5fcb376fadf452e2dcb21b20d59d4b",
+      "local_sha256": "6f43e8814436ece7156e2b2b5200ece31e6e05b78ed65ae43bab5bc7138ddb52",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/m512.rs": {
+      "upstream_sha256": "cd1ef60da7ef76ad080368153bc9d40c57f3b91f228fe0ac755e3e521278780a",
+      "local_sha256": "053c98c402154706156b39fc28641f3c5819de5cb9d9445421e8da0c99c3b20f",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/mod.rs": {
+      "upstream_sha256": "67b9fe3b1a338fbace33876dad39f287cf40fcd9e01e0ffbda8bdd20b0afb210",
+      "local_sha256": "67b9fe3b1a338fbace33876dad39f287cf40fcd9e01e0ffbda8bdd20b0afb210",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_128.rs": {
+      "upstream_sha256": "0996acbf1f25fa177e3f1baa99695d2d7ff44d2bc94d546f5170ee170c9f66d0",
+      "local_sha256": "0996acbf1f25fa177e3f1baa99695d2d7ff44d2bc94d546f5170ee170c9f66d0",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_256.rs": {
+      "upstream_sha256": "60e39ede3602c3146d06c416d3d2761374f63a85c8e0d21acfa91b96c8d9a6e4",
+      "local_sha256": "60e39ede3602c3146d06c416d3d2761374f63a85c8e0d21acfa91b96c8d9a6e4",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_512.rs": {
+      "upstream_sha256": "3a81e47abfd882bf7fff819a2ac2ceb55c6e0246cbe9cc5ae23d104a1e8d751e",
+      "local_sha256": "3a81e47abfd882bf7fff819a2ac2ceb55c6e0246cbe9cc5ae23d104a1e8d751e",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_aes_128.rs": {
+      "upstream_sha256": "24c53a4bf547bd17ee443b06a922f787109b4a7b309c4330ed4f93a1ff3a4a93",
+      "local_sha256": "24c53a4bf547bd17ee443b06a922f787109b4a7b309c4330ed4f93a1ff3a4a93",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_aes_256.rs": {
+      "upstream_sha256": "d1125545040b9d650e99c1f755ee022ff2c11b4d5200845126a1dccf8ad869a6",
+      "local_sha256": "d1125545040b9d650e99c1f755ee022ff2c11b4d5200845126a1dccf8ad869a6",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_aes_512.rs": {
+      "upstream_sha256": "5b32d6e34656c5e268861862a1bc230ef6322f4085f150174891e48addd30a8d",
+      "local_sha256": "5b32d6e34656c5e268861862a1bc230ef6322f4085f150174891e48addd30a8d",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/packed_ghash_128.rs": {
+      "upstream_sha256": "0893743ee50c14f258c60a476ccb38d3ada06d0acf9f20bb2bd02d8e35a07de1",
+      "local_sha256": "9ec426f805fb856ee24b4e1400f6bfc60dd3d0b3e464ed686d8731a66c7665e6",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/packed_ghash_256.rs": {
+      "upstream_sha256": "0cd2c3ad1f1cf950dc9bfd6c2fba0a237b66d7719cbde3f2a276c6aa98e0fb67",
+      "local_sha256": "3bcf2cd3de4b8f63852d1f2dbf315704d17fa46bb240e54b8e44c557c49fd8b3",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/packed_ghash_512.rs": {
+      "upstream_sha256": "d4db05793722be3ca60cbaa477b50ee0fb9385996109454bec983a1499cc1364",
+      "local_sha256": "6e001aee0bcc3c62aa66aa2c65273e0ff4d04bc69931d08c7324fe59c0778f1a",
+      "modified": true
+    },
+    "crates/field/src/arch/x86_64/simd/m128.rs": {
+      "upstream_sha256": "8cb690f6c9bf6f755cc113fcf069813c63a77338dd675fc33b166081dd922bca",
+      "local_sha256": "8cb690f6c9bf6f755cc113fcf069813c63a77338dd675fc33b166081dd922bca",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/simd/m256.rs": {
+      "upstream_sha256": "efbf5bd3995278bca121f7561756483fff76acc405cddae8d179ecd722e4940c",
+      "local_sha256": "efbf5bd3995278bca121f7561756483fff76acc405cddae8d179ecd722e4940c",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/simd/m512.rs": {
+      "upstream_sha256": "59d2ad9ee977f2f96d4a995e90977a903392b01952a71ae9c3d7ca6417296a2b",
+      "local_sha256": "59d2ad9ee977f2f96d4a995e90977a903392b01952a71ae9c3d7ca6417296a2b",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/simd/mod.rs": {
+      "upstream_sha256": "83fb09f18eb399d677f70c6a6c373ac20d03186cb50a1a5e8d2f2900fb4c727b",
+      "local_sha256": "83fb09f18eb399d677f70c6a6c373ac20d03186cb50a1a5e8d2f2900fb4c727b",
+      "modified": false
+    },
+    "crates/field/src/arch/x86_64/simd/simd_arithmetic.rs": {
+      "upstream_sha256": "4e6e03473264d16591daed3db6eac61b7b1353c2e7e4d8216777baec428a0e9e",
+      "local_sha256": "70d0f88fca465c65bc7ef32867fe2e589ec9d69f866e047a396d2c7569f68a3d",
+      "modified": true
+    },
+    "crates/field/src/arithmetic_traits.rs": {
+      "upstream_sha256": "1eb4111913c5b49ff51a7f06e91beb4439c850d5b64e53337c3f304197e23d37",
+      "local_sha256": "179ec4c7717117b9584aab27bf9c47197c52ea6a7628a7ed0a2574dd86822a41",
+      "modified": true
+    },
+    "crates/field/src/binary_field.rs": {
+      "upstream_sha256": "0ef0fd6ae1f1f8a38c4ced5e2c18cef95f8704cf91e7b922617f098de5cf4f17",
+      "local_sha256": "7138d35f2087779fa4c9b6ee9eb782079df2f1bebb90a6ac5268cd6cba9b9d9a",
+      "modified": true
+    },
+    "crates/field/src/binary_field_arithmetic.rs": {
+      "upstream_sha256": "52e7090478d2fe58a658ab87353a3f284bc3a76f3604e44775dca2cb0dcacfcb",
+      "local_sha256": "52e7090478d2fe58a658ab87353a3f284bc3a76f3604e44775dca2cb0dcacfcb",
+      "modified": false
+    },
+    "crates/field/src/extension.rs": {
+      "upstream_sha256": "4c056e62fdfb6de755457d67a72b4c79564f4079d602db8e53dce3c7c2a8c9d6",
+      "local_sha256": "548c9640dcccf8df86098bde537667327928ca79e5fba6722b21892dadcdbec3",
+      "modified": true
+    },
+    "crates/field/src/field.rs": {
+      "upstream_sha256": "f0cd87167520994d79948a27e423e8df8888f9ffed13cdb03bc3eb12bc082f9c",
+      "local_sha256": "ed0362918742328a8f8d9cbc541c4c1d183457d2875d8a84ec1e25f039e8cf70",
+      "modified": true
+    },
+    "crates/field/src/ghash.rs": {
+      "upstream_sha256": "604fe5a2937a62dfe067fc933883be57aabbb53bd34e00430116054e55f1fce6",
+      "local_sha256": "b3b5341623799ab8705c09617aeccbf5600647691a29920c5c1849db7b25e430",
+      "modified": true
+    },
+    "crates/field/src/lib.rs": {
+      "upstream_sha256": "f009b30daa7b87794bd819c9277ee2a066c96b58c59a4960f14bb5ce85e0f471",
+      "local_sha256": "0f96cfbbed18f16b32b66d3ed9d18a7ab2969c9a2a8f5ae2486efcd8415ab1b4",
+      "modified": true
+    },
+    "crates/field/src/linear_transformation.rs": {
+      "upstream_sha256": "3b6e490afabab533a9a1e1989d22c5009338b6615152656e96090d9f0c69b55f",
+      "local_sha256": "16352927339d36e6bed6a5e75aeb340926db23f9aa8d8fe313aa31159b1be043",
+      "modified": true
+    },
+    "crates/field/src/macros.rs": {
+      "upstream_sha256": "6c13e2f9ee83be6210f6bec6430d67ed13b4d63128742c7d75bf6e531027f04d",
+      "local_sha256": "da072858d8292cdcfcf136bc1c285655561847adc9c05953b705a87e900ff07c",
+      "modified": true
+    },
+    "crates/field/src/packed.rs": {
+      "upstream_sha256": "62e5e19b60d11332226086de0ac72f759e4b4b2b61991280cfb6202dfedbb719",
+      "local_sha256": "c4cf68e9ecc8c81f83d03426e979486cb2b1d57c6abeeb8178fa079cbd4a623c",
+      "modified": true
+    },
+    "crates/field/src/packed_aes_field.rs": {
+      "upstream_sha256": "a5ae6293967570ebb83b7f4f60c0834d1dc9270865cabf8eb98bc7bb91a8ba83",
+      "local_sha256": "409a874921b9ca2739ea6dcfcb916d30be05700a1ecc6dd6b7c69a9b57cae7bd",
+      "modified": true
+    },
+    "crates/field/src/packed_binary_field.rs": {
+      "upstream_sha256": "255a944c95aa69a548b8ec2cd6aea51644ef8694f092c23c9b39b31b1dee97b0",
+      "local_sha256": "3cbd078552dd66a613e00f18cb8d53c21a13993937571fcde9f7f2b45039b17a",
+      "modified": true
+    },
+    "crates/field/src/packed_extension.rs": {
+      "upstream_sha256": "224d0688dec795b0aab2d104e00d02bba584d8da515e907d86564b496d6c789d",
+      "local_sha256": "224d0688dec795b0aab2d104e00d02bba584d8da515e907d86564b496d6c789d",
+      "modified": false
+    },
+    "crates/field/src/packed_extension_ops.rs": {
+      "upstream_sha256": "6af04dc4c1b9bc68e82abc88468c840b8f90a375d1601bf978aa22bf1a48c407",
+      "local_sha256": "a9516b50df0ffab321b75e65258329b1c2f1e52054d508fcc0fa17f35b5e9b06",
+      "modified": true
+    },
+    "crates/field/src/packed_ghash.rs": {
+      "upstream_sha256": "691dd14d1285f178fad7db909e8c0d4514ab3d80866dc1b016c55b792d08336c",
+      "local_sha256": "500a55a7a6fdb7fcf529f34d540121c07ff87c8bb16bc7349c1e9d97c69d5886",
+      "modified": true
+    },
+    "crates/field/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/field/src/random.rs": {
+      "upstream_sha256": "76b0b7df0b2af6d1f41d36bb527de7487587849e9207db493fe79ad83365b7cc",
+      "local_sha256": "76b0b7df0b2af6d1f41d36bb527de7487587849e9207db493fe79ad83365b7cc",
+      "modified": false
+    },
+    "crates/field/src/tests.rs": {
+      "upstream_sha256": "1bcda06a1635a5f37c7c1aa78f395d8ba0097378d5d50aa3997024467c73ae00",
+      "local_sha256": "7b2fdd3c6e6ba771e7314f35c1e1ee008906c79b0264611638cd406bcfb2b68a",
+      "modified": true
+    },
+    "crates/field/src/tracing.rs": {
+      "upstream_sha256": "c42c74bbdfd7e4f1b4e031022fe75521fd3bd8d04e5ef8937c166d8f6e7bba55",
+      "local_sha256": "a587cfe057241874d386229eaeb46bc81c4f86849f4d1e662d0bde653addbfc8",
+      "modified": true
+    },
+    "crates/field/src/transpose.rs": {
+      "upstream_sha256": "935046304b8ac9db45248eda8bd59470494e9440fa17b1b73d751a0a00694966",
+      "local_sha256": "935046304b8ac9db45248eda8bd59470494e9440fa17b1b73d751a0a00694966",
+      "modified": false
+    },
+    "crates/field/src/underlier/divisible.rs": {
+      "upstream_sha256": "fbc496e6cda8859c6f3f476b90803197f8b7787f416294281465cb4ec01cfb50",
+      "local_sha256": "1b3836e6ca6cfe5e05c8720a41a2600d8906ae19a99ba2c256d3325ea577417d",
+      "modified": true
+    },
+    "crates/field/src/underlier/mod.rs": {
+      "upstream_sha256": "3f2609f01e2f8a2d56e6fc39b3eb761d78be55b7d6473a9b58fda78b0cc97b8b",
+      "local_sha256": "3f2609f01e2f8a2d56e6fc39b3eb761d78be55b7d6473a9b58fda78b0cc97b8b",
+      "modified": false
+    },
+    "crates/field/src/underlier/scaled.rs": {
+      "upstream_sha256": "4461fe47af89dae5b06b830393798a7134326da02477da65beef859c551b24a1",
+      "local_sha256": "3e927b68288d62efbe174bdc18b065fea008ecd9bb63225d22bead72a54f84bd",
+      "modified": true
+    },
+    "crates/field/src/underlier/small_uint.rs": {
+      "upstream_sha256": "f3994f2d07fa5d609aa7ca23a00634a8f12001e8d9dadd9002ba1663aaf47994",
+      "local_sha256": "0b3cb8ba839303bde5359f51ec3a08caba09d40425bd4b70b045e9fab061d7f8",
+      "modified": true
+    },
+    "crates/field/src/underlier/underlier_impls.rs": {
+      "upstream_sha256": "606ac318918b9942caa8d36306c2cd2fe234000b66343468458994ed0748a71b",
+      "local_sha256": "606ac318918b9942caa8d36306c2cd2fe234000b66343468458994ed0748a71b",
+      "modified": false
+    },
+    "crates/field/src/underlier/underlier_type.rs": {
+      "upstream_sha256": "a158be2ac5e6d1b1b05691e78ec59b1961ad0cc09c45f355a02819982f1af39d",
+      "local_sha256": "e1a48bb8e2cccececd8f3c1badd091117c8735c25d5335baa0a7dbdf12df3a0a",
+      "modified": true
+    },
+    "crates/field/src/underlier/underlier_with_bit_ops.rs": {
+      "upstream_sha256": "49ac5d41ed7747aefa8ee7af048bac84aa75be5122ad5fe1fb7c7714ba32f3f1",
+      "local_sha256": "849f3a9a6c0b1381815f059f235fb724d923fef0a416583ec9321bb3181210f6",
+      "modified": true
+    },
+    "crates/field/src/util.rs": {
+      "upstream_sha256": "dca743cd2ca89d84c2b946e256b08fb37472c6e2316660b8d014a4f48325077c",
+      "local_sha256": "ff818248b6c2cc46f49518b5c7643f42449ddaf4c3a821c02c7243de5c0cbbbc",
+      "modified": true
+    },
+    "crates/hash/Cargo.toml": {
+      "upstream_sha256": "3fde0328d7bc4e95612f6520a2976fde9f5ebeeaee9351b5758bd94445ca1138",
+      "local_sha256": "7c3d0108030c3ebf6a1314599981b0dc814f4a9cd2f07eb01a7260ef0c768fc0",
+      "modified": true
+    },
+    "crates/hash/src/compress.rs": {
+      "upstream_sha256": "7cff17306761fa284b35024c5a547dca53f2d468280a732f89e6b96d3185967b",
+      "local_sha256": "7cff17306761fa284b35024c5a547dca53f2d468280a732f89e6b96d3185967b",
+      "modified": false
+    },
+    "crates/hash/src/lib.rs": {
+      "upstream_sha256": "7b9921381dc7a7861b635b37846d55431aa3549dd7edbd1ab5a8c3ea605c85f1",
+      "local_sha256": "118d6195ddc916d6f514775104027f335126955483a5702f6cf2651431b7a8e5",
+      "modified": true
+    },
+    "crates/hash/src/parallel_compression.rs": {
+      "upstream_sha256": "8a599e9a2361e5466f512f085f726d816cee80aaaee5996b439b9db17c2ffb14",
+      "local_sha256": "309db3d78b8c6e45c30913a89183d32fbea6aebffcbd35b5af54aa9a7cef1a55",
+      "modified": true
+    },
+    "crates/hash/src/parallel_digest.rs": {
+      "upstream_sha256": "07cd27e47db2940d7120290e5be7abe97c8e9096fd8ec8ec7c163fe368d5cbd0",
+      "local_sha256": "6bd32be6ca878627c999ab34ef39be5bbc802033a072086b298c6422f4ced540",
+      "modified": true
+    },
+    "crates/hash/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/hash/src/serialization.rs": {
+      "upstream_sha256": "b6d29d58ea65597f365b2e36cdd200e4ae3846276114db31deb64744baa3ac62",
+      "local_sha256": "9c173bbb8ed02dbd4c39d7f9052e6391ce6a678058530b0247c7ba489e122f07",
+      "modified": true
+    },
+    "crates/hash/src/vision.rs": {
+      "upstream_sha256": "950542fcd6d7b744cbf7bcc0d77c5f8f5956fa3a3230d7249ae9520f4a9f3977",
+      "local_sha256": "85bc9ba29b1aaaeb28097c2e318f28327160536e970a1263721d6980f3961e08",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/compression.rs": {
+      "upstream_sha256": "f4a64c288e0c7d5b6a6854ae8d363ced1fa27ce37307aa5891b3af5dea0e99d2",
+      "local_sha256": "f4a64c288e0c7d5b6a6854ae8d363ced1fa27ce37307aa5891b3af5dea0e99d2",
+      "modified": false
+    },
+    "crates/hash/src/vision_4/constants.rs": {
+      "upstream_sha256": "b7c4c2f06a7089be885659ebfc98a91b0cd3051a10c446e8459575a88fb33690",
+      "local_sha256": "a3e81794502bcde4786acbc91a2b907dd88a95c5c1c6dd99806c0dd275cc3eec",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/digest.rs": {
+      "upstream_sha256": "4bb88fc61e75e1d31389528c64b791a0b24b0410cfe0046c759b86f6f32b7527",
+      "local_sha256": "9b547bb259c42c3acaa691589952f241711ba1ff3d163f0620e852914efd1db0",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/linear_tables.rs": {
+      "upstream_sha256": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+      "local_sha256": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+      "modified": false
+    },
+    "crates/hash/src/vision_4/mod.rs": {
+      "upstream_sha256": "9bbe1daebb2eab9147a8d166c305d445f78d4a35ca7fec4e761aa778ef0f1066",
+      "local_sha256": "9bbe1daebb2eab9147a8d166c305d445f78d4a35ca7fec4e761aa778ef0f1066",
+      "modified": false
+    },
+    "crates/hash/src/vision_4/parallel_compression.rs": {
+      "upstream_sha256": "89eb196d07d2d8eb029522f5cc3f591398db8cd9982bf18f5512b9bedf83a604",
+      "local_sha256": "875afd91dc681dd3df0f44e1faef77c69c763283c60341c3ae7cef39c8bf7cab",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/parallel_digest.rs": {
+      "upstream_sha256": "906bbf0923380fe562f55b00557982600daae85cd4c7111b9079eacca1556b78",
+      "local_sha256": "c620071e54055e690f49cbb8061b43d405f9334f0510f26311fe11d4558ef0dc",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/parallel_permutation.rs": {
+      "upstream_sha256": "b715480f21785ff974660bf61b4a128bd50fde938d8696f651000357f2436104",
+      "local_sha256": "821ac7e71e33d432f20d5fcaa2b45538d30cf6b1268bf85a20c388078978652d",
+      "modified": true
+    },
+    "crates/hash/src/vision_4/permutation.rs": {
+      "upstream_sha256": "2032f6ad66413192d8bf26605a8698d427adfe2acafcd3a4419d0cbe1d153317",
+      "local_sha256": "445d5afc12d9524d3a4f5f5ccb586c0550949b6da4d12086a6de179cfe9e0337",
+      "modified": true
+    },
+    "crates/hash/src/vision_6/constants.rs": {
+      "upstream_sha256": "1fb30029b2876d197dec848cb38dcbaf8ace64a6eb176880cda70710e53796bb",
+      "local_sha256": "f7014560fc5eb294b28782cfb1c7c29d2bca5ee5c5709f7b337aa82d0d675fd7",
+      "modified": true
+    },
+    "crates/hash/src/vision_6/digest.rs": {
+      "upstream_sha256": "fde69fc2e08bd3880edd76f38bbde80c30a003244e975a3349b7e4cb38b8490b",
+      "local_sha256": "8889a80ebf468812b0c0813a4a81914ae6dc729fc823612361e27b98517b3383",
+      "modified": true
+    },
+    "crates/hash/src/vision_6/linear_tables.rs": {
+      "upstream_sha256": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+      "local_sha256": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+      "modified": false
+    },
+    "crates/hash/src/vision_6/mod.rs": {
+      "upstream_sha256": "245877240321b56bc1504fd4f99cff06dd78304bcb0af8036a46c1b3ffc0c127",
+      "local_sha256": "245877240321b56bc1504fd4f99cff06dd78304bcb0af8036a46c1b3ffc0c127",
+      "modified": false
+    },
+    "crates/hash/src/vision_6/parallel_digest.rs": {
+      "upstream_sha256": "4b945c850cd21087508401edcaf5f04eef7e6fb688e99fa947b0a3be90595199",
+      "local_sha256": "b66c9f40fae256dc98a40465f96dc9ce36cfdf1bf67407be43126108cca4d150",
+      "modified": true
+    },
+    "crates/hash/src/vision_6/parallel_permutation.rs": {
+      "upstream_sha256": "db9905ed86863e21dcf5760b528783071d86191e60e5f09a1dba8e9d6d431a78",
+      "local_sha256": "ee21a713f264e49606b6d8a1c5a0672040d4860befe11325bc24fd03d8235649",
+      "modified": true
+    },
+    "crates/hash/src/vision_6/permutation.rs": {
+      "upstream_sha256": "c66bb07004b0f2d37d86e84209ddf8b8ee6d1d0039c543a70d3b251b67692ab0",
+      "local_sha256": "228a0a6ac7c47581d61e4bc290d0731c906aff545994612c6bc3d9f58046b342",
+      "modified": true
+    },
+    "crates/iop/Cargo.toml": {
+      "upstream_sha256": "2cf55d3e2ac31c1ec77b5827172793909fbaaad16cb47303b1adbf0e011e40e6",
+      "local_sha256": "8e213519089e01dd507d65cff765e895337dd6004ecbb1431a4b906486d207d7",
+      "modified": true
+    },
+    "crates/iop/src/basefold.rs": {
+      "upstream_sha256": "8e3399cca21a110976b15beefd5eebd35fac0afe5a2021ab5861d81a7d2d3ece",
+      "local_sha256": "fad8cfd79a53d1475094e739d8fef891f58e56ab3ed9403cdc745186624cda30",
+      "modified": true
+    },
+    "crates/iop/src/basefold_channel.rs": {
+      "upstream_sha256": "471602bb382150fffcef6b3fa2ea46a97741ebff225fd8369e6128c341356d08",
+      "local_sha256": "28b871ad85b8727cfc03c4a1ceb9c783734425bb89b3b8a7f943d63a263f0b75",
+      "modified": true
+    },
+    "crates/iop/src/basefold_compiler.rs": {
+      "upstream_sha256": "e8069096e6916abe30f5fdbf33d7e9ed25c54a6e03d87f910c780030801cad1b",
+      "local_sha256": "e3ad588bf2be95d35c12b516ee12a4e6c992f4c1c1ad5903076993fc8fffef4d",
+      "modified": true
+    },
+    "crates/iop/src/basefold_zk_channel.rs": {
+      "upstream_sha256": "917300be22f396dd861d8afa7706469e5ec4f51db470c378867b23323250c535",
+      "local_sha256": "9b46d98aeffdd5faffc4077a26d821be01f196129e23df93eae57a0b45431841",
+      "modified": true
+    },
+    "crates/iop/src/channel.rs": {
+      "upstream_sha256": "9faafad703e9f1cafe15cb07b3a43a9d3daae9313cd24ff1f53eb71d70134fb9",
+      "local_sha256": "942b131dd5a89b3acd1cedeea8fe821ac53e9a84e474fd49eb81db9ce3b0a158",
+      "modified": true
+    },
+    "crates/iop/src/fri/common.rs": {
+      "upstream_sha256": "d7a093efa8b707aa3a082160ad97ddf897f1b6d9439f4a6ce731f0244d9d7eb5",
+      "local_sha256": "c5dbe4187b94cecce8fd255811cbf42f03204425f5184b8301f2125cb4364518",
+      "modified": true
+    },
+    "crates/iop/src/fri/error.rs": {
+      "upstream_sha256": "43575ce15e43eca61ce9d9102914e3c16a05fe63e1f890057a39c5ae1b113caa",
+      "local_sha256": "9bd845921e4c6ed94d7af674dec57781cf86135bb1d43e4f4850aee974a922da",
+      "modified": true
+    },
+    "crates/iop/src/fri/fold.rs": {
+      "upstream_sha256": "94486ac3cc9ca5387f4632706983119a6bc073312c228ace2e27b62c25688eda",
+      "local_sha256": "2080a75ec27171e4bc874ce81e86c5b3a1c55dfc32c83542dd926459309f7a8e",
+      "modified": true
+    },
+    "crates/iop/src/fri/mod.rs": {
+      "upstream_sha256": "efa4bb55fb1f73d0754288df2737c437214827566e6e722c056f01ea0420ce00",
+      "local_sha256": "efa4bb55fb1f73d0754288df2737c437214827566e6e722c056f01ea0420ce00",
+      "modified": false
+    },
+    "crates/iop/src/fri/size_estimation.rs": {
+      "upstream_sha256": "fb1ef0fcd2a9cb7ee4da85231fa6542e0e7d4fb826b4b0d5980abfa73d6a206d",
+      "local_sha256": "bc2ea0339cb1222f0a7ac6e266cf0c14fcdd4ce955e7d8ce83bfeb8078121a7d",
+      "modified": true
+    },
+    "crates/iop/src/fri/verify.rs": {
+      "upstream_sha256": "80be3b2b9b28abe59fee21cdcec530c63e92145f8da41570ae16882660bdf048",
+      "local_sha256": "a085ef0b314a8bc88f1f4a746a900e69582b82aa08477b8beb9ad6322baabc58",
+      "modified": true
+    },
+    "crates/iop/src/lib.rs": {
+      "upstream_sha256": "d2e9722a60bcf0b55472f83ad15c712da4739a71e4ff26b17e2bf2eaff1a6fa9",
+      "local_sha256": "b3e4713880df6efb7ba64ee6e204f62fb5a512b2c840437ce5bcb20566e5bbd5",
+      "modified": true
+    },
+    "crates/iop/src/merkle_tree/error.rs": {
+      "upstream_sha256": "9c45af11788678d6a27473ae9aa01ed5da1d94e9bc8f96a6dbf2e9eb9375e547",
+      "local_sha256": "9c45af11788678d6a27473ae9aa01ed5da1d94e9bc8f96a6dbf2e9eb9375e547",
+      "modified": false
+    },
+    "crates/iop/src/merkle_tree/merkle_tree_vcs.rs": {
+      "upstream_sha256": "0121a289580a8ebf97b774121883adbec950c8f4360384ca4062669155a9906a",
+      "local_sha256": "0121a289580a8ebf97b774121883adbec950c8f4360384ca4062669155a9906a",
+      "modified": false
+    },
+    "crates/iop/src/merkle_tree/mod.rs": {
+      "upstream_sha256": "ebdadb99d0084396403bede2a328364abcef1ad29f00a89ac65ed30386bfb7ae",
+      "local_sha256": "ebdadb99d0084396403bede2a328364abcef1ad29f00a89ac65ed30386bfb7ae",
+      "modified": false
+    },
+    "crates/iop/src/merkle_tree/scheme.rs": {
+      "upstream_sha256": "3ffec9ded4f352b51253ffbd73384d65d1f3c45d4f9f92d2b8b0f0ff5dc155fb",
+      "local_sha256": "9c95e1a00060d8848ed0ff13ca063d65b5167b8e182284d8f0eb22c768e02633",
+      "modified": true
+    },
+    "crates/iop/src/naive_channel.rs": {
+      "upstream_sha256": "d7ea6128dc90af2f56550497a77150cb154a68f92147237b4513465bb8910fd5",
+      "local_sha256": "010038c51753b02e0d466958c28fdff2d3f0eb252878d9ab80e27e345801c69d",
+      "modified": true
+    },
+    "crates/iop/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/iop/src/size_tracking_channel.rs": {
+      "upstream_sha256": "6fa803fb1c767ce3b12d86dce867a9a4cf8422ad0cca09e7b96f04f474b0cd3b",
+      "local_sha256": "e23bedf7bcfc09b1229318dac28045364b3650f88c2590f3dfef092693c1580e",
+      "modified": true
+    },
+    "crates/ip/Cargo.toml": {
+      "upstream_sha256": "7d6fd6a79db9fc92d5605522737ce0c36691bf19f5b27843e4c175de42ebaa0f",
+      "local_sha256": "9a0072ebfa19c215b82623a77dfa45628ed92fc727c094279a4f9cfb0b76e4c2",
+      "modified": true
+    },
+    "crates/ip/src/channel.rs": {
+      "upstream_sha256": "317f3aacd47d76913b4683f08d0e192680414e6a50d3ed33d1a55b727bbe9f4a",
+      "local_sha256": "ae5ab97f3b4deaf2cdd91383ea749c1293703ca5c45be27c033f6a4f9d1372ad",
+      "modified": true
+    },
+    "crates/ip/src/fracaddcheck.rs": {
+      "upstream_sha256": "f31aa7f5a8bdfb3d1db608ad5d09db76a7c3ea88cb024812f32b000f15074e0b",
+      "local_sha256": "39350df11a472d21c1f11143c5e81202f6044f824f335128ef61ebc39de3bf0d",
+      "modified": true
+    },
+    "crates/ip/src/lib.rs": {
+      "upstream_sha256": "3e55b9638bdac42da92455d2331ae9325dfd2ea07cc70f54daa643b29ed2babb",
+      "local_sha256": "3c3ce03fb523516e768011d7c72f59cda90537ac52c7da7f9cc3b67cbcd168a6",
+      "modified": true
+    },
+    "crates/ip/src/mlecheck.rs": {
+      "upstream_sha256": "1409c2bcfef14994b658392d1a3de96118ea683f54cebc64ce657b0f507b89d8",
+      "local_sha256": "8fa0310aaeb13066b25ef226421e451a4095d058e5efa477b0f3fba68c13cad5",
+      "modified": true
+    },
+    "crates/ip/src/prodcheck.rs": {
+      "upstream_sha256": "c8b49e24fc11be11ce3281ee44f299e058f560b4e555544fd4ad769d7aaa248b",
+      "local_sha256": "c8b49e24fc11be11ce3281ee44f299e058f560b4e555544fd4ad769d7aaa248b",
+      "modified": false
+    },
+    "crates/ip/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/ip/src/sumcheck/batch.rs": {
+      "upstream_sha256": "25cd6484c4b32a73f5b7c74de0373e8aff500584e7606852ed4b047609aa458a",
+      "local_sha256": "ffa6d27e026e88986a6e5b1f549a7d4da1178f74c2c366c187af32d060c19a88",
+      "modified": true
+    },
+    "crates/ip/src/sumcheck/common.rs": {
+      "upstream_sha256": "25880858686cfe5900bd047d94cf46b397435510a87d67ad1ae8eb8179022ae9",
+      "local_sha256": "2dcef81faa65647137d488fad40bcdbe9c01d4774695c730758ab8aa1781fb87",
+      "modified": true
+    },
+    "crates/ip/src/sumcheck/error.rs": {
+      "upstream_sha256": "2bf59a7c7154bf9d34fd8b4af6dae6a11c4e0edf666cb2de7b9225159ca36592",
+      "local_sha256": "2bf59a7c7154bf9d34fd8b4af6dae6a11c4e0edf666cb2de7b9225159ca36592",
+      "modified": false
+    },
+    "crates/ip/src/sumcheck/mod.rs": {
+      "upstream_sha256": "9edf645c9d97347ec409bd16d873f9c0d67d3a2f19057a17206576a98595a09d",
+      "local_sha256": "9edf645c9d97347ec409bd16d873f9c0d67d3a2f19057a17206576a98595a09d",
+      "modified": false
+    },
+    "crates/ip/src/sumcheck/verify.rs": {
+      "upstream_sha256": "17bd2dc01bca38c52cf6c37ef1614e36781492e25701617d540b08d37f6568a6",
+      "local_sha256": "eae66e1038b365ff7e5a7b29cc7d8a8b88ffd23bc8ec223cf57fd9b88910147b",
+      "modified": true
+    },
+    "crates/math/Cargo.toml": {
+      "upstream_sha256": "cf4fbfbebc47b1e03c2e99f3ad0521fc4a07c7c56343fc82751410973ced17ef",
+      "local_sha256": "4e860b4e8489ec5ac9279c8fb124776285274583a86bae61c617e4870338943b",
+      "modified": true
+    },
+    "crates/math/benches/batch_invert.rs": {
+      "upstream_sha256": "d679cb46dcae1e1496762eff074e1cd6e4fbe0127a238d958d19c9302f3dbfbd",
+      "local_sha256": "d679cb46dcae1e1496762eff074e1cd6e4fbe0127a238d958d19c9302f3dbfbd",
+      "modified": false
+    },
+    "crates/math/benches/bit_reverse.rs": {
+      "upstream_sha256": "8fd94fca7a76ec2b0d3579771e4507a55caf8130e4eef3279960d7d2985135ab",
+      "local_sha256": "8fd94fca7a76ec2b0d3579771e4507a55caf8130e4eef3279960d7d2985135ab",
+      "modified": false
+    },
+    "crates/math/benches/multilinear_evaluate.rs": {
+      "upstream_sha256": "d5345da3dc8b96c0cda5777ad9462a33980958aa5f3978e7974c07b97d0aa5b3",
+      "local_sha256": "d5345da3dc8b96c0cda5777ad9462a33980958aa5f3978e7974c07b97d0aa5b3",
+      "modified": false
+    },
+    "crates/math/benches/ntt.rs": {
+      "upstream_sha256": "8ae932685f3420bc80be4f610f897e5ed8695aa1cc9e99856c0e990220d6c857",
+      "local_sha256": "8ae932685f3420bc80be4f610f897e5ed8695aa1cc9e99856c0e990220d6c857",
+      "modified": false
+    },
+    "crates/math/src/batch_invert.rs": {
+      "upstream_sha256": "c8e7114d65bf47453a078cd679e0aa180973eea0e4ff678678935ce7505291a9",
+      "local_sha256": "c26524f9bd3205e28e7cf834222ff704548af3fa55ebd0f1bcd404cdc7236579",
+      "modified": true
+    },
+    "crates/math/src/binary_subspace.rs": {
+      "upstream_sha256": "5f169b0873e5f1629786e68fcdb7a8581f0d33af9c1a032c46004e305dd22c36",
+      "local_sha256": "9372d3692bead00bfe3a26fdddbc3fe458abcf3136f106ee44d892018ef36348",
+      "modified": true
+    },
+    "crates/math/src/bit_reverse.rs": {
+      "upstream_sha256": "28d1abd2f35e4f99443729891a318230639523fdb6743b90230684b86a25476e",
+      "local_sha256": "504bf7b004f9231b56135d02a938ed5fe021d134c3ebb6cd3c741a92e85aa1f6",
+      "modified": true
+    },
+    "crates/math/src/field_buffer.rs": {
+      "upstream_sha256": "c818fcadaa478f5ff5e79168c3b462aaed6bc275ecbd5d562ea0849c79cd2bcf",
+      "local_sha256": "497da8449a83817e6d832e5fa70ffeabc0fddf153a87881ebc561a788e8c5a4f",
+      "modified": true
+    },
+    "crates/math/src/fold.rs": {
+      "upstream_sha256": "67aace81dd992cd1bc12288e1362bb738e601f34c774a416742b216bbc711072",
+      "local_sha256": "93114cbefd144483afacc082f6afd5f5723caa6eb3f6cf07853f62b1cb99d7ae",
+      "modified": true
+    },
+    "crates/math/src/inner_product.rs": {
+      "upstream_sha256": "2df0ea71016d009451df0d5cfd63aa57277396049f24be095324b77bf1ab8bce",
+      "local_sha256": "07495935cda78b7f2001ac391795bb857eef373f885a7fa57991af08349eda93",
+      "modified": true
+    },
+    "crates/math/src/lib.rs": {
+      "upstream_sha256": "a42b07b10a7d73faaa2fddb170421511f105a448894287f5ee928e851a65e044",
+      "local_sha256": "40942b61a2cd44a699ce3ab438e3a883aac8baa8134dcff2ee1a8295df05e078",
+      "modified": true
+    },
+    "crates/math/src/line.rs": {
+      "upstream_sha256": "8fd76c4d8769663f86a03c21807024f998fcd422660b5154d72c0c1659c8d7ae",
+      "local_sha256": "8fd76c4d8769663f86a03c21807024f998fcd422660b5154d72c0c1659c8d7ae",
+      "modified": false
+    },
+    "crates/math/src/matrix.rs": {
+      "upstream_sha256": "5ed41b7c37269eeaa2e93c460f9b3e3cab948491e1194d70dc08359e5d8adff5",
+      "local_sha256": "501b4ff3272f2498b110743f85efa63d3d45696058d8ebad0f45b58a36dd53dd",
+      "modified": true
+    },
+    "crates/math/src/multilinear/eq.rs": {
+      "upstream_sha256": "1aed2bbed8e3588c00bd66d627bab91929002a0a8684d7a160e6b20fd9526f8f",
+      "local_sha256": "87e664a3e4ef4ce779ed2c02bc3e722545343e5556deee736385430b85e1a45e",
+      "modified": true
+    },
+    "crates/math/src/multilinear/evaluate.rs": {
+      "upstream_sha256": "f00288e5f9351a2fd4987cf0e1adb70f4412187a33b9122cfefe461dc852529e",
+      "local_sha256": "06b4bc7f84bfa693329d0d19ff26e7b683fef6bd4c1c420e891bfaceb739c147",
+      "modified": true
+    },
+    "crates/math/src/multilinear/fold.rs": {
+      "upstream_sha256": "1d555bbbb71ab0c1bb6a1e65c6b772a7891aa6eca42fe5d5ffb3bd3e268fe71a",
+      "local_sha256": "31dd435de8d61ed6efab155e3120eed5d11e45287a1b7d2df71a21779fa23647",
+      "modified": true
+    },
+    "crates/math/src/multilinear/mod.rs": {
+      "upstream_sha256": "0452335205a3ea621ea9a48cfb99b77c2bab4b3f44e306cd4f91502d25323489",
+      "local_sha256": "0452335205a3ea621ea9a48cfb99b77c2bab4b3f44e306cd4f91502d25323489",
+      "modified": false
+    },
+    "crates/math/src/multilinear/shift.rs": {
+      "upstream_sha256": "e621687a510af1b01043355121ba153f999ef94207da2e4233b5fe09b52ae0a0",
+      "local_sha256": "e621687a510af1b01043355121ba153f999ef94207da2e4233b5fe09b52ae0a0",
+      "modified": false
+    },
+    "crates/math/src/ntt/domain_context.rs": {
+      "upstream_sha256": "573a4b28098dd742dad26cad5126b8a19939bd2a730a50fc63224bb90ea0e9be",
+      "local_sha256": "c5f6b86a768c440ac33b04d86fabb41a260a6c085710fa97f041174407b62b0a",
+      "modified": true
+    },
+    "crates/math/src/ntt/mod.rs": {
+      "upstream_sha256": "8db13352e0aeaa3c01ac62a59e0686aa760c9f82c2992c466bc6bed5a530cd5a",
+      "local_sha256": "8db13352e0aeaa3c01ac62a59e0686aa760c9f82c2992c466bc6bed5a530cd5a",
+      "modified": false
+    },
+    "crates/math/src/ntt/neighbors_last.rs": {
+      "upstream_sha256": "5446b7ba97b1823d1a0c881e154236e9a2c43bc303134d0e444b5746d3ff48dd",
+      "local_sha256": "6590b08cb05e0fd7351e931b73388548fda268526775ead7d02e3c42dba81f31",
+      "modified": true
+    },
+    "crates/math/src/ntt/reference.rs": {
+      "upstream_sha256": "03005237ecea93fa894113ff838b0af97ca3d97dc0f6b66e704da6af21970f2f",
+      "local_sha256": "03005237ecea93fa894113ff838b0af97ca3d97dc0f6b66e704da6af21970f2f",
+      "modified": false
+    },
+    "crates/math/src/ntt/tests_evaluation.rs": {
+      "upstream_sha256": "f7c00916a79131f460d5b25603cbaeef9d566ad3555d71c9282473b4f5d63977",
+      "local_sha256": "942da8fc798652bdfe70ab914e8443f0612c27b3caa71c32978b55925d77e8f2",
+      "modified": true
+    },
+    "crates/math/src/ntt/tests_reference.rs": {
+      "upstream_sha256": "3dd56ad6991fcc5eaa2e97ff8264624a1e025acacd4ae9938495257ca8554ae3",
+      "local_sha256": "3dd56ad6991fcc5eaa2e97ff8264624a1e025acacd4ae9938495257ca8554ae3",
+      "modified": false
+    },
+    "crates/math/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/math/src/reed_solomon.rs": {
+      "upstream_sha256": "bab7f0af592558dfc90670fe4dd4e2a652b9a5fb504574729b2d68b3b691cb80",
+      "local_sha256": "9602a08a32c21218841569e1d14eb81ea1c9767ff920e0fab698b7c6218b380b",
+      "modified": true
+    },
+    "crates/math/src/span.rs": {
+      "upstream_sha256": "45c3d80cc41d310487a7dce4edfce8c76a1949909428ef070ae243b77c0199a0",
+      "local_sha256": "aa2860758a2873e866ab13f95469265a272691bd3669bfe2fb92707fbef912b1",
+      "modified": true
+    },
+    "crates/math/src/tensor_algebra.rs": {
+      "upstream_sha256": "dc75f192cf9ed61d07cc9517d852a8b0c007d2ddea5d23d29264c1bf6337f06c",
+      "local_sha256": "7c201068b590941d890819eb633e463478c6aa72b3c510d7e2a71ae282f00b84",
+      "modified": true
+    },
+    "crates/math/src/test_utils.rs": {
+      "upstream_sha256": "e3f38f6f6c8079f1b3c3ac148694039a39ab68504622a22f3523abe19f88f792",
+      "local_sha256": "01645c5ed7bb5ada8ae6a58dbde93c8d8e4792d8e6c6bb794533ddbb0b2ce6de",
+      "modified": true
+    },
+    "crates/math/src/univariate.rs": {
+      "upstream_sha256": "aecd7a067464fe37d7700c92c08749fb75651654bb0339ac514d75adf01577d6",
+      "local_sha256": "eaa47c4d9fb64b5b51751f5bd14aebd1fe045dde9aaa1f13ecf9b9bb7a9c5b1a",
+      "modified": true
+    },
+    "crates/spartan-frontend/Cargo.toml": {
+      "upstream_sha256": "642b047385b1b29725e6553804ca5575ef1c2dc1e1d8c5f49c452f0cd7dd650c",
+      "local_sha256": "7c4af5a35936e6b004a3a2c455273a2e80a9ac200a53c3cf8d6e7b5f9016950c",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/circuit_builder.rs": {
+      "upstream_sha256": "729f3d4d71c43a646e17900447a1ff7281ed9131767352a7364aaaacb53a58cf",
+      "local_sha256": "e62f76fc6405aabcafb5f94ccc8ff986f88b24842aa817e18b6211cac78c99be",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/circuits.rs": {
+      "upstream_sha256": "34ecbec22837806a8d632cf435617ceee7551e484ce9a7258580260dc6f07664",
+      "local_sha256": "6460f63b48042aab42c68b648de4ffe029fc3df1554aeb3615030a602b4ecede",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/compiler.rs": {
+      "upstream_sha256": "70566f7afd45962514e3034cb806f08d026c7bf2d026a4f0ec2c7c2dafe5f67c",
+      "local_sha256": "70566f7afd45962514e3034cb806f08d026c7bf2d026a4f0ec2c7c2dafe5f67c",
+      "modified": false
+    },
+    "crates/spartan-frontend/src/constraint_system.rs": {
+      "upstream_sha256": "bf5e7443b4929aa2080d6da263c886201b395e88d24e634ffaf12edb9d2b13d5",
+      "local_sha256": "81da9f9361443b2bd09dbb441a61a08802976bc2fdc3df0cc089c8e19801fe7d",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/lib.rs": {
+      "upstream_sha256": "48ae27e7a2344a5b19105d09f007cc14c68c58f9fa2fd8c557d3e9962f80aa37",
+      "local_sha256": "b15023fd05480cfb80a0484ce3742ffd58d27b846723cdaa08f824f97ed18125",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/spartan-frontend/src/wire_elimination.rs": {
+      "upstream_sha256": "6baa39b05cac0b822623714eb4fa4fd8c1a8d0fdfd035754a504658ce291d004",
+      "local_sha256": "0395580666746db670867e204fc33a77c00f2c02ec6913b82fcba359a8471553",
+      "modified": true
+    },
+    "crates/spartan-verifier/Cargo.toml": {
+      "upstream_sha256": "c98ecca03b3834551346e54e37161c1835cdf4aa44b74e17101de514722245be",
+      "local_sha256": "7d6d96740f634a9056c0f2a72875acdcf80624cee671b5e04083297c983b6963",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/config.rs": {
+      "upstream_sha256": "aef70ccf58f311d40e9a69f782eea930c3ebc63fc2c979e92883e5ea36e75431",
+      "local_sha256": "aef70ccf58f311d40e9a69f782eea930c3ebc63fc2c979e92883e5ea36e75431",
+      "modified": false
+    },
+    "crates/spartan-verifier/src/constraint_system.rs": {
+      "upstream_sha256": "ac1d4b71798b433ee6808d6dcc8460f147b418de0124f5d8697f1e408fa5edfe",
+      "local_sha256": "30b7f1cb5c7fbbe3f1a28bade449cc3352ef99d0f5bc6f334f9cffae4cca2312",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/lib.rs": {
+      "upstream_sha256": "c17db531cc2da24c93078bb45f3ec9e41bc4c0f0b4b01e081c358a19e576e201",
+      "local_sha256": "3f7c01fc0273f68527850a8f8e7a0a20eda5c3a603fb5c8f2fb78d471b54febd",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wiring.rs": {
+      "upstream_sha256": "148a9e515710bad8244053fec8e759c2fdbfb77441508b53f57876683828a6d1",
+      "local_sha256": "1e74655af4b951a87b46441cefc81b67a2d8afc788668ab0e9015866133b1293",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wrapper/channel.rs": {
+      "upstream_sha256": "d96159544eaa642efc537c1ad643f15029cede3f8c97ad0bb1531bb7b02302d3",
+      "local_sha256": "718c4c1d6cc55b5eda0bc34b63d3c7990164d1c56e23ef4f97beb75f6c35311b",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wrapper/circuit_elem.rs": {
+      "upstream_sha256": "c329b948491ac3c32f94fa6c0315011ca0ee1865e71acaec77b6cb207dfce671",
+      "local_sha256": "07cf08a8822e63a87d040757d0fc91c596a21113f3ec6101ce05ffb7b5fc6234",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wrapper/gadgets.rs": {
+      "upstream_sha256": "f36c641af5d41f7db0a2f1c83c7332f056e424b6293e778c33942a3a077bfdfb",
+      "local_sha256": "95ed8c46214648ae736c652144e2b0e572e4ea4d612139f71c5fa08419bdc1b2",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wrapper/mod.rs": {
+      "upstream_sha256": "3dd7e16e81e581bbaade64ab4011d06f4634e54dde39ba580c962327ca67a064",
+      "local_sha256": "d05096f0370fbee119139d0922333daadc2274e5e05146bfac537efd6570772e",
+      "modified": true
+    },
+    "crates/spartan-verifier/src/wrapper/zk_wrapped_channel.rs": {
+      "upstream_sha256": "6bb99ed17cb4dc6e40d35c312f66cc536d5e38d5dbf57631ba36e1c510fbbe42",
+      "local_sha256": "2bdd15c5aa69ccb0a7b843d3d25d3aa74823ca174f8f5b83e5039376f367cf70",
+      "modified": true
+    },
+    "crates/spartan-verifier/tests/proof_size_test.rs": {
+      "upstream_sha256": "ccc88989017b0644fa4124bc08e433f0979a6460b16fbf7a585dd98d95e2858b",
+      "local_sha256": "ccc88989017b0644fa4124bc08e433f0979a6460b16fbf7a585dd98d95e2858b",
+      "modified": false
+    },
+    "crates/transcript/Cargo.toml": {
+      "upstream_sha256": "f2cad8c9e9c0b5b79458ef5d0c3b79ce6e17ce0ae8cf20f628c0b605c049d28f",
+      "local_sha256": "21ab611faa779d44973120e4d9f6afec06662660bb54e745f3a1d9959ef0e81d",
+      "modified": true
+    },
+    "crates/transcript/src/error.rs": {
+      "upstream_sha256": "2494b3c5e600aa61787bc15bfbdc86f8e4c8d54d9e532e889a3203961d1c2619",
+      "local_sha256": "2494b3c5e600aa61787bc15bfbdc86f8e4c8d54d9e532e889a3203961d1c2619",
+      "modified": false
+    },
+    "crates/transcript/src/fiat_shamir/buffer.rs": {
+      "upstream_sha256": "ea8cc4544c7140621b2ab877276feed8e459d245032c3f9cc47f9986c7b06eef",
+      "local_sha256": "700f14ecab0144b534ec8b550bcc58a452230dbc730526305ba6a291b449fe2b",
+      "modified": true
+    },
+    "crates/transcript/src/fiat_shamir/hasher_challenger.rs": {
+      "upstream_sha256": "9f9fd8054d4d15caf77034d2b089dbdec9d520bee899a8d4e007b91a519cdbc7",
+      "local_sha256": "e546cd63b4e5294fa3cae0a163f0e0bd9bf9207dd924e05c69938f2e9c9c864e",
+      "modified": true
+    },
+    "crates/transcript/src/fiat_shamir/mod.rs": {
+      "upstream_sha256": "aeb7017235dbabb86dd76452388d4dc030fefcfbad5f144bdb931302fc7112b5",
+      "local_sha256": "aeb7017235dbabb86dd76452388d4dc030fefcfbad5f144bdb931302fc7112b5",
+      "modified": false
+    },
+    "crates/transcript/src/fiat_shamir/sampling.rs": {
+      "upstream_sha256": "085e4763a30e0543002a3981a3768b8bc2b8495330e8143665fbe986111b6ee4",
+      "local_sha256": "2133966eb2a215bbf5c0bf83e639f34f902a2e6fe68d0b9b7f8edf198bc1e336",
+      "modified": true
+    },
+    "crates/transcript/src/lib.rs": {
+      "upstream_sha256": "b52a8a4416fc01aba877d509545a58f0857df73f6438e4ffb6439ebf69614278",
+      "local_sha256": "ec09dd9be637b3387eb2ae1dcdf4fed8c79af4901308cba06fbf4b973953d4fd",
+      "modified": true
+    },
+    "crates/transcript/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/transcript/src/transcript.rs": {
+      "upstream_sha256": "5a8a10c703aba657ca321f3c97b2d9a72a03806d13491c604afb210eef1ea5ce",
+      "local_sha256": "0292d027d4a70a99a73fc054813d38c50698eea5776175f33f26a90409a6d1f6",
+      "modified": true
+    },
+    "crates/utils/Cargo.toml": {
+      "upstream_sha256": "392da548897f7b1ac17a6996299776f31149b45b3a3f0a0652dce7ded12d1599",
+      "local_sha256": "e74f4fe3c4b4c058c5f4c7a15cb07f35bb6cf0e8795bc668a3dc90c4b7255ef2",
+      "modified": true
+    },
+    "crates/utils/build.rs": {
+      "upstream_sha256": "3b53562e219dbe990a63469cb1df11d9ac561301189d5870bd8206d243963fe5",
+      "local_sha256": "3b53562e219dbe990a63469cb1df11d9ac561301189d5870bd8206d243963fe5",
+      "modified": false
+    },
+    "crates/utils/src/array_2d.rs": {
+      "upstream_sha256": "7dbefe31549885ee65ac78490c39b2b2fc0ce295bfdb6de5bdb9672d468390a7",
+      "local_sha256": "a856a390adcd3ff1916004974498ae26a5c0bbc1d1ed003f2ce6f33e44d31d6b",
+      "modified": true
+    },
+    "crates/utils/src/bitwise.rs": {
+      "upstream_sha256": "93866643f22cb1ccf02e33e2fc7e4dd7c78126345b616e8e1853234f1825a640",
+      "local_sha256": "d261763adf7c07ff60af82bcd5b4147c870c6b708a7ba3499b6372a06a241221",
+      "modified": true
+    },
+    "crates/utils/src/checked_arithmetics.rs": {
+      "upstream_sha256": "2b030821af344dfeae8066481f0f5f65a255a296966e2e92bf4ead211510d15e",
+      "local_sha256": "2b030821af344dfeae8066481f0f5f65a255a296966e2e92bf4ead211510d15e",
+      "modified": false
+    },
+    "crates/utils/src/env.rs": {
+      "upstream_sha256": "55abfee8efdaf9004720c1e74af94be000c9c8396fb472c85d37c006f4a5ec7e",
+      "local_sha256": "0f63e65bcf45e854199306e83fed95655adfd18a796140761eaf41140194785e",
+      "modified": true
+    },
+    "crates/utils/src/iter.rs": {
+      "upstream_sha256": "451ea819df6b8ee44e9e968306291946384b2e6bf1c32a1bf4bf876ff89c80a2",
+      "local_sha256": "d05c8710a6a74012ea5aff2d144950972a95b6359a73a42ccf1892ab860c5c3b",
+      "modified": true
+    },
+    "crates/utils/src/lib.rs": {
+      "upstream_sha256": "3026c947e17b0aeb5eeda5a88d46f06869a41c4d5e34554ce22c8f0b284aeea6",
+      "local_sha256": "6e5fae327e82b650a28a51136dac4fbdab74214b11eb15a96905d5564e0ffc58",
+      "modified": true
+    },
+    "crates/utils/src/mem.rs": {
+      "upstream_sha256": "3c9a5636fe484c0f5c9e935fe87eecdf2aaf7b9cd6d211797902c1f4344beff8",
+      "local_sha256": "edb65b64aa7f3af1ee6214ef38a0efbb26c719fa42bad13ef507e2c300856e50",
+      "modified": true
+    },
+    "crates/utils/src/platform_diagnostics.rs": {
+      "upstream_sha256": "bdcfdce924f0ca3eb9643aa0e67e42aa1f0298eb178010b1c9b1dce5945478f2",
+      "local_sha256": "c2beee268c98c4865e23f4b1cb3337fb4bbe70f76e115b40d8d3042c12cae67f",
+      "modified": true
+    },
+    "crates/utils/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/utils/src/rand.rs": {
+      "upstream_sha256": "0dbb37e919b9a30121a238cbb9d509b26eb6b0a1fc32e4a793bc611e1c0586e7",
+      "local_sha256": "0dbb37e919b9a30121a238cbb9d509b26eb6b0a1fc32e4a793bc611e1c0586e7",
+      "modified": false
+    },
+    "crates/utils/src/random_access_sequence.rs": {
+      "upstream_sha256": "39f5617b7dfa697a094470f3c48a9e554c9fccbbb0d40c6a2e2714541f7992ea",
+      "local_sha256": "b14d8a9444ec539cc82bb73102a2f8547b0b18baf0e4c35a00a83ca724b34248",
+      "modified": true
+    },
+    "crates/utils/src/rayon/config.rs": {
+      "upstream_sha256": "46910eee38b2ee47db6e9aa0a40732678cb1c36adeb624303b7be2a143c96344",
+      "local_sha256": "828c0cd8be9c4588a83bd44ef2b5bcf5127d08c8e48b53f215dfa2bce2ae0006",
+      "modified": true
+    },
+    "crates/utils/src/rayon/iter/from_parallel_iterator.rs": {
+      "upstream_sha256": "0332c5af62f298e7bcf1e531aee3de07501744cf63305a77752951484920cb87",
+      "local_sha256": "96796cef7f602756a64ad3cc995e214ec83406fe93d2625fc446bef76770622b",
+      "modified": true
+    },
+    "crates/utils/src/rayon/iter/indexed_parallel_iterator.rs": {
+      "upstream_sha256": "7d7ad886a64c3612a0d531d0303aa3246272ca9ac9ea53278474848c94fdf54f",
+      "local_sha256": "0211684a4d89827ff068d94d160ffab1b5683bb65feb7c87a971746482437106",
+      "modified": true
+    },
+    "crates/utils/src/rayon/iter/into_parallel_iterator.rs": {
+      "upstream_sha256": "e71d8eec9ce9c642549f96a4016290d239ad5b0deae1c7eb1272b20116be6944",
+      "local_sha256": "9ea00949b85a5d5953eb1243c9c1a922caca9b480a8b459b7cb2e458237a2f90",
+      "modified": true
+    },
+    "crates/utils/src/rayon/iter/mod.rs": {
+      "upstream_sha256": "54c08bcc0900ef5a951ab3591b098395c91545c0cdd2ae7ecf2e8937e9b54db1",
+      "local_sha256": "54c08bcc0900ef5a951ab3591b098395c91545c0cdd2ae7ecf2e8937e9b54db1",
+      "modified": false
+    },
+    "crates/utils/src/rayon/iter/par_bridge.rs": {
+      "upstream_sha256": "9824a9f581bdef75cd636cf51793b051f5d8b26b66671764518911fd63575c88",
+      "local_sha256": "9824a9f581bdef75cd636cf51793b051f5d8b26b66671764518911fd63575c88",
+      "modified": false
+    },
+    "crates/utils/src/rayon/iter/parallel_iterator.rs": {
+      "upstream_sha256": "ce75b48c76e1b0faea18057d16ca2c1a838337d7cde5c2e24e73d8a22491e25d",
+      "local_sha256": "45cd1a7485583c2bc2487b8d2fb7cce0227e8f64ae2e7921cdb92a9f06c0dea3",
+      "modified": true
+    },
+    "crates/utils/src/rayon/iter/parallel_wrapper.rs": {
+      "upstream_sha256": "9c89ee580f181b424853a9d7a26e8f866faf68085088d8cf415150e231f1195d",
+      "local_sha256": "158d017e0fb4967110b55539734d849638e92c4e1e6f248d218b5549a54b01e6",
+      "modified": true
+    },
+    "crates/utils/src/rayon/mod.rs": {
+      "upstream_sha256": "25cf1085663a91d23b65afab766a90734d1bfa7de18cce896d354e5538070376",
+      "local_sha256": "cd39797d156475ffefe3196b064fbe4c456dcc050e3173ea4b7a4c73d7f00f3a",
+      "modified": true
+    },
+    "crates/utils/src/rayon/slice/mod.rs": {
+      "upstream_sha256": "23542e21e51e94daaecc8d0b9c017b8dd9b2e3668062bae73f611fd0a67e59c8",
+      "local_sha256": "23542e21e51e94daaecc8d0b9c017b8dd9b2e3668062bae73f611fd0a67e59c8",
+      "modified": false
+    },
+    "crates/utils/src/rayon/slice/parallel_slice.rs": {
+      "upstream_sha256": "abbb31211a34e09c89229d5a013b39024c297ed149e723a79220d34c5dfbd6d7",
+      "local_sha256": "ab7ec6dd4d5f4bb71eeaec56c6918613abe36d0074e2675233fc2ffc0df3ee60",
+      "modified": true
+    },
+    "crates/utils/src/rayon/slice/parallel_slice_mut.rs": {
+      "upstream_sha256": "6bb545c1e7c37adb7f0faeb1b971de6e6687c74dc3a63e91e8ae7c385eabdc43",
+      "local_sha256": "0f5ed4a505c56e2e4e8f968f392abba13572d831699c9b34d9067d28adcacef0",
+      "modified": true
+    },
+    "crates/utils/src/serialization.rs": {
+      "upstream_sha256": "a31094b39f37e655d1323e2b5f26e6b2d7d20666d30cb0f452b61e6ce8dd8e37",
+      "local_sha256": "5f962d5b275e47a4f18b3def7e66d9ac70aa3020192e8e2dd3b9c09ea8cae225",
+      "modified": true
+    },
+    "crates/utils/src/sorting.rs": {
+      "upstream_sha256": "f086dd58623472b2af15841210392e1f917b954a4bdabe714ee2a49571502cb4",
+      "local_sha256": "53aadaae9cf7b8bdfd7413ca6bafea75994d2c285f516ca099250230877c3c4f",
+      "modified": true
+    },
+    "crates/utils/src/sparse_index.rs": {
+      "upstream_sha256": "f766a021551121de5570fec23b5f2dd7639dac03055447869504cd6742f775eb",
+      "local_sha256": "f7970c40c30c043cc9c3c056260df903e4514d1299a7edb3890852fcd1100185",
+      "modified": true
+    },
+    "crates/utils/src/strided_array.rs": {
+      "upstream_sha256": "5d292fdfd3fd5debf0da1bcddb97ba12d0f1455f5f60295ed99dc842ade59fe0",
+      "local_sha256": "f8a8d15d13be4f98253aa165ee75d61a579f2962d0897286cf6fd9968799223d",
+      "modified": true
+    },
+    "crates/verifier/Cargo.toml": {
+      "upstream_sha256": "4ff47597f61cf83013d753cd5ce3152824a9e59a861e1c4ea54361e1ee8d5337",
+      "local_sha256": "e793a704021f4e4eed9f2738cce39ecd89cb831dba8c9911854870b9629d36cb",
+      "modified": true
+    },
+    "crates/verifier/src/config.rs": {
+      "upstream_sha256": "8a75a06da954c44ac80519b822eaf72cda3267eaa47eff70208a96326cf502f9",
+      "local_sha256": "8a75a06da954c44ac80519b822eaf72cda3267eaa47eff70208a96326cf502f9",
+      "modified": false
+    },
+    "crates/verifier/src/error.rs": {
+      "upstream_sha256": "42f1bd9b277132ed65b9813d98ed00e33dbaf324dbfda5f45831952d62768686",
+      "local_sha256": "42f1bd9b277132ed65b9813d98ed00e33dbaf324dbfda5f45831952d62768686",
+      "modified": false
+    },
+    "crates/verifier/src/lib.rs": {
+      "upstream_sha256": "89e34592810c0caa646c544d1dca504cd6d2899e9f37291ee1b1241ef1a506d2",
+      "local_sha256": "641b9740cf1179286d8796d931c862e6163e547e80f0f5f7009bea8e9106fe48",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/bitand.rs": {
+      "upstream_sha256": "f4cfbe0571015a36ad3e3a12542aec7a62419c14fad18b69d825c90d9ae4c4ac",
+      "local_sha256": "c9180ad0d87227da25abf521c51aad79daacb365d4ec6a2e9695ffe7ace29c19",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/intmul/common.rs": {
+      "upstream_sha256": "ad02b79ffefcfb3b091a6de08140c83751462fba8e274adc0e73a28d62e4f444",
+      "local_sha256": "693b346c7600972566048f4571a390802a2929d8658a7f7f920c6a03ce2c392a",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/intmul/error.rs": {
+      "upstream_sha256": "b2b03c1b4b75ec4eb0217bd4295cedbc7fe9c455d83139a905f2505b32234b4f",
+      "local_sha256": "b2b03c1b4b75ec4eb0217bd4295cedbc7fe9c455d83139a905f2505b32234b4f",
+      "modified": false
+    },
+    "crates/verifier/src/protocols/intmul/mod.rs": {
+      "upstream_sha256": "f7ab724b694df6d6e10a2527dc9b9b82383230c809f4c9ae0253668e146f109b",
+      "local_sha256": "f7ab724b694df6d6e10a2527dc9b9b82383230c809f4c9ae0253668e146f109b",
+      "modified": false
+    },
+    "crates/verifier/src/protocols/intmul/verify.rs": {
+      "upstream_sha256": "2a218cb61a78b3bd014e6a124e226123c78092e740da7d39e0a952520cc74c49",
+      "local_sha256": "df7c26f8d571f2fe33e823d58dbd42003f08decc35c7a50db72b0bc73ae9a338",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/mod.rs": {
+      "upstream_sha256": "9dfaf4b722324eaf2ba31fdd80549fe94ed73de17404b992ff48747a9d9fdd38",
+      "local_sha256": "9dfaf4b722324eaf2ba31fdd80549fe94ed73de17404b992ff48747a9d9fdd38",
+      "modified": false
+    },
+    "crates/verifier/src/protocols/pubcheck.rs": {
+      "upstream_sha256": "3526bc8dc3164496d1bf793c106c303726ecaa44f4923714bc18214843897c07",
+      "local_sha256": "68c3eb73e3b4569a836455eb612c5085f43d1cb7c15f7a95ca1f08d9066e9529",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/shift/error.rs": {
+      "upstream_sha256": "4e75237e0a1b40ad266073d4e397df7260233ed79298a2441662ebaf0dab95b0",
+      "local_sha256": "4e75237e0a1b40ad266073d4e397df7260233ed79298a2441662ebaf0dab95b0",
+      "modified": false
+    },
+    "crates/verifier/src/protocols/shift/mod.rs": {
+      "upstream_sha256": "6cb727c6aba848aab6b02e9ce6ffbb36415e961c596c193fa15db871c27479f4",
+      "local_sha256": "6cb727c6aba848aab6b02e9ce6ffbb36415e961c596c193fa15db871c27479f4",
+      "modified": false
+    },
+    "crates/verifier/src/protocols/shift/monster.rs": {
+      "upstream_sha256": "65d774616b48f1bf7fcc403ee772a087710a7b10824bf9c9afcb7b6d97ad18e0",
+      "local_sha256": "fafe9f710385aa9d448c7fd613d16d4f39279f4fe392e99a02b59d6baec07a1d",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/shift/shift_ind.rs": {
+      "upstream_sha256": "51b508a4a1cc22d1bb06b06ec45d4ca76346d4a9af438fbe2734204fb138ea48",
+      "local_sha256": "54cc7065e207a830337661550081c449cc5aae4d17ba5be451b636229c78be35",
+      "modified": true
+    },
+    "crates/verifier/src/protocols/shift/verify.rs": {
+      "upstream_sha256": "5044197732371920e3b39e61fc40e22e64c3543e2ac6113a7bdec364baa0a5fd",
+      "local_sha256": "09f4afeb8e3002cb5e4f3fab8093e1a59bea31cf11e2fe569b54a5b13bdec492",
+      "modified": true
+    },
+    "crates/verifier/src/qasset_nostd.rs": {
+      "upstream_sha256": null,
+      "local_sha256": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+      "modified": true
+    },
+    "crates/verifier/src/ring_switch.rs": {
+      "upstream_sha256": "c28245a7326a824ba62b848dae8adf8a8e652c9c9b2d9d0514a7dd47ca0cd9e0",
+      "local_sha256": "ecca7bd16cdcfd1550e9fa3af3eba021b3e015fb3f90df366440e3a4fd290eb9",
+      "modified": true
+    },
+    "crates/verifier/src/verify.rs": {
+      "upstream_sha256": "7b7d8b0fad961870d66e25b881a65de6252906cfc523e044af1fec01be3a261f",
+      "local_sha256": "4003138528a712a74a9e2c2eef122363a0cab6045ed2b5d246f8da1b707165a5",
+      "modified": true
+    },
+    "crates/verifier/src/zk_config.rs": {
+      "upstream_sha256": "3fdb9805f170c75dad8940e8c8e2c54cd0ba43ae6925e175096e4cba8bf002de",
+      "local_sha256": "392ca5d4a6b54b98e9796527e94de52dff0b80f1310b0615c4139ba02245f857",
+      "modified": true
+    }
+  },
+  "source_sha256": {
+    ".gitignore": "eed8daa263a8312576a7bb11001a3929fb15a64108298e663d91dcd02208fd87",
+    "README.md": "d35b4b49ffbb4d63dbbb68b7c355e12ba3dc0cb8216cd9ac3924194c8014b051",
+    "bytes-serialization-scan.txt": "8a951a9219ab42fe01e8aad2a4ddaf1b6426dcd63e824900950fa305a62632ed",
+    "guest/Cargo.lock": "0d56985215ee27deacb8b74234dadb097a62851a7f12b6a50ffb668f84b62e5d",
+    "guest/Cargo.toml": "75cc0899e590141fc32071c6b2c14e9fe904fef63454ab2d20c8a44ec616fda5",
+    "guest/examples/transcript_vector.rs": "1ae59d78fad682905bc138ac0c339c437e50085756d9b40431d4a01f96a3184b",
+    "guest/src/lib.rs": "8d1f105779b329dc8b4db4e3383a9c100c3eb9b7aa5584268f68774da5cb2a3c",
+    "guest/src/regression.rs": "698f6c1fd1e39d4850aabb9b9811685b6c5bf4231dd28c49033a8277e100167c",
+    "host-runner/Cargo.lock": "477e93e4bf662b037b9339a75039ebc89c0bceca987b9f6b31463d3ebc2799a5",
+    "host-runner/Cargo.toml": "1f0fc144c903ce972b246e0c861789770cd378b74461aec35e414c2246bf6d8f",
+    "host-runner/setup.sha256": "f27c0cc3de6d79d9cfe69d14a8d6f0963e93e2a00a75b70359a154795c81148e",
+    "host-runner/src/frozen.rs": "500ad5382bf127951c961e95e59fb7afc5083da35415e4a06fe180be1714249b",
+    "host-runner/src/main.rs": "26e3b1c34f8bc84c65e96dfc4c5149e0961e510ea25cba7d890b888a8871a0c3",
+    "host-runner/src/native.rs": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945",
+    "inspect/Cargo.lock": "78ac05cee676ede1f3d1de830cfe433a5b49d621ea21570338a1c734f2213a6e",
+    "inspect/Cargo.toml": "ee8f1dc8fe1b359279a84ed03bda190fdb698eb4899e01db90c15aaa26583b22",
+    "inspect/src/main.rs": "d92938ba41869b291dbba33440d5d37206c77d46580dd15d6dabb6a33aa9f75d",
+    "nostd-port.patch": "bf7fe72cf7d467cebbda0ebae24c2b56aa56513ff4ec8cad7f8c40afac17c7a7",
+    "pins.json": "328e3bfac7fdf17008568d35038293af92f88e5805bee7e9a1d6bf6443931a0e",
+    "scripts/run.py": "1f36dcbebba4478a040e0a67ccf7ebcdcd95ff99cf129598ee50b7abb30e3e67",
+    "test_wasm.mjs": "e18eff6cf4d7ebdb21f2f259603911cfefcc9aa66eabcff30ac7c009c9d4a40f",
+    "vendor/binius64/AGENTS.md": "b6a6f695241437ecf940d07e9a43f951b57b0454e2a0d85ccf4bb8221a3bcad0",
+    "vendor/binius64/CONTRIBUTING.md": "758d7898d24525c9963080488bd4bbaa04c69b29b1d54de62c711fe986ea6328",
+    "vendor/binius64/Cargo.toml": "73847c5a7e08642af8ec82c7668045bf13da2ef3a36d3ccf32a27bfe376df05b",
+    "vendor/binius64/LICENSE-Apache-2.0.txt": "245f1fe888a9b2cc730d5313b1b430ef896bf29aede9649d4f11ebcf42faa8f2",
+    "vendor/binius64/LICENSE-MIT.txt": "723891a70c107d694fe1d457a7c7ed5d0580c274ac8cfa2aa18f3ee75f49790e",
+    "vendor/binius64/crates/core/Cargo.toml": "8ae712a732dbe0358cbc5792cfd99da35183327ba7150a37b744a4f3e335a5b1",
+    "vendor/binius64/crates/core/src/constraint_system.rs": "4813dd41ac34e4484652b68b164da331ff13f5144d58ba2682a45223e73950d8",
+    "vendor/binius64/crates/core/src/consts.rs": "080518468c296a8655047b9bb3e15d288be13fe344a2b51b33b57bd085abad1d",
+    "vendor/binius64/crates/core/src/error.rs": "82bce758dafdd59210cfac15ca2464cd328a89f6172290255ba924cbcbed2e2b",
+    "vendor/binius64/crates/core/src/lib.rs": "eaa4ca16583d12794b8971eca466b0d5d213bdb543e34b4f1babe09aa22f69d9",
+    "vendor/binius64/crates/core/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/core/src/verify.rs": "acb56710fcf2d1ed92845ecf61ba887231596c7ba9dee65d286c830001b64d35",
+    "vendor/binius64/crates/core/src/word.rs": "5658a91cc370390f56b5bd854790f6840c433d660daeb9903140acea8d491bd9",
+    "vendor/binius64/crates/core/test_data/README.md": "a99166c21e355140c15a2c8bf7223e42b2cc1ca840ad5e3828f5b9e103e5f23d",
+    "vendor/binius64/crates/core/test_data/constraint_system_v2.bin": "4e3dc5fa171806f39eee47b523a85e02de610d183423812d0cde7fd5e8050357",
+    "vendor/binius64/crates/core/test_data/proof_v1.bin": "93cb01be00d89b85ca39ea90b75488bcad92237cec72d3a7d11d2cd59b3e802b",
+    "vendor/binius64/crates/core/test_data/witness_v1.bin": "7d6af6d64e943307a0c00090db37042675f75c4938bcc6de789abcca049dac76",
+    "vendor/binius64/crates/field/Cargo.toml": "01323cdd8ec63325182d6d5d01293166286ef6163c8f01f08b0cd021731c6afb",
+    "vendor/binius64/crates/field/benches/binary_field.rs": "c9dea7d907aea54805c4b443f70197097d239983c2bf677e08a57b722c6067af",
+    "vendor/binius64/crates/field/benches/main_field_binary_ops.rs": "91f69373f1bdda99b0c3f76cde1dfe23605377b9a91055d3d4a17d91134cf151",
+    "vendor/binius64/crates/field/benches/main_field_unary_ops.rs": "d63863ad64000a0961fa63fb5b866d515a2f57957e7d80e61d8984b36d4e5e23",
+    "vendor/binius64/crates/field/benches/packed_field_element_access.rs": "39ddbc7583763ea1412f150c42282ebb6cfb7269d9839f13c7ba8fd7f3f2052e",
+    "vendor/binius64/crates/field/benches/packed_field_init.rs": "854a49e3740edeb5c13082cae477383663a13312f72c19156f347a41c61ab1fb",
+    "vendor/binius64/crates/field/benches/packed_field_invert.rs": "31f6c379b8c6864e3379b69d4e6e1ac4227545f869680c75cd80b648064dafc8",
+    "vendor/binius64/crates/field/benches/packed_field_iter.rs": "c547fd43ad5795443aaabdf9d3f60b6b5722e5f366463fe2d5ff69da8079a78e",
+    "vendor/binius64/crates/field/benches/packed_field_multiply.rs": "7fa393da8ae969a062375384aaf247ccae0cd7ad1a8227fee42964eb205c2956",
+    "vendor/binius64/crates/field/benches/packed_field_slice_iter.rs": "d95b5739783e0b33d7f1d56c479d5da4ae8fdf1a640cde8c6bbe57eb00acd3b6",
+    "vendor/binius64/crates/field/benches/packed_field_spread.rs": "ddce8d516788c6135afe3b33716e3d933666d888da0971d7c8c2b5a742a99f0c",
+    "vendor/binius64/crates/field/benches/packed_field_square.rs": "46f58904575a4a6f21a4f9df04c776d287dbfea5d0203c26160e3e0972e654ac",
+    "vendor/binius64/crates/field/benches/packed_field_utils.rs": "7b4b435f08649765e21969c536d8af25ebdbbe04bd7d5038144adf8b0aa7c14c",
+    "vendor/binius64/crates/field/src/aes_field.rs": "41a07ea73e663b7508c2435f9b4b5d67dcb6e6bc9d4d833a5174d286b241f326",
+    "vendor/binius64/crates/field/src/arch/aarch64/m128.rs": "7f9b8b41b74901a9fdfdf4a8aa3d514d8f34cf0caa1da3defe7d55fa38c33cc1",
+    "vendor/binius64/crates/field/src/arch/aarch64/mod.rs": "2c5defbde59e526cdb8136c110ec9246b2e50beeac773d516e71c967fcc166d2",
+    "vendor/binius64/crates/field/src/arch/aarch64/packed_128.rs": "d00e57eb7259a3c03a44fe177ca188d278875ce16bc15adc1c053a86e5744c4c",
+    "vendor/binius64/crates/field/src/arch/aarch64/packed_aes_128.rs": "ad7f02b9a9b5d16918e68c4ffd51e3728c631791b17d41be9bccc4285880f8bb",
+    "vendor/binius64/crates/field/src/arch/aarch64/packed_ghash_128.rs": "8b45c8505a223c8bba36aba4927fc6915859a32fff63e72f87950c0111308f23",
+    "vendor/binius64/crates/field/src/arch/aarch64/simd_arithmetic.rs": "1497aa121486b78ab233e094f26a5c9d8d508a761e2b1076d3b2c1ec34625177",
+    "vendor/binius64/crates/field/src/arch/arch_optimal.rs": "5840d27aa8d7f98f748adf77bc25df142c6938a4312f22b5e8898e8141d7926c",
+    "vendor/binius64/crates/field/src/arch/mod.rs": "51a2792052dfa731872865dc2ac16efdedb61f432657845d6f38b379dec3e34f",
+    "vendor/binius64/crates/field/src/arch/portable/bitwise_and_arithmetic.rs": "0ced5c9e55b66f2a11a6c11be5406a8fdb3f7499bd48cc405b39bd43c1e3bf70",
+    "vendor/binius64/crates/field/src/arch/portable/mod.rs": "ce329ea39ce994fd7628f8632b330dbd23a36388b25b9ca36e849735e2368088",
+    "vendor/binius64/crates/field/src/arch/portable/nibble_invert_128b.rs": "9102480e1618552fd348cba7581a54cf884caabd5495b63402209e497b7c3ac4",
+    "vendor/binius64/crates/field/src/arch/portable/packed.rs": "af196d5cdc43384bed1c7fee2f8838ad141645bbd878d7a10c056cceabc021e7",
+    "vendor/binius64/crates/field/src/arch/portable/packed_1.rs": "7e953c78b57940ff7407e0f6bda5292e68ef98a61eb86dfea17ec14fa8bef3cc",
+    "vendor/binius64/crates/field/src/arch/portable/packed_128.rs": "b73dead75243328238f435ed89b655045a8a58a98ae0cedeff67f470bcf46bdd",
+    "vendor/binius64/crates/field/src/arch/portable/packed_16.rs": "fb39dc48aa4ed26e75a12b8d638a67e02930bb08f99c769a75a82fc150486ba3",
+    "vendor/binius64/crates/field/src/arch/portable/packed_2.rs": "46f5461c26e443f8d23f78a4f2f01775d73da1ce66a86df1a3032f27dbf875f1",
+    "vendor/binius64/crates/field/src/arch/portable/packed_256.rs": "138eb989338db6f5f270f98a8a24a26110961200ab20e1b7d34931f4f6db2d77",
+    "vendor/binius64/crates/field/src/arch/portable/packed_32.rs": "254d0717b21e6b2172774a0882efd8ed3bc12a090d54faf34216fe2f36558177",
+    "vendor/binius64/crates/field/src/arch/portable/packed_4.rs": "18a81f4539cb82205b502a6e34269d0a3a431ec5ef969159fc0342b1fd15b72e",
+    "vendor/binius64/crates/field/src/arch/portable/packed_512.rs": "3175de295b068871cace53aa81d8154041a738da60d4589c6cacc9a0ddf8148d",
+    "vendor/binius64/crates/field/src/arch/portable/packed_64.rs": "1d85744b9e38ae6b0ca585817b871461effa002b89b283a88a4b0441f60c1780",
+    "vendor/binius64/crates/field/src/arch/portable/packed_8.rs": "4961e968998155dc835da6375686850ba8af828c40a0fb147517de58a9226f56",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_128.rs": "2734fe97b0782837d96802261c3fab1159d7cb2ba8baab8b88851cef7d2728d6",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_16.rs": "f1e1649dcceb16bc869807fd3d75fc24d434f6354367558da164f112600bcf3d",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_256.rs": "6c704c123957b5db62eb2bb2a5e9b29ee0de2a332cc8a412fa9690adc2fda4da",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_32.rs": "91daa834f14afd8e96b92eac018005417115267a150cb0b836a47df7ffde2581",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_512.rs": "b2fb7952b303adbc5f7525dd3bdd01424384cadecf67af87d596f52093a69521",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_64.rs": "d65fe002279a7abc13e78971d0d85390996e1d9af85facf98cc93e97e38497c2",
+    "vendor/binius64/crates/field/src/arch/portable/packed_aes_8.rs": "311b31b0146d43baba6a0f4efc6e67ccc94df361fe49c2d03b2214957e53794b",
+    "vendor/binius64/crates/field/src/arch/portable/packed_arithmetic.rs": "7c243b316dad13150dace52a728860b77cbe6d37ef2b42b366e98ece03716590",
+    "vendor/binius64/crates/field/src/arch/portable/packed_ghash_128.rs": "02b7617083b461ea81eaad483d9e72868f2c8a3f9a13ab4cd3657e4654daeb25",
+    "vendor/binius64/crates/field/src/arch/portable/packed_ghash_256.rs": "4ebc7c603ffbe26dc9ba65596631cc2e1620d9099f0a931efe76294404ad3cd4",
+    "vendor/binius64/crates/field/src/arch/portable/packed_ghash_512.rs": "f7d8de84e554b36bdd4ef60399ea2d6ca3d58204336c7d4d054c96a60266821d",
+    "vendor/binius64/crates/field/src/arch/portable/packed_macros.rs": "b1afeeb0bb68dcc003fd7e292ce49f9046b57eba827fe9f0d055bf47f6bd1474",
+    "vendor/binius64/crates/field/src/arch/portable/pairwise_arithmetic.rs": "d6891178407cc77d7bee2dd277ca9280279e127dc75890107adef0ca65601d11",
+    "vendor/binius64/crates/field/src/arch/portable/pairwise_table_arithmetic.rs": "1cc15b2a8fed5777bc986c3de455ccba0eb116d49932e8914bcd0a9cb7b60300",
+    "vendor/binius64/crates/field/src/arch/portable/reuse_multiply_arithmetic.rs": "70039efe8378f6fd361c2fe5be4d3f3a9f3a44ff509bf1c936d46570d5caec26",
+    "vendor/binius64/crates/field/src/arch/portable/scaled_arithmetic.rs": "2c7579e9b840bc5c79d0a2efa328b1c9415f0ef80395ebace6371bf2a6fe2518",
+    "vendor/binius64/crates/field/src/arch/portable/univariate_mul_utils_128.rs": "0be75c2ffc81bbae3703f7f1a7cc9286e55280547c3f7edb7dae760cd8d0cef3",
+    "vendor/binius64/crates/field/src/arch/shared/ghash.rs": "0ded589af28c783e4b4cfa514b62c4174025dbfe9398a1cce0ea29934f947c59",
+    "vendor/binius64/crates/field/src/arch/shared/mod.rs": "9b3a96fddeb622476bb84ed100be9b46a50ab4fc4bf525e8fa77c4c9f2ca8059",
+    "vendor/binius64/crates/field/src/arch/strategies.rs": "67e3260b4fbca3c377e17167a5963c349c2fd570ee6f7f41acdda0919a79a095",
+    "vendor/binius64/crates/field/src/arch/wasm32/m128.rs": "347cd9d4980fbb739f360f869190e3278abf27932b5c3b6dfde8ac8a0f252666",
+    "vendor/binius64/crates/field/src/arch/wasm32/mod.rs": "ea7ed882055453cfe37b8a254cf8485e1d3c313746cf57f4f2200b84aee56630",
+    "vendor/binius64/crates/field/src/arch/wasm32/packed_ghash_128.rs": "dd847cca7df8b41671f1f6a5b16e0a4c934b23e85279555d6a0bc2323b21e904",
+    "vendor/binius64/crates/field/src/arch/x86_64/gfni/gfni_arithmetics.rs": "a26b7aecc2269158beed0a36908d28488cd2e241f560ce011d37bca650778cbe",
+    "vendor/binius64/crates/field/src/arch/x86_64/gfni/m128.rs": "ac13d538b4e8f3e034210c3d930617760ce597c920aef9ecb45a2e15ce7285f7",
+    "vendor/binius64/crates/field/src/arch/x86_64/gfni/m256.rs": "002dd66a25479a275dac405c7f1ab0d82d7e7ed733fe41d58cc415cbfb70e734",
+    "vendor/binius64/crates/field/src/arch/x86_64/gfni/m512.rs": "ebc17e9bb4256f11d740e4d43e79cd67c7a935868693589e867b7b5900624a48",
+    "vendor/binius64/crates/field/src/arch/x86_64/gfni/mod.rs": "b236f0786558ad9c3353c14717986894aae6e869646f5fa517c78bd071be7caf",
+    "vendor/binius64/crates/field/src/arch/x86_64/m128.rs": "eacb9cb8f5887827d620b39722b9799b7d82cc4829c188199559d4673ebc60e2",
+    "vendor/binius64/crates/field/src/arch/x86_64/m256.rs": "6f43e8814436ece7156e2b2b5200ece31e6e05b78ed65ae43bab5bc7138ddb52",
+    "vendor/binius64/crates/field/src/arch/x86_64/m512.rs": "053c98c402154706156b39fc28641f3c5819de5cb9d9445421e8da0c99c3b20f",
+    "vendor/binius64/crates/field/src/arch/x86_64/mod.rs": "67b9fe3b1a338fbace33876dad39f287cf40fcd9e01e0ffbda8bdd20b0afb210",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_128.rs": "0996acbf1f25fa177e3f1baa99695d2d7ff44d2bc94d546f5170ee170c9f66d0",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_256.rs": "60e39ede3602c3146d06c416d3d2761374f63a85c8e0d21acfa91b96c8d9a6e4",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_512.rs": "3a81e47abfd882bf7fff819a2ac2ceb55c6e0246cbe9cc5ae23d104a1e8d751e",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_aes_128.rs": "24c53a4bf547bd17ee443b06a922f787109b4a7b309c4330ed4f93a1ff3a4a93",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_aes_256.rs": "d1125545040b9d650e99c1f755ee022ff2c11b4d5200845126a1dccf8ad869a6",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_aes_512.rs": "5b32d6e34656c5e268861862a1bc230ef6322f4085f150174891e48addd30a8d",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_ghash_128.rs": "9ec426f805fb856ee24b4e1400f6bfc60dd3d0b3e464ed686d8731a66c7665e6",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_ghash_256.rs": "3bcf2cd3de4b8f63852d1f2dbf315704d17fa46bb240e54b8e44c557c49fd8b3",
+    "vendor/binius64/crates/field/src/arch/x86_64/packed_ghash_512.rs": "6e001aee0bcc3c62aa66aa2c65273e0ff4d04bc69931d08c7324fe59c0778f1a",
+    "vendor/binius64/crates/field/src/arch/x86_64/simd/m128.rs": "8cb690f6c9bf6f755cc113fcf069813c63a77338dd675fc33b166081dd922bca",
+    "vendor/binius64/crates/field/src/arch/x86_64/simd/m256.rs": "efbf5bd3995278bca121f7561756483fff76acc405cddae8d179ecd722e4940c",
+    "vendor/binius64/crates/field/src/arch/x86_64/simd/m512.rs": "59d2ad9ee977f2f96d4a995e90977a903392b01952a71ae9c3d7ca6417296a2b",
+    "vendor/binius64/crates/field/src/arch/x86_64/simd/mod.rs": "83fb09f18eb399d677f70c6a6c373ac20d03186cb50a1a5e8d2f2900fb4c727b",
+    "vendor/binius64/crates/field/src/arch/x86_64/simd/simd_arithmetic.rs": "70d0f88fca465c65bc7ef32867fe2e589ec9d69f866e047a396d2c7569f68a3d",
+    "vendor/binius64/crates/field/src/arithmetic_traits.rs": "179ec4c7717117b9584aab27bf9c47197c52ea6a7628a7ed0a2574dd86822a41",
+    "vendor/binius64/crates/field/src/binary_field.rs": "7138d35f2087779fa4c9b6ee9eb782079df2f1bebb90a6ac5268cd6cba9b9d9a",
+    "vendor/binius64/crates/field/src/binary_field_arithmetic.rs": "52e7090478d2fe58a658ab87353a3f284bc3a76f3604e44775dca2cb0dcacfcb",
+    "vendor/binius64/crates/field/src/extension.rs": "548c9640dcccf8df86098bde537667327928ca79e5fba6722b21892dadcdbec3",
+    "vendor/binius64/crates/field/src/field.rs": "ed0362918742328a8f8d9cbc541c4c1d183457d2875d8a84ec1e25f039e8cf70",
+    "vendor/binius64/crates/field/src/ghash.rs": "b3b5341623799ab8705c09617aeccbf5600647691a29920c5c1849db7b25e430",
+    "vendor/binius64/crates/field/src/lib.rs": "0f96cfbbed18f16b32b66d3ed9d18a7ab2969c9a2a8f5ae2486efcd8415ab1b4",
+    "vendor/binius64/crates/field/src/linear_transformation.rs": "16352927339d36e6bed6a5e75aeb340926db23f9aa8d8fe313aa31159b1be043",
+    "vendor/binius64/crates/field/src/macros.rs": "da072858d8292cdcfcf136bc1c285655561847adc9c05953b705a87e900ff07c",
+    "vendor/binius64/crates/field/src/packed.rs": "c4cf68e9ecc8c81f83d03426e979486cb2b1d57c6abeeb8178fa079cbd4a623c",
+    "vendor/binius64/crates/field/src/packed_aes_field.rs": "409a874921b9ca2739ea6dcfcb916d30be05700a1ecc6dd6b7c69a9b57cae7bd",
+    "vendor/binius64/crates/field/src/packed_binary_field.rs": "3cbd078552dd66a613e00f18cb8d53c21a13993937571fcde9f7f2b45039b17a",
+    "vendor/binius64/crates/field/src/packed_extension.rs": "224d0688dec795b0aab2d104e00d02bba584d8da515e907d86564b496d6c789d",
+    "vendor/binius64/crates/field/src/packed_extension_ops.rs": "a9516b50df0ffab321b75e65258329b1c2f1e52054d508fcc0fa17f35b5e9b06",
+    "vendor/binius64/crates/field/src/packed_ghash.rs": "500a55a7a6fdb7fcf529f34d540121c07ff87c8bb16bc7349c1e9d97c69d5886",
+    "vendor/binius64/crates/field/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/field/src/random.rs": "76b0b7df0b2af6d1f41d36bb527de7487587849e9207db493fe79ad83365b7cc",
+    "vendor/binius64/crates/field/src/tests.rs": "7b2fdd3c6e6ba771e7314f35c1e1ee008906c79b0264611638cd406bcfb2b68a",
+    "vendor/binius64/crates/field/src/tracing.rs": "a587cfe057241874d386229eaeb46bc81c4f86849f4d1e662d0bde653addbfc8",
+    "vendor/binius64/crates/field/src/transpose.rs": "935046304b8ac9db45248eda8bd59470494e9440fa17b1b73d751a0a00694966",
+    "vendor/binius64/crates/field/src/underlier/divisible.rs": "1b3836e6ca6cfe5e05c8720a41a2600d8906ae19a99ba2c256d3325ea577417d",
+    "vendor/binius64/crates/field/src/underlier/mod.rs": "3f2609f01e2f8a2d56e6fc39b3eb761d78be55b7d6473a9b58fda78b0cc97b8b",
+    "vendor/binius64/crates/field/src/underlier/scaled.rs": "3e927b68288d62efbe174bdc18b065fea008ecd9bb63225d22bead72a54f84bd",
+    "vendor/binius64/crates/field/src/underlier/small_uint.rs": "0b3cb8ba839303bde5359f51ec3a08caba09d40425bd4b70b045e9fab061d7f8",
+    "vendor/binius64/crates/field/src/underlier/underlier_impls.rs": "606ac318918b9942caa8d36306c2cd2fe234000b66343468458994ed0748a71b",
+    "vendor/binius64/crates/field/src/underlier/underlier_type.rs": "e1a48bb8e2cccececd8f3c1badd091117c8735c25d5335baa0a7dbdf12df3a0a",
+    "vendor/binius64/crates/field/src/underlier/underlier_with_bit_ops.rs": "849f3a9a6c0b1381815f059f235fb724d923fef0a416583ec9321bb3181210f6",
+    "vendor/binius64/crates/field/src/util.rs": "ff818248b6c2cc46f49518b5c7643f42449ddaf4c3a821c02c7243de5c0cbbbc",
+    "vendor/binius64/crates/hash/Cargo.toml": "7c3d0108030c3ebf6a1314599981b0dc814f4a9cd2f07eb01a7260ef0c768fc0",
+    "vendor/binius64/crates/hash/src/compress.rs": "7cff17306761fa284b35024c5a547dca53f2d468280a732f89e6b96d3185967b",
+    "vendor/binius64/crates/hash/src/lib.rs": "118d6195ddc916d6f514775104027f335126955483a5702f6cf2651431b7a8e5",
+    "vendor/binius64/crates/hash/src/parallel_compression.rs": "309db3d78b8c6e45c30913a89183d32fbea6aebffcbd35b5af54aa9a7cef1a55",
+    "vendor/binius64/crates/hash/src/parallel_digest.rs": "6bd32be6ca878627c999ab34ef39be5bbc802033a072086b298c6422f4ced540",
+    "vendor/binius64/crates/hash/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/hash/src/serialization.rs": "9c173bbb8ed02dbd4c39d7f9052e6391ce6a678058530b0247c7ba489e122f07",
+    "vendor/binius64/crates/hash/src/vision.rs": "85bc9ba29b1aaaeb28097c2e318f28327160536e970a1263721d6980f3961e08",
+    "vendor/binius64/crates/hash/src/vision_4/compression.rs": "f4a64c288e0c7d5b6a6854ae8d363ced1fa27ce37307aa5891b3af5dea0e99d2",
+    "vendor/binius64/crates/hash/src/vision_4/constants.rs": "a3e81794502bcde4786acbc91a2b907dd88a95c5c1c6dd99806c0dd275cc3eec",
+    "vendor/binius64/crates/hash/src/vision_4/digest.rs": "9b547bb259c42c3acaa691589952f241711ba1ff3d163f0620e852914efd1db0",
+    "vendor/binius64/crates/hash/src/vision_4/linear_tables.rs": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+    "vendor/binius64/crates/hash/src/vision_4/mod.rs": "9bbe1daebb2eab9147a8d166c305d445f78d4a35ca7fec4e761aa778ef0f1066",
+    "vendor/binius64/crates/hash/src/vision_4/parallel_compression.rs": "875afd91dc681dd3df0f44e1faef77c69c763283c60341c3ae7cef39c8bf7cab",
+    "vendor/binius64/crates/hash/src/vision_4/parallel_digest.rs": "c620071e54055e690f49cbb8061b43d405f9334f0510f26311fe11d4558ef0dc",
+    "vendor/binius64/crates/hash/src/vision_4/parallel_permutation.rs": "821ac7e71e33d432f20d5fcaa2b45538d30cf6b1268bf85a20c388078978652d",
+    "vendor/binius64/crates/hash/src/vision_4/permutation.rs": "445d5afc12d9524d3a4f5f5ccb586c0550949b6da4d12086a6de179cfe9e0337",
+    "vendor/binius64/crates/hash/src/vision_6/constants.rs": "f7014560fc5eb294b28782cfb1c7c29d2bca5ee5c5709f7b337aa82d0d675fd7",
+    "vendor/binius64/crates/hash/src/vision_6/digest.rs": "8889a80ebf468812b0c0813a4a81914ae6dc729fc823612361e27b98517b3383",
+    "vendor/binius64/crates/hash/src/vision_6/linear_tables.rs": "b59ce9420adc9398b84ff413087838cc3014ce16843109da7843f82a98e8e550",
+    "vendor/binius64/crates/hash/src/vision_6/mod.rs": "245877240321b56bc1504fd4f99cff06dd78304bcb0af8036a46c1b3ffc0c127",
+    "vendor/binius64/crates/hash/src/vision_6/parallel_digest.rs": "b66c9f40fae256dc98a40465f96dc9ce36cfdf1bf67407be43126108cca4d150",
+    "vendor/binius64/crates/hash/src/vision_6/parallel_permutation.rs": "ee21a713f264e49606b6d8a1c5a0672040d4860befe11325bc24fd03d8235649",
+    "vendor/binius64/crates/hash/src/vision_6/permutation.rs": "228a0a6ac7c47581d61e4bc290d0731c906aff545994612c6bc3d9f58046b342",
+    "vendor/binius64/crates/iop/Cargo.toml": "8e213519089e01dd507d65cff765e895337dd6004ecbb1431a4b906486d207d7",
+    "vendor/binius64/crates/iop/src/basefold.rs": "fad8cfd79a53d1475094e739d8fef891f58e56ab3ed9403cdc745186624cda30",
+    "vendor/binius64/crates/iop/src/basefold_channel.rs": "28b871ad85b8727cfc03c4a1ceb9c783734425bb89b3b8a7f943d63a263f0b75",
+    "vendor/binius64/crates/iop/src/basefold_compiler.rs": "e3ad588bf2be95d35c12b516ee12a4e6c992f4c1c1ad5903076993fc8fffef4d",
+    "vendor/binius64/crates/iop/src/basefold_zk_channel.rs": "9b46d98aeffdd5faffc4077a26d821be01f196129e23df93eae57a0b45431841",
+    "vendor/binius64/crates/iop/src/channel.rs": "942b131dd5a89b3acd1cedeea8fe821ac53e9a84e474fd49eb81db9ce3b0a158",
+    "vendor/binius64/crates/iop/src/fri/common.rs": "c5dbe4187b94cecce8fd255811cbf42f03204425f5184b8301f2125cb4364518",
+    "vendor/binius64/crates/iop/src/fri/error.rs": "9bd845921e4c6ed94d7af674dec57781cf86135bb1d43e4f4850aee974a922da",
+    "vendor/binius64/crates/iop/src/fri/fold.rs": "2080a75ec27171e4bc874ce81e86c5b3a1c55dfc32c83542dd926459309f7a8e",
+    "vendor/binius64/crates/iop/src/fri/mod.rs": "efa4bb55fb1f73d0754288df2737c437214827566e6e722c056f01ea0420ce00",
+    "vendor/binius64/crates/iop/src/fri/size_estimation.rs": "bc2ea0339cb1222f0a7ac6e266cf0c14fcdd4ce955e7d8ce83bfeb8078121a7d",
+    "vendor/binius64/crates/iop/src/fri/verify.rs": "a085ef0b314a8bc88f1f4a746a900e69582b82aa08477b8beb9ad6322baabc58",
+    "vendor/binius64/crates/iop/src/lib.rs": "b3e4713880df6efb7ba64ee6e204f62fb5a512b2c840437ce5bcb20566e5bbd5",
+    "vendor/binius64/crates/iop/src/merkle_tree/error.rs": "9c45af11788678d6a27473ae9aa01ed5da1d94e9bc8f96a6dbf2e9eb9375e547",
+    "vendor/binius64/crates/iop/src/merkle_tree/merkle_tree_vcs.rs": "0121a289580a8ebf97b774121883adbec950c8f4360384ca4062669155a9906a",
+    "vendor/binius64/crates/iop/src/merkle_tree/mod.rs": "ebdadb99d0084396403bede2a328364abcef1ad29f00a89ac65ed30386bfb7ae",
+    "vendor/binius64/crates/iop/src/merkle_tree/scheme.rs": "9c95e1a00060d8848ed0ff13ca063d65b5167b8e182284d8f0eb22c768e02633",
+    "vendor/binius64/crates/iop/src/naive_channel.rs": "010038c51753b02e0d466958c28fdff2d3f0eb252878d9ab80e27e345801c69d",
+    "vendor/binius64/crates/iop/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/iop/src/size_tracking_channel.rs": "e23bedf7bcfc09b1229318dac28045364b3650f88c2590f3dfef092693c1580e",
+    "vendor/binius64/crates/ip/Cargo.toml": "9a0072ebfa19c215b82623a77dfa45628ed92fc727c094279a4f9cfb0b76e4c2",
+    "vendor/binius64/crates/ip/src/channel.rs": "ae5ab97f3b4deaf2cdd91383ea749c1293703ca5c45be27c033f6a4f9d1372ad",
+    "vendor/binius64/crates/ip/src/fracaddcheck.rs": "39350df11a472d21c1f11143c5e81202f6044f824f335128ef61ebc39de3bf0d",
+    "vendor/binius64/crates/ip/src/lib.rs": "3c3ce03fb523516e768011d7c72f59cda90537ac52c7da7f9cc3b67cbcd168a6",
+    "vendor/binius64/crates/ip/src/mlecheck.rs": "8fa0310aaeb13066b25ef226421e451a4095d058e5efa477b0f3fba68c13cad5",
+    "vendor/binius64/crates/ip/src/prodcheck.rs": "c8b49e24fc11be11ce3281ee44f299e058f560b4e555544fd4ad769d7aaa248b",
+    "vendor/binius64/crates/ip/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/ip/src/sumcheck/batch.rs": "ffa6d27e026e88986a6e5b1f549a7d4da1178f74c2c366c187af32d060c19a88",
+    "vendor/binius64/crates/ip/src/sumcheck/common.rs": "2dcef81faa65647137d488fad40bcdbe9c01d4774695c730758ab8aa1781fb87",
+    "vendor/binius64/crates/ip/src/sumcheck/error.rs": "2bf59a7c7154bf9d34fd8b4af6dae6a11c4e0edf666cb2de7b9225159ca36592",
+    "vendor/binius64/crates/ip/src/sumcheck/mod.rs": "9edf645c9d97347ec409bd16d873f9c0d67d3a2f19057a17206576a98595a09d",
+    "vendor/binius64/crates/ip/src/sumcheck/verify.rs": "eae66e1038b365ff7e5a7b29cc7d8a8b88ffd23bc8ec223cf57fd9b88910147b",
+    "vendor/binius64/crates/math/Cargo.toml": "4e860b4e8489ec5ac9279c8fb124776285274583a86bae61c617e4870338943b",
+    "vendor/binius64/crates/math/benches/batch_invert.rs": "d679cb46dcae1e1496762eff074e1cd6e4fbe0127a238d958d19c9302f3dbfbd",
+    "vendor/binius64/crates/math/benches/bit_reverse.rs": "8fd94fca7a76ec2b0d3579771e4507a55caf8130e4eef3279960d7d2985135ab",
+    "vendor/binius64/crates/math/benches/multilinear_evaluate.rs": "d5345da3dc8b96c0cda5777ad9462a33980958aa5f3978e7974c07b97d0aa5b3",
+    "vendor/binius64/crates/math/benches/ntt.rs": "8ae932685f3420bc80be4f610f897e5ed8695aa1cc9e99856c0e990220d6c857",
+    "vendor/binius64/crates/math/src/batch_invert.rs": "c26524f9bd3205e28e7cf834222ff704548af3fa55ebd0f1bcd404cdc7236579",
+    "vendor/binius64/crates/math/src/binary_subspace.rs": "9372d3692bead00bfe3a26fdddbc3fe458abcf3136f106ee44d892018ef36348",
+    "vendor/binius64/crates/math/src/bit_reverse.rs": "504bf7b004f9231b56135d02a938ed5fe021d134c3ebb6cd3c741a92e85aa1f6",
+    "vendor/binius64/crates/math/src/field_buffer.rs": "497da8449a83817e6d832e5fa70ffeabc0fddf153a87881ebc561a788e8c5a4f",
+    "vendor/binius64/crates/math/src/fold.rs": "93114cbefd144483afacc082f6afd5f5723caa6eb3f6cf07853f62b1cb99d7ae",
+    "vendor/binius64/crates/math/src/inner_product.rs": "07495935cda78b7f2001ac391795bb857eef373f885a7fa57991af08349eda93",
+    "vendor/binius64/crates/math/src/lib.rs": "40942b61a2cd44a699ce3ab438e3a883aac8baa8134dcff2ee1a8295df05e078",
+    "vendor/binius64/crates/math/src/line.rs": "8fd76c4d8769663f86a03c21807024f998fcd422660b5154d72c0c1659c8d7ae",
+    "vendor/binius64/crates/math/src/matrix.rs": "501b4ff3272f2498b110743f85efa63d3d45696058d8ebad0f45b58a36dd53dd",
+    "vendor/binius64/crates/math/src/multilinear/eq.rs": "87e664a3e4ef4ce779ed2c02bc3e722545343e5556deee736385430b85e1a45e",
+    "vendor/binius64/crates/math/src/multilinear/evaluate.rs": "06b4bc7f84bfa693329d0d19ff26e7b683fef6bd4c1c420e891bfaceb739c147",
+    "vendor/binius64/crates/math/src/multilinear/fold.rs": "31dd435de8d61ed6efab155e3120eed5d11e45287a1b7d2df71a21779fa23647",
+    "vendor/binius64/crates/math/src/multilinear/mod.rs": "0452335205a3ea621ea9a48cfb99b77c2bab4b3f44e306cd4f91502d25323489",
+    "vendor/binius64/crates/math/src/multilinear/shift.rs": "e621687a510af1b01043355121ba153f999ef94207da2e4233b5fe09b52ae0a0",
+    "vendor/binius64/crates/math/src/ntt/domain_context.rs": "c5f6b86a768c440ac33b04d86fabb41a260a6c085710fa97f041174407b62b0a",
+    "vendor/binius64/crates/math/src/ntt/mod.rs": "8db13352e0aeaa3c01ac62a59e0686aa760c9f82c2992c466bc6bed5a530cd5a",
+    "vendor/binius64/crates/math/src/ntt/neighbors_last.rs": "6590b08cb05e0fd7351e931b73388548fda268526775ead7d02e3c42dba81f31",
+    "vendor/binius64/crates/math/src/ntt/reference.rs": "03005237ecea93fa894113ff838b0af97ca3d97dc0f6b66e704da6af21970f2f",
+    "vendor/binius64/crates/math/src/ntt/tests_evaluation.rs": "942da8fc798652bdfe70ab914e8443f0612c27b3caa71c32978b55925d77e8f2",
+    "vendor/binius64/crates/math/src/ntt/tests_reference.rs": "3dd56ad6991fcc5eaa2e97ff8264624a1e025acacd4ae9938495257ca8554ae3",
+    "vendor/binius64/crates/math/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/math/src/reed_solomon.rs": "9602a08a32c21218841569e1d14eb81ea1c9767ff920e0fab698b7c6218b380b",
+    "vendor/binius64/crates/math/src/span.rs": "aa2860758a2873e866ab13f95469265a272691bd3669bfe2fb92707fbef912b1",
+    "vendor/binius64/crates/math/src/tensor_algebra.rs": "7c201068b590941d890819eb633e463478c6aa72b3c510d7e2a71ae282f00b84",
+    "vendor/binius64/crates/math/src/test_utils.rs": "01645c5ed7bb5ada8ae6a58dbde93c8d8e4792d8e6c6bb794533ddbb0b2ce6de",
+    "vendor/binius64/crates/math/src/univariate.rs": "eaa47c4d9fb64b5b51751f5bd14aebd1fe045dde9aaa1f13ecf9b9bb7a9c5b1a",
+    "vendor/binius64/crates/spartan-frontend/Cargo.toml": "7c4af5a35936e6b004a3a2c455273a2e80a9ac200a53c3cf8d6e7b5f9016950c",
+    "vendor/binius64/crates/spartan-frontend/src/circuit_builder.rs": "e62f76fc6405aabcafb5f94ccc8ff986f88b24842aa817e18b6211cac78c99be",
+    "vendor/binius64/crates/spartan-frontend/src/circuits.rs": "6460f63b48042aab42c68b648de4ffe029fc3df1554aeb3615030a602b4ecede",
+    "vendor/binius64/crates/spartan-frontend/src/compiler.rs": "70566f7afd45962514e3034cb806f08d026c7bf2d026a4f0ec2c7c2dafe5f67c",
+    "vendor/binius64/crates/spartan-frontend/src/constraint_system.rs": "81da9f9361443b2bd09dbb441a61a08802976bc2fdc3df0cc089c8e19801fe7d",
+    "vendor/binius64/crates/spartan-frontend/src/lib.rs": "b15023fd05480cfb80a0484ce3742ffd58d27b846723cdaa08f824f97ed18125",
+    "vendor/binius64/crates/spartan-frontend/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/spartan-frontend/src/wire_elimination.rs": "0395580666746db670867e204fc33a77c00f2c02ec6913b82fcba359a8471553",
+    "vendor/binius64/crates/spartan-verifier/Cargo.toml": "7d6d96740f634a9056c0f2a72875acdcf80624cee671b5e04083297c983b6963",
+    "vendor/binius64/crates/spartan-verifier/src/config.rs": "aef70ccf58f311d40e9a69f782eea930c3ebc63fc2c979e92883e5ea36e75431",
+    "vendor/binius64/crates/spartan-verifier/src/constraint_system.rs": "30b7f1cb5c7fbbe3f1a28bade449cc3352ef99d0f5bc6f334f9cffae4cca2312",
+    "vendor/binius64/crates/spartan-verifier/src/lib.rs": "3f7c01fc0273f68527850a8f8e7a0a20eda5c3a603fb5c8f2fb78d471b54febd",
+    "vendor/binius64/crates/spartan-verifier/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/spartan-verifier/src/wiring.rs": "1e74655af4b951a87b46441cefc81b67a2d8afc788668ab0e9015866133b1293",
+    "vendor/binius64/crates/spartan-verifier/src/wrapper/channel.rs": "718c4c1d6cc55b5eda0bc34b63d3c7990164d1c56e23ef4f97beb75f6c35311b",
+    "vendor/binius64/crates/spartan-verifier/src/wrapper/circuit_elem.rs": "07cf08a8822e63a87d040757d0fc91c596a21113f3ec6101ce05ffb7b5fc6234",
+    "vendor/binius64/crates/spartan-verifier/src/wrapper/gadgets.rs": "95ed8c46214648ae736c652144e2b0e572e4ea4d612139f71c5fa08419bdc1b2",
+    "vendor/binius64/crates/spartan-verifier/src/wrapper/mod.rs": "d05096f0370fbee119139d0922333daadc2274e5e05146bfac537efd6570772e",
+    "vendor/binius64/crates/spartan-verifier/src/wrapper/zk_wrapped_channel.rs": "2bdd15c5aa69ccb0a7b843d3d25d3aa74823ca174f8f5b83e5039376f367cf70",
+    "vendor/binius64/crates/spartan-verifier/tests/proof_size_test.rs": "ccc88989017b0644fa4124bc08e433f0979a6460b16fbf7a585dd98d95e2858b",
+    "vendor/binius64/crates/transcript/Cargo.toml": "21ab611faa779d44973120e4d9f6afec06662660bb54e745f3a1d9959ef0e81d",
+    "vendor/binius64/crates/transcript/src/error.rs": "2494b3c5e600aa61787bc15bfbdc86f8e4c8d54d9e532e889a3203961d1c2619",
+    "vendor/binius64/crates/transcript/src/fiat_shamir/buffer.rs": "700f14ecab0144b534ec8b550bcc58a452230dbc730526305ba6a291b449fe2b",
+    "vendor/binius64/crates/transcript/src/fiat_shamir/hasher_challenger.rs": "e546cd63b4e5294fa3cae0a163f0e0bd9bf9207dd924e05c69938f2e9c9c864e",
+    "vendor/binius64/crates/transcript/src/fiat_shamir/mod.rs": "aeb7017235dbabb86dd76452388d4dc030fefcfbad5f144bdb931302fc7112b5",
+    "vendor/binius64/crates/transcript/src/fiat_shamir/sampling.rs": "2133966eb2a215bbf5c0bf83e639f34f902a2e6fe68d0b9b7f8edf198bc1e336",
+    "vendor/binius64/crates/transcript/src/lib.rs": "ec09dd9be637b3387eb2ae1dcdf4fed8c79af4901308cba06fbf4b973953d4fd",
+    "vendor/binius64/crates/transcript/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/transcript/src/transcript.rs": "0292d027d4a70a99a73fc054813d38c50698eea5776175f33f26a90409a6d1f6",
+    "vendor/binius64/crates/utils/Cargo.toml": "e74f4fe3c4b4c058c5f4c7a15cb07f35bb6cf0e8795bc668a3dc90c4b7255ef2",
+    "vendor/binius64/crates/utils/build.rs": "3b53562e219dbe990a63469cb1df11d9ac561301189d5870bd8206d243963fe5",
+    "vendor/binius64/crates/utils/src/array_2d.rs": "a856a390adcd3ff1916004974498ae26a5c0bbc1d1ed003f2ce6f33e44d31d6b",
+    "vendor/binius64/crates/utils/src/bitwise.rs": "d261763adf7c07ff60af82bcd5b4147c870c6b708a7ba3499b6372a06a241221",
+    "vendor/binius64/crates/utils/src/checked_arithmetics.rs": "2b030821af344dfeae8066481f0f5f65a255a296966e2e92bf4ead211510d15e",
+    "vendor/binius64/crates/utils/src/env.rs": "0f63e65bcf45e854199306e83fed95655adfd18a796140761eaf41140194785e",
+    "vendor/binius64/crates/utils/src/iter.rs": "d05c8710a6a74012ea5aff2d144950972a95b6359a73a42ccf1892ab860c5c3b",
+    "vendor/binius64/crates/utils/src/lib.rs": "6e5fae327e82b650a28a51136dac4fbdab74214b11eb15a96905d5564e0ffc58",
+    "vendor/binius64/crates/utils/src/mem.rs": "edb65b64aa7f3af1ee6214ef38a0efbb26c719fa42bad13ef507e2c300856e50",
+    "vendor/binius64/crates/utils/src/platform_diagnostics.rs": "c2beee268c98c4865e23f4b1cb3337fb4bbe70f76e115b40d8d3042c12cae67f",
+    "vendor/binius64/crates/utils/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/utils/src/rand.rs": "0dbb37e919b9a30121a238cbb9d509b26eb6b0a1fc32e4a793bc611e1c0586e7",
+    "vendor/binius64/crates/utils/src/random_access_sequence.rs": "b14d8a9444ec539cc82bb73102a2f8547b0b18baf0e4c35a00a83ca724b34248",
+    "vendor/binius64/crates/utils/src/rayon/config.rs": "828c0cd8be9c4588a83bd44ef2b5bcf5127d08c8e48b53f215dfa2bce2ae0006",
+    "vendor/binius64/crates/utils/src/rayon/iter/from_parallel_iterator.rs": "96796cef7f602756a64ad3cc995e214ec83406fe93d2625fc446bef76770622b",
+    "vendor/binius64/crates/utils/src/rayon/iter/indexed_parallel_iterator.rs": "0211684a4d89827ff068d94d160ffab1b5683bb65feb7c87a971746482437106",
+    "vendor/binius64/crates/utils/src/rayon/iter/into_parallel_iterator.rs": "9ea00949b85a5d5953eb1243c9c1a922caca9b480a8b459b7cb2e458237a2f90",
+    "vendor/binius64/crates/utils/src/rayon/iter/mod.rs": "54c08bcc0900ef5a951ab3591b098395c91545c0cdd2ae7ecf2e8937e9b54db1",
+    "vendor/binius64/crates/utils/src/rayon/iter/par_bridge.rs": "9824a9f581bdef75cd636cf51793b051f5d8b26b66671764518911fd63575c88",
+    "vendor/binius64/crates/utils/src/rayon/iter/parallel_iterator.rs": "45cd1a7485583c2bc2487b8d2fb7cce0227e8f64ae2e7921cdb92a9f06c0dea3",
+    "vendor/binius64/crates/utils/src/rayon/iter/parallel_wrapper.rs": "158d017e0fb4967110b55539734d849638e92c4e1e6f248d218b5549a54b01e6",
+    "vendor/binius64/crates/utils/src/rayon/mod.rs": "cd39797d156475ffefe3196b064fbe4c456dcc050e3173ea4b7a4c73d7f00f3a",
+    "vendor/binius64/crates/utils/src/rayon/slice/mod.rs": "23542e21e51e94daaecc8d0b9c017b8dd9b2e3668062bae73f611fd0a67e59c8",
+    "vendor/binius64/crates/utils/src/rayon/slice/parallel_slice.rs": "ab7ec6dd4d5f4bb71eeaec56c6918613abe36d0074e2675233fc2ffc0df3ee60",
+    "vendor/binius64/crates/utils/src/rayon/slice/parallel_slice_mut.rs": "0f5ed4a505c56e2e4e8f968f392abba13572d831699c9b34d9067d28adcacef0",
+    "vendor/binius64/crates/utils/src/serialization.rs": "5f962d5b275e47a4f18b3def7e66d9ac70aa3020192e8e2dd3b9c09ea8cae225",
+    "vendor/binius64/crates/utils/src/sorting.rs": "53aadaae9cf7b8bdfd7413ca6bafea75994d2c285f516ca099250230877c3c4f",
+    "vendor/binius64/crates/utils/src/sparse_index.rs": "f7970c40c30c043cc9c3c056260df903e4514d1299a7edb3890852fcd1100185",
+    "vendor/binius64/crates/utils/src/strided_array.rs": "f8a8d15d13be4f98253aa165ee75d61a579f2962d0897286cf6fd9968799223d",
+    "vendor/binius64/crates/verifier/Cargo.toml": "e793a704021f4e4eed9f2738cce39ecd89cb831dba8c9911854870b9629d36cb",
+    "vendor/binius64/crates/verifier/src/config.rs": "8a75a06da954c44ac80519b822eaf72cda3267eaa47eff70208a96326cf502f9",
+    "vendor/binius64/crates/verifier/src/error.rs": "42f1bd9b277132ed65b9813d98ed00e33dbaf324dbfda5f45831952d62768686",
+    "vendor/binius64/crates/verifier/src/lib.rs": "641b9740cf1179286d8796d931c862e6163e547e80f0f5f7009bea8e9106fe48",
+    "vendor/binius64/crates/verifier/src/protocols/bitand.rs": "c9180ad0d87227da25abf521c51aad79daacb365d4ec6a2e9695ffe7ace29c19",
+    "vendor/binius64/crates/verifier/src/protocols/intmul/common.rs": "693b346c7600972566048f4571a390802a2929d8658a7f7f920c6a03ce2c392a",
+    "vendor/binius64/crates/verifier/src/protocols/intmul/error.rs": "b2b03c1b4b75ec4eb0217bd4295cedbc7fe9c455d83139a905f2505b32234b4f",
+    "vendor/binius64/crates/verifier/src/protocols/intmul/mod.rs": "f7ab724b694df6d6e10a2527dc9b9b82383230c809f4c9ae0253668e146f109b",
+    "vendor/binius64/crates/verifier/src/protocols/intmul/verify.rs": "df7c26f8d571f2fe33e823d58dbd42003f08decc35c7a50db72b0bc73ae9a338",
+    "vendor/binius64/crates/verifier/src/protocols/mod.rs": "9dfaf4b722324eaf2ba31fdd80549fe94ed73de17404b992ff48747a9d9fdd38",
+    "vendor/binius64/crates/verifier/src/protocols/pubcheck.rs": "68c3eb73e3b4569a836455eb612c5085f43d1cb7c15f7a95ca1f08d9066e9529",
+    "vendor/binius64/crates/verifier/src/protocols/shift/error.rs": "4e75237e0a1b40ad266073d4e397df7260233ed79298a2441662ebaf0dab95b0",
+    "vendor/binius64/crates/verifier/src/protocols/shift/mod.rs": "6cb727c6aba848aab6b02e9ce6ffbb36415e961c596c193fa15db871c27479f4",
+    "vendor/binius64/crates/verifier/src/protocols/shift/monster.rs": "fafe9f710385aa9d448c7fd613d16d4f39279f4fe392e99a02b59d6baec07a1d",
+    "vendor/binius64/crates/verifier/src/protocols/shift/shift_ind.rs": "54cc7065e207a830337661550081c449cc5aae4d17ba5be451b636229c78be35",
+    "vendor/binius64/crates/verifier/src/protocols/shift/verify.rs": "09f4afeb8e3002cb5e4f3fab8093e1a59bea31cf11e2fe569b54a5b13bdec492",
+    "vendor/binius64/crates/verifier/src/qasset_nostd.rs": "d92ae7066e46a83059ee01aa130565965149ecaee42941c9465a80c6fba5ce01",
+    "vendor/binius64/crates/verifier/src/ring_switch.rs": "ecca7bd16cdcfd1550e9fa3af3eba021b3e015fb3f90df366440e3a4fd290eb9",
+    "vendor/binius64/crates/verifier/src/verify.rs": "4003138528a712a74a9e2c2eef122363a0cab6045ed2b5d246f8da1b707165a5",
+    "vendor/binius64/crates/verifier/src/zk_config.rs": "392ca5d4a6b54b98e9796527e94de52dff0b80f1310b0615c4139ba02245f857",
+    "wasm-fixture/Cargo.lock": "0d6eb28737358433e431941922a1fe259bcf512e68040b4a99dc6a31432a50c9",
+    "wasm-fixture/Cargo.toml": "d6855c014447632cbef33da6929263388169c70548be9be09f22445937844d54",
+    "wasm-fixture/setup.sha256": "f27c0cc3de6d79d9cfe69d14a8d6f0963e93e2a00a75b70359a154795c81148e",
+    "wasm-fixture/src/frozen.rs": "500ad5382bf127951c961e95e59fb7afc5083da35415e4a06fe180be1714249b",
+    "wasm-fixture/src/lib.rs": "3af6523f97d70a557e0040de1c6fb5d7a95348c64c9eb3fd17dd4a626a5c7798",
+    "wasm-fixture/src/native.rs": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945"
+  },
+  "source_count": 319
+}

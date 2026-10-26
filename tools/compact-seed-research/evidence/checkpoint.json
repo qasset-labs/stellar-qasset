@@ -1,0 +1,9 @@
+{
+  "changed_action_rejected": true,
+  "changed_clamp_rejected": true,
+  "proof_bytes": 8893905,
+  "prove_seconds": 70.23471506,
+  "trace_rows": 128,
+  "valid_accepted": true,
+  "verify_seconds": 0.466697607
+}

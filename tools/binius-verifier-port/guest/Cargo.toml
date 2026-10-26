@@ -1,0 +1,12 @@
+[package]
+name = "qasset-binius-nostd-verifier"
+version = "0.1.0"
+edition = "2024"
+license="MIT"
+publish=false
+[workspace]
+[dependencies]
+binius-verifier = { path = "../vendor/binius64/crates/verifier", default-features = false }
+binius-core = { path = "../vendor/binius64/crates/core" }
+binius-transcript = { path = "../vendor/binius64/crates/transcript" }
+sha2 = { version = "0.11.0", default-features = false }

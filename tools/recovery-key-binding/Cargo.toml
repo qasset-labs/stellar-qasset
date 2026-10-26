@@ -1,0 +1,30 @@
+[package]
+name = "qasset-recovery-key-binding"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[workspace]
+resolver = "2"
+members = ["wasm-probe"]
+
+[features]
+default = []
+fixtures = []
+precomputed-tables = ["curve25519-dalek/precomputed-tables"]
+
+[dependencies]
+curve25519-dalek = { version = "=4.1.3", default-features = false }
+
+[dev-dependencies]
+sha2 = { version = "=0.10.9", default-features = false }
+
+[profile.release]
+opt-level = 3
+overflow-checks = true
+debug-assertions = false
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = "symbols"

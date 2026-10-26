@@ -1,0 +1,11 @@
+[package]
+name = "qasset-rokoko-gadget-research"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+[workspace]
+[dependencies]
+rokoko = { path = "../rokoko-relation-research" }
+[profile.release]
+opt-level = 3

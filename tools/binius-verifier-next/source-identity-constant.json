@@ -1,0 +1,10 @@
+[
+  {
+    "path": "host-runner/src/frozen.rs",
+    "native_source_sha256": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945"
+  },
+  {
+    "path": "external-input/src/frozen.rs",
+    "native_source_sha256": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945"
+  }
+]

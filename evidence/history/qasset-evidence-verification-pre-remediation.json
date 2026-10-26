@@ -1,0 +1,14 @@
+{
+  "consistent": true,
+  "fresh": true,
+  "paths_checked": 30,
+  "stale_paths": [],
+  "scope": "live Testnet verification",
+  "transactions_rechecked": 28,
+  "current_policy_revisions": {
+    "QEXP": 4,
+    "QCTL": 3
+  },
+  "verified_at_utc": "2026-10-25T11:11:19.988721+00:00",
+  "latest_ledger": 5380618
+}

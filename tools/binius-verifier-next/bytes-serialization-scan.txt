@@ -1,0 +1,6 @@
+crates/hash/src/vision_4/parallel_compression.rs:217:				hasher.update(i.to_le_bytes());
+crates/core/src/constraint_system.rs:1496:		let expected_version_bytes = 2u32.to_le_bytes(); // Version 2 in little-endian
+crates/core/src/constraint_system.rs:1597:		let expected_version_bytes = 1u32.to_le_bytes(); // Version 1 in little-endian
+crates/core/src/constraint_system.rs:1796:		let expected_version_bytes = 1u32.to_le_bytes(); // Version 1 in little-endian
+crates/transcript/src/fiat_shamir/hasher_challenger.rs:101:        Digest::update(&mut self.hasher, (self.index as u64).to_le_bytes());
+crates/utils/src/rand.rs:32:		let index_bytes = i.to_le_bytes();

@@ -1,0 +1,34 @@
+[package]
+name = "qasset-binius-preprocess-probe"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+exclude = ["vendor"]
+
+[dependencies]
+binius-frontend = { path = "vendor/crates/frontend" }
+binius-core = { path = "vendor/crates/core" }
+binius-verifier = { path = "vendor/crates/verifier" }
+binius-transcript = { path = "vendor/crates/transcript" }
+binius-hash = { path = "vendor/crates/hash" }
+binius-circuits = { path = "vendor/crates/circuits" }
+sha2 = "0.10"
+hex = "0.4"
+curve25519-dalek = "=4.1.3"
+serde_json = "1"
+
+
+binius-spartan-frontend = { path = "vendor/crates/spartan-frontend" }
+binius-spartan-verifier = { path = "vendor/crates/spartan-verifier" }
+binius-iop = { path = "vendor/crates/iop" }
+binius-utils = { path = "vendor/crates/utils" }
+binius-field = { path = "vendor/crates/field" }
+binius-math = { path = "vendor/crates/math" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

@@ -1,0 +1,48 @@
+--- a/crates/verifier/src/zk_config.rs
++++ b/crates/verifier/src/zk_config.rs
+@@ -121,6 +121,15 @@
+ 		})
+ 	}
+ 
++	/// Reconstitutes operator-trusted fixed preprocessing. Never use prover-selected parts.
++	pub fn from_preprocessed(
++		inner_iop_verifier: IOPVerifier,
++		outer_iop_verifier: IronSpartanIOPVerifier<B128>,
++		basefold_compiler: BaseFoldZKVerifierCompiler<B128, BinaryMerkleTreeScheme<B128, MerkleHash, MerkleCompress>>,
++	) -> Self {
++		Self { inner_iop_verifier, outer_iop_verifier, basefold_compiler }
++	}
++
+ 	/// Returns a reference to the inner IOP verifier.
+ 	pub fn inner_iop_verifier(&self) -> &IOPVerifier {
+ 		&self.inner_iop_verifier
+--- a/crates/iop/src/basefold_compiler.rs
++++ b/crates/iop/src/basefold_compiler.rs
+@@ -172,6 +172,15 @@
+ 	F: BinaryField,
+ 	MerkleScheme_: MerkleTreeScheme<F>,
+ {
++	/// Reconstitutes operator-trusted fixed preprocessing. Never use prover-selected parts.
++	pub fn from_preprocessed(
++		merkle_scheme: MerkleScheme_,
++		oracle_specs: Vec<OracleSpec>,
++		fri_params: Vec<FRIParams<F>>,
++	) -> Self {
++		Self { merkle_scheme, oracle_specs, fri_params }
++	}
++
+ 	/// Creates a new ZK compiler with precomputed FRI parameters.
+ 	///
+ 	/// All oracle specs are treated as ZK: FRI parameters use `log_msg_len + 1` and
+--- a/crates/spartan-verifier/src/constraint_system.rs
++++ b/crates/spartan-verifier/src/constraint_system.rs
+@@ -104,6 +104,9 @@
+ 		}
+ 	}
+ 
++	/// Returns the unpadded deterministic compiler output for fixed preprocessing export.
++	pub fn unpadded_constraint_system(&self) -> &ConstraintSystem<F> { &self.inner }
++
+ 	pub fn constants(&self) -> &[F] {
+ 		self.inner.constants()
+ 	}

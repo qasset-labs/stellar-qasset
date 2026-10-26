@@ -1,0 +1,96 @@
+{
+  "status": "passed_existing_parameter_comparison_only_no_fitting_proof",
+  "source_sha256": {
+    "Cargo.lock": "8ab7a506834985aeeabea7f17b24ce7b1420e394ff6aed805872663b2f42103c",
+    "Cargo.toml": "4c03e5b4e6ed8405f419b875c2c0f856ede505411120aa68a9d77da1a4513b15",
+    "README.md": "955323f0e7cbcb0964c95f463648cd6b7745ed14b3e9e4d5f84c1c4bc28ac035",
+    "evidence/2/execution.json": "1c4e1a98f30d5b4547fa7406bde952ae1f351309b0653514922fcb65d0ed6bfc",
+    "evidence/2/native.json": "b9e51c38d2b249114fc6765a38155e7a72c8c45bf2ceee038baa91592be50eff",
+    "evidence/2/resource.json": "cad1911ccde30f359471ac5e4fb9573f8eb0b39e7505b67727c8fc827c4649b9",
+    "evidence/3/execution.json": "4acc35e6dc69b733fd17178a0395cc1e06cc05ae22d118f3f1247c5ca5bee5ce",
+    "evidence/3/native.json": "fd266500fe1a35fa5962d7a9f4856d5128a52e6c2890703ffddaa738d58f3604",
+    "evidence/3/resource.json": "9bc2486d7cd3553ab8bf455a3e1252a9a38922738ed5450ec4bda941f36c273c",
+    "evidence/4/execution.json": "271ed86aa29b926bb4d7035e7f15fd9023945e9aa6721dbd7e0a07c817567052",
+    "evidence/4/native.json": "35d26356d62773a358bcc1986ded751f6458b25cae0ec36f67945758d1a5bbac",
+    "evidence/4/resource.json": "4c7081c7e126dac0c9c1edbf3233519fdf9c3f5cfeead89e241901267e7ae6d4",
+    "evidence/5/execution.json": "75d73b143548f09c6e1ad0c0fed3e1837dcbd6cff151d35ed941dd94582ab60c",
+    "evidence/5/native.json": "a463eea521742f19ede007ee001b8b6d92bb36a8c70efcf7180a2b3f995a7bce",
+    "evidence/5/resource.json": "88985e1a8a5b340215210f094fc0e747f85c23cfec28ceb74bda085f0c76e098",
+    "evidence/matrix.json": "d467d419b3fbd009d29a37f164879ada242b63e9679c5a4218da2ae77b491058",
+    "evidence/portable-reproduction.json": "6c5bac38702695c4648c3c790166a67e2e8efa40549543f1c85de6af4d219992",
+    "evidence/run_matrix_generation.py": "a3ba8f33612916aa3eeeec102ff1e38ad830a183b77ee3d94ef3ca49dd6b3e63",
+    "licenses/Binius64-LICENSE-Apache-2.0.txt": "245f1fe888a9b2cc730d5313b1b430ef896bf29aede9649d4f11ebcf42faa8f2",
+    "licenses/Binius64-LICENSE-MIT.txt": "723891a70c107d694fe1d457a7c7ed5d0580c274ac8cfa2aa18f3ee75f49790e",
+    "licenses/ShorStop-MIT.txt": "f834b9eaff193b9e834573031d46576064500ed4d9d558481a7f792c6cb6968d",
+    "pins.json": "7bb4ce34827792c45eed060ab481b3d3c4d7f287e2ba034da607caa543f38617",
+    "run_matrix.py": "8495b20ca822dc504b493413bcbf21d3fb1b86647377d3d5bc534030cb051af8",
+    "src/main.rs": "2cad29e4c9eb7eb2317aa23a590cd42894dff2b21f098c97aed44243200c0f41"
+  },
+  "binary_sha256": "92cebd3cfd9bfd09690c09c19bdcb217229f79a553c83de7ece9049abea90053",
+  "checks": {
+    "format": true,
+    "clippy_D_warnings": true,
+    "unit_tests": 3,
+    "actual_proof_and_separate_verifier_checks": 16,
+    "all_passed": true
+  },
+  "same_upstream_configured_query_budget_bits": 96,
+  "security_approved": false,
+  "original_canonical_backend_unchanged": true,
+  "action_scope": "zero digest only parameter-size comparison; no canonical recovery request or policy state established",
+  "measurements": [
+    {
+      "rate": 2,
+      "queries": 142,
+      "proof_bytes": 432176,
+      "proof_sha256": "8b4d81784831b59ab23b2730b91ecd0b13d8068a6b6c4ece70e97d2746265426",
+      "prove_seconds": 2.199561747,
+      "peak_rss_kib": 154032
+    },
+    {
+      "rate": 3,
+      "queries": 116,
+      "proof_bytes": 436112,
+      "proof_sha256": "c17dff4a51869a6423dbabae2771b47eae5ceee674c30f8aeb5d25c09c5ff97d",
+      "prove_seconds": 2.819348542,
+      "peak_rss_kib": 238404
+    },
+    {
+      "rate": 4,
+      "queries": 106,
+      "proof_bytes": 467760,
+      "proof_sha256": "5b186d0d5660368ec2791b070906843b915f63aa6af42327d4e0ebb693a930cf",
+      "prove_seconds": 4.453532937,
+      "peak_rss_kib": 417596
+    },
+    {
+      "rate": 5,
+      "queries": 101,
+      "proof_bytes": 512592,
+      "proof_sha256": "70fee14b7a4a4c708d90267731088df8e659179e0a338ca223d88c1615cedd81",
+      "prove_seconds": 11.23731847,
+      "peak_rss_kib": 748608
+    }
+  ],
+  "best_fits_historical_whole_transaction_cap": false,
+  "historical_whole_transaction_cap_bytes": 132096,
+  "limitation": "Fixed96 query budget only; other protocol errors, quantum knowledge/ZK and Soroban implementation remain unapproved. Rate affects upstream query-dependent masking automatically; no upstream cryptographic source edits.",
+  "portable_reproduction": {
+    "passed": true,
+    "rates": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "proof_bytes": [
+      432176,
+      436112,
+      467760,
+      512592
+    ],
+    "source": "run_matrix.py",
+    "record": "evidence/portable-reproduction.json",
+    "note": "Fresh randomness produces independent proof hashes; original evidence/matrix.json preserved separately."
+  }
+}

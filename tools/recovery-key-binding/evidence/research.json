@@ -1,0 +1,408 @@
+{
+  "status": "passed_native_and_raw_wasm_key_binding_only",
+  "scope": "Public mathematical scalar/key binding only, not seed proof or recovery authorization",
+  "security_approved": false,
+  "stellar_rpc_requests": 0,
+  "submitted_transactions": 0,
+  "commands": [
+    {
+      "argv": [
+        "rustc",
+        "-Vv"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "-V"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "scripts/generate_vectors.py",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--offline",
+        "-p",
+        "qasset-recovery-key-binding",
+        "--lib"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "-p",
+        "qasset-recovery-key-binding",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "check",
+        "--locked",
+        "--offline",
+        "-p",
+        "qasset-recovery-key-binding",
+        "--lib",
+        "--target",
+        "wasm32v1-none"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--offline",
+        "--release",
+        "-p",
+        "qasset-recovery-key-binding-wasm",
+        "--target",
+        "wasm32v1-none",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "-p",
+        "qasset-recovery-key-binding-wasm",
+        "--target",
+        "wasm32v1-none"
+      ],
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "node",
+        "test_wasm.mjs",
+        "/tmp/qasset-recovery-key-binding/target/wasm32v1-none/release/qasset_recovery_key_binding_wasm.wasm",
+        "/tmp/qasset-recovery-key-binding/evidence/wasm.json"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "hermetic_build": false,
+  "source_sha256": {
+    ".gitignore": "1141064ed2630abfb4a4b52385d7e6c5676a9a51c3c01a4884a7cdaf05609a74",
+    "Cargo.lock": "82e7cf1d219f8fa1154578f02b0fff7439b6916f24e583774be66fb6f2c0d97e",
+    "Cargo.toml": "b3b70ec395cecc376e443da56d0705c68c90bc1cdf2ac8191e830f08dada0f3a",
+    "README.md": "c094c4724549845ecdf9495e8a566ce7d0ddff2ff31f755d692e8427502d3384",
+    "fixtures/binding-vectors.json": "ea1850f004f796fa58abb4a624f1ea6eacaaa49972b12c1c5127be5ccd5869ff",
+    "fixtures/official-sep5.json": "1f58676e134b5dee5dba39e48e340fdb0dee1d4afed4b2e4dbf03cf49db6215f",
+    "licenses/curve25519-dalek-BSD-3-Clause.txt": "cca0bd3c4fcdba74145ef9d49c62337e2c9fbf9368288f11d0547f1b0273219f",
+    "scripts/generate_vectors.py": "2c170b84881f9a06512947719dd63b80341366593ecc97e2e194a54f72204b5c",
+    "scripts/run.py": "5d2732efe1d7642ad121bb5602c7ab4af86f4afdf088722cef99242c141d6392",
+    "scripts/verify_provenance.py": "bc38d2764e21372384bf2855a4f78c40c3d9ae38c71b239532a284047a5ce6ba",
+    "src/fixture_vectors.rs": "d68a267274ec16ccd554c7cc28f64ec4bd9f9cf5b1ae74597cf0a813b27e3f22",
+    "src/lib.rs": "bcf122ec1f818246a8f5e2c4c6a597bb81e7bdf34718e39ba28c6c3489f029eb",
+    "test_wasm.mjs": "74738f8119f8a09965fb18cc22d9c159049af3cd49fcb9a0c4be231bc9f2ba61",
+    "wasm-probe/Cargo.toml": "665e3ef5f35522b5dee6370d1a1a1a83479f5836847d0ce6b7c7aa679553b6a9",
+    "wasm-probe/src/lib.rs": "6915dda586312f7da4dda396eb5ba08923fcd28a45c0888151648e702b3edcc7"
+  },
+  "removed_build_overrides": {
+    "RUSTFLAGS": false,
+    "CARGO_ENCODED_RUSTFLAGS": false,
+    "RUSTC_WRAPPER": false,
+    "RUSTC_WORKSPACE_WRAPPER": false,
+    "CARGO_BUILD_TARGET": false
+  },
+  "versions": {
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.94.1\nLLVM version: 21.1.8",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)",
+    "node": "v22.13.1",
+    "python": "Python 3.10.12"
+  },
+  "wasm": {
+    "status": "passed_raw_wasm_key_binding_only",
+    "security_approved": false,
+    "scope": "Mathematical scalar-to-key relation only; no seed proof or recovery authorization; not Soroban host metering",
+    "wasm_bytes": 25886,
+    "wasm_sha256": "b78c3089e432d78fb8bded64377fefbdfa98c033a3b880f3d65607683ed71538",
+    "imports": [],
+    "exports": [
+      {
+        "name": "memory",
+        "kind": "memory"
+      },
+      {
+        "name": "qasset_check_binding",
+        "kind": "function"
+      },
+      {
+        "name": "__data_end",
+        "kind": "global"
+      },
+      {
+        "name": "__heap_base",
+        "kind": "global"
+      }
+    ],
+    "linear_memory_bytes": 1114112,
+    "checks": [
+      {
+        "id": 0,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 15.544303000000014,
+        "passed": true
+      },
+      {
+        "id": 1,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.552799999999934,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.090800999999942,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.6211009999999533,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.360500000000002,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.654401000000007,
+        "passed": true
+      },
+      {
+        "id": 6,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.13250000000005,
+        "passed": true
+      },
+      {
+        "id": 7,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.4001010000000633,
+        "passed": true
+      },
+      {
+        "id": 8,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.416400000000067,
+        "passed": true
+      },
+      {
+        "id": 9,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 5.755000999999993,
+        "passed": true
+      },
+      {
+        "id": 10,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 4.154101000000082,
+        "passed": true
+      },
+      {
+        "id": 11,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.291201000000001,
+        "passed": true
+      },
+      {
+        "id": 12,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.0167000000000144,
+        "passed": true
+      },
+      {
+        "id": 13,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.9497010000000046,
+        "passed": true
+      },
+      {
+        "id": 14,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 2.97620100000006,
+        "passed": true
+      },
+      {
+        "id": 15,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.224299999999971,
+        "passed": true
+      },
+      {
+        "id": 16,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.1745010000000775,
+        "passed": true
+      },
+      {
+        "id": 17,
+        "expected": 1,
+        "result": 1,
+        "error": null,
+        "elapsed_ms": 3.8294009999999616,
+        "passed": true
+      },
+      {
+        "id": 18,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 3.4651000000000067,
+        "passed": true
+      },
+      {
+        "id": 19,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 4.343101000000047,
+        "passed": true
+      },
+      {
+        "id": 20,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 4.9474010000000135,
+        "passed": true
+      },
+      {
+        "id": 21,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 0.12040000000001783,
+        "passed": true
+      },
+      {
+        "id": 22,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 0.7138009999999895,
+        "passed": true
+      },
+      {
+        "id": 23,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 0.06760000000008404,
+        "passed": true
+      },
+      {
+        "id": 24,
+        "expected": 0,
+        "result": 0,
+        "error": null,
+        "elapsed_ms": 0.05150000000003274,
+        "passed": true
+      },
+      {
+        "id": 25,
+        "expected": -1,
+        "result": -1,
+        "error": null,
+        "elapsed_ms": 0.0049999999999954525,
+        "passed": true
+      }
+    ]
+  },
+  "wasm_sha256": "b78c3089e432d78fb8bded64377fefbdfa98c033a3b880f3d65607683ed71538",
+  "wasm_bytes": 25886,
+  "native_test_count": 6,
+  "independent_positive_vectors": 18
+}

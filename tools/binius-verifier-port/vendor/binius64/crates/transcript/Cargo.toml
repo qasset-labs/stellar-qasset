@@ -1,0 +1,22 @@
+[package]
+name = "binius-transcript"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+hashbrown = { version = "0.16.1", default-features = false, features = ["default-hasher", "inline-more"] }
+auto_impl.workspace = true
+binius-field = { path = "../field" }
+binius-utils = { path = "../utils" }
+bytes.workspace = true
+digest.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+rand.workspace = true
+sha2.workspace = true

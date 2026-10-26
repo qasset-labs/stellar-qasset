@@ -1,0 +1,174 @@
+{
+  "status": "passed_deterministic_preprocessing_native_research_only",
+  "upstream_commit": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "configured_security_bits": 96,
+  "security_approved": false,
+  "onchain_enabled": false,
+  "artifact_bytes": 2714051,
+  "artifact_sha256": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3",
+  "artifact_reexport_matches": true,
+  "native_binary_path": "/tmp/qasset-binius-target/release/qasset-binius-preprocess-probe",
+  "native_binary_sha256": "b9a76c574ac0730d4c47b6914f02dd47c738c8cfa3425a06672599fd26f40a06",
+  "proof_bytes": 539888,
+  "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+  "canonical_action_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+  "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+  "generation_and_roundtrip": {
+    "circuit_build_seconds": 0.0129554,
+    "export_seconds": 0.0064615,
+    "fri": [
+      {
+        "basis_len": 12,
+        "folds": [],
+        "log_batch": 1,
+        "log_dimension": 11,
+        "log_inverse_rate": 1,
+        "queries": 232
+      },
+      {
+        "basis_len": 11,
+        "folds": [],
+        "log_batch": 1,
+        "log_dimension": 10,
+        "log_inverse_rate": 1,
+        "queries": 232
+      },
+      {
+        "basis_len": 18,
+        "folds": [
+          4,
+          3
+        ],
+        "log_batch": 1,
+        "log_dimension": 17,
+        "log_inverse_rate": 1,
+        "queries": 232
+      },
+      {
+        "basis_len": 10,
+        "folds": [],
+        "log_batch": 1,
+        "log_dimension": 9,
+        "log_inverse_rate": 1,
+        "queries": 232
+      }
+    ],
+    "inner_and_constraints": 2048,
+    "inner_constants": 95,
+    "inner_mul_constraints": 1,
+    "inner_public_words": 128,
+    "inner_values": 2048,
+    "load_seconds": 0.598965614,
+    "loaded_reexport_equal": true,
+    "native_outer_constraint_bytes": 144,
+    "native_usize_bytes": 8,
+    "outer_constants": 382,
+    "outer_inout": 1026,
+    "outer_padded_constraints": 131072,
+    "outer_padded_constraints_sha256": "0d289309fc17e9b8e6e2d6a4b99d2cf4350547864fde5f79d7eb06929ee31938",
+    "outer_precommit": 880,
+    "outer_private": 82227,
+    "outer_unpadded_constraints": 82373,
+    "preprocessing_bytes": 2714051,
+    "preprocessing_sha256": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3",
+    "repeat_export_equal": true,
+    "repeat_setup_export_seconds": 0.635372215,
+    "symbolic_setup_seconds": 0.518030812
+  },
+  "native_verification": {
+    "load_seconds": 0.0634731,
+    "proof_bytes": 539888,
+    "security_approved": false,
+    "setup_bytes": 2714051,
+    "setup_sha256": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3",
+    "symbolic_setup_called": false,
+    "valid": true,
+    "verify_seconds_excluding_load": 0.150296399
+  },
+  "native_checks": {
+    "all_passed": true,
+    "artifact_whitelist_compiled": true,
+    "checks": [
+      [
+        "valid_actual_proof",
+        true
+      ],
+      [
+        "changed_action_rejected",
+        true
+      ],
+      [
+        "corrupt_proof_rejected",
+        true
+      ],
+      [
+        "truncated_proof_rejected",
+        true
+      ],
+      [
+        "trailing_proof_rejected",
+        true
+      ],
+      [
+        "empty_proof_rejected",
+        true
+      ],
+      [
+        "invalid_clamp_rejected",
+        true
+      ],
+      [
+        "changed_scalar_rejected",
+        true
+      ],
+      [
+        "modified_setup_rejected",
+        true
+      ],
+      [
+        "trailing_setup_rejected",
+        true
+      ],
+      [
+        "truncated_setup_rejected",
+        true
+      ],
+      [
+        "empty_setup_rejected",
+        true
+      ]
+    ],
+    "count": 12,
+    "security_approved": false
+  },
+  "native_golden_transcript_vector": [
+    394127921,
+    1463445479,
+    3541783
+  ],
+  "source_sha256": {
+    "Cargo.toml": "d4c4b9004e7808e8d627e2d4f1b6ba01037e6c0fb44136f0910d406c46609cda",
+    "Cargo.lock": "707e941166301a40fd3cb82737b12ba6afc8de9a5652ab6563f454589c08fabd",
+    "src/main.rs": "c11e19d4454e83ae3cf79e8a374824d45c9c8d56ae9880d279ab3aeda906e02c",
+    "src/native.rs": "bc30461161691a58b975f888548586ebe721713ffcf1d6ac70460b0c85510945",
+    "src/frozen.rs": "b75c26af5b714d0068910dfa35ba8be4281876d3e0a1f46cdcc93a5121fdbade",
+    "setup.sha256": "f27c0cc3de6d79d9cfe69d14a8d6f0963e93e2a00a75b70359a154795c81148e",
+    "trusted-constructors.patch": "54b716b05a2c11347d3d1c4e8678f87316c4b1c184ee48f489b8d4e73b7e6904",
+    "provenance.json": "efd5647b0598c6d0ad16024842d019899c5cea89523970f7a18f7bdb4a9488b9",
+    "transcript-vector.rs": "4b1bd20a5691ff47a910f11f2f86e38470ee036d77a6ee4bf2d5376045ef40a5",
+    "README.md": "af0fba4807d46a842d39241ce8bad048f10198f65e90f64a00eca57bad3ea1b6"
+  },
+  "limitations": [
+    "Native preprocessing split only; separate no_std portability probe has distinct sources and evidence.",
+    "No Soroban VM cost or full account integration measured by this native prototype.",
+    "Fixed public RFC8032 fixture only; original classical scalar must retire before exposure.",
+    "96 is upstream configured parameter only, not a quantum proof-of-knowledge or total security certification.",
+    "Compiled artifact hash is operator-controlled; no request may select its expected digest."
+  ],
+  "checks": {
+    "strict_clippy_passed": true,
+    "format_passed": true,
+    "native_functional_checks": 12
+  },
+  "native_peak_rss_kib": 42732
+}

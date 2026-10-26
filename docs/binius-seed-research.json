@@ -1,0 +1,207 @@
+{
+  "schema": "qasset-binius-leaf-research-v1",
+  "status": "passed_binius_leaf_functional_experiment_only",
+  "recorded_at_utc": "2026-10-19T22:37:53.669286+00:00",
+  "security_approved": false,
+  "stellar_rpc_requests": 0,
+  "submitted_transactions": 0,
+  "checks": [
+    {
+      "label": "actual_leaf_proof_generated_and_verified",
+      "passed": true,
+      "detail": 539888
+    },
+    {
+      "label": "wrong_private_seed_aborted_by_real_prover_before_proof",
+      "passed": true,
+      "detail": "upstream_prover_outer_witness_generation"
+    },
+    {
+      "label": "separate_native_verifier_accepts_without_seed_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "changed_action_native_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "trailing_proof_native_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "truncated_proof_native_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "corrupted_proof_native_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "empty_proof_native_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "unclamped_scalar_guard_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "different_clamped_scalar_guard_rejection",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "old_proof_rejects_new_epoch_after_valid_new_replacement_pop",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "real_binius_proof_and_ml_dsa_pop_commit_local_handoff",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "label": "durable_replay_rejected_after_reopen",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "source_sha256": {
+    "tools/binius-seed-research/Cargo.toml": "c7272464121b0850910cd423372683e1eb7d07904b862052be5588429ffb6dc5",
+    "tools/binius-seed-research/Cargo.lock": "e052a67bb1fae2615b16cbcc8862151fe52dd7fea779aa49cd264292e4bd355e",
+    "tools/binius-seed-research/src/main.rs": "2388079f2d383d8a1c0f790e604acf722ffd79c165b696572f261c9ab57ce281",
+    "tools/binius-seed-research/pins.json": "f741625b4b787a90fefa80191ac3cb9f451eaf4dcaa48f6e22d6f278e554f6a8",
+    "scripts/run_binius_seed_research.py": "707facecf1ff313921f6318b37bee8ef029954b906f49f8266d53800bc4fb543",
+    "scripts/verify_binius_recovery_research.py": "c1b2815bf52f90b7d9582d03c73f21e9006b498a2e67543e60d6515efa168c5f",
+    "scripts/recovery_statement.py": "54e865f5f63b70bd580a3b8c1714dfbc27ce794807f3cccace219cd3a4024106",
+    "scripts/verify_recovery_research.py": "7f042375d073fd913fc1e4999052d7492b55cbf06305b45d7d6bb45d5f6b9e09",
+    "scripts/durable_recovery_research.py": "6653694b9b5fbac8939b61383da4bbbf9c45d300b07492e91c53b012505e4cf0",
+    "scripts/check_seed_recovery_evidence.py": "4e6741bdbf0684e7a5075081885ff188401ee05d54fe3bce31c21b5d56b8d861",
+    "tools/pq-demo/src/main.rs": "8f73620f025744f660432e56cc5f498f9dfb86cc112584a2b3e7ec7250f9676d",
+    "tools/pq-demo/Cargo.toml": "233784e71dc1dd344fbb16fffe3f1dbf85b9736f392b7dfec366f073e2d0c58f",
+    "tools/pq-demo/Cargo.lock": "00ecf6217fff574e84dd16f362281ba9836f3b67009b638335c10f1943d4622d"
+  },
+  "statement": {
+    "canonical_xdr_hex": "00000010000000010000000e0000000e000000217161737365742d736565642d7265636f766572792d73746174656d656e742d76310000000000000d00000020cee0302d59844d32bdca915c8203dd44b33fbb7edc19051ea37abedf28ecd472000000120000000151515151515151515151515151515151515151515151515151515151515151510000000d00000020d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a0000000e00000014726663383033322d6c6561662d736565642d7631000000010000000500000000000000070000000d0000002015b4446f17aca828ab6ab19eec9127ccf45f82de2b66c951d42f0bb68a4b05520000000e00000010726f746174652d617574686f726974790000000e000000094d4c2d4453412d36350000000000000d000007a0a66d5375c5ec30a04af20dffb53f653f5f19eda2385ded1190ffb89cfc42c497f6400d1c22d169e9c4a168d6204c96c759f762a280e7b797d2a0c08ad71db3a00bed19410b7d1388b46da0ad205e62ed8998b614a39f2a08fa72237d1f569abd8a4542ca8cf87470eac8902a084ed7b5ea08bb165bbb679bf6550aa53781ec490fc3b5824efa0f4c3d119c723d84a67971b39170b25bf965cba5f106c7b1df8a3b5ab7d31a645f462ee3449552840e941bed18da00018b59c912f36600b95baa79f20562724438a8620fd2f17f18926a339d99e99fc89d7c4257cb4d768c6ca453aa9107e8c068344a01e8b4296472db1014b0d608d256d5c98cbcc7e495b74cd66088674db52295f0cfe8b6c660492943b4ac2ddb2f9fc4baf3ffd70c92b4d5f0abbcc5cac630e250f60026d405192073acfeb15958560afe0f39b87eb75b3cca6c0fee23856bfb457efbfe3e11d35b999d2ba78c3961a5d8a8de2ef831aef87b1ea52a9e8eb76f45612e131f431bf5eb47edd520281550018f4c8c612a34d49aa938f24ba868c6fbcf2941788345086977c746ac30ba8e79cb8ae5afe4b486b7f3602dc93553c586093807f035ca7b3f2338a1a46adabfd3f7447b1dc7abd669b76abe99f7089c1d0a621132ac0e3b969e1f4e45c57fd4762fe251d578c4d97044d308f70c7698074b697dbc7fb47ae0c4546284f82781171dbfc1fd5a14d580a058a24aaa43af346a6d318e3029fd0598622afc118536c5cc3d49a48b9456e01064377f1c3bc250cda5446409cc639e76ca0f6b8f7a9f9ec3cb4896a19eab30ac817c4d74b3905215b71a40d61a47f5981cb5200764f7dcee4ffa27019bd13968ed0c5d14a34eefa35c7ad68585c3d01c7ef8c7a57e9ab09f9a470d50c5fb5eebdc10a6eef983213fcad474aed6271d5cd6981b55ca09488f1884e5f0ad3a1b8ae79c94a68d03e7161b6d9407e82a1aa525a79deff774e17d572bb6ec2ea68c37242c2ef9ffa0218492d4bf861135d3739de83b815eb356acd1f756c9ad83f5a3653dbb397d066346fea2c38359d9961413fc64651b28d390a718c7075745bef1df37bdde4da2a1d111116df5c471e9a5a04664258024cc314949c3c3136c1f370ed981410978ceb1c0383eb47c2623a03edacee123331bb67b6dc179f79fb304d03fbc0108ca7f00983776c2517c6f10df5dcaf568d5bddd39ebbafb81762fb8c468c43dbd785971661d67bad7eaa9700fd2a9375c68d283080672dd21f9577b1629ce938edea72dcd98540053e3e82da14395e9cef4f4f54df277f253c7b119a07106019f874f0c7982ba32c6fa8422dd1672136fdc90b8fc609c85bb77411529aab86139d5ca8d7ee9db4cd95112021d1ac6498c6eda7f8c3a170444abd1c2e801e7c91d88514cf9a0d4ad2b72808bdbc0784b9efba3dfb9ae3573406049a77951b216ef632165618e8179a1e3e65686080b630876dee8f2225f6a73c38d53dacc78cc45bb873eb02092cf51cb0d649ec61f4a56e41346f85d4174f0a4425c8cf2326ce03a3253930ced6f42a04553c512ee269d02995a11826c40c2b5cd2bfa3b1ae36f0298e83c9ee6af25a5cbdbcf83ebb7164cb885a220f3480a78622370e7aaa0d7b3dfb88c15f2f1f77ab338a067090671e8ba340032ab7365a9348230781fff71e97a07317e688efffe5f070093f78bd7d857aebf681ad737cbb9649d2d51e7c06cfa9cb8529aca52d2ff654561b48756feceab169b31a2c4d48936290b04b4256110904cdcf000f89ac50476f7d345280aca6e739abecb1321cbd22e6cdd9cb327c7999ada6687634fae562af4b1ca0e3dd2f962db340ff6c78f0bbe18a1bc005e92060b5558a9468f3e735c3c35f7e00429ce94d0198368a7a9cab64fb3da0939c4107ae5c1082aae9ad46cb22c5631e592374ab119e598c72677ec89c41d1e199e5b50fa588269b25e578e7b69f0da2e2458cf9e10b07f414fa346b9cd57836e82ddefb0e615bbe6e5dcf1077a363ce750b026cd69741a34ed61a32f3abf71e035596e35459e97fe6cd0353929e09797bc6719fc14ad02e2c469ce7c04b141c0d58fc9d54cab34a882ae4c8cb1de3873c2fbbdb6582314b63d8d04266e16e7ef076d4620b46cb311d88d321080d85e728b8a6993396fe6324e27c9763be3d5df4b9bd758b371592d68a584db5537a91fb5e80187bbaf9a4e1ad7ad1c7e300e1931525566c314a6bddab00e8d997f5793e9d830a47ceebea5a7a3143464b35443c79b9174451c90eac7e0167eeaa3882e7376a06a0e336d67acdc5f6613c37b6e5529d4609892a90eb0be3b07dd73277a2e65779fb83dd652ecdf1d99a4a88ac3eb99cdf374a0109ffe7080f4549dfaa557ca3bb71821e4a7d8c6e0d200923250b80bb3e566a9a624ab60f43a15e6a3dd7583dc97d9f2de7e3df7343c05c8e550cbf8b86f366ab66c47417a52aa80942b50ef10f64f3d56e6726815168be654aa37dd7b118090a53d5c9fda61b136430b2f4dfdcd8088055eecc6649154c83c8db79c9ccb7232c145f63dbb8b13c237281739e916245a345e693b355fe88e1bccdc823bccb5db643bd531521f01422c228c0fb1800f08b498acb3564ac5f68a20526ccd91dbb63bbb87eb36fc45b0c1eeaa3c09149350ceb5ec58e4518910c636a2a2f31a8b85a1f97fa6c1c4f0c835f208073592892e8a9bd0e9bf370b25cc3dc75fd38d4541ae26196f1959e8916663b7453a6ae6cbdb0500000003000004b00000000d00000020a842b4c3f71c3c7b81624ca90c8893bb6d08984556feb522048b1ba11e01dc700000000d0000002054383b263bc24abe24351a74e3851bab8e3c19cd9ca0dec7516ac3f2be71ab6e",
+    "digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+    "relation": "rfc8032-leaf-seed-v1",
+    "account_index": null,
+    "verifier_id_hex": "a842b4c3f71c3c7b81624ca90c8893bb6d08984556feb522048b1ba11e01dc70",
+    "parameters_id_hex": "54383b263bc24abe24351a74e3851bab8e3c19cd9ca0dec7516ac3f2be71ab6e",
+    "parameters": {
+      "approved": false,
+      "backend": "Binius64-Iron-Spartan-ZK",
+      "proof_format": "raw-transcript",
+      "binius_revision": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+      "log_inv_rate": 1,
+      "upstream_query_phase_security_bits": 96,
+      "hash_suite": "SHA256",
+      "field": "binary-GF-2^128",
+      "public_clamped_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+      "scalar_exposure_requires_prior_finalized_classical_retirement": true
+    },
+    "backend_approved": false
+  },
+  "fixture_helper_binary_sha256": "5f642ef1c7b42d4c21ec59c527ebae1fb545a6795730937dbb7530da5809c42e",
+  "artifact_directory": "/tmp/qasset-binius-canonical-proof",
+  "resource_bounds": {
+    "native_proof_process_address_space_bytes": 4294967296,
+    "native_proof_process_wall_timeout_seconds": 600,
+    "rayon_threads": 2,
+    "excludes_cargo_build_and_fixed_size_ml_dsa_helper": true
+  },
+  "binary_sha256": "a6d738ead64cd8fbfd3ba3685391b8bd6e96ff9ae7101ef6d5253ca07f6cce66",
+  "toolchain": {
+    "rustc": "rustc 1.94.1 (e408947bf 2026-03-25)\nbinary: rustc\ncommit-hash: e408947bfd200af42db322daf0fadfe7e26d3bd1\ncommit-date: 2026-03-25\nhost: x86_64-unknown-linux-gnu\nrelease: 1.94.1\nLLVM version: 21.1.8",
+    "cargo": "cargo 1.94.1 (29ea6fb6a 2026-03-24)"
+  },
+  "build_environment": {
+    "RUSTFLAGS": {
+      "set": false,
+      "value_sha256": null
+    },
+    "CARGO_ENCODED_RUSTFLAGS": {
+      "set": false,
+      "value_sha256": null
+    },
+    "RUSTC_BOOTSTRAP": {
+      "set": false,
+      "value_sha256": null
+    },
+    "RUSTC_WRAPPER": {
+      "set": false,
+      "value_sha256": null
+    }
+  },
+  "native_measurement": {
+    "action_digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+    "log_inv_rate": 1,
+    "private_digest_tail_published": false,
+    "proof_bytes": 539888,
+    "prove_seconds": 1.086270004,
+    "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+    "security_approved": false,
+    "setup_seconds": 0.752268242,
+    "status": "research_experiment_only",
+    "total_seconds": 2.441776639,
+    "upstream_configured_security_bits": 96,
+    "verification_seconds_including_setup": 0.600781192,
+    "verifier_accepted": true,
+    "witness_assertions_rejected": false,
+    "wrong_private_witness": false,
+    "process_peak_rss_kib": 109632,
+    "process_elapsed_seconds": 2.479189
+  },
+  "proof_sha256": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+  "wrong_witness_measurement": {
+    "wrong_private_witness": true,
+    "proof_generated": false,
+    "rejection_phase": "upstream_prover_outer_witness_generation",
+    "native_exit_code": 101,
+    "stderr_sha256": "27cd009e126041aa1f89934113c2b9e2846ce59fad9fe952e559e97c0a1e96d1",
+    "action_digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+    "scope": "Actual unsatisfied-witness prover abort; NOT verifier rejection of an adversarially generated proof.",
+    "process_peak_rss_kib": 90868,
+    "process_elapsed_seconds": 0.985474
+  },
+  "separate_verifier": {
+    "action_digest_sha512_hex": "ff2cd29f0444d641ff545753d1ccbfefdd66e1d68dedea2039e7dd64f4dab449186cc8bbb1b30a8265dfac90a55d2e641c4d3c28069aa81d6c18d8bb9d5dbe64",
+    "backend": "binius64-115108-zk-96-log-inv-rate1",
+    "proof_bytes": 539888,
+    "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+    "relation": "rfc8032-leaf-clamped-seed-v1",
+    "seconds_including_setup": 0.618659542,
+    "valid": true
+  },
+  "transport": {
+    "raw_proof_bytes": 539888,
+    "hypothetical_invocation_envelope_bytes": 545884,
+    "statement_bytes": 2352,
+    "replacement_pop_bytes": 3309,
+    "outer_signature_is_all_zero_placeholder": true,
+    "recorded_testnet_whole_transaction_cap": 132096,
+    "fits_recorded_bandwidth_cap_only": false,
+    "lossless_zlib9_proof_bytes": 529630,
+    "lossless_zlib9_roundtrip_equal": true,
+    "scope": "Exact XDR size for a hypothetical undeployed recover_research interface, empty footprint and one placeholder outer signature. No signed/submitted/valid contract transaction, live cap, simulation, CPU/memory cost, fee or full authorization-footprint estimate. Compression requires an unimplemented decoder."
+  },
+  "limits": [
+    "Public RFC8032 fixture, leaf-only relation; SEP5 derivation may be performed privately offline, but is not proved by this circuit.",
+    "Scalar disclosure permits classical forgery; finalized retirement of every effective classical/reused-key authority must precede any disclosure.",
+    "Upstream96-bit query configuration is not128-bit/PQ security, complete soundness, quantum knowledge extraction or quantumZK certification.",
+    "Native code uses std and cannot currently compile directly for Soroban wasm32v1-none; no deployed verifier or metered resources.",
+    "Policy, retirement and ledger are local fixture assumptions; SQLite does not provide on-chain authority or filesystem anti-rollback.",
+    "Witness memory erasure and a private-user deployment are not assessed; no real user secrets are accepted.",
+    "The wrong-seed experiment aborts inside the upstream prover before emitting a proof; it does not demonstrate verifier rejection of an adversarially generated wrong-witness proof.",
+    "Passing transcript mutation tests is functional evidence, not a QROM signature-of-knowledge theorem."
+  ]
+}

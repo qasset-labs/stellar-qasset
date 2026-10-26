@@ -1,0 +1,20 @@
+    Checking rand_core v0.9.5
+    Checking either v1.19.0
+    Checking rand_chacha v0.9.0
+    Checking itertools v0.14.0
+    Checking rand v0.9.5
+    Checking binius-utils v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/utils)
+    Checking binius-field v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/field)
+    Checking binius-core v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/core)
+    Checking binius-frontend v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/frontend)
+    Checking binius-circuits v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/circuits)
+    Checking binius-transcript v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/transcript)
+    Checking binius-math v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/math)
+    Checking binius-hash v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/hash)
+    Checking binius-ip v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/ip)
+    Checking binius-spartan-frontend v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/spartan-frontend)
+    Checking binius-iop v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/iop)
+    Checking binius-spartan-verifier v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/spartan-verifier)
+    Checking binius-verifier v0.1.0 (/tmp/qasset-binius-preprocess-probe/vendor/crates/verifier)
+    Checking qasset-binius-preprocess-probe v0.1.0 (/tmp/qasset-binius-preprocess-probe)
+    Finished `release` profile [optimized] target(s) in 14.65s

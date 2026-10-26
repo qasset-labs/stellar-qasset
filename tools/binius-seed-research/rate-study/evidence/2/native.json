@@ -1,0 +1,60 @@
+{
+  "action_digest_sha512_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "fixture_public_key_hex": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+  "fri_parameters": [
+    {
+      "fold_arities": [
+        2
+      ],
+      "log_batch_size": 1,
+      "log_inv_rate": 2,
+      "log_len": 13,
+      "n_final_challenges": 8,
+      "query_count": 142
+    },
+    {
+      "fold_arities": [
+        2
+      ],
+      "log_batch_size": 1,
+      "log_inv_rate": 2,
+      "log_len": 13,
+      "n_final_challenges": 8,
+      "query_count": 142
+    },
+    {
+      "fold_arities": [
+        4,
+        4
+      ],
+      "log_batch_size": 1,
+      "log_inv_rate": 2,
+      "log_len": 20,
+      "n_final_challenges": 9,
+      "query_count": 142
+    },
+    {
+      "fold_arities": [],
+      "log_batch_size": 1,
+      "log_inv_rate": 2,
+      "log_len": 11,
+      "n_final_challenges": 8,
+      "query_count": 142
+    }
+  ],
+  "log_inv_rate": 2,
+  "oracle_specs": "[OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 10 }, OracleSpec { log_msg_len: 17 }, OracleSpec { log_msg_len: 8 }]",
+  "private_digest_tail_published": false,
+  "proof_bytes": 432176,
+  "prove_seconds": 2.199561747,
+  "public_scalar_hex": "307c83864f2833cb427a2ef1c00a013cfdff2768d980c0a3a520f006904de94f",
+  "security_approved": false,
+  "setup_seconds": 0.857339258,
+  "status": "research_experiment_only",
+  "total_seconds": 3.642730145,
+  "upstream_configured_security_bits": 96,
+  "verification_seconds_including_setup": 0.583485739,
+  "verifier_accepted": true,
+  "witness_assertions_rejected": false,
+  "wrong_private_witness": false
+}

@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "public_test_vectors_only": true,
+  "purpose": "Reproduce official SEP-5 derivation and distinguish a root seed, Ed25519 leaf seed, and expanded signing scalar.",
+  "warning": "All fixtures are published test credentials. Never fund or reuse these keys. The checker prints no mnemonic, seed, chain code, or scalar bytes.",
+  "claims_excluded": [
+    "zero-knowledge proof",
+    "operational recovery",
+    "quantum key recovery",
+    "post-quantum security certification",
+    "proof of randomly generated mnemonic entropy"
+  ],
+  "sources": [
+    {
+      "title": "Stellar SEP-5, official Test Cases 1–5",
+      "url": "https://github.com/stellar/stellar-protocol/blob/f2d364902615af726b3533021403c8b225aa6e5d/ecosystem/sep-0005.md",
+      "reviewed_on": "2026-10-19",
+      "selection": "Accounts 0, 1 and 9 from each example; public G-addresses, BIP39 seed and m/44'/148' parent seed.",
+      "revision": "f2d364902615af726b3533021403c8b225aa6e5d"
+    },
+    {
+      "title": "SLIP-0010: hardened Ed25519 derivation",
+      "url": "https://github.com/satoshilabs/slips/blob/master/slip-0010.md"
+    },
+    {
+      "title": "BIP-39: mnemonic normalization and PBKDF2",
+      "url": "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki"
+    },
+    {
+      "title": "RFC8032 sections 5.1.5 and 6: seed expansion/clamping and scalar group arithmetic",
+      "url": "https://www.rfc-editor.org/rfc/rfc8032#section-5.1.5"
+    },
+    {
+      "title": "Stellar StrKey encoding: CRC16-XModem and version bytes",
+      "url": "https://github.com/stellar/rs-stellar-strkey/blob/main/src/strkey.rs"
+    }
+  ],
+  "dependency": {
+    "name": "PyNaCl",
+    "version": "1.6.2",
+    "role": "Independent libsodium Ed25519 seed-to-public and scalar-to-public operations; no ZK implementation."
+  },
+  "relation": {
+    "root": "S = PBKDF2-HMAC-SHA512(UTF8(NFKD(mnemonic)), UTF8(\"mnemonic\" + NFKD(passphrase)), iterations=2048, length=64). The salt prefix is the literal string \"mnemonic\".",
+    "leaf": "k = SLIP-0010-Ed25519(S, [44 hardened, 148 hardened, account hardened]).",
+    "public": "a = clamp(SHA512(k)[0:32]); A = a * B; compare A with the CRC-checked official G-address.",
+    "distinction": "A Shor-capable adversary is modeled as learning a modulo subgroup order, not k or S. This checker obtains a from the published seed and demonstrates no quantum attack.",
+    "limits": "Reproducing derivation establishes a compatibility vector, not possession proof, entropy measurement, quantum soundness, or correct on-chain authorization."
+  },
+  "vectors": [
+    {
+      "id": "sep5-test-1",
+      "mnemonic": "illness spike retreat truth genius clock brain pass fit cave bargain toe",
+      "passphrase": "",
+      "expected_bip39_seed_hex": "e4a5a632e70943ae7f07659df1332160937fad82587216a4c64315a0fb39497ee4a01f76ddab4cba68147977f3a147b6ad584c41808e8238a07f6cc4b582f186",
+      "expected_parent_seed_hex": "e0eec84fe165cd427cb7bc9b6cfdef0555aa1cb6f9043ff1fe986c3c8ddd22e3",
+      "accounts": [
+        {
+          "index": 0,
+          "address": "GDRXE2BQUC3AZNPVFSCEZ76NJ3WWL25FYFK6RGZGIEKWE4SOOHSUJUJ6"
+        },
+        {
+          "index": 1,
+          "address": "GBAW5XGWORWVFE2XTJYDTLDHXTY2Q2MO73HYCGB3XMFMQ562Q2W2GJQX"
+        },
+        {
+          "index": 9,
+          "address": "GBTVYYDIYWGUQUTKX6ZMLGSZGMTESJYJKJWAATGZGITA25ZB6T5REF44"
+        }
+      ]
+    },
+    {
+      "id": "sep5-test-2",
+      "mnemonic": "resource asthma orphan phone ice canvas fire useful arch jewel impose vague theory cushion top",
+      "passphrase": "",
+      "expected_bip39_seed_hex": "7b36d4e725b48695c3ffd2b4b317d5552cb157c1a26c46d36a05317f0d3053eb8b3b6496ba39ebd9312d10e3f9937b47a6790541e7c577da027a564862e92811",
+      "expected_parent_seed_hex": "2e5d4e6b54a4b96c5e887c9ec92f619a3c134d8b1059dcef15c1a9b228ae3751",
+      "accounts": [
+        {
+          "index": 0,
+          "address": "GAVXVW5MCK7Q66RIBWZZKZEDQTRXWCZUP4DIIFXCCENGW2P6W4OA34RH"
+        },
+        {
+          "index": 1,
+          "address": "GDFCYVCICATX5YPJUDS22KM2GW5QU2KKSPPPT2IC5AQIU6TP3BZSLR5K"
+        },
+        {
+          "index": 9,
+          "address": "GB3C6RRQB3V7EPDXEDJCMTS45LVDLSZQ46PTIGKZUY37DXXEOAKJIWSV"
+        }
+      ]
+    },
+    {
+      "id": "sep5-test-3",
+      "mnemonic": "bench hurt jump file august wise shallow faculty impulse spring exact slush thunder author capable act festival slice deposit sauce coconut afford frown better",
+      "passphrase": "",
+      "expected_bip39_seed_hex": "937ae91f6ab6f12461d9936dfc1375ea5312d097f3f1eb6fed6a82fbe38c85824da8704389831482db0433e5f6c6c9700ff1946aa75ad8cc2654d6e40f567866",
+      "expected_parent_seed_hex": "df474e0dc2711089b89af6b089aceeb77e73120e9f895bd330a36fa952835ea8",
+      "accounts": [
+        {
+          "index": 0,
+          "address": "GC3MMSXBWHL6CPOAVERSJITX7BH76YU252WGLUOM5CJX3E7UCYZBTPJQ"
+        },
+        {
+          "index": 1,
+          "address": "GB3MTYFXPBZBUINVG72XR7AQ6P2I32CYSXWNRKJ2PV5H5C7EAM5YYISO"
+        },
+        {
+          "index": 9,
+          "address": "GDXOY6HXPIDT2QD352CH7VWX257PHVFR72COWQ74QE3TEV4PK2KCKZX7"
+        }
+      ]
+    },
+    {
+      "id": "sep5-test-4",
+      "mnemonic": "cable spray genius state float twenty onion head street palace net private method loan turn phrase state blanket interest dry amazing dress blast tube",
+      "passphrase": "p4ssphr4se",
+      "expected_bip39_seed_hex": "d425d39998fb42ce4cf31425f0eaec2f0a68f47655ea030d6d26e70200d8ff8bd4326b4bdf562ea8640a1501ae93ccd0fd7992116da5dfa24900e570a742a489",
+      "expected_parent_seed_hex": "c83c61dc97d37832f0f20e258c3ba4040a258800fd14abaff124a4dee114b17e",
+      "accounts": [
+        {
+          "index": 0,
+          "address": "GDAHPZ2NSYIIHZXM56Y36SBVTV5QKFIZGYMMBHOU53ETUSWTP62B63EQ"
+        },
+        {
+          "index": 1,
+          "address": "GDY47CJARRHHL66JH3RJURDYXAMIQ5DMXZLP3TDAUJ6IN2GUOFX4OJOC"
+        },
+        {
+          "index": 9,
+          "address": "GBOSMFQYKWFDHJWCMCZSMGUMWCZOM4KFMXXS64INDHVCJ2A2JAABCYRR"
+        }
+      ]
+    },
+    {
+      "id": "sep5-test-5",
+      "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
+      "passphrase": "",
+      "expected_bip39_seed_hex": "5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4",
+      "expected_parent_seed_hex": "03df7921b4f789040e361d07d5e4eddad277c376350d7b5d585400a0ef18f2f5",
+      "accounts": [
+        {
+          "index": 0,
+          "address": "GB3JDWCQJCWMJ3IILWIGDTQJJC5567PGVEVXSCVPEQOTDN64VJBDQBYX"
+        },
+        {
+          "index": 1,
+          "address": "GDVSYYTUAJ3ACHTPQNSTQBDQ4LDHQCMNY4FCEQH5TJUMSSLWQSTG42MV"
+        },
+        {
+          "index": 9,
+          "address": "GAKFARYSPI33KUJE7HYLT47DCX2PFWJ77W3LZMRBPSGPGYPMSDBE7W7X"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Used only by the public-fixture relation checker, not the contracts or a ZK backend.
+PyNaCl==1.6.2

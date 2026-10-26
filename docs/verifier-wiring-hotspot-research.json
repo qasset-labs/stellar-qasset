@@ -1,0 +1,61 @@
+{
+  "schema": "qasset-verifier-wiring-hotspot-research-v1",
+  "status": "completed_research_hotspot_identification_not_soroban_instruction_count",
+  "recorded_at_utc": "2026-10-23T00:00:00+00:00",
+  "security_approved": false,
+  "pinned_upstream_commit": "115108d5a661d95c0b474b6ab02558bfe6c6bec7",
+  "purpose": "verifier-profile-research.json located WHICH top-level step of ZKVerifier::verify dominates cost (94-97% in the second step, wrapped_channel.finish()) using the pinned verifier's own tracing::info_span! instrumentation, but stated that step 'cannot be decomposed further without new spans in pinned source' -- which this project does not add, to avoid modifying pinned/vendored dependency code. This file closes that gap with a different, span-free technique: a pure-userspace, signal-based sampling profiler, which needs no new spans and touches no pinned source, to get real function-level attribution inside that step.",
+  "source_sha256": {
+    "tools/binius-verifier-profile-research/Cargo.toml": "adef35f1fce82b06084c13eca990f785e55ab6f8b106f219095283fbe4b08937",
+    "tools/binius-verifier-profile-research/.cargo/config.toml": "ff65818900a2a2baedf88cca177e59613b5da9cf902165831efd492240010a0b",
+    "tools/binius-verifier-profile-research/src/bin/pprof_profile.rs": "0d51d0dffbbe277e9e27b1dc6a094513c6f8ac81ebdf088d17d7dbd700fa0aa2",
+    "tools/binius-verifier-port/target/fixtures/fixed-setup.bin": "4d6fd19ea0092a261ed7041985b679ecad4b45f9cc6452a7a717979be7c35ef3",
+    "tools/binius-verifier-port/target/fixtures/proof.bin": "e383a3cc44c30b0028b764e11130bdb27454221e0d67a5b82d90abe70047f461",
+    "pinned_upstream (read-only reference, not vendored again) crates/spartan-verifier/src/wiring.rs": "148a9e515710bad8244053fec8e759c2fdbfb77441508b53f57876683828a6d1",
+    "pinned_upstream (read-only reference, not vendored again) crates/spartan-verifier/src/lib.rs": "c17db531cc2da24c93078bb45f3ec9e41bc4c0f0b4b01e081c358a19e576e201",
+    "pinned_upstream (read-only reference, not vendored again) crates/math/src/multilinear/eq.rs": "1aed2bbed8e3588c00bd66d627bab91929002a0a8684d7a160e6b20fd9526f8f"
+  },
+  "method": "Added the `pprof` crate (v0.15.0, SIGPROF-based signal sampling, no perf_event_open, no system package install, no sudo) as a dependency of the existing research tool via `cargo add pprof --features flamegraph,frame-pointer`, in a new binary `src/bin/pprof_profile.rs` alongside the existing tracing-span binary (unmodified). Initial runs captured zero resolved stack frames per sample; debugging found pprof's frame-pointer unwinder needs the binary actually built with forced frame pointers, which a scoped `.cargo/config.toml` (`rustflags = [\"-C\", \"force-frame-pointers=yes\"]`, applying only to this tool directory) supplies without touching any other crate's build settings. Two passes were then run against the same pinned, SHA256-verified fixtures used throughout this project's Binius64 evidence: a module-level pass (3 runs of 300 verify_preprocessed_detailed iterations at 2000 Hz, ~8000 samples per run) and one function-level pass (400 iterations at 1000 Hz, 3181 samples) for representative per-function detail.",
+  "module_level_breakdown_pct_of_samples_3_run_range": {
+    "binius_spartan_verifier::wiring": "71.10 - 71.44",
+    "binius_math::multilinear": "15.02 - 15.51",
+    "binius_spartan_verifier::IOPVerifier<F>": "3.82 - 4.14",
+    "binius_hash::compress": "2.29 - 2.78",
+    "sha2::block_api": "1.71 - 2.02",
+    "binius_verifier::protocols": "1.11 - 1.57",
+    "binius_math::line": "0.98 - 1.95",
+    "binius_field::ghash": "0.57 - 1.83",
+    "note": "Grouped by the first two '::'-path segments of each sample's leaf (innermost) resolved frame. Ranges are the min-max across the 3 independent runs (~8000 samples each), not a single point estimate, to show sampling variance honestly."
+  },
+  "function_level_breakdown_pct_of_samples_one_representative_run": {
+    "total_samples": 3181,
+    "rows": [
+      {"leaf_frame": "binius_spartan_verifier::wiring::evaluate_segment_wiring_mle", "pct": 44.01},
+      {"leaf_frame": "binius_spartan_verifier::wiring::evaluate_wiring_mle_public", "pct": 22.01},
+      {"leaf_frame": "binius_math::multilinear::eq::eq_ind_partial_eval_scalars", "pct": 15.09},
+      {"leaf_frame": "binius_spartan_verifier::wiring::eval_transparent::{{closure}}", "pct": 5.44},
+      {"leaf_frame": "binius_spartan_verifier::IOPVerifier<F>::verify::{{closure}}", "pct": 3.62},
+      {"leaf_frame": "binius_hash::compress::sha256::Sha256Compression::compress (Merkle-tree compression)", "pct": 2.86},
+      {"leaf_frame": "sha2::block_api::Sha256VarCore::update_blocks", "pct": 1.23},
+      {"leaf_frame": "binius_iop::fri::fold::fold_pair", "pct": 1.07}
+    ],
+    "note": "eq_ind_partial_eval_scalars is called FROM evaluate_segment_wiring_mle (confirmed by reading wiring.rs); it is not an independent cost center, so the wiring module's effective total is closer to 44.01+22.01+15.09+5.44 = ~86.6% of this run's samples, not just the 71% module-level figure (which groups by leaf frame's own module, undercounting a shared helper's module if it were attributed to binius_math instead -- shown here unmerged for transparency)."
+  },
+  "why_wiring_dominates": {
+    "structurally_expected_cost": "Confirmed directly against crates/spartan-verifier/src/lib.rs:195-237: two eval_transparent closures (wiring.rs) are built, one per WitnessSegment (Precommit, Private), both sharing one cached r_x_tensor, and invoked via channel.verify_oracle_relations(...). Each resulting evaluate_segment_wiring_mle call (wiring.rs) loops over every multiplication constraint in the real, padded constraint system (sized by the actual SHA-512/clamp/scalar-mult seed-recovery relation's full gate count) and, per constraint, sums over each of the 3 operands' (a, b, c) wire lists. This is linear in (constraint count x fan-in per operand) field-arithmetic work -- the structurally expected cost of evaluating a real circuit's wiring MLE at verification time, not an implementation defect.",
+    "candidate_inefficiency_unconfirmed": "evaluate_segment_wiring_mle's own doc comment states r_x_tensor is accepted as a parameter specifically 'to avoid redundant computation when evaluating multiple segments with the same r_x' -- and lib.rs:224-237 does pass the identical r_x_tensor to both the Precommit and Private calls. There is no equivalent caching for the r_y side: the function recomputes `eq_ind_partial_eval_scalars(r_y)` from scratch on every call (wiring.rs). Whether r_y is actually identical across the Precommit and Private calls in verify_oracle_relations (which would make this a real, confirmable redundant computation) was not measured here and is not assumed; stated as a candidate worth a future, narrowly-scoped measurement, not a confirmed bug or a proposed fix."
+  },
+  "conclusion": "This identifies WHERE the dominant verification cost is, at function granularity, going beyond verifier-profile-research.json's step-level result. It does not close F-01: it does not reduce CPU cost, does not reduce SDK code size, and does not change A-01 or F-01's status in SECURITY_REVIEW.md's findings table. Actually modifying evaluate_segment_wiring_mle or evaluate_wiring_mle_public's behavior would mean either forking the pinned binius-spartan-verifier/binius-math crates under a new, separately-maintained name (a substantial, security-sensitive undertaking needing its own independent review before any such change could be trusted) or proposing a change upstream to the real IrreducibleOSS/binius64 project (an external-visibility action). Neither was attempted; this round deliberately stops at diagnosis and hands the optimization question to a future, explicitly-scoped engineering task or to the eventual independent cryptographic reviewer already scoped in BINIUS_A01_REVIEW_SCOPE.md.",
+  "scope_and_limits": [
+    "Native, single-threaded, release-build sampling-profiler proxy; not a Soroban metered-instruction count.",
+    "Sampling-based, not exhaustive: percentages are statistical estimates. The module-level breakdown is reported as a 3-run range, not a single average, to show real run-to-run variance rather than hide it.",
+    "Does not modify, re-time, or add instrumentation to pinned/vendored source; all measurement happens from this project's own, separate research-tool code calling the existing public API from outside.",
+    "The r_y-caching observation under why_wiring_dominates is an unconfirmed candidate, not a verified defect or a recommended code change.",
+    "Confirms the existing canonical fixture is accepted in every run; performs no new cryptographic claim and changes no account, asset, or authorization state."
+  ],
+  "reproduce": [
+    "cd tools/binius-verifier-profile-research && cargo build --release --bin pprof_profile",
+    "./target/release/pprof_profile ../binius-verifier-port/target/fixtures/fixed-setup.bin ../binius-verifier-port/target/fixtures/proof.bin 300 2000   # module-level pass, repeat x3",
+    "./target/release/pprof_profile ../binius-verifier-port/target/fixtures/fixed-setup.bin ../binius-verifier-port/target/fixtures/proof.bin 400 1000   # function-level pass"
+  ]
+}

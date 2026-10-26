@@ -1,0 +1,192 @@
+{
+  "schema": "qasset-binius-binaryen-size-probe-v1",
+  "status": "passed_raw_wasm_fixed_fixture_optimizer_probe_only",
+  "security_approved": false,
+  "soroban_compatible": false,
+  "frozen_package_source_manifest_verified": true,
+  "frozen_source_count": 319,
+  "frozen_provenance_sha256": "5611d40296c689adf12cf284cc977620200762827137c4c2343395125bb0728b",
+  "optimizer": "stellar CLI26.0.0 embedded optimizer; optimize command deprecated in favor of build --optimize",
+  "commands": [
+    [
+      "stellar",
+      "contract",
+      "optimize",
+      "--wasm",
+      "/tmp/qasset-binius-port-package/target/bin/qasset_binius_wasm_fixture.wasm",
+      "--wasm-out",
+      "/tmp/qasset-binius-optimize-probe/qasset_binius_wasm_fixture.optimized.wasm"
+    ],
+    [
+      "/tmp/qasset-binius-port-package/target/bin/qasset-wasm-inspect",
+      "/tmp/qasset-binius-optimize-probe/qasset_binius_wasm_fixture.optimized.wasm"
+    ],
+    [
+      "node",
+      "/tmp/qasset-binius-port-package/test_wasm.mjs",
+      "/tmp/qasset-binius-optimize-probe/qasset_binius_wasm_fixture.optimized.wasm",
+      "/tmp/qasset-binius-optimize-probe/wasm-results.json"
+    ]
+  ],
+  "source": {
+    "path": "/tmp/qasset-binius-port-package/target/bin/qasset_binius_wasm_fixture.wasm",
+    "sha256": "0bb7e380dfa8700627c2a86e2dcf75848977625cbe7a36e45bf094102f2a78f3",
+    "bytes": 3604811,
+    "code_section_bytes": 229052,
+    "sections": [
+      {
+        "id": 1,
+        "payload_bytes": 366
+      },
+      {
+        "id": 3,
+        "payload_bytes": 424
+      },
+      {
+        "id": 4,
+        "payload_bytes": 5
+      },
+      {
+        "id": 5,
+        "payload_bytes": 5
+      },
+      {
+        "id": 6,
+        "payload_bytes": 25
+      },
+      {
+        "id": 7,
+        "payload_bytes": 164
+      },
+      {
+        "id": 9,
+        "payload_bytes": 189
+      },
+      {
+        "id": 10,
+        "payload_bytes": 229052
+      },
+      {
+        "id": 11,
+        "payload_bytes": 3333580
+      },
+      {
+        "id": 0,
+        "payload_bytes": 40847
+      },
+      {
+        "id": 0,
+        "payload_bytes": 77
+      },
+      {
+        "id": 0,
+        "payload_bytes": 34
+      }
+    ]
+  },
+  "optimized": {
+    "path": "/tmp/qasset-binius-optimize-probe/qasset_binius_wasm_fixture.optimized.wasm",
+    "sha256": "0c93f5fa4bd10be3257f227db5919cce14ca03b176610f76495de73fae733d11",
+    "bytes": 3513618,
+    "code_section_bytes": 197877,
+    "sections": [
+      {
+        "id": 1,
+        "payload_bytes": 238
+      },
+      {
+        "id": 3,
+        "payload_bytes": 266
+      },
+      {
+        "id": 4,
+        "payload_bytes": 5
+      },
+      {
+        "id": 5,
+        "payload_bytes": 5
+      },
+      {
+        "id": 6,
+        "payload_bytes": 25
+      },
+      {
+        "id": 7,
+        "payload_bytes": 164
+      },
+      {
+        "id": 9,
+        "payload_bytes": 172
+      },
+      {
+        "id": 12,
+        "payload_bytes": 2
+      },
+      {
+        "id": 10,
+        "payload_bytes": 197877
+      },
+      {
+        "id": 11,
+        "payload_bytes": 3314689
+      },
+      {
+        "id": 0,
+        "payload_bytes": 77
+      },
+      {
+        "id": 0,
+        "payload_bytes": 57
+      }
+    ]
+  },
+  "code_section_reduction_bytes": 31175,
+  "code_section_reduction_percent": 13.610446536157728,
+  "recorded_contract_code_cap_bytes": 131072,
+  "code_section_exceeds_recorded_cap_by_bytes": 66805,
+  "raw_wasm_checks_passed": 9,
+  "transcript_golden_passed": true,
+  "largest_observed_linear_memory_bytes": 41549824,
+  "actual_memory_maximum_bytes": 41943040,
+  "inspection": {
+    "bytes": 3513618,
+    "exports": [
+      "memory",
+      "qasset_allocated_end",
+      "qasset_error_len",
+      "qasset_error_ptr",
+      "qasset_phase",
+      "qasset_transcript_vector",
+      "qasset_verify_fixture",
+      "__data_end",
+      "__heap_base"
+    ],
+    "float_operator_count": 0,
+    "float_operators": [],
+    "imports": [],
+    "memories": [
+      {
+        "initial_pages": 67,
+        "maximum_pages": 640,
+        "memory64": false,
+        "shared": false
+      }
+    ],
+    "no_float_simd_threads_validation": "passed",
+    "operator_count": 96332
+  },
+  "raw_wasm_results_sha256": "43aad228bb8b227e6e8433efb751f0d58c2f10c3a2f12349ff6bf72f4e1212ae",
+  "applicable_instructions_read_before_port": [
+    "/tmp/qasset-binius64-pinned/AGENTS.md",
+    "/tmp/qasset-binius64-pinned/CONTRIBUTING.md"
+  ],
+  "limitations": [
+    "Raw Node/V8 execution is not Soroban host metering",
+    "Optimized module embeds public setup/proof fixture data",
+    "Code section alone remains above recorded contract code cap",
+    "These checks do not establish independent quantum knowledge or zero-knowledge security",
+    "No Stellar RPC, transaction or deployment was performed"
+  ],
+  "stellar_rpc_requests": 0,
+  "submitted_transactions": 0
+}

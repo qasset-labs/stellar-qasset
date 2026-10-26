@@ -1,0 +1,187 @@
+{
+  "schema": "qasset-poc-remediation-validation-v1",
+  "status": "PASS",
+  "recorded_at_utc": "2026-10-25T15:17:57.319576+00:00",
+  "implementation_commit": "52845f7a364ddcf09de7eb8b48f217ec4f9be8ca",
+  "baseline_commit": "06b00f0",
+  "findings": [
+    {
+      "id": "AUD-01",
+      "severity": "High",
+      "status": "CLOSED",
+      "fix": "Pin raw failure causes and diagnostics; independently validate signature validity, intended mutations, consumed replay credentials, issuer signature and post-lock interval. Historical transcripts remain explicitly scoped.",
+      "regressions": [
+        "test_budget_failure_cannot_replace_policy_rejection_even_with_recomputed_hashes",
+        "test_wrong_network_credential_cannot_be_relabelled_as_a_replay",
+        "test_unsigned_payment_is_not_evidence_of_an_issuer_key_being_disabled",
+        "test_mint_probe_requires_a_valid_operator_signature",
+        "test_contract_error_must_be_present_in_raw_diagnostics"
+      ]
+    },
+    {
+      "id": "AUD-02",
+      "severity": "High",
+      "status": "CLOSED",
+      "fix": "Capture required baseline source, lockfiles, pinned research and public fixtures; add hash-pinned Python dependencies and a locked reproduction command; validate a source export with empty build directories.",
+      "evidence": "evidence/qasset-clean-reproduction.json"
+    },
+    {
+      "id": "AUD-03",
+      "severity": "Medium",
+      "status": "CLOSED",
+      "fix": "Bind every raw read ledger to the collection interval, reject future timestamps, explicitly label generator time untrusted, and require schema v2 tool/version/source and configuration metadata. Legacy compatibility is limited to exact immutable historical assessments.",
+      "regressions": [
+        "test_raw_rpc_ledgers_must_lie_in_the_claimed_assessment_interval",
+        "test_future_timestamp_is_rejected_after_rehashing",
+        "test_v2_requires_the_tool_version_and_rejects_schema_downgrades"
+      ]
+    },
+    {
+      "id": "AUD-04",
+      "severity": "Low",
+      "status": "CLOSED",
+      "fix": "Return structured STALE paths for changed authority and INCONCLUSIVE with no freshness claim for unavailable required live receipts/network evidence.",
+      "regressions": [
+        "test_authority_change_returns_structured_stale_paths",
+        "test_missing_live_receipt_is_inconclusive_and_does_not_claim_freshness"
+      ]
+    }
+  ],
+  "additional_acceptance_items": {
+    "assessment_tool_version": "2.0.0",
+    "revision_conflicts": "Implemented and tested by set_role_quorum_if_revision; all current PoC declarations use it; legacy unconditional writes remain explicit compatibility behavior."
+  },
+  "clean_checkout": {
+    "commit": "52845f7a364ddcf09de7eb8b48f217ec4f9be8ca",
+    "path": "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/checkout",
+    "initial_build_directories_present": false,
+    "python": "/home/mohamed/stellar-qasset/target/poc-reproduction-52845f7/venv/bin/python",
+    "host_test_debug_information": false
+  },
+  "tests_passed": {
+    "workspace": 90,
+    "signer": 4,
+    "python": 124,
+    "total": 218,
+    "public_credential_helper_unit_tests": 0
+  },
+  "helper_coverage": "The public credential helper is built and exercised by the evidence verification and Python tamper tests; zero standalone Rust unit tests are counted for this helper.",
+  "wasm_hashes_matched": {
+    "target/wasm32v1-none/release/qasset_sac_admin.wasm": {
+      "sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6",
+      "bytes": 59167
+    },
+    "target/wasm32v1-none/release/qasset_registry.wasm": {
+      "sha256": "26f684edb7e3255ac1617f1455fbfcf886a0f5b189f31974b873a5bc0f98a207",
+      "bytes": 28553
+    }
+  },
+  "commands_completed": 14,
+  "clean_reproduction_report": {
+    "path": "evidence/qasset-clean-reproduction.json",
+    "sha256": "fba4d559ce610b3a05a1ac590539171eadcae3bac91942134b0f1235b45fcc07"
+  },
+  "live_verification": {
+    "status": "SUCCESS",
+    "consistent": true,
+    "fresh": true,
+    "paths_checked": 32,
+    "stale_paths": [],
+    "historical_rejections": "recorded RPC transcripts; credential semantics checked; not signed attestations",
+    "scope": "live Testnet verification",
+    "transactions_rechecked": 28,
+    "current_policy_revisions": {
+      "QEXP": 4,
+      "QCTL": 3
+    },
+    "verified_at_utc": "2026-10-25T15:01:21.707007+00:00",
+    "latest_ledger": 5383378
+  },
+  "staleness_verification": {
+    "status": "STALE",
+    "transactions_rechecked": 27,
+    "stale_paths": 16,
+    "current_policy_revisions": {
+      "QEXP": 4,
+      "QCTL": 3
+    },
+    "verified_at_utc": "2026-10-25T15:01:05.629047+00:00"
+  },
+  "testnet_observations": {
+    "transaction": 28,
+    "simulation": 10,
+    "submission_rejection": 1
+  },
+  "assessment_paths": 32,
+  "assessment_status_counts": {
+    "EXPOSED": 5,
+    "TESTED_PASS": 4,
+    "TESTED_REJECT": 11,
+    "UNCOVERED": 10,
+    "DECLARED": 2
+  },
+  "hygiene": {
+    "tracked_files_scanned": 1241,
+    "valid_stellar_secret_seed_patterns": [],
+    "suspicious_key_filenames": []
+  },
+  "internal_review_passes": [
+    {
+      "pass": 1,
+      "perspective": "Native issuer authority",
+      "result": "PASS within PoC scope",
+      "evidence": "Live issuer configuration and receipts confirm QEXP classic Payment/flags exposure, the fresh QCTL zero-weight lock, a correctly signed txBAD_AUTH submission rejection and a later successful ML-DSA transaction."
+    },
+    {
+      "pass": 2,
+      "perspective": "Smart-account authorization",
+      "result": "PASS within PoC scope",
+      "evidence": "All 21 administrator tests pass through real credentials; the fixed contract rejects unsupported functions, wrong contexts, different arguments, replay, expiry and nested trees. No outgoing SAC or upgrade entry point was added."
+    },
+    {
+      "pass": 3,
+      "perspective": "Cryptography and key handling",
+      "result": "PASS for functional integration; implementation remains unaudited",
+      "evidence": "The public-only helper checks real ML-DSA credentials and the exact corruption/network mutations. Four signer tests verify fresh-key use, private external storage and filesystem checks. The 14 recovery-candidate tests include the retained official-vector regressions."
+    },
+    {
+      "pass": 4,
+      "perspective": "Authority analysis and configuration binding",
+      "result": "PASS within supported configurations",
+      "evidence": "All 32 paths recompute against the two supported assets. Schema v2 binds issuer identifiers, signers, thresholds, flags, administrator, executable, revisions, mechanism, tool version and source identity. Declared policy stays Unverified."
+    },
+    {
+      "pass": 5,
+      "perspective": "Evidence verification",
+      "result": "PASS for the specified verifier",
+      "evidence": "Recomputed-checksum attacks covering budget failures, replay substitution, unsigned Payment, false ledger/time metadata, missing tool identity and schema downgrade reject. Error diagnostics and real credential semantics are validated. Missing live receipts produce INCONCLUSIVE; authority changes produce structured STALE paths."
+    },
+    {
+      "pass": 6,
+      "perspective": "Adversarial tests and revision concurrency",
+      "result": "PASS within guarded API",
+      "evidence": "The 36 registry tests include stale-write rollback/event checks and exact tenant authorization. Both assets rejected a stale revision in enforced Testnet simulation. Every declaration in this PoC uses the guarded setter; the legacy unconditional API remains available."
+    },
+    {
+      "pass": 7,
+      "perspective": "Originality and claim boundaries",
+      "result": "PASS for documented scope",
+      "evidence": "The contribution demonstrated is the combination of actual SAC authorization, independent classical issuer paths and configuration-bound evidence. No new signature algorithm, universal asset-safety status, external audit or completed recovery backend is claimed."
+    },
+    {
+      "pass": 8,
+      "perspective": "Feasibility and reproducibility",
+      "result": "PASS for the authority PoC",
+      "evidence": "A tracked-source export initially contained no build directories. Its isolated, hash-pinned Python environment and locked Cargo build passed all 218 tests and matched the reference Wasm hashes. Five research checks passed within their explicitly limited scopes; no fresh ZK proof generation or quantum-soundness validation occurred."
+    }
+  ],
+  "review_scope": "Eight internal review passes; not an external or independent security audit.",
+  "research_scope": "Pinned source/record checks, public relation checks and retained-proof transport measurement only. Optional ignored derived verifier artifacts are explicitly reported as absent in the clean checkout. No new proofs or security approvals were generated.",
+  "remaining_boundaries": [
+    "Unaudited RustCrypto ml-dsa 0.1.1 verification inside Wasm, not CAP-87.",
+    "Historical negative RPC transcripts are not signed ledger attestations.",
+    "Transaction/fee-payer and registry administration remain classical.",
+    "Recovery research findings A-01 and F-01 remain open and outside this authority PoC.",
+    "Older recovery deployments remain historical pre-patch instances; no replacement deployment is claimed."
+  ]
+}

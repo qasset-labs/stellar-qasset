@@ -1,0 +1,37 @@
+{
+  "scope": "deterministic_field_arithmetic_equivalence_only_not_security_proof",
+  "reference": "unchanged_original_native64_Binius_field_inverse",
+  "reference_sha256": "a741800dfa972fd61ceb7494506918e3afb0c0b8b733bc224ca735452365da5a",
+  "vectors": 646,
+  "input_coverage": [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "all_bits_one",
+    "highest_bit",
+    "all128_single_bit_basis_values",
+    "512_SHA256_derived_deterministic_pseudorandom_values"
+  ],
+  "results": [
+    {
+      "name": "original_wasm_table",
+      "wasm_sha256": "9e6118df36f0fb64fc71e4d5de1f6331c0db1a1020cb184f5f237903baef6356",
+      "vectors": 646,
+      "elapsed_ms": 57.49451800000003,
+      "output_sha256": "e1ca5eaf004ae40e6bc1388ca223c7f3420c82eacad57ab1737740dfb36100d6",
+      "failures": [],
+      "all_passed": true
+    },
+    {
+      "name": "compact_wasm_squaring",
+      "wasm_sha256": "0df1c3541b2c98ed0bbeed619ec709ef9fcfe98520eb0bc26a958769dd95879a",
+      "vectors": 646,
+      "elapsed_ms": 47.526332000000025,
+      "output_sha256": "e1ca5eaf004ae40e6bc1388ca223c7f3420c82eacad57ab1737740dfb36100d6",
+      "failures": [],
+      "all_passed": true
+    }
+  ],
+  "all_passed": true
+}

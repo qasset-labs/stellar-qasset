@@ -1,0 +1,483 @@
+{
+  "schema": "qasset-authority-assessment-v2",
+  "generated_at_utc": "2026-10-25T13:45:12.756146+00:00",
+  "timestamp_source": "generator clock; not independently attested",
+  "tool": {
+    "name": "qasset-authority-analyzer",
+    "version": "2.0.0",
+    "source_sha256": {
+      "scripts/qasset_authority_analyzer.py": "4b3360c26f031f6128ce8ba385d8472b9983f0522b1743e0cd52e273b9490c4b",
+      "scripts/verify_qasset_evidence.py": "16d96c5ae372ec8ea9b1ed1152f802be0999e41e34fa6d23b952bc7ca2850bc6",
+      "tools/qasset-evidence-crypto/src/main.rs": "9d4e5f250b88f105f7d334f322e5600e9a1f9d2729556ea903d5cc993af2acc2",
+      "tools/qasset-evidence-crypto/Cargo.lock": "e69bd12624824c01f92e671027e4a8293ec849a6de04412214039b2256cb7c84",
+      "tools/qasset-evidence-crypto/Cargo.toml": "c0e764ddfe024cf775cb554dfdcb89c86e1e3132d9ab57b5eca22e944cb9376c",
+      "scripts/requirements-poc.lock": "915ff6d93fdcf630a9f39e63175f3002fb5909b60d03389073daf3e2ec754161"
+    }
+  },
+  "network": "testnet",
+  "network_passphrase": "Test SDF Network ; September 2015",
+  "ledger_sequence_read": 5382422,
+  "ledger_range": [
+    5382416,
+    5382422
+  ],
+  "registry": "CAT6N26Q6W7ONAAGKZ3P6AGRLQVDBANJNGECH6NHZSZE2C4O7YIFQI6P",
+  "assets": {
+    "QEXP": {
+      "sac": "CBM4OANSC4M3HVKEFHBQHUAKLJH64OE73FSIDAPBPDFFAEQJ26XALLIS",
+      "policy_revision": 3,
+      "issuer": "GC5SXB4PO5FWSTO4LYYPDZODXA6VEA3W3EDCFKXLQXOUYW2GLY7LUXBL",
+      "holder": "GCSJ6BPWNNYLINSEZKO7X3M2HKHKIA4OEXPCH7HHYFADSKEDXLXPQ6Z3",
+      "administrator": "CCCZU3NFFPP7WKZ2TP6FH5OHWTHMKBVPQA3V2LYVOHMYTWTTFFPX6CVE",
+      "issuer_signers": [
+        {
+          "weight": 1,
+          "key": "GC5SXB4PO5FWSTO4LYYPDZODXA6VEA3W3EDCFKXLQXOUYW2GLY7LUXBL",
+          "type": "ed25519_public_key"
+        }
+      ],
+      "issuer_thresholds": {
+        "low_threshold": 1,
+        "med_threshold": 1,
+        "high_threshold": 1
+      },
+      "issuer_flags": {
+        "auth_required": true,
+        "auth_revocable": true,
+        "auth_immutable": false,
+        "auth_clawback_enabled": false
+      },
+      "administrator_wasm_sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6"
+    },
+    "QCTL": {
+      "sac": "CCIKADRSXS6SOVDNZPIAPDACIK4ARXB5M4M26GZE7R6I6CWQJOCIFMYR",
+      "policy_revision": 3,
+      "issuer": "GCXL44OHQ65L5RM2UKBFA6WD7637W5TMEVLAETX4MMLO7GE2SXH7KG7L",
+      "holder": "GBVJ7WZVZP7VFR57PP2MSNOWD7IEHHE5LCDYGVW7ES24VIFF5QASXMHF",
+      "administrator": "CBHLG3HZ6XTDRFP4MNNP57P5NMQSVW6L54SKVUZBFG22LEBX2GJASB4R",
+      "issuer_signers": [
+        {
+          "weight": 0,
+          "key": "GCXL44OHQ65L5RM2UKBFA6WD7637W5TMEVLAETX4MMLO7GE2SXH7KG7L",
+          "type": "ed25519_public_key"
+        }
+      ],
+      "issuer_thresholds": {
+        "low_threshold": 1,
+        "med_threshold": 1,
+        "high_threshold": 1
+      },
+      "issuer_flags": {
+        "auth_required": true,
+        "auth_revocable": true,
+        "auth_immutable": false,
+        "auth_clawback_enabled": false
+      },
+      "administrator_wasm_sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6"
+    }
+  },
+  "cryptography": {
+    "algorithm": "ML-DSA-65",
+    "implementation": "RustCrypto ml-dsa 0.1.1",
+    "execution": "inside contract Wasm; unaudited; not CAP-87",
+    "context": "qasset-sac-admin-auth-v1",
+    "operator_public_key_sha256": "f62a2a8267fea9391177e64e0aab036c5fd7b6ff3896b9e99acf4ff67e2367fe"
+  },
+  "deployment_input": "deployments/testnet/qasset-poc-revisioned.json",
+  "snapshot_input": "evidence/history/qasset-authority-inputs-revisioned-before-bump.json",
+  "inputs": {
+    "deployments/testnet/qasset-poc-revisioned.json": {
+      "sha256": "47fc088631367709f3834b516af46bfeb9c0947bdd92550df2273925eb444e91",
+      "bytes": 936049
+    },
+    "evidence/history/qasset-authority-inputs-revisioned-before-bump.json": {
+      "sha256": "49d4c10b875f5882fe242493770da97814c9ccf8f5795afedaf212f2fb3741eb",
+      "bytes": 284418
+    },
+    "target/wasm32v1-none/release/qasset_sac_admin.wasm": {
+      "sha256": "f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6",
+      "bytes": 59167
+    },
+    "target/wasm32v1-none/release/qasset_registry.wasm": {
+      "sha256": "26f684edb7e3255ac1617f1455fbfcf886a0f5b189f31974b873a5bc0f98a207",
+      "bytes": 28553
+    },
+    "contracts/qasset-sac-admin/src/lib.rs": {
+      "sha256": "4145322f46a803deb5ce314d4334975fbea21888d56849a30f5ed67b2f37f984",
+      "bytes": 5678
+    },
+    "contracts/qasset-sac-admin/src/test.rs": {
+      "sha256": "2fc4c104aa13f0421fcab8ee800e445a0ef76fd48cc6c5ead9adbbbee6958706",
+      "bytes": 20792
+    },
+    "contracts/qasset-registry/src/lib.rs": {
+      "sha256": "e99710ac46d7abcb5685510b2581feb512bc9a5692db8a3ca78d81c29e9bdc75",
+      "bytes": 23326
+    },
+    "scripts/qasset_poc_testnet.py": {
+      "sha256": "5b1534a022c46f7c5d7631ddc70d2d7b5f98a3488d2cbf061555e996491cc429",
+      "bytes": 23178
+    },
+    "Cargo.lock": {
+      "sha256": "ce660e86e3652037539322a875fd753ce94448fa7c4d4d6046eef802af6822c1",
+      "bytes": 54071
+    },
+    "tools/qasset-sac-signer/Cargo.lock": {
+      "sha256": "47e36a3ac016cfa01b3f2eecaed3829c9ddbb5c1674add22750331f293ebab9f",
+      "bytes": 3984
+    },
+    "scripts/qasset_authority_analyzer.py": {
+      "sha256": "4b3360c26f031f6128ce8ba385d8472b9983f0522b1743e0cd52e273b9490c4b",
+      "bytes": 15470
+    },
+    "scripts/verify_qasset_evidence.py": {
+      "sha256": "16d96c5ae372ec8ea9b1ed1152f802be0999e41e34fa6d23b952bc7ca2850bc6",
+      "bytes": 43088
+    },
+    "tools/qasset-evidence-crypto/src/main.rs": {
+      "sha256": "9d4e5f250b88f105f7d334f322e5600e9a1f9d2729556ea903d5cc993af2acc2",
+      "bytes": 1805
+    },
+    "tools/qasset-evidence-crypto/Cargo.lock": {
+      "sha256": "e69bd12624824c01f92e671027e4a8293ec849a6de04412214039b2256cb7c84",
+      "bytes": 6447
+    },
+    "tools/qasset-evidence-crypto/Cargo.toml": {
+      "sha256": "c0e764ddfe024cf775cb554dfdcb89c86e1e3132d9ab57b5eca22e944cb9376c",
+      "bytes": 197
+    },
+    "scripts/requirements-poc.lock": {
+      "sha256": "915ff6d93fdcf630a9f39e63175f3002fb5909b60d03389073daf3e2ec754161",
+      "bytes": 1827
+    }
+  },
+  "paths": [
+    {
+      "asset": "QEXP",
+      "path": "issuer.classic_signers",
+      "status": "EXPOSED",
+      "detail": "Live issuer signer weights, thresholds and flags are in the input snapshot; classic Ed25519 authority remains.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "issuer.classic_mint",
+      "status": "EXPOSED",
+      "detail": "Classic issuer Payment succeeded after SAC handover.",
+      "citations": [
+        {
+          "observation_id": "observation-034",
+          "kind": "transaction",
+          "hash": "d166ed63ae3cf65d6dfd73a259b5d290c3193f1e8d6b7693844dba27916ae954"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "issuer.trustline_flags",
+      "status": "EXPOSED",
+      "detail": "Classic issuer SetTrustLineFlags remains a separate authorization path.",
+      "citations": [
+        {
+          "observation_id": "observation-035",
+          "kind": "transaction",
+          "hash": "a577275fcaf86b8381431537bc0e82dd934ac57a4b1853cd3a8ce1eca661dd95"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.admin",
+      "status": "TESTED_PASS",
+      "detail": "Confirmed handover transaction and live SAC admin agree with the fixed custom account.",
+      "citations": [
+        {
+          "observation_id": "observation-007",
+          "kind": "transaction",
+          "hash": "4fa9cd7352bd4630538865136e377469e3df839e9ae546ba0519e26776e9fb57"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.set_authorized",
+      "status": "TESTED_PASS",
+      "detail": "ML-DSA-65 credential accepted in Wasm (unaudited ml-dsa 0.1.1); holder trustline authorized.",
+      "citations": [
+        {
+          "observation_id": "observation-023",
+          "kind": "transaction",
+          "hash": "724940b9107b4dae9c130f572e94b981e9d655c02042166d8242a4dace0c2227"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.mint",
+      "status": "TESTED_REJECT",
+      "detail": "Genuine operator credential rejected by the administrator's function policy in enforced simulation.",
+      "citations": [
+        {
+          "observation_id": "observation-026",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.clawback",
+      "status": "UNCOVERED",
+      "detail": "Matched administrator source refuses this function; no live negative probe was run for this function.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "sac.set_admin",
+      "status": "UNCOVERED",
+      "detail": "Matched administrator source refuses this function; no live negative probe was run for this function.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "admin.upgrade",
+      "status": "UNCOVERED",
+      "detail": "Matched build has no upgrade entry point; no separate live upgrade probe was run.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.corrupted_signature",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-024",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.wrong_network_signature",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-025",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "auth.replayed_entry",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-027",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QEXP",
+      "path": "transaction.source_and_fee_payer",
+      "status": "UNCOVERED",
+      "detail": "Transaction and fee-bump envelopes still use Ed25519; custom-account authentication does not replace them.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.admin",
+      "status": "EXPOSED",
+      "detail": "Registry tenant and registrar authority remain with the run's classical Ed25519 deployer.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.policy",
+      "status": "DECLARED",
+      "detail": "Freeze/Mint/Clawback quorums are declarations only; policy_assessment remains Unverified.",
+      "citations": []
+    },
+    {
+      "asset": "QEXP",
+      "path": "registry.revision_conflict",
+      "status": "TESTED_REJECT",
+      "detail": "A stale expected revision was rejected without a policy write.",
+      "citations": [
+        {
+          "observation_id": "observation-022",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "issuer.classic_signers",
+      "status": "UNCOVERED",
+      "detail": "Live issuer has no sufficient Ed25519 weight; other signer types are outside this narrow analyzer.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "issuer.classic_mint",
+      "status": "TESTED_REJECT",
+      "detail": "Classic issuer Payment rejected after this run's gated lock.",
+      "citations": [
+        {
+          "observation_id": "observation-037",
+          "kind": "submission_rejection"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "issuer.trustline_flags",
+      "status": "UNCOVERED",
+      "detail": "No positive-weight issuer signer remains; a separate post-lock SetTrustLineFlags attempt was not run.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "sac.admin",
+      "status": "TESTED_PASS",
+      "detail": "Confirmed handover transaction and live SAC admin agree with the fixed custom account.",
+      "citations": [
+        {
+          "observation_id": "observation-016",
+          "kind": "transaction",
+          "hash": "35c5e52ddf5e4c0d57ad8765a1532073e8b8db47401bb2227215e992a8fc7058"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "sac.set_authorized",
+      "status": "TESTED_PASS",
+      "detail": "ML-DSA-65 credential accepted in Wasm (unaudited ml-dsa 0.1.1); holder trustline authorized. A second transaction succeeded after the issuer lock.",
+      "citations": [
+        {
+          "observation_id": "observation-029",
+          "kind": "transaction",
+          "hash": "937ec4f952119db5e0c511710fb955b3a6c82dcd993a332db96aa3285187c960"
+        },
+        {
+          "observation_id": "observation-038",
+          "kind": "transaction",
+          "hash": "65645f25f02699c3bedb60b5fd73fed8ea76ec954b316dab7ed35e90915d3f42"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "sac.mint",
+      "status": "TESTED_REJECT",
+      "detail": "Genuine operator credential rejected by the administrator's function policy in enforced simulation.",
+      "citations": [
+        {
+          "observation_id": "observation-032",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "sac.clawback",
+      "status": "UNCOVERED",
+      "detail": "Matched administrator source refuses this function; no live negative probe was run for this function.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "sac.set_admin",
+      "status": "UNCOVERED",
+      "detail": "Matched administrator source refuses this function; no live negative probe was run for this function.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "admin.upgrade",
+      "status": "UNCOVERED",
+      "detail": "Matched build has no upgrade entry point; no separate live upgrade probe was run.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "auth.corrupted_signature",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-030",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "auth.wrong_network_signature",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-031",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "auth.replayed_entry",
+      "status": "TESTED_REJECT",
+      "detail": "Rejected in enforced RPC simulation; no failed transaction was committed.",
+      "citations": [
+        {
+          "observation_id": "observation-033",
+          "kind": "simulation"
+        }
+      ]
+    },
+    {
+      "asset": "QCTL",
+      "path": "transaction.source_and_fee_payer",
+      "status": "UNCOVERED",
+      "detail": "Transaction and fee-bump envelopes still use Ed25519; custom-account authentication does not replace them.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "registry.admin",
+      "status": "EXPOSED",
+      "detail": "Registry tenant and registrar authority remain with the run's classical Ed25519 deployer.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "registry.policy",
+      "status": "DECLARED",
+      "detail": "Freeze/Mint/Clawback quorums are declarations only; policy_assessment remains Unverified.",
+      "citations": []
+    },
+    {
+      "asset": "QCTL",
+      "path": "registry.revision_conflict",
+      "status": "TESTED_REJECT",
+      "detail": "A stale expected revision was rejected without a policy write.",
+      "citations": [
+        {
+          "observation_id": "observation-028",
+          "kind": "simulation"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "No overall security score or verified registry policy.",
+    "ML-DSA-65 runs inside Wasm with unaudited RustCrypto ml-dsa 0.1.1, not CAP-87.",
+    "Live reads span a ledger range, not an atomic snapshot.",
+    "Historical negative responses are recorded transcripts, not signed attestations; live probes require re-execution."
+  ],
+  "assessment_sha256": "e06e345ce165e101f78f2b12d4963ce333577952e4346c53fb782ef479329f54"
+}
