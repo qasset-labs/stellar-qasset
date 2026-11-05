@@ -227,4 +227,4 @@ gates.
 The two ePrint abstracts and accessible source were reviewed; the full
 Baldimtsi/ZKPoSP PDFs were unavailable during this review. No upstream code was
 executed. The relation checker executes the installed, pinned PyNaCl library on
-public fixtures only. AI assisted this documentation and implementation review.
+public fixtures only. This is internal engineering evidence.

@@ -1,6 +1,6 @@
 # Evidence for original-seed recovery
 
-Date: 2026-10-19. First-party, AI-assisted research with parallel review. **A working off-chain proof experiment now exists. It is deliberately insecure at the exercised round count and does not implement on-chain recovery.**
+Date: 2026-10-19. First-party research with internal review. **A working off-chain proof experiment now exists. It is deliberately insecure at the exercised round count and does not implement on-chain recovery.**
 
 ## What was executed
 

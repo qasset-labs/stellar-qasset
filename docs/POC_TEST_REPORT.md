@@ -2,11 +2,18 @@
 
 Current remediation results: 90 workspace tests, 124 Python tests and 4 signer tests pass. The fresh revision-checked registry run has 28 successful transactions, ten enforced negative simulations and one correctly signed classic Payment rejected before inclusion. The versioned assessment covers 32 paths. Required baseline source and pinned research dependencies are now captured in version control. Clean-checkout reproduction passed from an export with empty build directories and isolated Python dependencies; the final result is recorded in `evidence/qasset-remediation-validation.json`. Earlier results and backlog statements below are historical.
 
-The explicitly approved fresh run has now completed the issuer lock, post-lock
+The [final remediation verification](#final-remediation-verification) is the
+latest retained result. The phase records below preserve earlier counts,
+identities and working-tree limitations; they do not describe the current source
+export or establish present live-network state. No new network run is implied.
+
+## Historical continuation context
+
+The earlier completion run completed the issuer lock, post-lock
 classic authentication rejection, post-lock ML-DSA authorization and live registry
-staleness demonstration. The primary record contains **28 successful transactions,
+staleness demonstration. That phase record contained **28 successful transactions,
 eight rejected simulations and one txBAD_AUTH rejection before inclusion**.
-Current Python validation passes 112 tests. The earlier results below are
+That phase Python validation passed 112 tests. The earlier results below are
 historical; current completion results follow them.
 
 Recorded 2026-10-25. Results describe this working tree, whose substantial

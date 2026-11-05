@@ -1,6 +1,6 @@
 # Separate Binius recovery review — 2026-10-20
 
-Scope: first-party AI-assisted cross-review by a separate agent, not an external independent cryptographic audit.
+Scope: first-party internal cross-review, not an external independent cryptographic audit.
 
 Verdict: go for an isolated, public-fixture native research probe; no-go for enabling the existing recovery contract or asserting production quantum knowledge security. A smaller proof would resolve only a measured transport obstacle. It does not resolve the verifier platform, cryptographic composition, or lifecycle gates below.
 

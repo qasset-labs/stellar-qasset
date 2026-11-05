@@ -1,7 +1,11 @@
 # Recovery implementation and remaining gates
 
-Updated 2026-10-20. This is first-party, AI-assisted engineering evidence. No
+Updated 2026-10-20. This is first-party engineering evidence. No
 external cryptographic approval or production recovery deployment is claimed.
+
+For the complete product and current authority demonstration, see the
+[primary architecture](ARCHITECTURE.md) and [PoC architecture](POC_ARCHITECTURE.md).
+This document covers the separate recovery experiments.
 
 ## Current scope
 

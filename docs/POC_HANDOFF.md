@@ -349,8 +349,7 @@ Then stop. Do not expand into other features.
 - Do not touch unrelated local Stellar CLI identities (for example
   `crossing-*`, `buyer`, `channel-account-1`).
 - Do not run filesystem searches from `/`; stay inside the repository.
-- Keep project documents and code free of references to grant programs and
-  to automated or assisted authorship tools.
+- Keep public documentation focused on project behavior and reproducible evidence.
 - Distinguish "rejected in simulation" from "failed transaction recorded
   on-chain" in every record and document.
 

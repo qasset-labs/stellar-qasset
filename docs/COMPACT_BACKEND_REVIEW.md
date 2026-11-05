@@ -1,6 +1,6 @@
 # Additional compact proof backend investigation
 
-2026-10-20. First-party, AI-assisted native research. **This experiment remains unsuitable for production authorization.** It is a second attributed proof backend, not a new cryptographic primitive or an implementation of Stellar recovery.
+2026-10-20. First-party native research. **This experiment remains unsuitable for production authorization.** It is a second attributed proof backend, not a new cryptographic primitive or an implementation of Stellar recovery.
 
 ## Exact source and statement
 

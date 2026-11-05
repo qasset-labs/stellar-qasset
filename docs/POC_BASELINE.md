@@ -97,7 +97,7 @@ The old transaction counts are records of past runs; this baseline confirms
 the contracts still exist and match their recorded Wasm, not that those
 transactions were repeated.
 
-## Unresolved findings carried in
+## Historical findings carried into the initial phase
 
 From `docs/SECURITY_REVIEW.md` and the research documents:
 
@@ -112,13 +112,15 @@ From `docs/SECURITY_REVIEW.md` and the research documents:
 
 Registry limitations relevant to the proof of concept:
 
-- The registry has no compare-and-set on revisions: concurrent updates are
-  serialized by the ledger, but a caller cannot require "update only if the
-  revision is still N". Revision conflicts are therefore detected by
-  readers comparing revisions, not rejected by the contract.
-- The registry administrator is whatever address registered the tenant,
-  typically an Ed25519 account, so the declared policy itself is controlled
-  by a classical key.
+- At this historical baseline, the registry had no compare-and-set on revisions.
+  Concurrent updates were serialized by the ledger, but a caller could not require "update only if the
+  revision is still N". Revision conflicts were detected by
+  readers comparing revisions, not rejected by that historical contract. The
+  current guarded setter rejects stale revisions; its unconditional counterpart
+  remains available.
+- The registrar enrolls a chosen tenant administrator with that administrator's
+  consent; they may be different addresses. The reference run uses the same
+  classical deployer for both, so its declarations remain classically administered.
 - The existing ML-DSA signer helper (`tools/pq-demo`) derives every key from
   a publicly known root. Its keys are fixtures that anyone can use and must
   not protect any authority in the proof of concept.

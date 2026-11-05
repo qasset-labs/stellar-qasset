@@ -1,5 +1,9 @@
 # Q-Asset prototype threat model
 
+This model covers the registry/recovery prototype. The separate
+[SAC threat model](POC_THREAT_MODEL.md) covers the authority demonstration; the
+[primary architecture](ARCHITECTURE.md) defines target product boundaries.
+
 Scope: the current declaration registry and disabled legacy-seed recovery account
 interface, plus the separately implemented PQ backup recovery baseline described
 below. Each has its own security boundary and receipts.

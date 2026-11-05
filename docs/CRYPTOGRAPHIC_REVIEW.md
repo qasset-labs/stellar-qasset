@@ -1,6 +1,6 @@
 # Q-Asset cryptographic review
 
-First-party, AI-assisted adversarial review; not independent external certification.
+First-party adversarial review; not independent external certification.
 
 Follow-up: [original-seed evidence](RECOVERY_EVIDENCE.md) and a
 [conditional security argument](RECOVERY_SECURITY_ARGUMENT.md) now accompany an
@@ -13,7 +13,7 @@ The detailed source observations below record the pre-fix snapshot. The local ca
 Current candidate library SHA256: `f162126d5e5dfa1b5ad10a348dbab70ba1d56f97aa3134ec4184d422894bc8cb`.
 
 Q-ASSET CRYPTOGRAPHIC APPROACH AND IMPLEMENTATION REVIEW
-2026-10-19; AI-assisted adversarial review, not a human independent audit or certification.
+2026-10-19; Internal adversarial review, not an independent external audit or certification.
 
 INSPECTED SOURCE SNAPSHOT
 contracts/pq-recovery-demo/src/lib.rs SHA256 f9ae606ac1936ac8495cd12b22a50f9d4afd59c37fcaaaac174587acc67b9366

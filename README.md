@@ -25,7 +25,7 @@ integrations are part of the engineering roadmap.
 
 [Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
 [Reproduce](#reproduce-the-poc) · [Source and evidence](#source-and-evidence) ·
-[Security scope](#security-scope-and-limitations)
+[Security scope](#security-scope-and-limitations) · [Architecture](docs/ARCHITECTURE.md)
 
 ## Why Post-Quantum Signatures Alone Are Not Enough
 
@@ -124,18 +124,17 @@ alone do not establish compatibility.
 
 ### Protocol 30 and CAP-87
 
-As of **26 October 2026**, Stellar's official [Bell, Protocol 30 upgrade guide](https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide)
-schedules the Testnet vote for **3 November 2026** and the Mainnet vote for
-**23 November 2026**, subject to validator approval. CAP-87 adds native ML-DSA
-verification for smart contracts; it does not replace network transaction
-signatures. The official [CAP-87 specification](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md)
-describes the cryptographic interface.
+The official [Bell upgrade guide](https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide)
+lists the 3 November 2026 Testnet and 23 November 2026 Mainnet votes. A vote
+schedule does not prove activation at an endpoint. Protocol 30 requires updated
+ledger decoders; qualify actual protocol, address and authorization-credential
+support before live use of the pinned reference tooling.
 
-**This PoC uses RustCrypto `ml-dsa` 0.1.1 inside contract Wasm, not CAP-87 host
-verification.** Its recorded run used Testnet protocol 29. Native verification
-is a possible future integration after target-network activation and compatibility
-checks. It supplies a cryptographic primitive; authority coverage still needs
-to be established.
+**This PoC uses RustCrypto `ml-dsa` 0.1.1 inside Wasm, not CAP-87.** Its
+recorded run used protocol 29. [CAP-87](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md)
+defines native contract ML-DSA verification, not replacement of envelope
+signatures. A native-verifier release requires new compatibility, build and cost
+evidence. See the [network design](docs/ARCHITECTURE.md#8-network-configuration-and-deployment-provenance).
 
 ## What Makes Q-Asset Different?
 
@@ -359,7 +358,7 @@ to fail its live freshness check.
 | Reproduction and Testnet scenarios | [Reproduction runner](scripts/reproduce_poc.py) · [disposable demo](scripts/qasset_poc_testnet.py) · [staleness runner](scripts/qasset_poc_staleness.py) |
 | Public inputs and claims | [Deployment](deployments/testnet/qasset-poc.json) · [raw snapshot](evidence/qasset-authority-inputs.json) · [assessment](evidence/qasset-authority-assessment.json) |
 | Results and review boundaries | [Validation](evidence/qasset-remediation-validation.json) · [full reproduction output](evidence/qasset-clean-reproduction.json) · [security findings](docs/POC_SECURITY_FINDINGS.md) |
-| Detailed architecture | [Authority architecture](docs/POC_ARCHITECTURE.md) · [threat model](docs/POC_THREAT_MODEL.md) · [evidence guide](docs/QASSET_POC_EVIDENCE.md) |
+| Detailed architecture | [Full product architecture](docs/ARCHITECTURE.md) · [Contract reference](docs/CONTRACTS.md) · [Authority demonstration](docs/POC_ARCHITECTURE.md) · [threat model](docs/POC_THREAT_MODEL.md) · [evidence guide](docs/QASSET_POC_EVIDENCE.md) |
 
 ## Experimental Recovery Research
 
@@ -468,6 +467,12 @@ recovery research outcome.
 - [Recorded technical reference review and pinned-source inspection](docs/reference-review.json).
 
 ## Development and Licensing
+
+Read [contribution/review requirements](CONTRIBUTING.md), [governance](GOVERNANCE.md),
+[community conduct](CODE_OF_CONDUCT.md), [security reporting](SECURITY.md),
+[release operations](docs/OPERATIONS.md), [maintenance](docs/MAINTENANCE.md) and
+[license scope](docs/LICENSE_SCOPE.md). These policies do not configure hosting
+controls or appoint production owners.
 
 For technical discussions and reproducible issues, use the repository's
 [issue tracker](https://github.com/qasset-labs/stellar-qasset/issues). Include the

@@ -2,9 +2,9 @@
 
 Prepared 2026-10-23 against a fresh clone of `github.com/lattice-arguments/rokoko`
 at commit `c3f8206465f4b4cf34b8aafa378af5b081608944` (`tools/rokoko-relation-research/`,
-disposable, not security-reviewed, not committed to this project's own history
-beyond `pins.json`). This is an engineering scope, not a security review, and
-not a claim that this work has started being implemented.
+the imported upstream snapshot is now tracked with `pins.json`). This is an
+engineering scope, not independent security review. Gadget work exists; the
+complete recovery relation and commitment-chain integration remain unimplemented.
 
 **Fourth update, same day — read this first.** The AND/XOR gate and the
 full adder described in "Resolved: a working AND+XOR construction" and
@@ -13,8 +13,7 @@ superseded**. Their malicious-witness tests only flipped the coefficient
 each gate gives meaning to; an adversary that instead puts junk in a
 coefficient the gate ignores was tested against the live library and
 **accepted**: with true AND = 0, the proof verified while the gate read
-AND = 1. They are replaced by the canonical design in "Canonical design: a
-sound gate, and a validated 64-bit adder" below, which pins every wire to a
+AND = 1. They are replaced by the canonical design in "Canonical design: candidate gate and tested 64-bit adder" below, which pins every wire to a
 pure scalar bit, was tested against that same attack (rejected), and comes
 with a written soundness argument rather than only test results. The same
 pass also corrected the ring model (it is the negacyclic polynomial ring
@@ -50,10 +49,11 @@ what motivated the resolution's design and remains correct on its own terms.
 
 RoKoko is the strongest candidate on proof size/speed for F-01: a prior
 measurement (`COMPACT_BACKEND_LATTICE_GATE.md` section 3b) found a real
-95-107 KB proof verifying in 0.39s with no SIMD, comfortably inside Stellar's
-132,096-byte transaction cap and the 400M-instruction CPU budget, in sharp
-contrast to Binius64's 183,090-byte/400M-instruction-exhausting measured
-state (see `verifier-profile-research.json`, `verifier-wiring-hotspot-research.json`,
+95-107 KB proof verifying natively in 0.39s with no SIMD. The proof bytes
+alone are below the historical 132,096-byte envelope cap; complete transaction
+fit and Soroban metered CPU/memory were not established. The separately
+measured Binius64 SDK wrapper is 183,090 bytes and exhausts 400M instructions
+(see `verifier-profile-research.json`, `verifier-wiring-hotspot-research.json`,
 `sdk-code-size-breakdown.json`). That measurement was on RoKoko's own
 synthetic benchmark witness, not the project's actual SEP-5 relation. This
 document scopes what wiring the real relation would take.
@@ -103,7 +103,7 @@ Five primitives matter for this task, each confirmed directly in source:
    values would need — was tested directly and found to cost degree 4 (two
    distinct selectors plus two witness reads), unconditionally over the
    degree-3 ceiling (`docs/snark.md:153-158`). See "Confirmed blocker"
-   below for that finding, and "Canonical design: a sound gate, and a validated 64-bit adder"
+   below for that finding, and "Canonical design: candidate gate and tested 64-bit adder"
    for how AND and XOR are actually obtained instead — by packing both
    values into one region from the start, not by multiplying two regions
    together.
@@ -138,7 +138,7 @@ Five primitives matter for this task, each confirmed directly in source:
    verifier (see "Calibration test run against the live library" below).
    For a SHA-512 relation, intermediate sums must stay secret — shipping
    them would leak information about the seed. **Addition is instead built
-   from the canonical AND/XOR gate alone** (see "Canonical design: a sound gate, and a validated 64-bit adder"
+   from the canonical AND/XOR gate alone** (see "Canonical design: candidate gate and tested 64-bit adder"
    below; the earlier gate this paragraph first pointed to was unsound): a standard 1-bit full adder, `sum = a xor b xor cin`,
    `carry_out = (a and b) xor ((a xor b) and cin)`, built from three
    applications of the one validated AND+XOR gate, chained bit by bit for a
@@ -189,11 +189,11 @@ compositions, each AND/XOR an application of the validated gate), the
 ties, confirmed as the working mechanism — not the originally assumed
 batched copy-claim, see primitive 4's correction above — plus XOR
 bit-products), and six 64-bit modular additions (64 chained full adders
-each, see "Canonical design: a sound gate, and a validated 64-bit adder" below — no digit
+each, see "Canonical design: candidate gate and tested 64-bit adder" below — no digit
 decomposition, no shipped value, with the carry chain itself needing the
 same individual length-1 shift ties as rotation). The bit-products (every
 AND and XOR between two independently committed secret bits) have a
-validated construction — see "Canonical design: a sound gate, and a validated 64-bit adder"
+validated construction — see "Canonical design: candidate gate and tested 64-bit adder"
 below — one auxiliary packed region and three eq-weighted tie claims per
 gate over canonical scalar-bit inputs, not a single direct multiplication. None of it would be generated
 from a circuit-DSL or gate library either way, since RoKoko has none;
@@ -212,8 +212,7 @@ questions.
 
 This list is revised a fourth time. The earlier AND/XOR gate and full adder
 were found unsound (junk-coefficient attack, accepted by the live library)
-and are replaced by the canonical design (see "Canonical design: a sound
-gate, and a validated 64-bit adder" below), which now includes a full
+and are replaced by the canonical design (see "Canonical design: candidate gate and tested 64-bit adder" below), which now includes a full
 64-bit ripple-carry adder validated against honest and malicious witnesses.
 
 1. **Independent review**, scoped in
@@ -327,7 +326,7 @@ stage 1 is now this exact question, not the addition gadget itself.
 > the meaningful coefficient. The ring explanation in the next subsection
 > (quadratic slots, `ω=0`) is also wrong: the ring is `Z_q[X]/(X^128+1)`,
 > strided `v[1]` is the `X²` coefficient, and `b²` lands at `X⁴`. See
-> "Canonical design: a sound gate, and a validated 64-bit adder" below.
+> "Canonical design: candidate gate and tested 64-bit adder" below.
 > Kept for the record of why the replacement is shaped the way it is.
 
 Direction (a) from the blocker above is resolved, not just explored, with a
@@ -487,7 +486,7 @@ addition to the three-gate pattern repeated 64 times — not a new
 primitive, but a real, now-corrected claim count rather than the "free"
 one this document originally, and wrongly, assumed.
 
-## Canonical design: a sound gate, and a validated 64-bit adder
+## Canonical design: candidate gate and tested 64-bit adder
 
 This replaces the two superseded sections above. Evidence, source hashes,
 and every result below:
@@ -595,7 +594,7 @@ gate), and a wrong AND, XOR, or sum bit in either gate.
   multiplied directly at all, with or without `eq` (confirmed) — but the
   resolution found this is not the real constraint on the task, since the
   working construction never multiplies two different regions; see
-  "Canonical design: a sound gate, and a validated 64-bit adder" above.
+  "Canonical design: candidate gate and tested 64-bit adder" above.
 - **Resolved**: the unexplained `(v[2], v[3]) → (0, 0)` result. Strided
   `v[2]`, `v[3]` are the `X⁴`, `X⁶` coefficients, so their square lands at
   `X⁸..X¹²` (strided `v[4]..v[6]`), which the probe never printed. The ring
@@ -609,8 +608,8 @@ gate), and a wrong AND, XOR, or sum bit in either gate.
   this document currently covers the front end only.
 - **New, from the resolution, the most important remaining gap**: whether
   the sumcheck protocol underlying these claims is zero-knowledge-hiding,
-  not merely sound. This project validated soundness directly (malicious
-  witnesses rejected); it did not and cannot validate hiding by itself.
+  not merely sound. This project tested selected malicious
+  witnesses and wrote an argument; that does not prove soundness or hiding.
   This applies to every claim in this document, not just the new
   construction, and is now the single most important open item — see the
   staged approach above, which puts an independent review of exactly this
@@ -633,16 +632,15 @@ prior general assessment alone.
 
 ## Reproduce
 
+Use the already tracked pinned source; do not clone over it. From the repository root:
+
 ```sh
-git clone https://github.com/lattice-arguments/rokoko.git tools/rokoko-relation-research
-cd tools/rokoko-relation-research && git checkout c3f8206465f4b4cf34b8aafa378af5b081608944
-cargo +nightly run --release --example claims   # confirms the frontend's documented API surface runs as described
+cargo +nightly run --manifest-path tools/rokoko-relation-research/Cargo.toml --release --locked --example claims
 ```
 
-Also requires adding `tools/rokoko-relation-research` to this project's root
-`Cargo.toml` under `[workspace] exclude`, since the pristine upstream clone
-has no `[workspace]` table of its own (left unmodified deliberately) and
-would otherwise conflict with this project's existing workspace.
+The root workspace already excludes both RoKoko research crates. Nightly/toolchain
+and dependency availability must match the recorded experiment before comparing
+results. This command runs a frontend example, not a complete recovery benchmark.
 
 All calibration, bisection, and the AND+XOR construction tests (binariness
 positive/negative; the degree-budget probes; the slot-pairing and

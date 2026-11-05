@@ -1,6 +1,6 @@
 # Scalar-exposed recovery experiments and strict local ceremony
 
-2026-10-20. First-party, AI-assisted research with parallel code/security review. **No production security approval or deployment.** The existing full-root proof and its sources remain unchanged.
+2026-10-20. First-party research with internal code/security review. **No production security approval or deployment.** The existing full-root proof and its sources remain unchanged.
 
 ## Measured improvement and remaining size limit
 

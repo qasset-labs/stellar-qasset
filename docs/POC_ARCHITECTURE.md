@@ -1,5 +1,9 @@
 # SAC authority demonstration architecture
 
+This document specifies the implemented demonstration. The
+[primary architecture](ARCHITECTURE.md) specifies the completed product;
+[contract reference](CONTRACTS.md) owns current interfaces.
+
 Recorded 2026-10-25. Deployment results are in
 [`deployments/testnet/qasset-poc.json`](../deployments/testnet/qasset-poc.json).
 The approved fresh run completed the restricted-issuer branch. The earlier

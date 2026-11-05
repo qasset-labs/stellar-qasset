@@ -26,8 +26,7 @@ construction.
 
 ## Background
 
-`docs/ROKOKO_RELATION_WIRING_SCOPE.md` (section "Canonical design: a sound
-gate, and a validated 64-bit adder") and
+`docs/ROKOKO_RELATION_WIRING_SCOPE.md` (section "Canonical design: candidate gate and tested 64-bit adder") and
 `docs/rokoko-canonical-gadget-research.json` record the construction under
 review and its full research trail. **An earlier version of this brief
 described a different gate that this project later found unsound** (a

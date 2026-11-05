@@ -66,9 +66,10 @@ verified inside Wasm with unaudited RustCrypto `ml-dsa` 0.1.1, using context
 ## Residual authority and limitations
 
 The initially pending lock and live staleness branches were completed in a
-new, explicitly approved run. The primary deployment now includes 28 successful
+new, explicitly approved run. The final remediation deployment records 28 successful
 transactions, ten rejected simulations and one `txBAD_AUTH` submission
-rejection. The original unlocked record is preserved separately. See
+rejection. The internal phase reviews below retain earlier eight-simulation,
+30-path and 112-test results; final remediation results supersede those counts. The original unlocked record is preserved separately. See
 [`qasset-poc-staleness.json`](../evidence/qasset-poc-staleness.json) for the live
 revision change and verifier exit code.
 

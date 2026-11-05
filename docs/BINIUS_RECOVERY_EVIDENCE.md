@@ -1,6 +1,6 @@
 # Binius recovery experiment and remaining release blockers
 
-2026-10-20. First-party, AI-assisted implementation and separate-agent review. No production security certification, deployment or transaction submission.
+2026-10-20. First-party implementation and internal review. No production security certification, deployment or transaction submission.
 
 The previous 8,893,905-byte SHA512 leaf STARK has a genuine ZK comparator using the existing, exact-pinned Binius64 Iron Spartan implementation. The canonical recovery experiment produces a **539,888-byte** proof, about 16.5 times smaller in measured serialized size. These configurations do not have matched or approved security levels; this is not an equal-security performance claim. The new proof is still too large for the recorded 132,096-byte whole-transaction cap. The exact hypothetical invocation envelope is **545,884 bytes** with the canonical request, public scalar, ML-DSA replacement possession and one outer signature placeholder.
 

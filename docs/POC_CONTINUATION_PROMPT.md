@@ -74,8 +74,7 @@ Hard rules (from the handoff, repeated because they matter most):
 - Do not modify `contracts/pq-recovery-demo` semantics, the registry
   semantics, pinned/vendored upstream code, or the Binius64 and RoKoko
   research.
-- Keep documents and code free of references to grant programs and to
-  automated or assisted authorship tools.
+- Keep public documentation focused on project behavior and reproducible evidence.
 - Stay inside the repository for file searches; do not touch unrelated
   Stellar CLI identities.
 

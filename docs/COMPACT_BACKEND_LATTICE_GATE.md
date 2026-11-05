@@ -1,5 +1,10 @@
 # Compact recovery backend: lattice-proof and architecture follow-up
 
+> Scope: a dated research/literature trail. Theorems, masking/composition
+> applicability, complete commitment-chain behavior and quantum knowledge/privacy
+> require independent specialist review. Native size/time does not establish
+> complete Soroban transaction, CPU or memory feasibility. A-01 and F-01 remain open.
+
 2026-10-22. External research, a full read of the canonical Binius64
 specification, two new local circuit measurements, and two attempted
 third-party builds, triggered by a reviewer question about closing A-01 (no
@@ -568,8 +573,8 @@ remains measured oversized (exceeds the 400M instruction budget per
 `VERIFIER_NEXT_EVIDENCE.md`), so CPU/code-size reduction is still required on
 this backend regardless of A-01's improved outlook. The vSIS/RoKoko family
 (§0d) is unaffected and remains the more open path on the A-01 side, while
-being the stronger path on the F-01 side (95-107 KB, fits budget, pending
-relation wiring) — an asymmetry between the two backends that is now the
+being the stronger path on the F-01 side (95-107 KB native proof on a synthetic witness, with complete envelope and
+metered execution still unmeasured) — an asymmetry between the two backends that is now the
 project's central remaining architecture decision.
 
 ## 0g. Checked directly: Thaler's textbook on sumcheck round-by-round soundness and ZK masking
@@ -1253,7 +1258,7 @@ project":**
   Combined with the already-validated binariness, rotation, and two-limb
   addition primitives, this removes F-01-RoKoko's "blocked on an open
   question" status: it is engineering work again, not research, with one
-  caveat carried forward rather than resolved — this validated soundness,
+  caveat carried forward rather than resolved — selected tests passed,
   not zero-knowledge-hiding, which this project cannot verify by itself and
   now scopes for independent review (`ROKOKO_ZK_HIDING_REVIEW_SCOPE.md`,
   ready to send), the same way Binius64's own open question already is. A
