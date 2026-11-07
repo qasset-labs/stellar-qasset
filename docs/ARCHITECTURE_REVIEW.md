@@ -135,3 +135,25 @@ crawl, expensive proof regeneration, full formal paper/theorem verification,
 browser accessibility/rendering test or production load/restore drill is claimed
 by this review. Official reference pages were checked selectively; local links
 and structural Mermaid fences are checked separately from graphical rendering.
+
+## Follow-up architecture and cryptography audit (2026-11-07)
+
+Scope: `docs/ARCHITECTURE.md` and `docs/DECISIONS.md`, reviewed from
+Stellar-integration and cryptographic perspectives. Contracts, scripts, tools and lockfiles were unchanged since
+`3d2090d`. Official CAP-87, CAP-71/71-01/71-02, CAP-66 and the Bell upgrade guide
+were consulted on 2026-11-07. Internal review; not an independent external audit.
+
+| ID | Severity | Finding | Correction |
+| --- | --- | --- | --- |
+| ARCH-01 | High | The minimal classical-signer-combination analysis claimed in project descriptions had no architecture specification | Added §3 classical-coalition analysis: inputs, signer kinds, composition, bounds, oracle validation, current status and example diagram |
+| ARCH-02 | High | No stated rationale for ML-DSA parameters or end-to-end security level; the SHA-256 authorization digest bounds the system | Added §6 cryptographic parameters and ADR-007 |
+| ARCH-03 | Medium-High | Address-bound credentials described as "where supported" although CAP-71-02 is Final since protocol 27 | §9 now requires them for production controllers; ADR-008 |
+| ARCH-04 | Medium | CAP-87 compatibility understated; changed failure semantics (host trap vs contract error 3) and evidence-verifier expectations unstated | §8 records pure ML-DSA with context compatibility, trap semantics, cost estimate and migration diagram |
+| ARCH-05 | Medium | Production controller lifecycle did not require a guarded handover path | §6 adds guarded handover, rotation and a lifecycle diagram; ADR-008 |
+| ARCH-06 | Medium | Hedged signing not required; PoC signer is deterministic | §6 and ADR-007 require hedged production signing |
+| ARCH-07 | Medium | ACVP/Wycheproof vectors not required on the SAC administrator verification path | §6 and §14 require vectors on every verification path |
+| ARCH-08 | Medium | "Independent implementations" overstated; evidence helper reuses the contract's ML-DSA crate | §6 and §14 require a second implementation and qualify the claim |
+| ARCH-09 | Medium | Target scope not mapped to an initial release | §14 adds an initial release mapping |
+| ARCH-10 | Low | Protocol 30 status text predated the Testnet vote date | §8 records that the outcome is unconfirmed as of 2026-11-07 |
+| ARCH-11 | Low | Product and PoC interleaved; difficult first read | Added "Architecture at a glance" with component table, product diagram and reading guide |
+| ARCH-12 | Closed | CAP-66 cited for both automatic restoration and resource fees above uint32 | Verified: CAP-66 covers both; no change |

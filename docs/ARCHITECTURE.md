@@ -1,6 +1,8 @@
 # Q-Asset technical architecture
 
-Design baseline: 2026-11-05. This is the primary architecture for the completed
+Design baseline: 2026-11-05; revised 2026-11-07 after an architecture and
+cryptography audit. This is the primary architecture for the completed product.
+The proof of concept (PoC) is evidence that core mechanisms work; it is not the
 product. **Current** describes checked-in code or dated evidence; **target**
 specifies work still required. Target requirements are not deployed capabilities.
 No production deployment or independent external security approval is established.
@@ -11,6 +13,57 @@ Supporting specifications: [contracts](CONTRACTS.md), [clients and services](CLI
 explains the implemented integration; [recovery status](RECOVERY_IMPLEMENTATION_STATUS.md)
 bounds the research. Findings and validation belong in the separate
 [documentation review](ARCHITECTURE_REVIEW.md).
+
+## Architecture at a glance
+
+The completed product has the components below. The right-hand column records
+what the PoC has already demonstrated for each one; it does not limit the design.
+
+| Product component | Role in the completed product | PoC evidence today |
+| --- | --- | --- |
+| Authority analyzer | Adapters for issuer accounts, SACs, supported smart accounts and upgradeable contracts build typed authority graphs (§3) | Python analyzer for two reference Testnet assets; 32 classified paths |
+| Classical-coalition engine | Per protected operation, the minimal sets of classical signers that can still meet its threshold, and whether legacy Ed25519 signers alone still can (§3) | Not implemented; only declared-weight predicates and summed Ed25519 weight checks exist |
+| Evidence and freshness | Configuration-bound assessments, a separate verifier, staleness after tracked changes, report receipts (§3, §11) | Schema v2 evidence; separate verifier; 16 of 32 paths marked stale after a policy revision |
+| Policy registry | Declared roles, weights, thresholds and revisions with revision-checked writes; a new version adds report receipts (§4) | Deployed registry with guarded setter and change events |
+| Scoped ML-DSA controllers | Operation-scoped approval where authority is delegable, guarded handover and rotation, address-bound credentials, CAP-87 host verification (§6, §8, §9) | Fixed single-operation SAC administrator verifying ML-DSA-65 inside Wasm |
+| Clients and services | SDK, API, ingestion, monitoring and maintenance workers (§11) | Not implemented; finite scripts and JSON records |
+| Recovery research | Optional extension gated on independent review and verifier feasibility (§7) | Enrolled-key counter; disabled seed account; measured verifier limits |
+
+```mermaid
+flowchart LR
+  subgraph Stellar[Stellar network]
+    Issuer[Classic issuer account<br/>signers, thresholds, flags]
+    SAC[Stellar Asset Contract]
+    SA[Smart accounts and<br/>upgradeable contracts]
+  end
+  subgraph Product[Q-Asset product]
+    Analyzer[Authority analyzer<br/>and adapters]
+    Coalition[Classical-coalition<br/>engine]
+    Evidence[Evidence, verifier<br/>and freshness]
+    Registry[Policy registry<br/>and receipts]
+    Controller[Scoped ML-DSA<br/>controllers]
+    Services[SDK, API and<br/>monitoring]
+  end
+  Issuer -->|Horizon| Analyzer
+  SAC -->|Stellar RPC| Analyzer
+  SA -->|Stellar RPC| Analyzer
+  Analyzer --> Coalition --> Evidence
+  Registry --> Evidence
+  Evidence --> Services
+  Controller -->|set_admin delegation| SAC
+  Services --> Registry
+  classDef poc fill:#d9f2e3,stroke:#2e7d4f;
+  classDef target fill:#eef1f6,stroke:#5b6b82,stroke-dasharray: 4 3;
+  class Analyzer,Evidence,Registry,Controller poc;
+  class Coalition,Services target;
+```
+
+Solid green components have PoC evidence; dashed components are target-only.
+
+Reading guide: §1–§3 cover the product, requirements and analysis; §4–§6 the
+contracts and enforcement; §7 recovery; §8–§10 network, transactions and storage;
+§11–§14 clients, integrations, threats and delivery. Sections mark current and
+target behavior explicitly.
 
 ## 1. Product, requirements and economics
 
@@ -63,7 +116,7 @@ Requirements and exclusions:
 | --- | --- | --- |
 | `qasset-registry` | Declaration arithmetic, guarded revision writes, events; verified gates unavailable | Preserve declarations; version any verified integration separately |
 | `qasset-sac-admin` | Immutable SAC/key; ML-DSA-65 for one direct `set_authorized` auth context | Audited scoped enforcement and separately reviewed lifecycle |
-| Analyzer/verifier | Python, two reference configurations, schema v2, raw evidence checks | Versioned adapters, monitoring, archive and API |
+| Analyzer/verifier | Python, two reference configurations, schema v2, raw evidence checks | Versioned adapters, classical-coalition engine, monitoring, archive and API |
 | Operator signer | Unix tool, fresh external key file, signs supplied digest | Isolated policy-aware custody service |
 | dApp/public SDK | Absent | Inspection, declaration, scoped write, export and recovery flows |
 | Indexer/API/relay/keeper | No production service, database or scheduler | Durable history, freshness, bounded delivery and maintenance |
@@ -119,6 +172,54 @@ code, ABI, protocol range, signer formats, completeness assumptions and unsuppor
 cases. Traverse with visited-node detection and qualified depth/node/edge ceilings;
 cycles or exhausted bounds produce `UNCOVERED`, never assumed protection. Code
 identity alone does not prove policy correctness or independent key custody.
+
+### Classical-coalition analysis
+
+For each protected operation, the target analyzer computes the **minimal classical
+coalitions**: sets of non-post-quantum authorities that can authorize the
+operation without any post-quantum participant, such that no proper subset can.
+This answers the asset-level question "which classical keys can still exercise
+this power?" and, after post-quantum signers are added, whether legacy Ed25519
+signers alone still meet the threshold.
+
+* **Inputs.** Each authority node carries identity, kind, weight and the threshold
+  that applies to the operation: classic low/medium/high thresholds by operation
+  type, or a contract quorum extracted by a supported adapter.
+* **Kinds.** Ed25519 keys and Ed25519 signed-payload signers, and secp256r1
+  smart-account signers, are classical. Pre-authorized-transaction and hash(x)
+  signers are non-key authorities that bypass signature cryptography and are
+  reported separately. ML-DSA signers count as post-quantum only where an adapter
+  establishes actual enforcement; otherwise they remain declared.
+* **Composition.** An account or contract node is satisfied when its own rule is
+  met. Coalitions compose across issuer account, SAC administration, smart-account
+  rules, and upgrade and governance authority. Any path through an unsupported or
+  unknown node makes that operation `UNCOVERED`.
+* **Output.** The minimal coalitions and their sizes, whether a classical-only
+  path exists, and the legacy-Ed25519 threshold check.
+* **Bounds.** A classic account holds at most 20 signers plus its master key, so
+  per-account enumeration is bounded. Search is weight-ordered with pruning and
+  explicit node and coalition ceilings; an exceeded ceiling yields `UNCOVERED`.
+* **Validation.** Results must match an independent brute-force subset-enumeration
+  oracle on generated weighted policies, as the registry predicates already do
+  with 342 cases.
+
+```mermaid
+flowchart TB
+  Op{{Treasury transfer rule<br/>smart account, threshold 2}}
+  Op --> A[Signer A<br/>Ed25519, weight 1]
+  Op --> B[Signer B<br/>Ed25519, weight 1]
+  Op --> C[Signer C<br/>ML-DSA-65, weight 2]
+  Result[Minimal classical coalition: A + B<br/>Legacy Ed25519 meets threshold: yes<br/>Fix: threshold 3, or require C]
+  A -.-> Result
+  B -.-> Result
+```
+
+Illustrative example: adding post-quantum signer C does not protect the rule,
+because A and B together still meet the threshold without it.
+
+Current status: not implemented. The registry evaluates only the declared
+predicate `C >= T` per role, and the PoC analyzer compares summed Ed25519 weight
+with the medium threshold for two reference configurations.
 
 Current path statuses are `DECLARED`, `TESTED_PASS`, `TESTED_REJECT`, `EXPOSED`,
 `UNCOVERED`, `STALE` and `INCONCLUSIVE`. Verifier `INVALID` describes evidence
@@ -265,6 +366,28 @@ new versioned controller. Bounded configuration includes operations, independent
 key identities, verifier/code pins, quorums, policy epoch and explicit governance/
 recovery paths. Unsupported inputs have no permissive fallback.
 
+Unlike the PoC administrator, every production controller supports **guarded
+administrative handover**: SAC `set_admin` to a successor is authorized under a
+distinct ML-DSA domain context, a stronger quorum than routine operations and an
+optional timelock, and the successor is validated before activation. Key rotation
+and migration to a successor controller, including one using CAP-87 host
+verification, therefore never require an impossible handover. Controllers accept
+only address-bound credentials (§9). See
+[ADR-008](DECISIONS.md#adr-008-production-controllers-support-guarded-handover-and-address-bound-credentials).
+
+```mermaid
+stateDiagram-v2
+  [*] --> Proposed
+  Proposed --> Validated: successor code, key possession<br/>and configuration checked
+  Validated --> Active: guarded handover<br/>(distinct context, stronger quorum)
+  Active --> Active: routine scoped approvals
+  Active --> Suspended: explicit enforced state
+  Suspended --> Active: governance approval
+  Active --> Retiring: successor validated
+  Retiring --> Retired: set_admin to successor<br/>and exits confirmed
+  Retired --> [*]
+```
+
 A target treasury `execute` intent binds network, controller, token, operation,
 destination, exact amount, expected epoch, nonce and expiry. The execution method
 checks current epoch after authorization and immediately before dispatch, and
@@ -286,6 +409,28 @@ incoming proof of possession; retirement needs usable replacement authority and
 exits. Emergency paths cannot be weaker than their stated guarantee. Key counts,
 timelocks and emergency procedures need deployment-specific cost/security review;
 the registry's 20 metadata entries are not a signature budget.
+
+### Cryptographic parameters and signing
+
+See [ADR-007](DECISIONS.md#adr-007-ml-dsa-parameters-signing-and-test-vectors).
+Soroban authorization payloads are SHA-256 digests of the authorization preimage,
+and ML-DSA signs that 32-byte digest. End-to-end authorization strength is
+therefore bounded by SHA-256 collision resistance (NIST category 2) as well as by
+the signature scheme; ML-DSA-65 (category 3) does not raise the system above that
+bound. ML-DSA-65 is retained for margin against ML-DSA-specific cryptanalysis and
+alignment with SDF's plan. ML-DSA-44 (1,312-byte keys, 2,420-byte signatures) stays
+a qualified option for cost-sensitive controllers, decided with measured costs.
+
+* Production signers use FIPS 204 **hedged** signing. Deterministic signing, used
+  by the PoC signer, is limited to reproducible test vectors.
+* Every verification path, in Wasm or through CAP-87, runs NIST ACVP and
+  Wycheproof vectors including malformed key, signature and hint encodings. The
+  PoC runs these vectors only on the recovery counter.
+* Evidence verification uses a second, independent ML-DSA implementation. The PoC
+  evidence helper reuses the contract's `ml-dsa` crate, so its agreement is not
+  independent.
+* Signers decode and display the exact invocation before signing. The PoC signer
+  signs a supplied digest and is not a production custody design.
 
 ### Verified gate boundary
 
@@ -348,16 +493,43 @@ partial. Historical counts/identities live in the [evidence guide](QASSET_POC_EV
 
 The [Bell guide](https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide)
 lists Testnet/Mainnet votes for 2026-11-03/2026-11-23 and requires CAP-88-aware
-ledger decoders. A scheduled vote does not prove activation. Qualify actual
+ledger decoders. As of 2026-11-07 the Testnet vote outcome is not confirmed by
+the official guide (last updated 2026-10-23) or the software-versions page.
+A scheduled vote does not prove activation. Qualify actual
 network/protocol/capabilities. CAP-84 muxed contract destinations require updated
 address/event decoding and role validation; older tools must reject unsupported
 variants explicitly. Ledger windows do not imply fixed wall-clock durations.
 
 [CAP-87](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md)
-defines Protocol30 pure ML-DSA verification host functions. Current contracts use
-Wasm RustCrypto, not those functions. A native-verifier release must preserve
-message/context semantics and negative vectors, and record new artifacts/costs.
-It does not migrate envelope signatures.
+defines Protocol30 host functions `verify_sig_ml_dsa_44/65/87(public_key, msg,
+signature, context)`: pure ML-DSA (FIPS 204 Algorithm 3) with a 0–255-byte
+context string. The CAP header lists it as implemented for protocol 30; network
+activation still requires the vote. Current contracts use Wasm RustCrypto, not
+those functions.
+
+* **Compatible.** Pure ML-DSA-65 with context support preserves the current
+  message (the host digest), the `qasset-sac-admin-auth-v1` domain context, keys
+  and signatures. No re-signing scheme change is needed.
+* **Different failure behavior.** Host verification traps (`Crypto` error) on
+  invalid input or signature instead of returning contract error 3. The evidence
+  verifier currently pins `Contract, #3` for corrupted and wrong-network
+  signatures, so a native release needs versioned negative expectations and a new
+  evidence schema.
+* **Cost.** CAP-87 estimates ML-DSA-65 verification at a few times an Ed25519
+  verification (final calibration pending), against about 102.5 million
+  instructions per authorized call measured for in-Wasm verification in PoC
+  Testnet simulation.
+* **Lifecycle.** The fixed PoC administrator cannot hand over to a native
+  controller; migration requires a guarded-handover controller (§6).
+* It does not migrate envelope signatures.
+
+```mermaid
+flowchart LR
+  PoC[PoC administrator<br/>ML-DSA-65 in Wasm<br/>fixed, no handover]
+  C1[Production controller v1<br/>ML-DSA-65 in Wasm<br/>guarded handover] -->|Protocol 30 active<br/>and qualified| C2[Production controller v2<br/>CAP-87 host verification<br/>same keys and context]
+```
+
+The PoC administrator has no migration path; production controllers do.
 
 Target configuration contains passphrase/SHA-256 network ID, endpoints, accepted
 protocol range, deployment generation, contract IDs/executable hashes, ABI/schema
@@ -412,10 +584,13 @@ as transaction status. See [simulateTransaction](https://developers.stellar.org/
 Build preimages from the actual credential variant with an official compatible
 SDK helper. The retained PoC constructs legacy `ADDRESS` payloads and does not
 support newer variants. [CAP-71-02](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0071-02.md)
-adds address-bound credentials. Legacy payloads do not independently include the
-authorizer address; do not generalize shared-key safety from them. Target signers
-use address-bound forms where supported and separate keys per controller.
-Delegated credentials need their own explicit compatibility tests.
+(Final, protocol 27) adds `SOROBAN_CREDENTIALS_ADDRESS_V2`, whose preimage includes
+the authorizer address. Legacy payloads do not include it; do not generalize
+shared-key safety from them. Address-bound credentials are available on current
+networks, so every production controller **requires** them and uses separate keys
+per controller. Legacy credentials remain valid for now but may be deprecated in
+a later protocol. Delegated credentials (CAP-71-01) need their own explicit
+compatibility tests.
 
 Auth/invocation changes require fresh approval; sequence/fee changes require
 envelope re-signing. Resimulation must preserve approved auth bytes or restart
@@ -567,8 +742,22 @@ cache/recovery attacks, rollback, overflow, archival/restoration, nonce/expiry,
 network/argument/domain binding and malformed inputs. Service coverage includes
 duplicate/out-of-order ingestion, incomplete pages, retention gaps, checkpoint
 crashes, database migration, reset, concurrent submission, lost responses and
-browser reconnect. Independent implementations provide cross-checks but internal
-execution is not an independent external audit.
+browser reconnect. Cryptographic tests run NIST ACVP and Wycheproof ML-DSA vectors,
+including malformed encodings, on every verification path, and evidence checks use
+a second ML-DSA implementation. Classical-coalition results must match a
+brute-force oracle on generated policies. Cross-implementation checks are internal
+execution, not an independent external audit.
+
+Initial release mapping:
+
+| Release stage | Architecture stages covered |
+| --- | --- |
+| 1. Reusable assessment | Reproducible core, protocol compatibility, expanded issuer/SAC adapters, classical-coalition engine and legacy-Ed25519 threshold check |
+| 2. Policy management and controller on Testnet | Read-only product services, registry version with revision-checked handover and report receipts, SDK, monitoring, guarded-handover ML-DSA controller with address-bound credentials and rotation tests |
+| 3. Qualified production release | Production service acceptance, reviewed controller deployment and CAP-87 verification where Protocol 30 is active |
+
+Treasury adapters beyond the reference configuration, a generic treasury
+controller and seed recovery are outside the initial release.
 
 Qualification records exact source/artifacts, protocol/cost model/settings and
 workloads. Measure complete valid/hostile transactions, worst-case key counts,

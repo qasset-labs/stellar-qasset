@@ -106,3 +106,55 @@ repeat economic effects or merge reset histories.
 
 Consequences: operation journal, historical lookup and explicit recovery UI are
 required for writes. Database idempotency alone does not solve on-chain duplicates.
+
+## ADR-007: ML-DSA parameters, signing and test vectors
+
+Status: accepted target design; 2026-11-07 architecture audit. Current PoC uses
+ML-DSA-65, deterministic signing and in-Wasm verification.
+
+Context: Soroban authorization signs a SHA-256 digest of the authorization
+preimage. System strength is bounded by SHA-256 collision resistance (NIST
+category 2) as well as by the signature scheme. Verification cost, key and
+signature size affect transaction admission and fees. The PoC signer signs
+deterministically, and its evidence helper reuses the contract's ML-DSA crate.
+
+Decision: retain ML-DSA-65 for margin against scheme-specific cryptanalysis and
+alignment with SDF's plan, without claiming an end-to-end category above the
+digest bound; evaluate ML-DSA-44 per controller with measured costs. Production
+signers use FIPS 204 hedged signing and display the decoded invocation. Every
+verification path runs NIST ACVP and Wycheproof vectors, including malformed
+encodings. Evidence verification uses a second, independent implementation.
+CAP-87 adoption preserves pure ML-DSA, the exact message and the domain context,
+and versions the changed failure semantics (host trap instead of contract error).
+
+Alternatives: claim category 3 from the parameter set alone; keep deterministic
+production signing; rely on one implementation for both contract and evidence.
+Each overstates assurance or correlates failures.
+
+Consequences: documentation states the digest bound; test suites gain vector
+coverage for the SAC administrator path; evidence tooling gains a second
+implementation; a parameter change for a controller requires its own measured
+qualification.
+
+## ADR-008: production controllers support guarded handover and address-bound credentials
+
+Status: accepted target design; supersedes ADR-002 for any production controller.
+ADR-002 remains the record of the immutable PoC experiment.
+
+Context: the PoC administrator cannot hand SAC administration to a successor,
+rotate keys or migrate to CAP-87. Legacy `SOROBAN_CREDENTIALS_ADDRESS` payloads do
+not include the authorizer address; CAP-71-02 address-bound credentials are Final
+since protocol 27.
+
+Decision: every production controller supports guarded `set_admin` handover under
+a distinct ML-DSA domain context, a stronger quorum than routine operations and an
+optional timelock, validates the successor before activation, supports key
+rotation, and accepts only address-bound credentials with separate keys per
+controller.
+
+Alternatives: repeat the immutable design for production; accept legacy credentials;
+share keys across controllers. Each recreates lock-in or cross-account replay risk.
+
+Consequences: handover becomes a sensitive, separately tested operation;
+same-invocation cached authorization and pending-credential rules apply to it;
+CAP-87 migration and key replacement become possible without issuer re-handover.
