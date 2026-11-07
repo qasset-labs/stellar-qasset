@@ -28,7 +28,8 @@ treasury integrations are part of the engineering roadmap.
 
 [Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
 [Reproduce](#reproduce-the-poc) · [Source and evidence](#source-and-evidence) ·
-[Security scope](#security-scope-and-limitations) · [Architecture](docs/ARCHITECTURE.md)
+[Security scope](#security-scope-and-limitations) · [Architecture](docs/ARCHITECTURE.md) ·
+[Development](docs/DEVELOPMENT.md) · [Future work](docs/FUTURE_WORK.md) · [Documentation index](docs/README.md)
 
 ## Why Post-Quantum Signatures Alone Are Not Enough
 
@@ -356,18 +357,20 @@ to fail its live freshness check.
 
 | Area | Entry points |
 | --- | --- |
-| Contract enforcement | [SAC administrator](contracts/qasset-sac-admin/src/lib.rs) · [21 adversarial tests](contracts/qasset-sac-admin/src/test.rs) |
+| Contract enforcement | [SAC administrator](contracts/qasset-sac-admin/src/lib.rs) · [21 adversarial tests](contracts/qasset-sac-admin/src/test.rs) · [ML-DSA test vectors](contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs) |
 | Declared policy | [Registry](contracts/qasset-registry/src/lib.rs) · [registry tests](contracts/qasset-registry/src/test.rs) |
 | Operator credentials | [Fresh-key signer](tools/qasset-sac-signer/src/main.rs) · [public verification helper](tools/qasset-evidence-crypto/src/main.rs) |
 | Assessment and verification | [Analyzer](scripts/qasset_authority_analyzer.py) · [separate verifier](scripts/verify_qasset_evidence.py) · [tamper regressions](scripts/test_qasset_evidence.py) |
 | Reproduction and Testnet scenarios | [Reproduction runner](scripts/reproduce_poc.py) · [disposable demo](scripts/qasset_poc_testnet.py) · [staleness runner](scripts/qasset_poc_staleness.py) |
 | Public inputs and claims | [Deployment](deployments/testnet/qasset-poc.json) · [raw snapshot](evidence/qasset-authority-inputs.json) · [assessment](evidence/qasset-authority-assessment.json) |
 | Results and review boundaries | [Validation](evidence/qasset-remediation-validation.json) · [full reproduction output](evidence/qasset-clean-reproduction.json) · [security findings](docs/POC_SECURITY_FINDINGS.md) |
+| Engineering | [Development guide](docs/DEVELOPMENT.md) · [Future-work register](docs/FUTURE_WORK.md) · [Documentation index](docs/README.md) · [CI workflow](.github/workflows/ci.yml) |
 | Detailed architecture | [Full product architecture](docs/ARCHITECTURE.md) · [Contract reference](docs/CONTRACTS.md) · [Authority demonstration](docs/POC_ARCHITECTURE.md) · [threat model](docs/POC_THREAT_MODEL.md) · [evidence guide](docs/QASSET_POC_EVIDENCE.md) |
 
-## Experimental Recovery Research
+## Optional Extension: Recovery Research
 
-Recovery is a separate advanced research direction. It explores enrolled ML-DSA
+Recovery is an optional extension and not part of the core platform; no core
+capability depends on it, and it is not a committed feature. The research explores enrolled ML-DSA
 authority replacement, legacy SEP-5 seed-knowledge proofs, Binius64 verifier
 portability, RoKoko lattice-based constraint experiments and Soroban execution
 limits.
@@ -473,7 +476,8 @@ recovery research outcome.
 
 ## Development and Licensing
 
-Read [contribution/review requirements](CONTRIBUTING.md), [governance](GOVERNANCE.md),
+Start with the [development guide](docs/DEVELOPMENT.md) for setup, build, test and
+verification commands. Read [contribution/review requirements](CONTRIBUTING.md), [governance](GOVERNANCE.md),
 [community conduct](CODE_OF_CONDUCT.md), [security reporting](SECURITY.md),
 [release operations](docs/OPERATIONS.md), [maintenance](docs/MAINTENANCE.md) and
 [license scope](docs/LICENSE_SCOPE.md). These policies do not configure hosting

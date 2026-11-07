@@ -157,3 +157,27 @@ were consulted on 2026-11-07. Internal review; not an independent external audit
 | ARCH-10 | Low | Protocol 30 status text predated the Testnet vote date | §8 records that the outcome is unconfirmed as of 2026-11-07 |
 | ARCH-11 | Low | Product and PoC interleaved; difficult first read | Added "Architecture at a glance" with component table, product diagram and reading guide |
 | ARCH-12 | Closed | CAP-66 cited for both automatic restoration and resource fees above uint32 | Verified: CAP-66 covers both; no change |
+
+## Repository audit (2026-11-07)
+
+Scope: repository structure, complete architecture, contracts, cryptography,
+testing and documentation at baseline commit `77d77c5`. Baseline results: 90
+contract, 4 signer and 124 Python tests passed; reference Wasm hashes matched;
+`cargo clippy` and `cargo fmt --check` were clean. Unresolved findings are
+recorded in the [future-work register](FUTURE_WORK.md).
+
+| ID | Finding | Change | Validation |
+| --- | --- | --- | --- |
+| AUD-01 | Architecture described the proof of concept more than the platform | Part I rebuilt: overview, principles, system diagram, components with status labels, data, workflows, security, cryptography, integration, deployment, monitoring, lifecycle, decisions, maturity table; recovery isolated as an optional extension | Links and anchors checked; 14 diagrams |
+| AUD-02 | No engineering backlog | Added [future work](FUTURE_WORK.md) with 61 items, priorities, statuses and acceptance criteria | Every identifier referenced in the architecture is defined |
+| AUD-03 | No continuous integration | Added `.github/workflows/ci.yml` (format, lint, tests, release build with reference hashes, offline evidence verification) | Each command passes locally; hosted run pending (`FW-TEST-01`) |
+| AUD-04 | No ML-DSA vectors on the SAC administrator path | Added `contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs` (Wycheproof malformed hints, context separation, length checks) | 3 tests pass; pinned evidence inputs unchanged; offline verification `SUCCESS` |
+| AUD-05 | No single developer guide | Added [development](DEVELOPMENT.md) | Commands executed |
+| AUD-06 | Unclear roles of scripts, tools and documents | Added index READMEs for `contracts/`, `scripts/`, `tools/` and `docs/` | Links checked |
+| AUD-07 | Obsolete task-brief document | Removed `docs/POC_CONTINUATION_PROMPT.md`; nothing referenced it | Git history retains it |
+| AUD-08 | Issuer classification counts only Ed25519 public-key signers against the medium threshold | Not changed: fixing alters pinned tool hashes | Recorded as `FW-STL-01` |
+
+Post-change validation: 93 contract, 4 signer and 124 Python tests pass;
+`scripts/reproduce_poc.py --offline` reports `PASS` for all 14 commands; strict
+`cargo clippy -- -D warnings` and `cargo fmt --check` are clean. No contract,
+signer, analyzer, verifier or evidence file was modified.
