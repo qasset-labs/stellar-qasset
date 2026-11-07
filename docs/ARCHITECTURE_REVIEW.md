@@ -169,13 +169,14 @@ recorded in the [future-work register](FUTURE_WORK.md).
 | ID | Finding | Change | Validation |
 | --- | --- | --- | --- |
 | AUD-01 | Architecture described the proof of concept more than the platform | Part I rebuilt: overview, principles, system diagram, components with status labels, data, workflows, security, cryptography, integration, deployment, monitoring, lifecycle, decisions, maturity table; recovery isolated as an optional extension | Links and anchors checked; 14 diagrams |
-| AUD-02 | No engineering backlog | Added [future work](FUTURE_WORK.md) with 61 items, priorities, statuses and acceptance criteria | Every identifier referenced in the architecture is defined |
+| AUD-02 | No engineering backlog | Added [future work](FUTURE_WORK.md) with 62 items, priorities, statuses and acceptance criteria | Every identifier referenced in the architecture is defined |
 | AUD-03 | No continuous integration | Added `.github/workflows/ci.yml` (format, lint, tests, release build with reference hashes, offline evidence verification) | Each command passes locally; hosted run pending (`FW-TEST-01`) |
 | AUD-04 | No ML-DSA vectors on the SAC administrator path | Added `contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs` (Wycheproof malformed hints, context separation, length checks) | 3 tests pass; pinned evidence inputs unchanged; offline verification `SUCCESS` |
 | AUD-05 | No single developer guide | Added [development](DEVELOPMENT.md) | Commands executed |
 | AUD-06 | Unclear roles of scripts, tools and documents | Added index READMEs for `contracts/`, `scripts/`, `tools/` and `docs/` | Links checked |
 | AUD-07 | Obsolete task-brief document | Removed `docs/POC_CONTINUATION_PROMPT.md`; nothing referenced it | Git history retains it |
 | AUD-08 | Issuer classification counts only Ed25519 public-key signers against the medium threshold | Not changed: fixing alters pinned tool hashes | Recorded as `FW-STL-01` |
+| AUD-09 | First hosted CI run: the SAC administrator Wasm embeds build-machine dependency paths, so its reference hash reproduces only with the same Cargo home | CI builds with that Cargo home; requirement documented in [development](DEVELOPMENT.md#build) | Recorded as `FW-DEV-03`; registry hash reproduced on the hosted runner |
 
 Post-change validation: 93 contract, 4 signer and 124 Python tests pass;
 `scripts/reproduce_poc.py --offline` reports `PASS` for all 14 commands; strict

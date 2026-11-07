@@ -50,6 +50,18 @@ f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6  qasset_sac_adm
 Changing contract source, including doc comments on contract types, changes these
 hashes and the recorded evidence that pins them.
 
+The SAC administrator Wasm embeds the source paths of its dependencies (`ml-dsa`,
+`keccak`, `hybrid-array`, `soroban-sdk`) from the Cargo registry, so its reference
+hash reproduces only when Cargo's home is `/home/mohamed/.cargo`:
+
+```bash
+CARGO_HOME=/home/mohamed/.cargo RUSTUP_TOOLCHAIN=1.94.1 \
+  cargo build --locked --workspace --target wasm32v1-none --release
+```
+
+The registry Wasm contains no such paths and reproduces anywhere. A path-independent
+build is tracked as `FW-DEV-03`.
+
 ## Test
 
 ```bash

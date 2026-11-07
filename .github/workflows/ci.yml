@@ -37,6 +37,11 @@ jobs:
 
       - name: Release build and reference hashes
         run: |
+          # The reference SAC administrator Wasm embeds dependency source paths under
+          # /home/mohamed/.cargo, so it reproduces only with that Cargo home (FW-DEV-03).
+          sudo mkdir -p /home/mohamed
+          sudo chown "$(id -u):$(id -g)" /home/mohamed
+          export CARGO_HOME=/home/mohamed/.cargo
           cargo build --locked --workspace --target wasm32v1-none --release
           printf '%s  %s\n' \
             f7ed9b81ca062af1b52c793fa068d43220d900c0d572e648f6e2d0f5a2a472b6 target/wasm32v1-none/release/qasset_sac_admin.wasm \

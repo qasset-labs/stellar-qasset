@@ -24,7 +24,7 @@ Low. **Statuses:** Planned, Research, Blocked, Deferred.
 | [Testing and verification](#testing-and-verification) | FW-TEST-01 – 03 |
 | [Monitoring and observability](#monitoring-and-observability) | FW-MON-01 – 02 |
 | [SDKs and APIs](#sdks-and-apis) | FW-SDK-01 – 02 |
-| [Developer tooling](#developer-tooling) | FW-DEV-01 – 02 |
+| [Developer tooling](#developer-tooling) | FW-DEV-01 – 03 |
 | [Deployment and operations](#deployment-and-operations) | FW-OPS-01 – 03 |
 | [Performance and scalability](#performance-and-scalability) | FW-PERF-01 – 02 |
 | [Documentation and maintenance](#documentation-and-maintenance) | FW-DOC-01 – 02 |
@@ -277,8 +277,9 @@ Acceptance: reviewed threat model linked from the architecture.
 ## Testing and verification
 
 **FW-TEST-01 — Hosted CI confirmation.** Priority Medium. Status Planned. A CI
-workflow is defined in `.github/workflows/ci.yml` and its commands pass locally; a
-first hosted run has not been observed. Acceptance: green run on the default branch
+workflow is defined in `.github/workflows/ci.yml` and its commands pass locally. The
+first hosted run passed formatting, lint and tests and exposed the build-path
+dependency of the reference hash (FW-DEV-03), now handled in the workflow. Acceptance: green run on the default branch
 and required checks enabled (FW-REPO-07).
 
 **FW-TEST-02 — Coalition oracle tests.** Priority High. Status Planned. Part of
@@ -314,6 +315,20 @@ endpoints with ledger watermarks and freshness, as specified.
 Deferred. Endpoint constants are duplicated across scripts. Changing the analyzer or
 verifier changes pinned tool hashes, so this ships with FW-ARCH-03. Acceptance:
 single configuration module used by all scripts.
+
+**FW-DEV-03 — Path-independent contract builds.** Priority Medium. Status Planned.
+Confirmed by the first hosted CI run: the SAC administrator Wasm embeds absolute
+dependency source paths from the build machine's Cargo registry
+(`/home/mohamed/.cargo/registry/src/...`) through panic locations in `ml-dsa`,
+`keccak`, `hybrid-array` and `soroban-sdk`, so its reference hash
+(`f7ed9b81…72b6`) reproduces only with that Cargo home. The registry Wasm is not
+affected. CI currently reproduces the reference by using the same Cargo home.
+Approach: build releases with `--remap-path-prefix` (or Cargo `trim-paths` when
+stable) mapping the registry and workspace to fixed prefixes, and publish new
+reference hashes with the next contract release; existing Testnet evidence keeps the
+current hashes. Acceptance: identical Wasm hashes from two machines with different
+users and Cargo homes. Security impact: low; deployed Wasm discloses the build
+machine's home path.
 
 **FW-DEV-02 — Python dependency files.** Priority Low. Status Planned.
 `scripts/requirements-poc.lock` (hashed, reference), `requirements-testnet.txt` and
