@@ -1,5 +1,9 @@
 # Scoped review request: is RoKoko's canonical gate sound, and does its sumcheck hide the witness? — F-01 RoKoko side
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Prepared 2026-10-23 for an independent cryptographic reviewer, following
 the same pattern as `BINIUS_A01_REVIEW_SCOPE.md`. This is a scope-of-work
 brief, not a review itself, and not a security approval. It is a separate,

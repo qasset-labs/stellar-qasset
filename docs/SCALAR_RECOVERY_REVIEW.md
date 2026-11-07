@@ -1,5 +1,9 @@
 # Review: publishing the clamped scalar to shrink original-seed proofs
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Initial review 2026-10-19; integration and test-label corrections verified 2026-10-20. Internal research review for Q-Asset. No transactions or deployments. This evaluates a proposed relation transformation, not the security of a production proof implementation.
 
 ## Decision

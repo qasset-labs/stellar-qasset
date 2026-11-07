@@ -12,58 +12,412 @@ Supporting specifications: [contracts](CONTRACTS.md), [clients and services](CLI
 [maintenance](MAINTENANCE.md). The [authority demonstration](POC_ARCHITECTURE.md)
 explains the implemented integration; [recovery status](RECOVERY_IMPLEMENTATION_STATUS.md)
 bounds the research. Findings and validation belong in the separate
-[documentation review](ARCHITECTURE_REVIEW.md).
+[documentation review](ARCHITECTURE_REVIEW.md). Part I presents the product; Part II
+holds the detailed specifications.
 
-## Architecture at a glance
+## Contents and section summaries
 
-The completed product has the components below. The right-hand column records
-what the PoC has already demonstrated for each one; it does not limit the design.
+**Part I — Product architecture** ([overview](#part-i--product-architecture))
 
-| Product component | Role in the completed product | PoC evidence today |
-| --- | --- | --- |
-| Authority analyzer | Adapters for issuer accounts, SACs, supported smart accounts and upgradeable contracts build typed authority graphs (§3) | Python analyzer for two reference Testnet assets; 32 classified paths |
-| Classical-coalition engine | Per protected operation, the minimal sets of classical signers that can still meet its threshold, and whether legacy Ed25519 signers alone still can (§3) | Not implemented; only declared-weight predicates and summed Ed25519 weight checks exist |
-| Evidence and freshness | Configuration-bound assessments, a separate verifier, staleness after tracked changes, report receipts (§3, §11) | Schema v2 evidence; separate verifier; 16 of 32 paths marked stale after a policy revision |
-| Policy registry | Declared roles, weights, thresholds and revisions with revision-checked writes; a new version adds report receipts (§4) | Deployed registry with guarded setter and change events |
-| Scoped ML-DSA controllers | Operation-scoped approval where authority is delegable, guarded handover and rotation, address-bound credentials, CAP-87 host verification (§6, §8, §9) | Fixed single-operation SAC administrator verifying ML-DSA-65 inside Wasm |
-| Clients and services | SDK, API, ingestion, monitoring and maintenance workers (§11) | Not implemented; finite scripts and JSON records |
-| Recovery research | Optional extension gated on independent review and verifier feasibility (§7) | Enrolled-key counter; disabled seed account; measured verifier limits |
+| Section | Summary |
+| --- | --- |
+| [A. What Q-Asset is](#a-what-q-asset-is) | The problem of independent authority layers on Stellar, the question Q-Asset answers, its five capabilities and design principles |
+| [B. How Q-Asset works end to end](#b-how-q-asset-works-end-to-end) | The assess → declare → enforce → monitor workflow, with a sequence diagram |
+| [C. System components](#c-system-components) | On-chain and off-chain components, their technology, responsibilities and PoC status |
+| [D. Authority model and classical-coalition analysis](#d-authority-model-and-classical-coalition-analysis) | Graph node and edge types, protected operations and thresholds, and the minimal classical-coalition algorithm |
+| [E. Assessments and evidence](#e-assessments-and-evidence) | Status model, evidence bundle structure, path catalogue, verifier and freshness lifecycle |
+| [F. Policy registry](#f-policy-registry) | Tenant and quorum data model, revision-checked writes and the target receipt design |
+| [G. Scoped ML-DSA controllers](#g-scoped-ml-dsa-controllers) | Authorization flow through `__check_auth`, payload binding, and PoC versus production controller properties |
+| [H. SDK, API and monitoring](#h-sdk-api-and-monitoring) | SDK modules, read API endpoints and the monitoring pipeline |
+| [I. Measured PoC results](#i-measured-poc-results) | Contract sizes, signature sizes, instruction and fee costs, Testnet results and freshness evidence |
+| [J. Security model](#j-security-model) | Trust boundaries, what each guarantees and what it still depends on |
+
+**Part II — Detailed specifications** ([overview](#part-ii--detailed-specifications))
+
+| Section | Summary |
+| --- | --- |
+| [1. Product, requirements and economics](#1-product-requirements-and-economics) | User workflows, absence of any token or protocol fee, cost sources and requirements |
+| [2. Implementation boundary and topology](#2-implementation-boundary-and-topology) | Current versus target per component and the target hosting topology |
+| [3. Identity, authority graphs and evidence](#3-identity-authority-graphs-and-evidence) | Asset identity, graph traversal bounds, path statuses and read consistency |
+| [4. Declared policy contract](#4-declared-policy-contract) | Registry consent rules, revisions and the exact QS0–QS4 declaration predicates |
+| [5. Assets, custody and accounting](#5-assets-custody-and-accounting) | SAC operations and their authority, issuer residual powers, precision and conservation |
+| [6. Enforcement and lifecycle](#6-enforcement-and-lifecycle) | Current administrator, production controller, guarded handover, lifecycle states, cryptographic parameters and verified gates |
+| [7. Conditional recovery extension](#7-conditional-recovery-extension) | Enrolled-key counter, disabled seed account, target recovery statement and open gates |
+| [8. Network configuration and deployment provenance](#8-network-configuration-and-deployment-provenance) | Pinned versions, Protocol 30 status, CAP-87 compatibility and migration, network identity and resets |
+| [9. Transaction and wallet protocol](#9-transaction-and-wallet-protocol) | Source, fee and contract authority, simulation, address-bound credentials and outcome handling |
+| [10. Storage and resource lifecycle](#10-storage-and-resource-lifecycle) | TTL rules, archival and restoration, dependency maintenance and resource limits |
+| [11. dApp, SDK and durable services](#11-dapp-sdk-and-durable-services) | Target user journeys, SDK separation, indexing and history retention |
+| [12. External integrations and confidentiality](#12-external-integrations-and-confidentiality) | What RPC, Horizon, wallets, SEP-5, metadata and custody do and do not establish |
+| [13. Threats and operations](#13-threats-and-operations) | Adversaries, required controls and residual boundaries |
+| [14. Delivery, testing and production gates](#14-delivery-testing-and-production-gates) | Delivery stages, test requirements, release mapping and unresolved decisions |
+
+## Part I — Product architecture
+
+Part I presents the product and how each component works. Part II holds the
+detailed specifications, constraints and operating rules that Part I relies on.
+
+### A. What Q-Asset is
+
+A Stellar asset is controlled through several independent layers: the classic
+issuer account with its own signers, weights, thresholds and flags; the Stellar
+Asset Contract (SAC) and its administrator; and, for many products, smart
+accounts, upgradeable contracts, governance and recovery arrangements. Changing
+one layer does not change the others. An issuer can move SAC administration to a
+post-quantum-protected account while its classic key can still issue tokens with
+a native Payment.
+
+Q-Asset answers, for each asset and treasury, the question that matters during
+post-quantum migration: **which classical keys can still exercise each critical
+power, and has that changed since the last check?** It then helps move the
+powers that can be delegated to operation-scoped ML-DSA approval, and keeps the
+evidence current.
+
+| Capability | What the user gets |
+| --- | --- |
+| Assess | A per-asset authority graph and, for each protected operation, the minimal sets of classical signers that can still exercise it |
+| Declare | A shared, revision-checked record of the intended policy that can be compared with observed authority |
+| Enforce | Operation-scoped ML-DSA approval for delegable operations, with guarded handover and rotation |
+| Monitor | Reassessment when tracked authority changes, with affected results marked stale |
+| Prove | Reproducible evidence bundles that an independent reviewer can verify |
+
+Design principles:
+
+* **The asset is the unit of analysis**, not a wallet or a single signature.
+* **Observed authority outranks declarations.** A declared policy is compared
+  with what the ledger and code actually allow; it never upgrades itself.
+* **Fail closed.** Unsupported code, signer kinds or missing data produce
+  `UNCOVERED` or `INCONCLUSIVE`, never a favorable result.
+* **Scope enforcement to operations.** A valid signature for one operation cannot
+  authorize another.
+* **Evidence expires.** Results are bound to the configuration they observed.
+
+### B. How Q-Asset works end to end
 
 ```mermaid
-flowchart LR
-  subgraph Stellar[Stellar network]
-    Issuer[Classic issuer account<br/>signers, thresholds, flags]
-    SAC[Stellar Asset Contract]
-    SA[Smart accounts and<br/>upgradeable contracts]
-  end
-  subgraph Product[Q-Asset product]
-    Analyzer[Authority analyzer<br/>and adapters]
-    Coalition[Classical-coalition<br/>engine]
-    Evidence[Evidence, verifier<br/>and freshness]
-    Registry[Policy registry<br/>and receipts]
-    Controller[Scoped ML-DSA<br/>controllers]
-    Services[SDK, API and<br/>monitoring]
-  end
-  Issuer -->|Horizon| Analyzer
-  SAC -->|Stellar RPC| Analyzer
-  SA -->|Stellar RPC| Analyzer
-  Analyzer --> Coalition --> Evidence
-  Registry --> Evidence
-  Evidence --> Services
-  Controller -->|set_admin delegation| SAC
-  Services --> Registry
-  classDef poc fill:#d9f2e3,stroke:#2e7d4f;
-  classDef target fill:#eef1f6,stroke:#5b6b82,stroke-dasharray: 4 3;
-  class Analyzer,Evidence,Registry,Controller poc;
-  class Coalition,Services target;
+sequenceDiagram
+  participant Issuer as Issuer team
+  participant App as Q-Asset SDK / app
+  participant Analyzer as Analyzer and coalition engine
+  participant Ledger as Stellar (Horizon, RPC)
+  participant Registry as Policy registry
+  participant Controller as Scoped ML-DSA controller
+  Issuer->>App: Asset identity and intended roles
+  App->>Analyzer: Request assessment
+  Analyzer->>Ledger: Read issuer signers, thresholds, flags, SAC admin, contract code
+  Analyzer->>Ledger: Enforced simulations of protected operations
+  Analyzer-->>App: Authority graph, classical coalitions, evidence bundle
+  Issuer->>Registry: Declare intended policy (revision-checked)
+  Issuer->>Ledger: set_admin: delegate SAC administration
+  Ledger->>Controller: Delegated operations require ML-DSA approval
+  Ledger-->>Analyzer: Tracked configuration changes
+  Analyzer-->>App: Affected results marked stale; reassessment
 ```
 
-Solid green components have PoC evidence; dashed components are target-only.
+1. **Discover and assess.** The analyzer reads the asset's authority layers,
+   builds its graph, computes classical coalitions per operation and exercises
+   permitted and forbidden operations in enforced simulation.
+2. **Declare.** The issuer records the intended roles, signer weights and
+   thresholds in the registry; the assessment compares declaration and reality.
+3. **Enforce where delegable.** SAC administration and supported contract powers
+   move to a scoped ML-DSA controller. Classic issuer powers are reported until
+   the issuer separately restricts them.
+4. **Monitor.** Tracked changes mark affected evidence stale and trigger a new
+   assessment before a report is reused.
 
-Reading guide: §1–§3 cover the product, requirements and analysis; §4–§6 the
-contracts and enforcement; §7 recovery; §8–§10 network, transactions and storage;
-§11–§14 clients, integrations, threats and delivery. Sections mark current and
-target behavior explicitly.
+### C. System components
+
+```mermaid
+flowchart TB
+  subgraph Offchain[Off-chain services]
+    SDK[SDK and operator app]
+    API[Assessment API]
+    Analyzer[Analyzer and adapters]
+    Engine[Classical-coalition engine]
+    Verifier[Evidence verifier]
+    Monitor[Ingestion and monitoring workers]
+    Store[(Evidence archive and projections)]
+  end
+  subgraph Onchain[Stellar network]
+    Registry[Policy registry contract]
+    Controller[Scoped ML-DSA controller contract]
+    SAC[Stellar Asset Contract]
+    Issuer[Classic issuer account]
+  end
+  SDK --> API --> Store
+  Analyzer --> Engine --> Store
+  Verifier --> Store
+  Monitor --> Store
+  Analyzer -->|Horizon| Issuer
+  Analyzer -->|Stellar RPC| SAC
+  Analyzer -->|Stellar RPC| Registry
+  Monitor -->|ledger data| Onchain
+  SDK -->|transactions| Registry
+  Controller -->|administers via set_admin| SAC
+```
+
+| Component | Technology | Responsibility | PoC status |
+| --- | --- | --- | --- |
+| Policy registry | Rust, Soroban | Declared roles, weights, thresholds, revisions, events | Deployed on Testnet; 28,553-byte Wasm |
+| Scoped ML-DSA controller | Rust, Soroban custom account | Operation-scoped ML-DSA approval of delegated SAC and contract operations | Fixed single-operation administrator; 59,167-byte Wasm |
+| Analyzer and adapters | Off-chain service | Reads authority layers, builds graphs, classifies paths | Python analyzer for two reference assets |
+| Classical-coalition engine | Off-chain library | Minimal classical coalitions per operation | Specified in §D; not yet implemented |
+| Evidence verifier | Off-chain tool | Recomputes classifications and checks live configuration | Separate Python verifier with exit codes |
+| Ingestion and monitoring | Off-chain workers | Change detection, reassessment, alerts, TTL maintenance | Target |
+| SDK, API, operator app | TypeScript, HTTP | Inspection, policy editing, evidence export | Target; interfaces in [clients and services](CLIENTS_AND_SERVICES.md) |
+| Recovery research | Rust, Soroban, proof systems | Optional, gated extension (§7) | Enrolled-key counter, disabled seed account, proof mailbox |
+
+### D. Authority model and classical-coalition analysis
+
+The analyzer represents each asset as a typed, directed authority graph.
+
+| Node type | Examples | Key attributes |
+| --- | --- | --- |
+| Asset identity | Issued asset (code, issuer), its derived SAC address | Network, flags (`AUTH_REQUIRED`, `AUTH_REVOCABLE`, `AUTH_CLAWBACK_ENABLED`, `AUTH_IMMUTABLE`) |
+| Classic account | Issuer, treasury, registrar | Signers, master weight, low/medium/high thresholds |
+| Signer | Ed25519 key, signed payload, pre-authorized transaction, hash(x), ML-DSA key | Kind, weight, classical or post-quantum |
+| Contract account | Q-Asset controller, supported smart accounts | Recognized code hash, extracted quorum and allowlist |
+| Contract authority | SAC administrator, upgrade authority, governance | Holder address, operations it can perform |
+
+| Edge | Meaning |
+| --- | --- |
+| `signs_for(weight)` | A signer contributes weight to an account or contract rule |
+| `administers` | A holder can invoke administrative functions of a contract |
+| `authorizes(operation)` | A node can authorize a protected operation |
+| `upgrades` / `replaces` | A node can change code or the authority above it |
+
+Protected operations and the threshold that governs them:
+
+| Layer | Operation | Governing rule |
+| --- | --- | --- |
+| Classic issuer | Payment from the issuer (issuance) | Medium threshold |
+| Classic issuer | `SetTrustLineFlags` / `AllowTrust` (holder authorization) | Low threshold |
+| Classic issuer | `Clawback` (if clawback is enabled) | Medium threshold |
+| Classic issuer | `SetOptions` changing signers or thresholds | High threshold |
+| SAC | `mint`, `clawback`, `set_authorized`, `set_admin` | The SAC administrator's authorization |
+| Contracts | Upgrade, governance, treasury transfer | The contract's own rule, from a supported adapter |
+
+For each protected operation, the **classical-coalition engine** computes the
+minimal sets of classical authorities that satisfy its rule without any
+post-quantum participant. A coalition is minimal when removing any member breaks
+it. Ed25519 keys, signed-payload signers and secp256r1 smart-account signers are
+classical; pre-authorized-transaction and hash(x) signers are reported as
+non-key authorities; ML-DSA signers count as post-quantum only where enforcement
+is established.
+
+```text
+coalitions(node, op):
+  if node is unsupported or unknown:          return UNCOVERED
+  T  := threshold(node, op)
+  C  := classical members of node, sorted by weight (descending)
+  out := []
+  search(i, chosen, w):
+    if w >= T:                                 # rule satisfied
+      if no proper subset of chosen meets T:   # minimality
+        out.append(chosen)
+      return
+    if i == len(C) or w + remaining_weight(i) < T:
+      return                                   # bound: cannot reach T
+    search(i+1, chosen + [C[i]], w + weight(C[i]))
+    search(i+1, chosen, w)
+  search(0, [], 0)
+  expand members that are contract or account nodes by their own coalitions,
+  within node and coalition ceilings; an exceeded ceiling returns UNCOVERED
+  return out
+```
+
+A classic account has at most 20 signers plus its master key, so a per-account
+search is bounded by 2^21 subsets before pruning. The engine reports, per
+operation: the minimal coalitions and their sizes, whether a classical-only path
+exists, and whether legacy Ed25519 signers alone still meet the threshold after
+post-quantum signers are added. Results are validated against a brute-force
+subset oracle on generated policies.
+
+```mermaid
+flowchart TB
+  Op{{Treasury transfer rule<br/>smart account, threshold 2}}
+  Op --> A[Signer A<br/>Ed25519, weight 1]
+  Op --> B[Signer B<br/>Ed25519, weight 1]
+  Op --> C[Signer C<br/>ML-DSA-65, weight 2]
+  Result[Minimal classical coalition: A + B<br/>Legacy Ed25519 meets threshold: yes<br/>Fix: threshold 3, or require C]
+  A -.-> Result
+  B -.-> Result
+```
+
+### E. Assessments and evidence
+
+Every protected path receives one status.
+
+| Status | Meaning |
+| --- | --- |
+| `EXPOSED` | Supported configuration or a successful execution shows usable classical authority |
+| `TESTED_PASS` | The cited authorized operation succeeded |
+| `TESTED_REJECT` | The cited operation or credential was rejected under documented conditions |
+| `DECLARED` | A policy is recorded without established enforcement |
+| `UNCOVERED` | No established protection, or the path is outside supported adapters |
+| `STALE` | A tracked input changed after the assessment |
+| `INCONCLUSIVE` | Required live evidence is unavailable |
+
+An evidence bundle (current schema `qasset-authority-assessment-v2`) contains:
+the network and passphrase; the observed ledger range; tool name, version and
+source hashes; per-asset identity (SAC, issuer, holder, administrator), issuer
+signers, thresholds and flags, administrator Wasm hash and policy revision; the
+cryptographic mechanism; hashes of every input file; the classified paths; stated
+limitations; and a SHA-256 digest of the canonical body. Each path records its
+asset, path identifier, status, explanation and citations of recorded
+transactions or simulations, for example:
+
+```json
+{ "asset": "QEXP", "path": "issuer.classic_mint", "status": "EXPOSED",
+  "detail": "Classic issuer Payment succeeded after SAC handover.",
+  "citations": [ { "observation_id": "…", "kind": "transaction", "hash": "…" } ] }
+```
+
+The current reference assessment classifies 16 paths per asset across issuer
+(`issuer.classic_signers`, `issuer.classic_mint`, `issuer.trustline_flags`), SAC
+(`sac.admin`, `sac.set_authorized`, `sac.mint`, `sac.clawback`, `sac.set_admin`),
+administrator (`admin.upgrade`), credential (`auth.corrupted_signature`,
+`auth.wrong_network_signature`, `auth.replayed_entry`), transaction
+(`transaction.source_and_fee_payer`) and registry (`registry.admin`,
+`registry.policy`, `registry.revision_conflict`) layers.
+
+The verifier is a separate implementation. It recomputes classifications from
+raw XDR and recorded responses, checks ML-DSA credentials and the exact negative
+mutations, and in live mode rechecks receipts, executable hashes, issuer signers,
+thresholds and flags, SAC administrator, operator key, quorums and registry
+revision. Exit 0 means `SUCCESS`, exit 1 `STALE` or `INVALID`, exit 2
+`INCONCLUSIVE`. Target additions: coalition results per operation, registry
+report receipts and signed attestations with an explicit trust model.
+
+```mermaid
+stateDiagram-v2
+  [*] --> Fresh: assessment generated and verified
+  Fresh --> Stale: tracked input changed (signers, admin, code hash, revision)
+  Fresh --> Inconclusive: required live evidence unavailable
+  Inconclusive --> Fresh: evidence available and unchanged
+  Stale --> Fresh: reassessment
+```
+
+### F. Policy registry
+
+The registry is a shared, revision-checked record of declared policy. It is
+multi-tenant: each asset label has its own tenant administrator.
+
+| Record | Fields | Notes |
+| --- | --- | --- |
+| Tenant | `admin`, `revision: u64` | Created by registrar plus tenant consent; revision starts at 0 |
+| Role quorum | `signers: [ { address, algo, weight } ]`, `threshold` | Eight roles: Mint, Burn, Freeze, Clawback, Treasury, Upgrade, Governance, Recovery |
+| Events | `QuorumSet`, `AssetAdminChanged` | Carry the new revision |
+
+Writes use compare-and-set on the revision: `set_role_quorum_if_revision`
+applies a change only if the caller's expected revision is current, otherwise it
+fails with error 15 and changes nothing. Quorums hold at most 20 unique
+addresses with weights 1–255 and a reachable non-zero threshold. Declared QS0–QS4
+levels are computed from these declarations ([§4](#qs0qs4-standard)); the
+verified-gate APIs always fail because a declaration is not enforcement.
+
+Target registry version: expected revisions on every mutation including tenant
+handover, no unconditional setter, a conventional Stellar multisignature account
+as registrar, and bounded **report receipts** that bind publisher, network,
+tenant, asset identity, policy revision, schema and tool versions, observation
+interval and expiry. A receipt states what was published, not that the
+publisher discovered all authority.
+
+### G. Scoped ML-DSA controllers
+
+When an issuer calls the SAC's `set_admin` with a Q-Asset controller as the new
+administrator, every SAC administrative call requires that controller's
+authorization, and the Soroban host invokes its `__check_auth`.
+
+```mermaid
+sequenceDiagram
+  participant Client
+  participant SAC as Stellar Asset Contract
+  participant Host as Soroban host
+  participant Ctrl as Q-Asset controller (__check_auth)
+  Client->>SAC: set_authorized(holder, true) with ML-DSA credential
+  SAC->>Host: require_auth(admin = controller)
+  Host->>Host: Check nonce and expiry
+  Host->>Ctrl: __check_auth(payload hash, signature, auth contexts)
+  Ctrl->>Ctrl: Exactly one context: configured SAC, allowed function, argument count
+  Ctrl->>Ctrl: ML-DSA verify(key, payload, context string)
+  Ctrl-->>Host: Ok, or UnsupportedAuthContext / InvalidSignature
+  Host-->>SAC: Authorized
+  SAC-->>Client: Holder authorization updated
+```
+
+The payload is the host's SHA-256 digest of the authorization preimage, which
+binds the network ID, nonce, signature expiration ledger and the exact invocation
+tree, including argument values. The controller adds the ML-DSA domain context
+`qasset-sac-admin-auth-v1`. It checks the authorization context **before**
+verifying the signature, so other functions, other SACs, contract creation and
+composite trees are rejected without cryptographic work. It has no outgoing
+call into the SAC, so it can never act as an automatically authorized direct
+invoker.
+
+| Property | PoC administrator | Production controller (target) |
+| --- | --- | --- |
+| Allowed operations | `set_authorized` on one SAC | Configured allowlist of contract, function and argument constraints |
+| Keys | One ML-DSA-65 key (1,952-byte public key, 3,309-byte signature) | Quorum of ML-DSA keys, optional classical AND post-quantum rules |
+| Handover and rotation | None (deliberate) | Guarded `set_admin` handover and key rotation (§6) |
+| Credentials | Legacy address credentials | Address-bound credentials only (§9) |
+| Verification | RustCrypto `ml-dsa` 0.1.1 inside Wasm | Wasm, then CAP-87 host functions when Protocol 30 is active (§8) |
+| Cost | About 102.5 million instructions and about 59,000 stroops resource fee per authorized call | Measured per release |
+
+A rule that accepts classical **or** post-quantum approval keeps a classical
+route; a rule that requires both changes availability. The controller records
+which rule applies to each operation, and the coalition engine evaluates it.
+
+### H. SDK, API and monitoring
+
+The SDK separates `core` (identities, exact amounts, evidence codecs),
+`bindings` (generated from pinned Wasm), `network`, `transactions`, `wallets` and
+`assessments` modules. The assessment API serves versioned, read-only resources:
+
+```text
+GET /v1/networks/{generation}/assets/{identity}/authority
+GET /v1/networks/{generation}/assets/{identity}/assessments?cursor=...
+GET /v1/assessments/{evidenceHash}
+GET /v1/operations/{operationId}
+GET /v1/health
+```
+
+Every response carries the network generation, schema and adapter versions,
+indexed and reconciled ledgers, observation range and freshness state.
+Monitoring workers ingest ledger data, detect changes to tracked authority
+(signers, thresholds, flags, administrators, code hashes, registry revisions),
+mark affected results stale, trigger reassessment and maintain contract TTL.
+Indexing data never grants approval authority. Interfaces and the transaction
+state machine are specified in [clients and services](CLIENTS_AND_SERVICES.md).
+
+### I. Measured PoC results
+
+| Measurement | Value |
+| --- | --- |
+| Contracts | Five Rust/Soroban contracts; 90 contract tests, 4 signer tests and 124 Python tests passing |
+| Registry Wasm | 28,553 bytes, SHA-256 `26f684ed…a207` |
+| SAC administrator Wasm | 59,167 bytes, SHA-256 `f7ed9b81…72b6` |
+| ML-DSA-65 sizes | 1,952-byte public key; 3,309-byte signature |
+| Authorized `set_authorized` call | About 102.5 million instructions; about 57,900–59,200 stroops estimated resource fee |
+| Testnet run | 28 successful transactions, 10 rejected enforced simulations, 1 rejected submission |
+| Reference assessment | 32 paths: 5 exposed, 4 tested-pass, 11 tested-reject, 10 uncovered, 2 declared |
+| Freshness | A policy revision marked 16 of 32 paths stale; the verifier exited 1 |
+| Storage | Instance TTL target 120,960 ledgers, about seven days at five seconds per ledger |
+
+### J. Security model
+
+| Boundary | Guarantee | Residual dependency |
+| --- | --- | --- |
+| Operation scope | A valid signature authorizes only the allowlisted operation | Allowlist correctness and review |
+| Classic issuer | Reported until separately restricted | Issuer key custody and migration |
+| Transaction envelopes | Submitters cannot forge or alter the ML-DSA approval | Ed25519 still signs envelopes and pays fees; affects availability |
+| Declarations | Never treated as enforcement | Registrar and tenant administrators are trusted for declaration content |
+| Evidence | Bound to observed configuration; expires on tracked change | RPC and Horizon providers are trusted for availability and completeness |
+| Cryptography | ML-DSA-65 with domain separation; bounded by the SHA-256 digest (§6) | Unaudited implementation until reviewed |
+
+Threats, controls and operations are detailed in §13 and in the
+[threat models](THREAT_MODEL.md).
+
+## Part II — Detailed specifications
 
 ## 1. Product, requirements and economics
 
@@ -175,51 +529,11 @@ identity alone does not prove policy correctness or independent key custody.
 
 ### Classical-coalition analysis
 
-For each protected operation, the target analyzer computes the **minimal classical
-coalitions**: sets of non-post-quantum authorities that can authorize the
-operation without any post-quantum participant, such that no proper subset can.
-This answers the asset-level question "which classical keys can still exercise
-this power?" and, after post-quantum signers are added, whether legacy Ed25519
-signers alone still meet the threshold.
-
-* **Inputs.** Each authority node carries identity, kind, weight and the threshold
-  that applies to the operation: classic low/medium/high thresholds by operation
-  type, or a contract quorum extracted by a supported adapter.
-* **Kinds.** Ed25519 keys and Ed25519 signed-payload signers, and secp256r1
-  smart-account signers, are classical. Pre-authorized-transaction and hash(x)
-  signers are non-key authorities that bypass signature cryptography and are
-  reported separately. ML-DSA signers count as post-quantum only where an adapter
-  establishes actual enforcement; otherwise they remain declared.
-* **Composition.** An account or contract node is satisfied when its own rule is
-  met. Coalitions compose across issuer account, SAC administration, smart-account
-  rules, and upgrade and governance authority. Any path through an unsupported or
-  unknown node makes that operation `UNCOVERED`.
-* **Output.** The minimal coalitions and their sizes, whether a classical-only
-  path exists, and the legacy-Ed25519 threshold check.
-* **Bounds.** A classic account holds at most 20 signers plus its master key, so
-  per-account enumeration is bounded. Search is weight-ordered with pruning and
-  explicit node and coalition ceilings; an exceeded ceiling yields `UNCOVERED`.
-* **Validation.** Results must match an independent brute-force subset-enumeration
-  oracle on generated weighted policies, as the registry predicates already do
-  with 342 cases.
-
-```mermaid
-flowchart TB
-  Op{{Treasury transfer rule<br/>smart account, threshold 2}}
-  Op --> A[Signer A<br/>Ed25519, weight 1]
-  Op --> B[Signer B<br/>Ed25519, weight 1]
-  Op --> C[Signer C<br/>ML-DSA-65, weight 2]
-  Result[Minimal classical coalition: A + B<br/>Legacy Ed25519 meets threshold: yes<br/>Fix: threshold 3, or require C]
-  A -.-> Result
-  B -.-> Result
-```
-
-Illustrative example: adding post-quantum signer C does not protect the rule,
-because A and B together still meet the threshold without it.
-
-Current status: not implemented. The registry evaluates only the declared
-predicate `C >= T` per role, and the PoC analyzer compares summed Ed25519 weight
-with the medium threshold for two reference configurations.
+The algorithm, signer classification, bounds and an example are specified in
+[Part I §D](#d-authority-model-and-classical-coalition-analysis). Current status: not
+implemented. The registry evaluates only the declared predicate `C >= T` per role,
+and the PoC analyzer compares summed Ed25519 weight with the medium threshold for
+two reference configurations.
 
 Current path statuses are `DECLARED`, `TESTED_PASS`, `TESTED_REJECT`, `EXPOSED`,
 `UNCOVERED`, `STALE` and `INCONCLUSIVE`. Verifier `INVALID` describes evidence

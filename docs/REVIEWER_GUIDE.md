@@ -1,5 +1,10 @@
 # Review the Q-Asset prototype
 
+> **Scope:** This document covers the current Q-Asset proof-of-concept (PoC) and
+> research contracts: limited Testnet implementations that demonstrate core
+> mechanisms. They are not the full Q-Asset product. The complete product design is
+> described in the [architecture](ARCHITECTURE.md).
+
 Current recovery components and remaining gates: [implementation status](RECOVERY_IMPLEMENTATION_STATUS.md) and [successor evidence](VERIFIER_NEXT_EVIDENCE.md).
 
 This demo demonstrates weighted policy analysis, tenant authorization, and rejection

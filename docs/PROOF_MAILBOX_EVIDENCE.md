@@ -1,5 +1,9 @@
 # Research proof transport on Soroban
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 The [mailbox contract](../contracts/recovery-proof-mailbox/src/lib.rs) stores a
 large proof in authenticated, ordered temporary chunks. It never verifies a
 cryptographic proof or authorizes recovery. Its state is explicitly

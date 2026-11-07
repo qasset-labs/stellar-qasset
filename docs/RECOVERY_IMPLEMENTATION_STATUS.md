@@ -1,5 +1,9 @@
 # Recovery implementation and remaining gates
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Updated 2026-10-20. This is first-party engineering evidence. No
 external cryptographic approval or production recovery deployment is claimed.
 

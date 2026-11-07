@@ -1,5 +1,10 @@
 # Q-Asset cryptographic review
 
+> **Scope:** This review covers the current proof-of-concept (PoC) code and the
+> recovery research. The PoC is a limited Testnet implementation, not the full
+> Q-Asset product; the complete product design is described in the
+> [architecture](ARCHITECTURE.md).
+
 First-party adversarial review; not independent external certification.
 
 Follow-up: [original-seed evidence](RECOVERY_EVIDENCE.md) and a

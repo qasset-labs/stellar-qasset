@@ -1,5 +1,10 @@
 # SAC authority demonstration test report
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 Current remediation results: 90 workspace tests, 124 Python tests and 4 signer tests pass. The fresh revision-checked registry run has 28 successful transactions, ten enforced negative simulations and one correctly signed classic Payment rejected before inclusion. The versioned assessment covers 32 paths. Required baseline source and pinned research dependencies are now captured in version control. Clean-checkout reproduction passed from an export with empty build directories and isolated Python dependencies; the final result is recorded in `evidence/qasset-remediation-validation.json`. Earlier results and backlog statements below are historical.
 
 The [final remediation verification](#final-remediation-verification) is the

@@ -1,5 +1,9 @@
 # Conditional security argument for Q-Asset original-seed recovery
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 2026-10-19. First-party research notes for review. This is a handwritten conditional argument and executable-evidence plan, **not a computer-checked theorem, implementation of a ZK backend, proof of quantum hardness, independent audit, or production approval**. No network transactions were performed.
 
 ## What can actually be established now

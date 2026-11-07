@@ -1,5 +1,9 @@
 # Scoped review request: Binius64 post-quantum (QROM) soundness — A-01
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Prepared 2026-10-22 for an independent cryptographic reviewer. This is a
 scope-of-work brief, not a review itself, and not a security approval. It
 assembles everything a reviewer needs to answer three narrow, named

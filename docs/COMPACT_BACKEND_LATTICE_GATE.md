@@ -1,5 +1,9 @@
 # Compact recovery backend: lattice-proof and architecture follow-up
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 > Scope: a dated research/literature trail. Theorems, masking/composition
 > applicability, complete commitment-chain behavior and quantum knowledge/privacy
 > require independent specialist review. Native size/time does not establish

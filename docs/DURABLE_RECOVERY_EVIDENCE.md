@@ -1,5 +1,9 @@
 # Durable local recovery evidence
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 2026-10-20. This public-fixture experiment extends the [sequential ceremony](SCALAR_RECOVERY_EVIDENCE.md) with local persistence and concurrent consumption. It uses the same real original-root proof and native ML-DSA-65 replacement-possession verification. The proof has deliberately insecure eight-round parameters. This is a local state-machine experiment, not a production recovery protocol, Stellar deployment or independent security audit.
 
 The earlier ceremony returns an immutable updated state, which a caller could discard and reuse the old unconsumed input. The new `DurableRecoveryStore` stores the complete typed policy, active key, epoch, local ledger, consumed flag and monotonic revision in SQLite. Real proof and possession verification run outside the write transaction. Before committing, the adapter acquires `BEGIN IMMEDIATE`, reloads state, compares the exact canonical snapshot and revision, checks current policy/expiry, then atomically rotates the key, increments the epoch, consumes eligibility and inserts a unique request receipt. Every fixture policy or ledger update advances the revision, including no-ops and revoke–reenable changes. A changed ledger also invalidates an in-flight snapshot; a fresh attempt must satisfy the new expiry window.

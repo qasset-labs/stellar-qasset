@@ -1,5 +1,10 @@
 # Continuation brief
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 Current release: see `QASSET_POC_EVIDENCE.md` and `POC_TEST_REPORT.md`.
 The remediation request superseded the earlier unchanged-registry and
 uncommitted-baseline restrictions for the guarded write API and reproducible

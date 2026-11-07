@@ -1,5 +1,9 @@
 # Compact verifier successor and Soroban cost evidence
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Updated 2026-10-20. The successor preserves the original 539,888-byte Binius
 leaf proof, transcript, 232 queries, rate, masking and all 131,072 padded
 constraints. It improves representation and implementation; it does not approve

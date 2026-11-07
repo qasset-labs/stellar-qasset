@@ -1,5 +1,9 @@
 # Separate Binius recovery review — 2026-10-20
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Scope: first-party internal cross-review, not an external independent cryptographic audit.
 
 Verdict: go for an isolated, public-fixture native research probe; no-go for enabling the existing recovery contract or asserting production quantum knowledge security. A smaller proof would resolve only a measured transport obstacle. It does not resolve the verifier platform, cryptographic composition, or lifecycle gates below.

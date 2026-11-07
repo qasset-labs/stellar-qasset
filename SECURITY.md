@@ -1,6 +1,7 @@
 # Security reporting and supported scope
 
-Q-Asset is experimental Testnet infrastructure. No production custody release,
+Q-Asset is experimental Testnet infrastructure. The repository contains a limited
+proof of concept, not the full Q-Asset product. No production custody release,
 independent external security approval, paid response service or vulnerability
 bounty is established. The immutable administrator, restricted counter and
 unavailable seed verifier have different boundaries; see

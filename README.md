@@ -14,14 +14,17 @@ the same authority. Q-Asset maps supported authorization paths, identifies those
 classical-key bypasses, integrates stronger approval rules where authority can
 be delegated, and produces reproducible evidence of the resulting coverage.
 
-The current Stellar Testnet PoC implements this approach for two synthetic assets
-and one SAC administrative operation. Broader issuer, custody and treasury
-integrations are part of the engineering roadmap.
+This repository contains a **proof of concept (PoC), not the full Q-Asset
+product**. The Stellar Testnet PoC implements the approach for two synthetic
+assets and one SAC administrative operation. The complete product, including the
+classical-coalition engine, production controllers, SDK, API and monitoring, is
+specified in the [architecture](docs/ARCHITECTURE.md); broader issuer, custody and
+treasury integrations are part of the engineering roadmap.
 
-> **Status: Experimental Stellar Testnet infrastructure. The current PoC
-> demonstrates scoped ML-DSA authorization and authority-path assessments. It has
-> not undergone an independent external security audit and is not intended for
-> production custody.**
+> **Status: Experimental Stellar Testnet proof of concept. It demonstrates scoped
+> ML-DSA authorization and authority-path assessments for a deliberately bounded
+> configuration; it is not the full product. It has not undergone an independent
+> external security audit and is not intended for production custody.**
 
 [Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
 [Reproduce](#reproduce-the-poc) · [Source and evidence](#source-and-evidence) ·
@@ -55,8 +58,10 @@ integration models and review.
 
 ## How Q-Asset Works
 
-The architecture combines four capabilities. The reference implementation
-demonstrates their interaction within a deliberately bounded configuration.
+The architecture combines four capabilities. This section describes the complete
+product design; the PoC implements a limited subset of each, within a
+deliberately bounded configuration, as described under
+[Current Proof of Concept](#current-proof-of-concept).
 
 ### Authority-Path Analysis
 

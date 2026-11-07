@@ -1,5 +1,10 @@
 # Q-Asset prototype threat model
 
+> **Scope:** This document covers the current Q-Asset proof-of-concept (PoC) and
+> research contracts: limited Testnet implementations that demonstrate core
+> mechanisms. They are not the full Q-Asset product. The complete product design is
+> described in the [architecture](ARCHITECTURE.md).
+
 This model covers the registry/recovery prototype. The separate
 [SAC threat model](POC_THREAT_MODEL.md) covers the authority demonstration; the
 [primary architecture](ARCHITECTURE.md) defines target product boundaries.

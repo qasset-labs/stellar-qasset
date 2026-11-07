@@ -1,5 +1,10 @@
 # Contract and evidence interface reference
 
+> **Scope:** This document covers the current Q-Asset proof-of-concept (PoC) and
+> research contracts: limited Testnet implementations that demonstrate core
+> mechanisms. They are not the full Q-Asset product. The complete product design is
+> described in the [architecture](ARCHITECTURE.md).
+
 Baseline: 2026-11-05. This reference describes current source. Proposed controller,
 SDK and service interfaces are specified separately in [architecture](ARCHITECTURE.md)
 and [clients/services](CLIENTS_AND_SERVICES.md). Contract methods are Rust signatures;

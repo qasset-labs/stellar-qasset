@@ -1,5 +1,10 @@
 # SAC authority PoC evidence and reproduction
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 The current release uses schema v2 and assessment tool 2.0.0. It contains
 28 successful Testnet transactions, 10 enforced negative simulations and
 one correctly signed classic Payment rejected before inclusion with `txBAD_AUTH`.

@@ -1,5 +1,10 @@
 # SAC authority demonstration architecture
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 This document specifies the implemented demonstration. The
 [primary architecture](ARCHITECTURE.md) specifies the completed product;
 [contract reference](CONTRACTS.md) owns current interfaces.

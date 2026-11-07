@@ -1,5 +1,10 @@
 # Cryptographic research relevant to this demonstration
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 The implemented authority credential is ML-DSA-65 over the host's 32-byte
 Soroban authorization digest, with context `qasset-sac-admin-auth-v1`.
 The fresh signer and contract pin RustCrypto `ml-dsa` 0.1.1. Verification

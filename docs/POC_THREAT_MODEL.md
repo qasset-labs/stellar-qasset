@@ -1,5 +1,10 @@
 # SAC authority demonstration threat model
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 Scope: the two fresh disposable Testnet assets in the deployment record,
 their fixed SAC administrators, the fresh registry and recorded evidence.
 The current QCTL issuer was locked in the explicitly approved fresh run.

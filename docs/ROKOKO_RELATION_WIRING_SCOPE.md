@@ -1,5 +1,9 @@
 # Scoping: wiring a SEP-5 hash-preimage relation into RoKoko
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Prepared 2026-10-23 against a fresh clone of `github.com/lattice-arguments/rokoko`
 at commit `c3f8206465f4b4cf34b8aafa378af5b081608944` (`tools/rokoko-relation-research/`,
 the imported upstream snapshot is now tracked with `pins.json`). This is an

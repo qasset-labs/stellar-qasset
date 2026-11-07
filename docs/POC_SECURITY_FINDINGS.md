@@ -1,5 +1,10 @@
 # Authority demonstration: security findings
 
+> **Scope:** This document covers the Q-Asset proof of concept (PoC): a limited
+> Testnet implementation that demonstrates core mechanisms on two synthetic assets
+> and one SAC operation. It is not the full Q-Asset product. The complete product
+> design is described in the [architecture](ARCHITECTURE.md).
+
 ## Audit remediation
 
 The evidence-verification findings were reproduced with recomputed checksums.

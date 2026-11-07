@@ -1,5 +1,9 @@
 # Native-to-Wasm recovery verifier evidence
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 The exact retained 539,888-byte Binius leaf proof now verifies in an actual
 `wasm32v1-none` module. This closes the earlier raw-Wasm portability gap. It does
 not supply a Soroban recovery contract or approve the backend's quantum security.

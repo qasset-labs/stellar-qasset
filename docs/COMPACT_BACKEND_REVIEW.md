@@ -1,5 +1,9 @@
 # Additional compact proof backend investigation
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 2026-10-20. First-party native research. **This experiment remains unsuitable for production authorization.** It is a second attributed proof backend, not a new cryptographic primitive or an implementation of Stellar recovery.
 
 ## Exact source and statement

@@ -1,5 +1,10 @@
 # Q-Asset cryptographic and implementation review
 
+> **Scope:** This review covers the current proof-of-concept (PoC) code and the
+> recovery research. The PoC is a limited Testnet implementation, not the full
+> Q-Asset product; the complete product design is described in the
+> [architecture](ARCHITECTURE.md).
+
 Date: 2026-10-19. First-party adversarial review with internal cross-checks. This is not an independent external audit,
 FIPS certification, or a proof of end-to-end quantum security.
 

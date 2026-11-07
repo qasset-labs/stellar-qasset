@@ -1,5 +1,9 @@
 # Evidence for original-seed recovery
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 Date: 2026-10-19. First-party research with internal review. **A working off-chain proof experiment now exists. It is deliberately insecure at the exercised round count and does not implement on-chain recovery.**
 
 ## What was executed

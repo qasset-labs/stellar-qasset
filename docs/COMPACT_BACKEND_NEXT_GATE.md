@@ -1,5 +1,9 @@
 # Compact recovery backend: next feasibility gate
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 2026-10-20. Read-only source investigation and public-fixture lossless compression measurement. No proof source edits, deployment or crypto security approval.
 
 The measured leaf proof remains much too large. Its 8,893,905 bytes become 7,986,385 bytes with zlib9 or 7,767,592 bytes with XZ preset6: the latter still exceeds the recorded 132,096-byte **whole transaction** limit by 58.80 times, before envelope overhead. Input proof SHA256 is fdceefebfa4e6ec5a44f61faca25e06b7897f03869364704cb5c1e3bba818517. This tests ordinary lossless transport compression; it supplies no new proof or Soroban implementation. Exact bytes, encoding hashes, lossless round trips and pinned input hashes are recorded in [proof-transport-research.json](proof-transport-research.json); reproduce with `python3 scripts/check_proof_transport_research.py`.

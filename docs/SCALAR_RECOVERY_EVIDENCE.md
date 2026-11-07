@@ -1,5 +1,9 @@
 # Scalar-exposed recovery experiments and strict local ceremony
 
+> **Scope:** Research for the optional Q-Asset recovery extension. These
+> experiments are separate from the current product release and are not the full
+> Q-Asset implementation; see [architecture §7](ARCHITECTURE.md#7-conditional-recovery-extension).
+
 2026-10-20. First-party research with internal code/security review. **No production security approval or deployment.** The existing full-root proof and its sources remain unchanged.
 
 ## Measured improvement and remaining size limit
