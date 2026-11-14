@@ -26,7 +26,8 @@ treasury integrations are part of the engineering roadmap.
 > configuration; it is not the full product. It has not undergone an independent
 > external security audit and is not intended for production custody.**
 
-[Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
+[The problem](#why-post-quantum-signatures-alone-are-not-enough) · [Status](#implementation-status) ·
+[Unsupported](#unsupported-configurations) · [Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
 [Reproduce](#reproduce-the-poc) · [Source and evidence](#source-and-evidence) ·
 [Security scope](#security-scope-and-limitations) · [Architecture](docs/ARCHITECTURE.md) ·
 [Development](docs/DEVELOPMENT.md) · [Future work](docs/FUTURE_WORK.md) · [Documentation index](docs/README.md)
@@ -50,6 +51,21 @@ documented in Stellar's [custom SAC administrator guide](https://developers.stel
 This is an authorization-coverage problem, independent of the signature
 algorithm's correctness.
 
+```mermaid
+flowchart LR
+    Issuer[Issuer account<br/>classical Ed25519 signers] -->|native Payment, SetTrustLineFlags, Clawback| Asset((Asset))
+    Admin[SAC administrator<br/>ML-DSA-controlled] -->|SAC mint, set_authorized, clawback, set_admin| Asset
+    Admin -. does not remove .-> Issuer
+```
+
+| Authority | Who authorizes | Operations | Changed by SAC `set_admin`? |
+| --- | --- | --- | --- |
+| Native issuer account | Issuer signers, weights and low/medium/high thresholds | Issue by `Payment`; authorize trustlines, or revoke authorization if `AUTH_REVOCABLE` is set; `Clawback` if clawback is enabled; signer and threshold changes | **No** |
+| SAC administrator | Whatever account or contract holds the admin role | SAC `mint`, `set_authorized`, `clawback`, `set_admin` | Yes: that is what `set_admin` changes |
+
+An asset is only as protected as its weakest independent path. Q-Asset's job is to
+find every supported path and report which ones classical keys can still use.
+
 The same reasoning applies to treasury signers, contract upgrade keys,
 governance, emergency administration, recovery permissions and alternative
 smart-account rules. A classical key that can replace a stronger policy is
@@ -69,24 +85,40 @@ deliberately bounded configuration, as described under
 Identify who can authorize sensitive operations and whether classical keys can
 satisfy or bypass their approval requirements. Product coverage is intended to
 include issuance, holder authorization and freezing, clawback, treasury
-transfers, administration, upgrades, governance, signer changes and recovery.
+transfers, administration, upgrades, governance and signer changes.
 The current analyzer specifically recognizes the recorded QEXP and QCTL
 configurations; it reports unsupported operations as uncovered.
+
+The planned **classical-coalition engine** computes, for each protected
+operation, the minimal sets of classical signers whose weights meet its
+threshold without any post-quantum participant, across issuer, SAC and
+smart-account authority nodes. Search is exact within fixed limits; beyond them
+the result is `UNCOVERED`, never favorable. See the
+[algorithm](docs/ARCHITECTURE.md#classical-coalition-algorithm) and
+[status semantics](docs/ARCHITECTURE.md#assessment-classifications).
 
 ### On-Chain Policy Registry
 
 Record tenant-specific roles, signer algorithms and weights, thresholds,
-administrator changes and policy revisions. The registry validates weighted
-declarations and emits change events. Its declared QS0–QS4 levels describe
-policy arithmetic; `policy_assessment` remains `Unverified`, and the verified
+administrator changes and policy revisions. A registrar enrolls a tenant; the
+tenant administrator then declares per-role quorums, and every guarded change
+carries the expected revision, so a concurrent or stale edit is rejected. The
+registry validates weighted declarations and emits change events. Its declared
+QS0–QS4 levels describe policy arithmetic; `policy_assessment` remains `Unverified`, and the verified
 security-gate APIs reject. Registering a policy does not establish control over
 the named asset or enforce that policy in another contract.
 
 ### Post-Quantum Authorization Integrations
 
 Apply operation-specific approval rules through compatible Soroban authentication
-and properly delegated asset administration. The current administrator checks
-real ML-DSA-65 credentials for the configured SAC's `set_authorized` call.
+and properly delegated asset administration. The current administrator is a
+Soroban custom account: its `__check_auth` first checks that the only
+authorization context is the configured SAC's `set_authorized` call, then verifies
+an ML-DSA-65 (FIPS 204) signature over the host's authorization payload with the
+domain context `qasset-sac-admin-auth-v1`, using RustCrypto `ml-dsa` inside Wasm.
+The planned production controller composes an OpenZeppelin smart account with a
+Q-Asset ML-DSA verifier and SAC policy
+([smart-account integration](docs/ARCHITECTURE.md#smart-account-integration)).
 Q-Asset cannot unilaterally change classic-account permissions. Each additional
 asset operation or account policy needs its own supported integration.
 
@@ -131,9 +163,11 @@ alone do not establish compatibility.
 ### Protocol 30 and CAP-87
 
 The official [Bell upgrade guide](https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide)
-lists the 3 November 2026 Testnet and 23 November 2026 Mainnet votes. A vote
-schedule does not prove activation at an endpoint. Protocol 30 requires updated
-ledger decoders; qualify actual protocol, address and authorization-credential
+lists the 3 November 2026 Testnet and 23 November 2026 Mainnet votes. Read-only
+checks on 15 November 2026 found **Testnet at protocol 30 and Mainnet at protocol
+29**, so CAP-87 host verification is available on Testnet only until Mainnet
+activates. A vote schedule does not prove activation at an endpoint. Protocol 30
+requires updated ledger decoders; qualify actual protocol, address and authorization-credential
 support before live use of the pinned reference tooling.
 
 **This PoC uses RustCrypto `ml-dsa` 0.1.1 inside Wasm, not CAP-87.** Its
@@ -172,6 +206,37 @@ of deployed customer integrations.
 | Custodians | Track authority configuration, key-management dependencies and changes affecting earlier assessments. |
 | Soroban smart-account developers | Test custom authentication and identify weaker fallback or upgrade rules. |
 | Security teams and auditors | Reproduce cited behavior and distinguish tested protection from declarations and missing coverage. |
+
+## Implementation Status
+
+| Capability | Status | Where |
+| --- | --- | --- |
+| Policy registry (declarations, guarded revisions, events) | Implemented (v1) | [`contracts/qasset-registry`](contracts/qasset-registry/src/lib.rs) |
+| ML-DSA-65 SAC administrator for `set_authorized` | Prototype | [`contracts/qasset-sac-admin`](contracts/qasset-sac-admin/src/lib.rs) |
+| Authority analyzer for two reference assets | Prototype | [`scripts/qasset_authority_analyzer.py`](scripts/qasset_authority_analyzer.py) |
+| Independent evidence verifier (offline and live) | Implemented (schema v2) | [`scripts/verify_qasset_evidence.py`](scripts/verify_qasset_evidence.py) |
+| Operator signer | Prototype | [`tools/qasset-sac-signer`](tools/qasset-sac-signer/src/main.rs) |
+| Classical-coalition engine, adapters for any asset, schema v3 | Planned | [deliverable traceability](docs/ARCHITECTURE.md#deliverable-traceability) |
+| Production controller (verifier + SAC policy on OpenZeppelin smart accounts) | Planned | [smart-account integration](docs/ARCHITECTURE.md#smart-account-integration) |
+| TypeScript SDK, API, operator app, monitoring, storage keeper | Planned | [clients and services](docs/CLIENTS_AND_SERVICES.md) |
+| Mainnet deployment | None; planned behind [release gates](docs/ARCHITECTURE.md#mainnet-release-architecture) | — |
+| Recovery | Optional research | [recovery status](docs/RECOVERY_IMPLEMENTATION_STATUS.md) |
+
+## Unsupported Configurations
+
+The current analyzer and contracts do **not** support, and report as `UNCOVERED`
+or leave outside scope:
+
+* issued assets other than the two recorded reference assets;
+* issuer signers other than Ed25519 public keys when deciding issuer signing
+  power (signed-payload, pre-authorized-transaction and hash(x) signers;
+  `FW-STL-01`);
+* SAC functions other than `set_authorized` under ML-DSA control, and any
+  administrator handover or key rotation;
+* third-party smart accounts, upgradeable contracts, governance or treasury
+  arrangements;
+* CAP-87 host verification, and any network other than Testnet;
+* classical transaction envelopes (source and fee payer), which remain Ed25519.
 
 ## Current Proof of Concept
 
@@ -244,7 +309,9 @@ and [clean reproduction log](evidence/qasset-clean-reproduction.json) record
 **218 passing automated tests**, builds of all **five contracts**, and matching
 hashes for the two reference Wasm artifacts. The tests span **90 contract tests,
 4 signer tests and 124 Python tests**, including recovery and research coverage.
-The SAC administrator accounts for **21** of the contract tests. The public
+The SAC administrator accounts for **21** of the contract tests. Three public
+ML-DSA vector tests were added to the SAC administrator afterwards, so the current
+suite has **93 contract tests**; CI runs all suites on every push. The public
 credential helper has no standalone unit tests; evidence tests exercise its
 real credential verification.
 
@@ -294,6 +361,11 @@ all 32 paths and rechecked 28 successful receipts. The
 [stale result](evidence/qasset-remediation-stale-verification.json) and
 [refreshed result](evidence/qasset-remediation-live-verification.json) preserve
 both outcomes.
+
+A read-only live recheck on 15 November 2026 returned `INCONCLUSIVE` (exit 2)
+because the RPC provider no longer retained a recorded receipt; offline
+verification still returned `SUCCESS` for all 32 paths. Missing live evidence is
+never treated as a pass.
 
 The verifier also checks executable, administrator, signer, threshold and other
 supported configuration changes. Evidence is tied to the configuration examined;
@@ -416,9 +488,10 @@ The following capabilities extend beyond the current reference PoC:
 - **Expanded authority analysis:** explicit adapters for additional issuer,
   asset, treasury and smart-account configurations, including unsupported-path
   reporting and broader critical-operation coverage.
-- **Reusable post-quantum enforcement:** more operation-specific policies,
-  multiple signers and thresholds, secure key management and carefully controlled
-  administration; evaluate native ML-DSA verification after network activation.
+- **Reusable post-quantum enforcement:** an ML-DSA verifier and SAC policy
+  composed with OpenZeppelin smart accounts, quorum approval, guarded handover and
+  rotation; CAP-87 host verification on each network once protocol 30 is active
+  there.
 - **Security evidence and monitoring:** versioned assessment interfaces,
   configuration change detection, historical comparison and independently
   verifiable attestations with defined trust and freshness models.
@@ -479,7 +552,8 @@ recovery research outcome.
 Start with the [development guide](docs/DEVELOPMENT.md) for setup, build, test and
 verification commands. Read [contribution/review requirements](CONTRIBUTING.md), [governance](GOVERNANCE.md),
 [community conduct](CODE_OF_CONDUCT.md), [security reporting](SECURITY.md),
-[release operations](docs/OPERATIONS.md), [maintenance](docs/MAINTENANCE.md) and
+[release operations](docs/OPERATIONS.md), [maintenance](docs/MAINTENANCE.md),
+[architecture decisions](docs/DECISIONS.md), [threat model](docs/THREAT_MODEL.md) and
 [license scope](docs/LICENSE_SCOPE.md). These policies do not configure hosting
 controls or appoint production owners.
 
@@ -490,6 +564,9 @@ steps. Authentication or evidence changes should retain adversarial coverage and
 explicit claim boundaries. Use public fixtures in reports and never include
 private keys or recovery material.
 
-A repository-wide license has not yet been published. Individual research tools
-and third-party sources retain their own license files and attribution; a public
-repository alone does not establish unrestricted reuse rights.
+A repository-wide license has not yet been published, and the core crates declare
+no license. Their main dependencies are permissively licensed (Apache-2.0 or
+MIT); two isolated research tools are LGPL-3.0. Individual research tools and
+third-party sources retain their own license files and attribution; a public
+repository alone does not establish reuse rights. See
+[license scope](docs/LICENSE_SCOPE.md).

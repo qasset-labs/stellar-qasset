@@ -50,7 +50,11 @@ state/TTL lifecycle, actual credentials and package contents, not only happy-pat
 tests. Exceptions need a recorded rationale and accountable release approval;
 unresolved security/rights gates block the affected release.
 
-These are review requirements. No CI workflow, branch protection or enforced
-approval rule is established by this file. Actual appointment and repository
+The [CI workflow](.github/workflows/ci.yml) runs formatting, Clippy with warnings
+denied, contract, signer and Python tests, the reference Wasm hash check and
+offline evidence verification on pull requests; run the same commands locally
+from the [development guide](docs/DEVELOPMENT.md). The remaining items are review
+requirements. No branch protection or enforced approval rule is established by
+this file. Actual appointment and repository
 controls follow [governance](GOVERNANCE.md). Do not commit, push, deploy or publish
 as a side effect of a review or local validation request.

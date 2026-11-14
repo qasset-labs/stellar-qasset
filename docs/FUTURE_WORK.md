@@ -14,12 +14,12 @@ Low. **Statuses:** Planned, Research, Blocked, Deferred.
 | Area | Identifiers |
 | --- | --- |
 | [Core architecture](#core-architecture) | FW-ARCH-01 – 05 |
-| [Repository organization](#repository-organization) | FW-REPO-01 – 07 |
+| [Repository organization](#repository-organization) | FW-REPO-01 – 08 |
 | [Smart contracts](#smart-contracts) | FW-SC-01 – 05 |
 | [Authorization and policy management](#authorization-and-policy-management) | FW-AUTH-01 – 03 |
 | [Post-quantum cryptography](#post-quantum-cryptography) | FW-PQC-01 – 07 |
 | [Stellar and SAC integration](#stellar-and-sac-integration) | FW-STL-01 – 04 |
-| [Smart accounts and treasury infrastructure](#smart-accounts-and-treasury-infrastructure) | FW-SAT-01 – 02 |
+| [Smart accounts and treasury infrastructure](#smart-accounts-and-treasury-infrastructure) | FW-SAT-01 – 03 |
 | [Security hardening](#security-hardening) | FW-SEC-01 – 04 |
 | [Testing and verification](#testing-and-verification) | FW-TEST-01 – 03 |
 | [Monitoring and observability](#monitoring-and-observability) | FW-MON-01 – 02 |
@@ -113,7 +113,16 @@ revision.
 **FW-REPO-07 — Repository protections.** Priority Medium. Status Blocked
 (repository administrators). Branch protection, required CI, tag protection,
 release signing and private vulnerability reporting are not configured
-([governance](../GOVERNANCE.md)). Acceptance: settings verified and documented.
+([governance](../GOVERNANCE.md)); on 2026-11-15 GitHub reported private
+vulnerability reporting disabled. CI runs on pushes and pull requests but is not
+verified as a required check. Acceptance: settings verified and documented.
+
+**FW-REPO-08 — Action pinning and update alerts.** Priority Medium. Status
+Planned. Workflow actions are pinned by major tag (`actions/checkout@v4`,
+`actions/setup-python@v5`) and no dependency update alerts are configured.
+Approach: pin actions by commit SHA; enable update alerts for Cargo, Python and
+Actions with human review. Acceptance: workflow uses SHA pins; alerts enabled and
+triaged per [maintenance](MAINTENANCE.md).
 
 ## Smart contracts
 
@@ -188,8 +197,9 @@ Planned. `tools/qasset-evidence-crypto` uses the same crate as the contract, so 
 library defect would pass both. Acceptance: evidence credentials verified by an
 independent implementation in CI.
 
-**FW-PQC-04 — CAP-87 host verification.** Priority Medium. Status Blocked
-(Protocol 30 activation). CAP-87 offers pure ML-DSA with a context string, so keys,
+**FW-PQC-04 — CAP-87 host verification.** Priority Medium. Status Planned on
+Testnet (protocol 30 active, checked 2026-11-15); Blocked on Mainnet (protocol 29,
+vote scheduled 2026-11-23). CAP-87 offers pure ML-DSA with a context string, so keys,
 messages and contexts carry over. Host verification traps on failure, while the
 verifier pins `Contract, #3` (`scripts/verify_qasset_evidence.py:35`). Approach:
 production controller version with CAP-87 back end and versioned negative
@@ -253,6 +263,16 @@ Acceptance: specification and one adapter with hostile-configuration tests.
 Treasury integration is unspecified. Approach: model concrete treasury
 architectures (allowances, offers, sponsorship, custody overrides) before adapters.
 Acceptance: documented models and coverage rules.
+
+**FW-SAT-03 — OpenZeppelin smart-account pin and advisory controls.** Priority
+High. Status Planned. The planned controller composes OpenZeppelin smart accounts
+([ADR-009](DECISIONS.md#adr-009-compose-production-controllers-from-openzeppelin-smart-accounts)).
+Advisory GHSA-jpg9-m7w4-c7wc affects `stellar-accounts` below `0.7.3` and `0.8.0`
+release candidates; `v0.8.0` changes the signed digest. Approach: exact pin of a
+patched version; no SAC rule satisfiable by a `Delegated` signer alone; digest
+format shared by signer, SDK and evidence. Acceptance: pin and advisory disposition
+recorded; route-coverage and delegated-signer negative tests pass on Testnet.
+Security impact: prevents keyless authorization and rule bypass.
 
 ## Security hardening
 

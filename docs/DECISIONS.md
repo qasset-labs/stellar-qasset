@@ -158,3 +158,36 @@ share keys across controllers. Each recreates lock-in or cross-account replay ri
 Consequences: handover becomes a sensitive, separately tested operation;
 same-invocation cached authorization and pending-credential rules apply to it;
 CAP-87 migration and key replacement become possible without issuer re-handover.
+
+## ADR-009: compose production controllers from OpenZeppelin smart accounts
+
+Status: accepted target design, 2026-11-15; refines how ADR-008 is implemented.
+Not implemented; no OpenZeppelin dependency exists in this repository.
+
+Context: ADR-008 requires quorum approval, guarded handover, rotation and
+address binding. OpenZeppelin Stellar smart accounts (`stellar-accounts`) already
+provide context rules, signer management, external verifier contracts and
+threshold policies. Their `v0.8.0` digest binds the smart-account address and the
+selected context-rule IDs. Advisory GHSA-jpg9-m7w4-c7wc showed that a `Delegated`
+signer could authorize without keys in versions below `0.7.3` and in `0.8.0`
+release candidates.
+
+Decision: build production controllers as an OpenZeppelin smart account plus two
+Q-Asset contracts: an ML-DSA verifier (domain-separated ML-DSA-65, in Wasm or
+CAP-87 where protocol 30 is active on that network) and a SAC policy (function
+allowlist, argument limits, guarded `set_admin`). Pin an exact patched upstream
+version; permit exactly one context rule able to reach the SAC; never let a
+`Delegated` signer satisfy that rule alone; require the full ML-DSA quorum for
+signer, policy and rule changes.
+
+Alternatives: a monolithic custom account (more first-party authorization code to
+qualify); adopting upstream without pinning (digest and authorization semantics
+can change between releases).
+
+Consequences: Q-Asset owns less authorization code but inherits upstream release
+and advisory tracking ([maintenance](MAINTENANCE.md)); off-chain signers, SDK and
+evidence must match the pinned digest format; route-coverage tests must prove no
+alternative rule reaches the SAC; the smart-account adapter must assess Q-Asset's
+own controllers by the same rules. Acceptance: pinned version and advisory status
+recorded, route-coverage, management-quorum, handover and cached-authorization
+tests passing on Testnet.

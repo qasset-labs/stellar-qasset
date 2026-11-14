@@ -1,6 +1,7 @@
 # License scope and third-party maintenance
 
-Baseline: repository inspection on 2026-11-05. No repository-wide license file is published. Some research packages have
+Baseline: repository inspection on 2026-11-05; re-checked 2026-11-15. No
+repository-wide license file is published. Some research packages have
 component-specific manifest declarations and license texts; these do not license
 the repository as a whole. This document does not
 add a license, assign copyright, waive rights, appoint an owner or grant rights
@@ -8,6 +9,47 @@ to first-party material. Existing license/copyright text is preserved. A public
 checkout and `publish = false` do not establish permission to redistribute a
 combined product. First-party distribution and contribution terms need an actual
 authorized rights decision before a public package/release program.
+
+## Current status (2026-11-15)
+
+| Question | Finding |
+| --- | --- |
+| Root license | None. GitHub reports no license for the repository |
+| Core first-party crates (`qasset-sac-admin`, `qasset-registry`, `qasset-sac-signer`, `qasset-evidence-crypto`, recovery contracts) | No `license` field; `publish = false` |
+| SPDX identifiers | Absent from first-party core sources; present in some research and vendored files |
+| Published packages or release artifacts | None |
+| Rights to reuse first-party code | Not granted by this repository; requires an authorized decision |
+
+Core contract and tool dependencies, from their package metadata:
+
+| Dependency | Version | Declared license |
+| --- | --- | --- |
+| `soroban-sdk` (with `soroban-env-host`, `stellar-xdr`) | 25.3.2 (25.2.2, 25.0.0) | Apache-2.0 |
+| `ml-dsa` (RustCrypto) | 0.1.1 | Apache-2.0 OR MIT |
+| `sha2` (transitive, via the Soroban crates) | 0.10.9 | MIT OR Apache-2.0 |
+| Python `stellar-sdk` | 14.0.0 | Apache-2.0 |
+| Python `PyNaCl`, `requests`, `requests-sse` | 1.6.2, 2.34.2, 0.5.3 | Apache-2.0 |
+
+These are package declarations for the main dependencies, not a transitive SBOM. The remaining
+Python lock entries (`pydantic`, `urllib3`, `certifi`, `cffi` and others) and
+every transitive Cargo crate still need an inventory before distribution.
+
+Wycheproof ML-DSA vectors in `contracts/pq-recovery-demo/test-vectors/` are covered
+by the adjacent `LICENSE.wycheproof` (Apache-2.0); NIST ACVP vectors in the same
+directory are identified in `provenance.json`. Wycheproof vectors are also compiled into the SAC administrator's vector tests
+(`contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs`) through `include_str!`; any
+distribution of those tests carries that notice.
+
+Two research tools (`tools/seed-recovery-research`, `tools/scalar-seed-research`)
+declare LGPL-3.0-or-later. They are isolated research crates outside the core
+workspace; linking or redistributing them with other code must satisfy LGPL terms.
+
+Publication prerequisites for any first-party package or release:
+
+1. An authorized decision on the first-party license and contribution terms.
+2. A transitive inventory from the exact locked graph, with notices bundled.
+3. SPDX identifiers and package `license` metadata matching that decision.
+4. Release-blocker review of any uncertain license or attribution.
 
 Existing component-specific texts include:
 

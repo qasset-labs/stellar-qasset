@@ -18,7 +18,7 @@ Each document has one responsibility. Start with the
 | [Contracts](CONTRACTS.md) | Implemented contract interfaces, storage, events, errors and evidence schema |
 | [Clients and services](CLIENTS_AND_SERVICES.md) | Planned SDK, API, indexer and transaction state machine |
 | [Operations](OPERATIONS.md) | Planned build, release, deployment, TTL and incident procedures |
-| [Maintenance](MAINTENANCE.md) | Planned ownership and support responsibilities |
+| [Maintenance](MAINTENANCE.md) | Maintenance policy: responsibilities, Stellar and cryptographic compatibility, smart-account and evidence maintenance, releases, supply chain, operations and retirement |
 | [License scope](LICENSE_SCOPE.md) | Component licenses and third-party notices |
 
 ## Development

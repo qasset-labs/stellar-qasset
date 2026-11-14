@@ -11,10 +11,10 @@ unavailable seed verifier have different boundaries; see
 
 ## Reporting a vulnerability
 
-No private reporting email/contact or enabled GitHub private-reporting feature
-has been verified for this repository. Do not assume that posting an issue is
-private. If the repository's Security tab actually offers private vulnerability
-reporting, use that channel and verify its destination. Otherwise request a
+No private reporting email/contact is published, and GitHub private vulnerability
+reporting was **disabled** when checked on 2026-11-15 (`FW-REPO-07`). Do not assume
+that posting an issue is private. If the repository's Security tab later offers
+private vulnerability reporting, use that channel and verify its destination. Otherwise request a
 private coordination route through a minimal public issue containing no exploit,
 secrets or affected customer identity. Wait for an authenticated project route
 before sharing sensitive details. This document cannot enable hosting features
@@ -26,6 +26,21 @@ forgery, policy bypass, resource failure, pre-inclusion rejection and included
 transaction failure. Do not send real seeds, mnemonic phrases, private keys or
 confidential customer records. Do not test against others' funds or lock an
 existing issuer to demonstrate impact.
+
+In scope, with highest priority:
+
+* an assessment that classifies a path as `TESTED_PASS` or `TESTED_REJECT` when
+  classical keys can still exercise that operation by an unreported route;
+* a post-quantum authorization path that accepts an invalid, replayed, expired or
+  out-of-scope credential, or a context other than its configured operation;
+* an evidence bundle that passes verification after tampering, or a stale bundle
+  reported as fresh;
+* registry mutations without the required authority or expected revision.
+
+Upstream advisories are tracked in [maintenance](docs/MAINTENANCE.md). OpenZeppelin
+advisory GHSA-jpg9-m7w4-c7wc (delegated smart-account signers) does not affect this
+repository today, which has no OpenZeppelin dependency; it constrains the planned
+integration ([ADR-009](docs/DECISIONS.md#adr-009-compose-production-controllers-from-openzeppelin-smart-accounts)).
 
 ## Coordination process
 
