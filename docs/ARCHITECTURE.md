@@ -3,7 +3,7 @@
 Design baseline: 2026-11-05; revised 2026-11-07 after an architecture and
 cryptography audit, and 2026-11-15 after a security and maintenance audit
 (network status, OpenZeppelin smart-account compatibility, assessment semantics
-and deliverable traceability). This is the primary architecture for the completed product.
+and complete component specifications). This is the primary architecture for the completed product.
 The proof of concept (PoC) is evidence that core mechanisms work; it is not the
 product. **Current** describes checked-in code or dated evidence; **target**
 specifies work still required. Target requirements are not deployed capabilities.
@@ -27,7 +27,7 @@ how they work. Each component is labelled with its implementation status.
 | [System overview](#system-overview) | Purpose, capabilities, objectives and the authorization problem Q-Asset addresses |
 | [Architecture principles](#architecture-principles) | Rules for modularity, trust boundaries, enforcement, agility and evidence |
 | [Complete system architecture](#complete-system-architecture) | Layers, components and their interactions, with the full system diagram |
-| [Component architecture](#component-architecture) | Each on-chain and off-chain component: responsibility, interfaces, boundary, status |
+| [Component architecture](#component-architecture) | Every component — assessment core, on-chain contracts, clients and tools, services, qualification and release — with current state, target design, interfaces and verification |
 | [Data architecture](#data-architecture) | Authority graph, declarations, controller configuration, assessments, evidence, contract state |
 | [Core operational workflows](#core-operational-workflows) | Enrollment, assessment, policy changes, enforcement, rotation, handover, evidence, monitoring, integration |
 | [Security architecture](#security-architecture) | Privileged roles, trust boundaries, attack surfaces and residual risks |
@@ -62,7 +62,7 @@ Part I: [product requirements](#1-product-requirements-and-economics),
 [integrations](#12-external-integrations-and-confidentiality),
 [threats](#13-threats-and-operations),
 [delivery and testing](#14-delivery-testing-and-production-gates) and
-[deliverable traceability](#deliverable-traceability).
+[technical scope coverage](#technical-scope-coverage).
 
 Outstanding engineering work is tracked in the [future-work register](FUTURE_WORK.md);
 identifiers such as `FW-ARCH-01` refer to it.
@@ -213,87 +213,235 @@ flowchart TB
 
 ### Component architecture
 
+Each component lists its status, current implementation, target design, interfaces
+and verification. Status labels follow the table above; target design is not a
+deployed capability.
+
+#### Assessment core
+
 **Asset identity and enrollment — Prototype.** Identifies an issued asset by
 network, code bytes and issuer, and derives its SAC address with the official SDK;
 contract tokens use their contract ID. The verifier already recomputes the SAC
 identity from issuer and code. Registry enrollment uses an `Address` as a tenant
 label and does not prove control (see [declared policy](#4-declared-policy-contract)).
-Planned: issuer-consented enrollment that links tenant, network, code, issuer and
+Target: issuer-consented enrollment that links tenant, network, code, issuer and
 SAC identity (`FW-SC-01`).
 
-**Native issuer-authority assessment — Prototype.** Reads issuer signers, master
-weight, low/medium/high thresholds and asset flags from Horizon and maps them to the
-issuer operations they govern. Current code counts only Ed25519 public-key signers
-against the medium threshold; this misclassifies some configurations (`FW-STL-01`).
-Interface: `scripts/qasset_authority_analyzer.py`. Boundary: Horizon is trusted for
-availability and completeness of observations.
+**Native issuer-authority adapter — Prototype.** Current: reads issuer signers,
+master weight, low/medium/high thresholds and asset flags through Horizon for two
+reference assets; counts only Ed25519 public-key signers against the medium
+threshold (`FW-STL-01`), so other signer kinds fall to `UNCOVERED`. Target: a
+published **support matrix** covering every signer kind (Ed25519, Ed25519 signed
+payload, pre-authorized transaction, hash(x)), master weight, the three thresholds
+and the flags `AUTH_REQUIRED`, `AUTH_REVOCABLE`, `AUTH_CLAWBACK_ENABLED` and
+`AUTH_IMMUTABLE`; each issuer operation (issuance by `Payment`, trustline
+authorization and revocation, `Clawback`, signer and threshold changes) mapped to
+the threshold that governs it. Reads use Stellar RPC `getLedgerEntries` through the
+official Python SDK, without custom XDR parsing. Anything outside the matrix is
+`UNCOVERED` with a reason and the affected operation. Failure modes (missing
+issuer, unavailable ledger state, wrong network, malformed RPC response) end in
+`INCONCLUSIVE` or an explicit error, never a pass. Verification: ten published
+reference configurations and failure-mode tests in CI.
 
-**SAC authority assessment — Prototype.** Reads the SAC administrator, the
+**SAC authority adapter — Prototype.** Reads the SAC administrator, the
 administrator's executable hash, configured SAC and operator key through Stellar
 RPC, and cites recorded probes of `set_authorized`, `mint`, `clawback` and
-`set_admin`. Planned: clawback-enabled and trustline-flag coverage (`FW-STL-04`).
+`set_admin`. Target: the administrator's code hash is checked against a list of
+recognized implementations; an unrecognized administrator is `UNCOVERED`, never
+assumed exposed or protected; clawback-enabled and trustline-flag coverage
+(`FW-STL-04`).
 
-**Smart-account and contract adapters — Planned.**
-Each adapter pins recognized code hashes, ABI and protocol range, extracts the
-authorization rule per operation, and reports unsupported variants as `UNCOVERED`.
-The first target is OpenZeppelin smart accounts: context rules, signers,
-verifiers, policies, rule expiry and management authority
-([smart-account integration](#smart-account-integration)). No adapter beyond the
-Q-Asset administrator exists (`FW-SAT-01`).
+**Smart-account adapter — Planned.** Assesses OpenZeppelin Stellar smart accounts
+before any of them administers an asset
+([smart-account integration](#smart-account-integration)). It recognizes pinned
+code hashes and reads, through the account's public read functions rather than raw
+storage, every context rule, eligible signer, verifier and its configuration,
+policy, rule expiry, and the authority that can change the account's own signers,
+policies and rules. Threshold, weighted-threshold and Q-Asset SAC policies are
+modelled in the coalition engine. Code-hash recognition alone never yields a
+result: modified code, unknown verifiers, broader rules, unprotected management
+rules, expired rules and unmodelled policies are `UNCOVERED` or `EXPOSED`.
+Verification: hostile-configuration tests and an assessment of Q-Asset's own
+Testnet controller before any Mainnet use (`FW-SAT-01`, `FW-SAT-03`).
 
 **Classical-coalition engine — Planned.** Computes, per protected operation, the
 minimal sets of classical authorities that satisfy its rule without any
-post-quantum participant ([algorithm](#classical-coalition-algorithm)). Interface:
-a library consumed by the assessment step; output is part of the evidence schema
-(`FW-ARCH-01`).
+post-quantum participant, and whether legacy Ed25519 signers alone still meet it
+([algorithm](#classical-coalition-algorithm)). Authorities are typed nodes
+(native account thresholds, SAC administrator, smart-account rules) composed by
+graph edges, never merged into one weight calculation. Search is exact within
+deterministic limits on explored states (2^21 per account) and reported
+coalitions; beyond them the result is `UNCOVERED` with the reason. Every result
+carries an exact or `UNCOVERED` label. Verification: zero mismatches against a
+brute-force oracle on 1,000 generated policies of up to 12 signers, and a
+worst-case benchmark of 20 signers plus master key under 2 seconds (`FW-ARCH-01`).
 
-**Assessment and classification — Prototype.** Classifies every supported path as
-`EXPOSED`, `TESTED_PASS`, `TESTED_REJECT`, `DECLARED`, `UNCOVERED`, `STALE` or
-`INCONCLUSIVE` and writes a schema-versioned evidence bundle. Implemented for two
-reference configurations (`FW-ARCH-02`).
+**Assessment and classification — Prototype.** Classifies every supported path
+([classifications](#assessment-classifications)) and writes a schema-versioned
+evidence bundle. Implemented for two reference configurations (`FW-ARCH-02`).
 
-**Evidence verifier — Implemented** for the reference configurations. A separate
-implementation that recomputes classifications from raw XDR, checks ML-DSA
-credentials and the exact negative mutations, and in live mode rechecks receipts and
-tracked configuration. Interface: `scripts/verify_qasset_evidence.py` with
-`tools/qasset-evidence-crypto`; exit 0 success, 1 stale or invalid, 2 inconclusive.
-Its ML-DSA check uses the same library as the contract (`FW-PQC-03`).
+**Evidence schema and verifier — Implemented** (schema v2), **Planned** (schema
+v3). Current: a separate implementation recomputes classifications from raw XDR,
+checks ML-DSA credentials and the exact negative mutations, and in live mode
+rechecks receipts and tracked configuration (`scripts/verify_qasset_evidence.py`,
+`tools/qasset-evidence-crypto`; exit 0 success, 1 stale or invalid, 2
+inconclusive). Target schema v3 records the exact observation point (network
+passphrase hash, ledger sequence and ledger hash), coalition results with their
+labels, adapter versions and signer kinds. The verifier re-derives every
+classification from archived raw ledger entries instead of accepting the
+analyzer's statuses, keeps every `UNCOVERED` and `INCONCLUSIVE` path visible, checks
+credentials with a second, independent ML-DSA implementation (the pq-crystals
+reference code; `FW-PQC-03`) and still verifies every v2 bundle. Verification: a
+defined tamper suite of at least 40 cases, including removed `UNCOVERED` paths and
+changed observation points with recomputed checksums.
 
-**Policy registry — Implemented** (contract), **Planned** (version 2). A
-multi-tenant Soroban contract for declared role quorums with revision-checked
-writes and change events. Version 2 adds expected revisions on every mutation,
-registrar rotation and report receipts (`FW-SC-01`). Interface: see
-[contracts](CONTRACTS.md#registry-api). Boundary: declarations are never enforcement.
+#### On-chain contracts
+
+**Policy registry — Implemented** (v1), **Planned** (v2). Current: a multi-tenant
+Soroban contract for declared role quorums with a revision-checked setter and
+change events; the unconditional setter remains (see
+[contracts](CONTRACTS.md#registry-api)). Target v2, a new Rust contract:
+* expected revision on every mutation, including tenant handover; unconditional
+  setter removed;
+* registrar ownership through OpenZeppelin `Ownable` with two-step transfer, so
+  the registrar can be any Stellar multisignature account;
+* issuer consent through native `require_auth` on the issuer account, so the
+  issuer's own signers and medium threshold approve the link between tenant,
+  asset code, issuer and SAC;
+* versioned report receipts with status (active, superseded, revoked, expired),
+  publisher, tenant, revision, schema and tool version, ledger range and expiry;
+* a read function returning an asset's latest active receipt to other contracts.
+
+A receipt records which assessment was published; enforcement is established by
+the assessment, not by the receipt. Declarations are never enforcement.
+Verification: concurrency and authorization tests including multisignature
+issuers, and archival-restoration tests showing registrar, tenant, asset-link,
+policy and receipt state unchanged (`FW-SC-01`).
 
 **Post-quantum authorization controller — Prototype** (fixed SAC administrator),
-**Planned** (production controller). A Soroban custom account that becomes a SAC
-administrator and approves only allowlisted operations with ML-DSA. The prototype
-accepts one operation, one key and has no handover or rotation; the production
-controller adds allowlists, quorums, guarded handover, rotation and address-bound
-credentials (`FW-SC-03`, [ADR-008](DECISIONS.md#adr-008-production-controllers-support-guarded-handover-and-address-bound-credentials)).
+**Planned** (production controller). Current: a Soroban custom account that
+accepts one `set_authorized` context and one ML-DSA-65 key, without handover or
+rotation. Target: an OpenZeppelin smart account administering the SAC, composed
+with two Q-Asset contracts ([ADR-009](DECISIONS.md#adr-009-compose-production-controllers-from-openzeppelin-smart-accounts)):
+
+* **ML-DSA verifier contract** implementing the smart-account verifier interface.
+  It verifies ML-DSA-65 over a message bound to the Q-Asset domain context and the
+  smart account's address (part of each registered key), in Wasm or through CAP-87
+  where protocol 30 is active on that network. Upstream, `soroban-sdk` and
+  `ml-dsa` versions are pinned exactly. Instruction, memory and fee costs for 1, 2
+  and 3 signatures are measured on both back ends against the per-transaction
+  limits read from the network configuration.
+* **SAC policy contract** allowing only `set_authorized`, `mint`, `clawback` and
+  `set_admin` on the configured SAC, with argument limits. `set_admin` executes
+  once, for a successor scheduled at least the configured delay earlier, with a
+  higher signer count than routine operations.
+* **Account configuration**: exactly one context rule can reach the SAC; no
+  default or broader rule can authorize the same call; changes to signers,
+  policies and context rules need the full ML-DSA quorum; a removal that would
+  leave a threshold unreachable is refused.
+
+Verification: Wycheproof and malformed-input vectors; cross-account,
+cross-network and wrong-context rejection; route-coverage tests proving no other
+rule reaches the SAC; handover tests (unscheduled, early, wrong successor, reused
+schedule, insufficient signers); cached-authorization tests after an authority
+change within one transaction; property-based tests of rule selection and
+argument limits (`FW-SC-03`, `FW-PQC-04`, `FW-PQC-06`).
 
 **Cryptographic verification — Prototype.** ML-DSA-65 verification inside contract
-Wasm (RustCrypto `ml-dsa` 0.1.1, unaudited), with domain context. Planned: CAP-87
-host verification when Protocol 30 is active (`FW-PQC-04`).
+Wasm (RustCrypto `ml-dsa` 0.1.1, unaudited), with domain context. Target: the same
+keys, messages and contexts through CAP-87 host functions where protocol 30 is
+active ([cryptographic architecture](#cryptographic-architecture)).
 
-**Key rotation and revocation — Planned.** Part of the production controller
-lifecycle. Not possible with the prototype administrator (`FW-SC-03`).
+**Key rotation and revocation — Planned.** Through the smart account's signer
+management under the full quorum, with the threshold-reachability check. A lost
+key is replaced by a rotation approved by the remaining quorum (for example two of
+three keys). Not possible with the prototype administrator (`FW-SC-03`).
 
-**Monitoring and drift detection — Prototype** (on-demand live verification and a
-staleness runner), **Planned** (continuous ingestion and alerts) (`FW-MON-01`).
+#### Clients and tools
 
-**SDK, API and operator application — Planned.** Module boundaries, endpoints and
-the transaction state machine are specified in
-[clients and services](CLIENTS_AND_SERVICES.md) (`FW-SDK-01`, `FW-SDK-02`).
+**Operator signer — Prototype.** Current: `tools/qasset-sac-signer` creates a fresh
+seed outside the repository and signs a supplied 32-byte digest
+deterministically. Target: a `stellar-cli` plugin, so transaction building,
+simulation and submission stay in `stellar-cli`. It rebuilds the authorization
+payload from the transaction with the `stellar-xdr` crate, displays the full
+invocation tree (contract, function, arguments and every sub-invocation) with the
+network and signing account, refuses anything it cannot match byte for byte, signs
+with hedged ML-DSA-65 and returns the signature entry the smart account expects.
+Keys are separated per smart account in protected, integrity-checked files.
+Verification: refusal of wrong network, stale simulation, unexpected
+sub-invocation, account mismatch, replayed payload, corrupted key file and failed
+signing; an operator guide covering key backup and replacement through quorum
+rotation (`FW-PQC-02`, `FW-SEC-01`, `FW-SEC-02`).
 
-**Signer tooling — Prototype.** `tools/qasset-sac-signer` creates a fresh seed
-outside the repository and signs a supplied 32-byte digest deterministically.
-Planned: decoded-invocation display, hedged signing and KMS custody (`FW-SEC-01`,
-`FW-PQC-02`, `FW-SEC-02`).
+**TypeScript SDK — Planned.** Built on `@stellar/stellar-sdk` (RPC client,
+simulation, assembly, submission) with contract clients generated by `stellar-cli`
+from pinned Wasm; no custom RPC or XDR layer. Modules: asset identities and exact
+amounts, typed registry, verifier and policy clients, an approval workflow that
+collects ML-DSA signatures before submission, and evidence validation with
+freshness. Before preparing any authorization it checks the network passphrase,
+contract addresses, Wasm hashes, contract interface versions and the
+authorization-digest format of the pinned smart-account version, and refuses on
+mismatch. Releases: an npm beta, then 1.0 with a generated API reference and at
+least 80% statement coverage (`FW-SDK-01`;
+[clients and services](CLIENTS_AND_SERVICES.md)).
 
-**Deployment and operations infrastructure — Planned.** Release manifests, keeper,
-hosting and runbooks are specified in [operations](OPERATIONS.md) (`FW-OPS-01`,
-`FW-OPS-02`).
+#### Services
+
+**Monitoring, drift detection and storage keeper — Prototype** (on-demand live
+verification and a staleness runner), **Planned** (service). The service polls
+Stellar RPC every ledger (`getLedgerEntries` for issuer accounts, contract
+instances and smart-account rules; `getEvents` for SAC `set_admin` and registry
+events) without custom ledger ingestion, and stores state in PostgreSQL. Every
+assessment has one of three states: current (reassessed after the last change),
+stale (changed since the last assessment) or inconclusive (ledger, storage or
+event data unavailable). Missed events, gaps beyond RPC retention, out-of-order
+delivery and restarts force a full re-read of tracked entries; a passing status
+never survives a gap. Alerts go out by webhook. A keeper extends the lifetime of
+every security-relevant entry (registry state, smart-account rules and signers,
+policy schedules, verifier and contract instances, Wasm code); archived entries
+rely on CAP-66 automatic restoration, and contracts initialize only in their
+constructors, so no entry can be re-created with default values or weaker
+permissions. Verification: fault-injection tests, Testnet drift drills with
+alerts within 5 minutes of the changing ledger, and archival drills on a local
+Stellar Quickstart network with short entry lifetimes (`FW-MON-01`, `FW-OPS-01`).
+
+**Assessment API and operator application — Planned.** A read API serving
+authority graphs, assessments, evidence by hash, freshness and health, with the
+ledger watermark and current, stale or inconclusive state on every response, and a
+95th-percentile response under 500 ms for cached assessments. The web application
+provides asset inspection, a coalition view, evidence export and policy editing
+signed through Stellar Wallets Kit with the expected revision. A stale, `UNCOVERED`
+or inconclusive result is never displayed as current. Published with an OpenAPI
+reference; automated WCAG 2.1 AA checks (axe-core) on the main pages
+(`FW-SDK-02`, `FW-MON-02`).
+
+#### Qualification, release and documentation
+
+**Security qualification — Planned.** Before any Mainnet deployment: a
+threat-model review of every authorization path of the registry, verifier, SAC
+policy and smart-account configuration, extending the prototype
+[STRIDE analysis](THREAT_MODEL.md); coverage-guided fuzzing (`cargo-fuzz`) of
+verifier and policy inputs; reserved remediation of findings and Testnet
+integration issues; and a regression test for every fix. This is internal
+engineering qualification, not an independent external audit (`FW-SEC-04`).
+
+**Release and deployment infrastructure — Planned.** Build-path-independent Wasm
+(`FW-DEV-03`), SEP-55 build attestations, a release manifest with contract IDs,
+Wasm hashes, interfaces and dependency versions, an automated release gate,
+deployment with `stellar-cli`, post-deployment checks against the manifest, and
+runbooks for lifetime extension and restoration rehearsed on a local Quickstart
+network ([Mainnet release architecture](#mainnet-release-architecture),
+[operations](OPERATIONS.md), `FW-OPS-02`).
+
+**Reference assessment and developer documentation — Planned.** A published
+assessment of a team-issued reference asset, or of a partner asset with written
+issuer consent, whose report lists every observed classical authority path
+(including issuer powers that remain after the SAC administrator change), the
+recognized smart-account policy, and each operation labelled enforced, exposed or
+unsupported. A documentation site (Docusaurus, as used by the Stellar developer
+documentation) covers installation, assessment, policy management, smart-account
+administration and monitoring, with runnable examples tested in CI, and an issuer
+guide for moving a SAC administrator to an ML-DSA smart account.
 
 **Treasury and institutional integrations — Unspecified.** Required treasury
 architectures must be modelled before adapters are designed (`FW-SAT-02`).
@@ -1581,26 +1729,24 @@ service objectives and SDK publication. Each needs an owner, decision record and
 acceptance evidence before enabling the dependent capability. Assessment and
 scoped enforcement can ship independently of legacy-recovery research success.
 
-### Deliverable traceability
+### Technical scope coverage
 
-The engineering scope is organized as fifteen deliverables. This table traces each
-identifier to the architecture; it is a component map, not a schedule or cost
-plan. Status reflects this repository today.
+The architecture is organized by system component. This table confirms that the
+complete engineering scope is specified and shows where; it is not a schedule or
+cost plan. Status reflects this repository today.
 
-| ID | Deliverable | Architecture coverage | Current status |
+| Component | Technical work covered | Specified in | Current status |
 | --- | --- | --- | --- |
-| D1.1 | Issuer and SAC authority adapters | [Integration](#integration-architecture), [assessment classifications](#assessment-classifications), §3 | Prototype: fixed QEXP/QCTL analyzer; `FW-STL-01`, `FW-ARCH-02` |
-| D1.2 | Classical-coalition engine | [Classical-coalition algorithm](#classical-coalition-algorithm), §3 | Planned (`FW-ARCH-01`) |
-| D1.3 | Evidence schema and independent verifier | [Data architecture](#data-architecture), [assessment classifications](#assessment-classifications), §3 | Implemented for schema v2; v3 and second ML-DSA implementation planned (`FW-PQC-03`) |
-| D1.4 | Policy registry v2 | §4, [component architecture](#component-architecture) | Registry v1 implemented; v2 planned (`FW-SC-01`) |
-| D2.1 | ML-DSA verifier | [Cryptographic architecture](#cryptographic-architecture), [smart-account integration](#smart-account-integration), §8 | Prototype verification inside the SAC administrator; verifier contract planned (`FW-SC-03`, `FW-PQC-04`) |
-| D2.2 | SAC policy and smart-account configuration | [Smart-account integration](#smart-account-integration), §6 | Planned; PoC administrator covers `set_authorized` only |
-| D2.3 | Operator signer | [Cryptographic parameters](#cryptographic-parameters-and-signing), §9 | Prototype signer; hedged signing and invocation display planned (`FW-PQC-02`, `FW-SEC-01`) |
-| D2.4 | TypeScript SDK | §11, [clients and services](CLIENTS_AND_SERVICES.md) | Planned (`FW-SDK-01`) |
-| D2.5 | Smart-account adapter | [Smart-account integration](#smart-account-integration), [classical-coalition algorithm](#classical-coalition-algorithm) | Planned (`FW-SAT-01`) |
-| D2.6 | STRIDE threat model and monitoring | [Security](#security-architecture), [adversarial case review](#adversarial-case-review), [threat model](THREAT_MODEL.md), [monitoring](#monitoring-and-observability) | Prototype STRIDE analysis and staleness check; production threat model and services planned (`FW-SEC-04`, `FW-MON-01`) |
-| D3.1 | Contract security qualification | [Mainnet release architecture](#mainnet-release-architecture), §14 | Planned |
-| D3.2 | Controlled Mainnet release | [Mainnet release architecture](#mainnet-release-architecture), §8 | Planned; no Mainnet deployment |
-| D3.3 | Drift detection and storage keeper | [Monitoring](#monitoring-and-observability), §10 | Revision staleness implemented; continuous drift detection and keeper planned (`FW-MON-01`, `FW-OPS-01`) |
-| D3.4 | Assessment API and operator application | §11, [clients and services](CLIENTS_AND_SERVICES.md) | Planned (`FW-SDK-02`) |
-| D3.5 | Mainnet assessment, SDK release and developer documentation | [Mainnet release architecture](#mainnet-release-architecture), [development](DEVELOPMENT.md) | Planned; Testnet evidence and development guide exist |
+| Issuer and SAC adapters | Support matrix, all signer kinds, master weight, thresholds, flags, operation-to-threshold mapping, recognized administrator code, failure modes, CLI | [Components](#assessment-core), §3 | Prototype for two reference assets (`FW-STL-01`) |
+| Classical-coalition engine | Typed authority graph, bounded exact search, deterministic limits, exact or `UNCOVERED` labels, oracle validation, benchmark | [Components](#assessment-core), [algorithm](#classical-coalition-algorithm) | Planned (`FW-ARCH-01`) |
+| Evidence and verification | Schema v3 observation point, independent re-derivation, second ML-DSA implementation, v2 compatibility, tamper suite | [Components](#assessment-core), [classifications](#assessment-classifications) | Schema v2 implemented; v3 planned |
+| Policy registry | Expected revisions, setter removal, `Ownable` registrar, issuer consent, receipt lifecycle, read function, archival tests | [Components](#on-chain-contracts), §4 | v1 implemented; v2 planned (`FW-SC-01`) |
+| Authorization controller | ML-DSA verifier contract, SAC policy contract, smart-account configuration, guarded handover, rotation, cost measurement, route-coverage and cache tests | [Components](#on-chain-contracts), [smart-account integration](#smart-account-integration), §6, §8 | Prototype administrator; production controller planned (`FW-SC-03`, `FW-SAT-03`) |
+| Operator signer | `stellar-cli` plugin, payload reconstruction, invocation-tree display, hedged signing, key separation, negative cases, key replacement guide | [Components](#clients-and-tools), §9 | Prototype |
+| TypeScript SDK | Generated clients, network and digest compatibility checks, approval workflow, evidence validation, npm releases | [Components](#clients-and-tools), §11 | Planned (`FW-SDK-01`) |
+| Smart-account adapter | Code-hash pinning, rule/signer/verifier/policy extraction, management authority, policy models, hostile configurations | [Components](#assessment-core), [smart-account integration](#smart-account-integration) | Planned (`FW-SAT-01`) |
+| Threat modelling and security qualification | STRIDE analysis, adversarial cases, threat-model review, fuzzing, remediation, regression per fix | [Security](#security-architecture), [adversarial cases](#adversarial-case-review), [components](#qualification-release-and-documentation) | Prototype STRIDE analysis; qualification planned (`FW-SEC-04`) |
+| Monitoring, drift detection and keeper | RPC polling, three-state freshness, gap handling, alerts, lifetime extension, restoration drills | [Components](#services), [monitoring](#monitoring-and-observability), §10 | Revision staleness implemented; service planned (`FW-MON-01`, `FW-OPS-01`) |
+| Assessment API and operator application | Endpoints with watermark and state, coalition view, evidence export, signed revision-checked policy edits, accessibility | [Components](#services), §11 | Planned (`FW-SDK-02`) |
+| Release and Mainnet deployment | Reproducible builds, attestations, manifest, release gates, reference asset, post-deployment checks, runbooks | [Mainnet release architecture](#mainnet-release-architecture), §8 | Planned; no Mainnet deployment |
+| Reference assessment and documentation | Mainnet reference report, SDK 1.0, documentation site, issuer migration guide | [Components](#qualification-release-and-documentation) | Planned |

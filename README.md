@@ -26,7 +26,7 @@ treasury integrations are part of the engineering roadmap.
 > configuration; it is not the full product. It has not undergone an independent
 > external security audit and is not intended for production custody.**
 
-[The problem](#why-post-quantum-signatures-alone-are-not-enough) · [Status](#implementation-status) ·
+[The problem](#why-post-quantum-signatures-alone-are-not-enough) · [Quantum protection](#how-q-asset-protects-assets-against-quantum-attacks) · [Status](#implementation-status) ·
 [Unsupported](#unsupported-configurations) · [Current PoC](#current-proof-of-concept) · [Verified results](#verified-poc-results) ·
 [Reproduce](#reproduce-the-poc) · [Source and evidence](#source-and-evidence) ·
 [Security scope](#security-scope-and-limitations) · [Architecture](docs/ARCHITECTURE.md) ·
@@ -72,6 +72,59 @@ smart-account rules. A classical key that can replace a stronger policy is
 itself a sensitive authority path. Q-Asset's analysis is limited to explicitly
 supported configurations; arbitrary Soroban bytecode requires additional
 integration models and review.
+
+## How Q-Asset Protects Assets Against Quantum Attacks
+
+**The threat.** Every Stellar account ID is an Ed25519 public key, published on the
+ledger. A cryptographically relevant quantum computer running Shor's algorithm
+could derive the matching private key from that public key and forge signatures.
+For an asset, that means anyone holding such a machine could act as any Ed25519
+signer that still has authority: issue new tokens, freeze holders, claw back
+balances or replace administrators. Long-lived tokenized assets cannot wait for
+that day to discover which keys still matter.
+
+**The defense is ML-DSA, applied where authority actually flows.** ML-DSA
+([FIPS 204](https://csrc.nist.gov/pubs/fips/204/final)) is a lattice-based
+signature scheme designed to resist quantum attacks. Q-Asset uses ML-DSA-65 to
+approve asset administration inside Soroban, and then checks that no classical
+key can still reach the same power by another route. Protection comes in four
+steps:
+
+```mermaid
+flowchart LR
+    A[1. Map<br/>every supported authority path] --> B[2. Find<br/>classical keys that still work]
+    B --> C[3. Enforce<br/>ML-DSA quorum on SAC administration]
+    C --> D[4. Prove and monitor<br/>evidence, staleness on change]
+    D -. configuration changes .-> A
+```
+
+1. **Map.** Read the issuer account (signers, weights, thresholds, flags), the
+   SAC administrator and, in the target design, smart-account rules, and build the
+   authority graph for each critical operation.
+2. **Find.** Report every path that classical keys can still exercise. The planned
+   classical-coalition engine names the exact minimal sets of classical signers
+   per operation.
+3. **Enforce.** Move SAC administration (`mint`, `set_authorized`, `clawback`,
+   `set_admin`) behind an ML-DSA approval that is scoped to one operation, bound
+   to the network and a domain context, protected against replay by the Soroban
+   host, and, in the target design, approved by a quorum of keys. The issuer then
+   closes its own remaining classical paths (lowering signer weights or locking
+   the issuer), which Q-Asset cannot do on its behalf.
+4. **Prove and monitor.** Bind the result to the exact ledger configuration in
+   evidence anyone can re-check, and mark it stale as soon as a signer, threshold,
+   administrator, code hash or policy changes.
+
+| Q-Asset protects | Q-Asset does not protect |
+| --- | --- |
+| SAC administrative operations it controls, behind ML-DSA approval | Classic issuer powers the issuer keeps; Q-Asset only reports them |
+| Against hidden bypasses, by reporting every supported classical path | Unsupported configurations, which stay `UNCOVERED` and are never called safe |
+| Against outdated conclusions, by staleness on any tracked change | Transaction envelopes and fee payers, which Stellar still signs with Ed25519 |
+| With domain separation, operation scoping and host replay protection | Strength above the SHA-256 digest the host signs (a NIST category 2 bound) |
+
+ML-DSA verification currently runs inside contract Wasm. Stellar's
+[CAP-87](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md)
+adds native ML-DSA host functions in protocol 30, active on Testnet and pending on
+Mainnet; Q-Asset's keys, messages and domain contexts carry over to it unchanged.
 
 ## How Q-Asset Works
 
@@ -216,7 +269,7 @@ of deployed customer integrations.
 | Authority analyzer for two reference assets | Prototype | [`scripts/qasset_authority_analyzer.py`](scripts/qasset_authority_analyzer.py) |
 | Independent evidence verifier (offline and live) | Implemented (schema v2) | [`scripts/verify_qasset_evidence.py`](scripts/verify_qasset_evidence.py) |
 | Operator signer | Prototype | [`tools/qasset-sac-signer`](tools/qasset-sac-signer/src/main.rs) |
-| Classical-coalition engine, adapters for any asset, schema v3 | Planned | [deliverable traceability](docs/ARCHITECTURE.md#deliverable-traceability) |
+| Classical-coalition engine, adapters for any asset, schema v3 | Planned | [component architecture](docs/ARCHITECTURE.md#component-architecture) |
 | Production controller (verifier + SAC policy on OpenZeppelin smart accounts) | Planned | [smart-account integration](docs/ARCHITECTURE.md#smart-account-integration) |
 | TypeScript SDK, API, operator app, monitoring, storage keeper | Planned | [clients and services](docs/CLIENTS_AND_SERVICES.md) |
 | Mainnet deployment | None; planned behind [release gates](docs/ARCHITECTURE.md#mainnet-release-architecture) | — |
