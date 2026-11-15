@@ -1,8 +1,8 @@
 # Q-Asset
 
-**Post-Quantum Authority Coverage for Stellar Assets and Treasuries**
+**Verifiable Post-Quantum Authority Coverage for Stellar Assets**
 
-Q-Asset is building verifiable post-quantum authority for Stellar assets. A
+Q-Asset is building verifiable post-quantum authority coverage for Stellar assets. A
 quantum computer could forge the Ed25519 signatures that control Stellar accounts
 today. Q-Asset identifies which accounts, signers and contracts can issue tokens,
 change holder permissions or replace an asset's administrator; places supported
