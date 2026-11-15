@@ -2,17 +2,18 @@
 
 **Verifiable Post-Quantum Authority for Stellar Assets and Treasuries**
 
-Q-Asset develops Rust and Soroban infrastructure for analyzing and strengthening
-the authorization controlling Stellar assets and institutional treasuries against
-quantum-era threats. Its focus is effective authority: which accounts, signers
-and contracts can issue tokens, change holder permissions, move treasury assets
-or replace the rules governing those operations.
+Q-Asset is building verifiable post-quantum authority for Stellar assets. A
+quantum computer could forge the Ed25519 signatures that control Stellar accounts
+today. Q-Asset identifies which accounts, signers and contracts can issue tokens,
+change holder permissions or replace an asset's administrator; places supported
+administration behind ML-DSA (FIPS 204) approval enforced by Soroban smart
+contracts; and produces evidence that anyone can re-check. Institutional
+treasuries are a planned extension of the same model.
 
-A post-quantum signature can protect one operation while a classical issuer,
-administrator or alternative smart-account rule retains an independent route to
-the same authority. Q-Asset maps supported authorization paths, identifies those
-classical-key bypasses, integrates stronger approval rules where authority can
-be delegated, and produces reproducible evidence of the resulting coverage.
+This matters because a post-quantum signature can protect one operation while a
+classical issuer, administrator or alternative smart-account rule keeps an
+independent route to the same authority. Q-Asset reports those classical-key
+bypasses instead of treating one protected operation as a protected asset.
 
 This repository contains a **proof of concept (PoC), not the full Q-Asset
 product**. The Stellar Testnet PoC implements the approach for two synthetic
