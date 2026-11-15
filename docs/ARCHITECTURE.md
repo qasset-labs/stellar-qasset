@@ -1,9 +1,6 @@
 # Q-Asset technical architecture
 
-Design baseline: 2026-11-05; revised 2026-11-07 after an architecture and
-cryptography audit, and 2026-11-15 after a security and maintenance audit
-(network status, OpenZeppelin smart-account compatibility, assessment semantics
-and complete component specifications). This is the primary architecture for the completed product.
+This is the primary architecture for the completed Q-Asset product.
 The proof of concept (PoC) is evidence that core mechanisms work; it is not the
 product. **Current** describes checked-in code or dated evidence; **target**
 specifies work still required. Target requirements are not deployed capabilities.
@@ -14,55 +11,63 @@ Supporting specifications: [contracts](CONTRACTS.md), [clients and services](CLI
 [maintenance](MAINTENANCE.md). The [authority demonstration](POC_ARCHITECTURE.md)
 explains the implemented integration; [recovery status](RECOVERY_IMPLEMENTATION_STATUS.md)
 bounds the research. Findings and validation belong in the separate
-[documentation review](ARCHITECTURE_REVIEW.md). Part I presents the product; Part II
-holds the detailed specifications.
+[documentation review](ARCHITECTURE_REVIEW.md).
 
-## Contents
+## Plan
 
-**Part I — System architecture.** The complete Q-Asset platform, its components and
-how they work. Each component is labelled with its implementation status.
+The document's sections, in order. Part I presents the product; Part II holds
+the detailed specifications.
 
-| Section | Summary |
-| --- | --- |
-| [System overview](#system-overview) | Purpose, capabilities, objectives and the authorization problem Q-Asset addresses |
-| [Architecture principles](#architecture-principles) | Rules for modularity, trust boundaries, enforcement, agility and evidence |
-| [Complete system architecture](#complete-system-architecture) | Layers, components and their interactions, with the full system diagram |
-| [Component architecture](#component-architecture) | Every component — assessment core, on-chain contracts, clients and tools, services, qualification and release — with current state, target design, interfaces and verification |
-| [Data architecture](#data-architecture) | Authority graph, declarations, controller configuration, assessments, evidence, contract state |
-| [Core operational workflows](#core-operational-workflows) | Enrollment, assessment, policy changes, enforcement, rotation, handover, evidence, monitoring, integration |
-| [Security architecture](#security-architecture) | Privileged roles, trust boundaries, attack surfaces and residual risks |
-| [Adversarial case review](#adversarial-case-review) | Twelve concrete attacks: trust boundary, control, implementation status and remaining limits |
-| [Cryptographic architecture](#cryptographic-architecture) | Algorithms, signing and verification, replay protection, domain separation, agility |
-| [Integration architecture](#integration-architecture) | Issuer accounts, SACs, smart accounts, tokenization and treasury systems, external services |
-| [Smart-account integration](#smart-account-integration) | Planned composition with OpenZeppelin Stellar smart accounts, version pins and the delegated-signer advisory |
-| [Deployment architecture](#deployment-architecture) | Contract deployment, initialization, network configuration and environments |
-| [Mainnet release architecture](#mainnet-release-architecture) | Release gates, reference asset, manifests and post-deployment checks (planned) |
-| [Monitoring and observability](#monitoring-and-observability) | Detecting authority changes and maintaining assessment validity |
-| [Lifecycle and operational management](#lifecycle-and-operational-management) | Upgrades, migration, signer and administrator changes, TTL, emergencies |
-| [Architecture decisions and trade-offs](#architecture-decisions-and-trade-offs) | The main design choices and what they cost |
-| [Implementation maturity](#implementation-maturity) | Every component mapped to status, source, tests, gaps and validation |
-| [Limitations and architectural evolution](#limitations-and-architectural-evolution) | Current constraints and how the system evolves from the proof of concept |
-| [Optional extension: recovery](#optional-extension-recovery) | Recovery research, kept outside the core platform |
-| [Classical-coalition algorithm](#classical-coalition-algorithm) | Minimal classical coalitions per operation, bounds and oracle validation |
-| [Assessment classifications](#assessment-classifications) | Exact meaning of each path status and verifier outcome, and what none of them proves |
-| [Measured proof-of-concept results](#measured-proof-of-concept-results) | Recorded sizes, costs, counts and freshness results |
-
-**Part II — Detailed specifications.** Constraints and operating rules referenced by
-Part I: [product requirements](#1-product-requirements-and-economics),
-[topology](#2-implementation-boundary-and-topology),
-[identity and evidence](#3-identity-authority-graphs-and-evidence),
-[declared policy](#4-declared-policy-contract),
-[assets and accounting](#5-assets-custody-and-accounting),
-[enforcement and lifecycle](#6-enforcement-and-lifecycle),
-[recovery extension](#7-conditional-recovery-extension),
-[network configuration](#8-network-configuration-and-deployment-provenance),
-[transactions](#9-transaction-and-wallet-protocol),
-[storage](#10-storage-and-resource-lifecycle),
-[clients and services](#11-dapp-sdk-and-durable-services),
-[integrations](#12-external-integrations-and-confidentiality),
-[threats](#13-threats-and-operations),
-[delivery and testing](#14-delivery-testing-and-production-gates) and
-[technical scope coverage](#technical-scope-coverage).
+- [Part I — System architecture](#part-i--system-architecture)
+  - [System overview](#system-overview)
+  - [Architecture principles](#architecture-principles)
+  - [Complete system architecture](#complete-system-architecture)
+  - [Component architecture](#component-architecture)
+    - [Assessment core](#assessment-core)
+    - [On-chain contracts](#on-chain-contracts)
+    - [Clients and tools](#clients-and-tools)
+    - [Services](#services)
+    - [Qualification, release and documentation](#qualification-release-and-documentation)
+  - [Data architecture](#data-architecture)
+  - [Core operational workflows](#core-operational-workflows)
+  - [Security architecture](#security-architecture)
+  - [Adversarial case review](#adversarial-case-review)
+  - [Cryptographic architecture](#cryptographic-architecture)
+  - [Integration architecture](#integration-architecture)
+  - [Smart-account integration](#smart-account-integration)
+  - [Deployment architecture](#deployment-architecture)
+  - [Mainnet release architecture](#mainnet-release-architecture)
+  - [Monitoring and observability](#monitoring-and-observability)
+  - [Lifecycle and operational management](#lifecycle-and-operational-management)
+  - [Architecture decisions and trade-offs](#architecture-decisions-and-trade-offs)
+  - [Implementation maturity](#implementation-maturity)
+  - [Limitations and architectural evolution](#limitations-and-architectural-evolution)
+  - [Optional extension: recovery](#optional-extension-recovery)
+  - [Classical-coalition algorithm](#classical-coalition-algorithm)
+  - [Assessment classifications](#assessment-classifications)
+  - [Measured proof-of-concept results](#measured-proof-of-concept-results)
+- [Part II — Detailed specifications](#part-ii--detailed-specifications)
+  - [1. Product, requirements and economics](#1-product-requirements-and-economics)
+  - [2. Implementation boundary and topology](#2-implementation-boundary-and-topology)
+  - [3. Identity, authority graphs and evidence](#3-identity-authority-graphs-and-evidence)
+    - [Classical-coalition analysis](#classical-coalition-analysis)
+  - [4. Declared policy contract](#4-declared-policy-contract)
+    - [QS0–QS4 standard](#qs0qs4-standard)
+  - [5. Assets, custody and accounting](#5-assets-custody-and-accounting)
+    - [Precision and conservation](#precision-and-conservation)
+  - [6. Enforcement and lifecycle](#6-enforcement-and-lifecycle)
+    - [Target production controller](#target-production-controller)
+    - [Cryptographic parameters and signing](#cryptographic-parameters-and-signing)
+    - [Verified gate boundary](#verified-gate-boundary)
+  - [7. Conditional recovery extension](#7-conditional-recovery-extension)
+  - [8. Network configuration and deployment provenance](#8-network-configuration-and-deployment-provenance)
+  - [9. Transaction and wallet protocol](#9-transaction-and-wallet-protocol)
+  - [10. Storage and resource lifecycle](#10-storage-and-resource-lifecycle)
+  - [11. dApp, SDK and durable services](#11-dapp-sdk-and-durable-services)
+  - [12. External integrations and confidentiality](#12-external-integrations-and-confidentiality)
+  - [13. Threats and operations](#13-threats-and-operations)
+  - [14. Delivery, testing and production gates](#14-delivery-testing-and-production-gates)
+    - [Technical scope coverage](#technical-scope-coverage)
 
 Outstanding engineering work is tracked in the [future-work register](FUTURE_WORK.md);
 identifiers such as `FW-ARCH-01` refer to it.
@@ -803,9 +808,9 @@ rather than a monolithic custom account
   policies and context rules require the full ML-DSA quorum; removals that leave a
   threshold unreachable are refused.
 
-| Upstream fact (checked 2026-11-15) | Consequence for Q-Asset |
+| Upstream fact | Consequence for Q-Asset |
 | --- | --- |
-| `stellar-accounts` releases `v0.7.3` and `v0.8.0` (2026-10-20) | Pin an exact patched version; never a range |
+| `stellar-accounts` releases `v0.7.3` and `v0.8.0` | Pin an exact patched version; never a range |
 | Advisory [GHSA-jpg9-m7w4-c7wc](https://github.com/OpenZeppelin/stellar-contracts/security/advisories/GHSA-jpg9-m7w4-c7wc) (medium): a `Delegated` signer can authorize without keys in self, mutual or caller delegation; affects `< 0.7.3` and `0.8.0-rc.*` | Require `>= 0.7.3` or `0.8.0`; no SAC rule may be satisfiable by a `Delegated` signer alone; adapter flags such rules |
 | `v0.8.0` breaking change: signers commit to `sha256(AuthDigestPreimage { account, signature_payload, context_rule_ids })` | The digest binds the smart-account address; off-chain signers, the SDK and evidence must match the pinned digest format exactly |
 | Policies and verifiers are separate contracts selected per context rule | A secure policy is insufficient if another rule reaches the same context; route-coverage tests are mandatory |
@@ -1375,8 +1380,8 @@ a qualified option for cost-sensitive controllers, decided with measured costs.
   by the PoC signer, is limited to reproducible test vectors.
 * Every verification path, in Wasm or through CAP-87, runs NIST ACVP and
   Wycheproof vectors including malformed key, signature and hint encodings. The
-  PoC runs them on the recovery counter and, since commit `1dab0b1`, on the SAC
-  administrator's `__check_auth` (`contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs`).
+  PoC runs them on the recovery counter and on the SAC administrator's
+  `__check_auth` (`contracts/qasset-sac-admin/tests/ml_dsa_vectors.rs`).
 * Evidence verification uses a second, independent ML-DSA implementation. The PoC
   evidence helper reuses the contract's `ml-dsa` crate, so its agreement is not
   independent.
@@ -1443,8 +1448,8 @@ Research tools have separate locks. The CLI26/protocol29 limits record is explic
 partial. Historical counts/identities live in the [evidence guide](QASSET_POC_EVIDENCE.md).
 
 The [Bell guide](https://stellar.org/blog/developers/bell-protocol-30-upgrade-guide)
-lists Testnet/Mainnet votes for 2026-11-03/2026-11-23 and requires CAP-88-aware
-ledger decoders. Read-only checks on 2026-11-15 found Testnet at protocol 30
+schedules separate Testnet and Mainnet votes and requires CAP-88-aware
+ledger decoders. Read-only network checks found Testnet at protocol 30
 (Horizon `current_protocol_version` and RPC `getLatestLedger`) and Mainnet still at
 protocol 29 (Horizon, ledger 65,482,157). CAP-87 is therefore available on Testnet
 only; Mainnet activation depends on the scheduled vote and must be re-checked.
@@ -1456,8 +1461,8 @@ variants explicitly. Ledger windows do not imply fixed wall-clock durations.
 [CAP-87](https://github.com/stellar/stellar-protocol/blob/master/core/cap-0087.md)
 defines Protocol30 host functions `verify_sig_ml_dsa_44/65/87(public_key, msg,
 signature, context)`: pure ML-DSA (FIPS 204 Algorithm 3) with a 0–255-byte
-context string. It is active where protocol 30 is active (Testnet as of
-2026-11-15). Current contracts use Wasm RustCrypto, not those functions, and the
+context string. It is active where protocol 30 is active (Testnet at the last
+network check). Current contracts use Wasm RustCrypto, not those functions, and the
 recorded PoC run used protocol 29.
 
 * **Compatible.** Pure ML-DSA-65 with context support preserves the current
